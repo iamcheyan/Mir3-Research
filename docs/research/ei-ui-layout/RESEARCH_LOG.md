@@ -11963,3 +11963,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔边界与落盘〕** `README.md` D4/D5 与 `tools-and-servers.md` §11 区分 master interserver relay、共享 `.shr` 跨服移交、RunDB 持久化 SQL record 与 RunGate client socket；ledger 第 109–110 行登记两份全读文件。`FDBRecord` 被复制进移交文件只说明跨服内存快照复用，不表示该文件是 MirDB，也不建立 EI `System.db`/`Users.db` 来源映射；未启动/修改任何服务或数据库。
 
 **〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个 opcode 缺失穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 244/94948，partial 17/90886，excluded 43/60230，pending 89/69260。`git diff --check` 通过；未运行 Windows GameServer/多服/共享目录移交验证。
+
+## Round 842 — 2026-09-27：GameServer `UserMgrEngine` 消息队列桥接
+
+**〔范围〕** 通过 `Tools/source-read/read_src.py show` 全读 `GameServer/UserMgrEngn.pas`（1–276）。用 source-reader grep 追踪 `UserMgrEngine` 调用，并读取 `svMain.pas` 的创建/恢复线程及 DB-read callback（420–432、1658–1665、1778–1789）和 `UserMgr.pas` 的 DB/friend-notify 分支（600–700）；这些调用片段不登记为完整覆盖。
+
+**〔线程与队列〕** `svMain` 创建时 `TUserMgrEngine` 继承 `Create(TRUE)` 保持 suspended，在 `UserEngine.Initialize` 后 `Resume`。工作线程反复调用 `FUserMgr.RunMsg`，异常只输出通用错误文本，sleep 1 ms 后检查 `Terminated`。`InterSendMsg(stClient)` 先调用 `GetUserInfo` 验证当前 user，缺失则记错并返回；通过后调用 `SendMsgQueue1`。`ExternSendMsg` 进入 `SendMsgQueue`。`AddUser`/`DeleteUser` 发送 `ISM_FUNC_USEROPEN`/`ISM_FUNC_USERCLOSE` 到 interserver target 0；外部事件 `OnExternInterMsg` 则以来源服务器索引 `snum` 重新封装为 `stInterServer` 队列项。
+
+**〔调用关系与锁边界〕** `InterServerMsg` dispatch 调 `OnExternInterMsg`；`UserMgr` 的 friend-online 通知使用 `stOtherServer`、test-server 的 DB friend-list 请求使用 `stDBServer`；`FriendSystem`、`TagSystem`、`UserSystem` 使用 `InterSendMsg`，`ObjBase`/`UsrEngn` 使用 `ExternSendMsg`。`OnDBRead` wrapper 的 `umLock` 块被注释；`stClient` 的 `GetUserInfo` 检查发生在 `InterSendMsg` 自己的 queue lock 之前（调用方可能另已持锁）。这是静态可见的同步边界，未据此判定 data race，也未作多线程运行验证。
+
+**〔边界与落盘〕** README D4 增加 user-manager queue 路由注记，`tools-and-servers.md` §12 记录线程、selector 与调用关系，ledger 第 133 行把全读文件从 pending 改为 covered。`stDBServer` 消息 selector 不等于 EI MirDB 文件；本轮没有建立 `System.db`/`Users.db` schema 或来源映射，未改数据库/服务/Zircon。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 245/95224，partial 17/90886，excluded 43/60230，pending 88/68984。四个指定文件的 `git diff --check` 通过；`privacy_scan.py --staged` 对 4 个暂存文件通过。未运行 GameServer/多服/数据库。

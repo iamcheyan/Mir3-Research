@@ -130,7 +130,7 @@ A/C-server	Source/GameServer/Server_JOB_ItemGen.dpr	59	1828	covered	Round 839 fu
 A/C-server	Source/GameServer/SqlEngn.pas	1268	41012	covered	Round 839 full 1–1268: threaded market/board DB queue and timer-side response dispatch; ExecuteSaveCommand body is empty
 A/C-server	Source/GameServer/TagSystem.pas	1678	54596	covered	Round 829 partial notes superseded where corrected; Round 834 full 1–1678 plus UserMgr/UsrEngn/ObjBase callers: state transitions, DB/inter-server paths, 11-entry page bound, unread-count reload drift, delete-all-read empty branch, CM_TAG_NOTREADCOUNT route gap; DB-side semantics open
 A/C-server	Source/GameServer/UserMgr.pas	726	21672	covered	Round 802 FriendSystem 二次分派
-A/C-server	Source/GameServer/UserMgrEngn.pas	276	6926	pending	
+A/C-server	Source/GameServer/UserMgrEngn.pas	276	6926	covered	Round 842 full 1–276; suspended-thread lifecycle, stClient/DB/interserver queue paths, verified caller families
 A/C-server	Source/GameServer/UserSystem.pas	153	4879	pending	
 A/C-server	Source/GameServer/UsrEngn.pas	3696	122341	covered	Round 803 校验和 + 好友透传
 A/C-server	Source/GameServer/crc_32.pas	54	972	pending	

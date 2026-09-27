@@ -401,3 +401,11 @@ Round 835 全读 LoginServer 应用层与本目录 C++ 编码/包辅助文件；
 - 线路以 `(...)` 包住 `ident/encoded-server-index/encoded-body`。双方接收端累积流片段并保留未闭合尾帧；master 收到完整帧后先转发到除来源 socket 外的其它 peer，再在本服按 opcode dispatch。处理面包括跨服登录/登出、whisper、guild/castle/recall/lover、friend/tag 到 `UserMgrEngine` 的委派、资源 reload 与 market open/close；它是 RunDB 角色数据库 socket 和 RunSock 客户端 RunGate 的第三条独立通路。
 - 服务器切换的数据面另走共享文件：`TServerShiftUserInfo` 包含 `FDBRecord` 与 group/whisper/slave/status/extra-ability 等运行态字段。`UsrEngn.WriteShiftUserData` 写原始 struct 和 4-byte checksum，文件名 `$_<ServerIndex>_$_<counter>.shr`，目录根取 `Share/BaseDir`；`UserServerChange` 把目标服索引与编码文件名通过 `ISM_USERSERVERCHANGE` 送 master。目标服匹配自己的 `ServerIndex` 后读取并删除文件，按逐字节加和校验；通过后入 `WaitServerList` 并发 `ISM_CHANGESERVERRECIEVEOK`，源服据文件名置对应 `ClosePlayers` 的 `BoChangeServerOK`。等待记录超过 30 秒才清理。
 - 静态风险边界：文件 writer/reader 均未检查 `FileWrite`/`FileRead` 实际字节数；reader 的 `FileOpen` 未成功时仍沿后续 checksum loop 解引用 `psui`。逐字节加和可检出部分损坏但不是强完整性校验。均未在 Windows/多服环境运行；共享 handoff `.shr` 不是 MirDB `.db`，也不证明 `System.db`/`Users.db` 映射。
+
+## 12. GameServer `UserMgrEngine` queue bridge（Round 842）
+
+- `svMain` 创建 suspended `TUserMgrEngine`，在 `UserEngine.Initialize` 后 `Resume`。`Execute` 循环调用 `FUserMgr.RunMsg`，捕获异常后只写通用错误文本，再 sleep 1 ms 并检查 `Terminated`。
+- `InterSendMsg(stClient, ...)` 在入队前以 `GetUserInfo` 检查目标是否在线；缺失时记录错误并返回。通过后以 `SendMsgQueue1` 入队。`ExternSendMsg` 则以 `SendMsgQueue` 入队；`AddUser`/`DeleteUser` 生成 `ISM_FUNC_USEROPEN`/`ISM_FUNC_USERCLOSE` 并发往 interserver target 0。
+- `OnExternInterMsg(snum, Ident, UserName, Data)` 把外部 interserver 事件包装为目标 `snum` 的 `stInterServer` 队列消息。调用点包括 `InterServerMsg` dispatch；`UserMgr` 的 friend-notify 使用 `stOtherServer`，test-server 的 DB friend-list 请求使用 `stDBServer`，`FriendSystem`/`TagSystem`/`UserSystem` 调用 `InterSendMsg`，`ObjBase`/`UsrEngn` 调用 `ExternSendMsg`。
+- `svMain` 的 DB-read callback 转交给 `UserMgrEngine.OnDBRead`；该 wrapper 中 `umLock` 代码被注释。`InterSendMsg` 对 `stClient` 的 `GetUserInfo` 检查也发生在其 queue lock 之前（某些调用方可能已持锁）。这是静态锁边界，不据此断言存在 race；未作多线程运行验证。
+- 队列 selector 和 DB-server message 不等同于 EI MirDB `.db`；该 wrapper 未建立 `System.db`/`Users.db` schema 或来源映射。

@@ -171,7 +171,7 @@
 | GameServer→DataBaseServer | `GS_BPORT = 6000` | **新增** |
 | DataBaseServer→LoginServer | `LS_CPORT = 5600` | **新增** |
 | DataBaseServer→SQL Server 2000 | ODBC | SQL Server record path; not proof that binary `System.db` is generated from or backed by this connection |
-| GameServer inter-server | `ServerIndex=0` 启动 `MsgServerPort` listener；非零 server 连接 `MsgServerAddress:MsgServerPort`。`ISM_*` 帧由主 server 转发给其它 peers；`ISM_USERSERVERCHANGE` 使用共享 `.shr` handoff file | 新增源码侧跨服路径；不建立 EI `.db` 或资源映射 |
+| GameServer inter-server | `ServerIndex=0` 启动 `MsgServerPort` listener；非零 server 连接 `MsgServerAddress:MsgServerPort`。`ISM_*` 帧由主 server 转发给其它 peers；friend/tag callbacks 进入 `UserMgrEngine` 队列；`ISM_USERSERVERCHANGE` 使用共享 `.shr` handoff file | 新增源码侧跨服消息与用户路由；不建立 EI `.db` 或资源映射 |
 
 > ⚠️ 被排除的 `LoginSvr.ini` / `DBSvr.ini` 含 `ODBC_ID=sa` / `ODBC_PW=sa`
 > （SQL Server 2000 默认口令）。**禁止**复制进仓库。
