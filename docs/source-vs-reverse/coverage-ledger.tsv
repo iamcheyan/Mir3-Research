@@ -168,7 +168,7 @@ D-client	Source/Client/wmM3Def.pas	537	16638	covered	Round 911: M3Def WIL fallba
 D-client	Source/Client/wmM3Zip.pas	217	6608	covered	Round 807 .Zl 容器
 D-client	Source/Client/wmMyImage.pas	741	25787	covered	Round 824: .Lib 格式全解(56B头/18B图头/DES加密/lom2com校验/ZIP索引+10个int32头部)；DecryBuffer实现与真实文件验证待做
 D-client	Source/Client/wmUtil.pas	4497	489745	partial	Round 825: 4200行查表+6函数+ZIP实现(raise被注释)；查表内容与Move重载待读
-D-client	Source/Client/Light/Light0a.pas	100	2696	pending	
+D-client	Source/Client/Light/Light0a.pas	100	2696	covered	Round 912: Client-created A8R8G8B8 light surface and PlayScn selection; unbounded RGBA RLE runs, lock/decode failure states and no external destroy caller; Light0a.inc inaccessible through reader
 D-client	Source/Client/Light/Light0b.pas	100	2696	pending	
 D-client	Source/Client/Light/Light0c.pas	100	2696	pending	
 D-client	Source/Client/Light/Light0d.pas	100	2696	pending	
