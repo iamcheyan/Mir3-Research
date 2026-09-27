@@ -12237,3 +12237,17 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔DFM 与 primary/source 边界〕** source-reader 对 `DoorDlg.dfm` 的视图能辨认 `CkDoor`、`EdIndex`、`EdOffset` 及 `bkOK` 按钮，但文件标记为 mixed binary/text；`dfm_parse.py tree`（含浅层模式）和 `list` 均在 Reader.u8 越过输入时抛 `IndexError`，故不声称恢复了控件几何或全部 caption。仅记录 Preview MapEdit 静态资源/调用关系；没有 EI 对照、Delphi 编译或实际确认/取消操作。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 3 行将 `DoorDlg.pas` 的 52 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 271/124418，partial 17/90886，excluded 43/60230，pending 62/39790。staged 仅含四个授权文档路径，`git diff --cached --check` 无输出；本地新增行的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均为 0 hits，完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
+
+## Round 863 — 2026-09-28：MapEdit main form, editing events and file paths
+
+**〔范围与入口〕** 经 `read_src.py` 全读 `Source/Tools/MapEdit/EdMain.pas`（1–3283，CP949），并读 `MapEdit.dpr`、`EdMain.dfm` 的 mixed-text 视图，以及 `segunit.pas/.dfm` 的相关段落。DPR 首先创建 `TFrmMain`，随后自动创建列出的工具窗体；DFM 将生命周期/key/timer 事件和 `MapPaint` 的 mouse/paint 事件绑定到 main-form handlers。`dfm_parse.py tree` 对 main DFM 在 Reader.u8 越过输入时抛 `IndexError`；因此仅采用 source-reader 能辨认的 binding，不声称恢复所有 DFM 属性。
+
+**〔模型、渲染与编辑〕** `FormCreate` 读取 `256RGB` palette resource，初始化 70 条相对 `.Lib` 图库路径并设 `ltLoadBmp`；MyImage 初始化失败时尝试同基名 `.wil` 与 `t_wmM3Def`。初始 map 为 200×200、`Zoom=0.4`。DrawMode 与 MainBrush 分开选择；canvas handlers 执行 tile/middle/object/object-set/light/door 等编辑，`MapPaintPaint` 分层绘制并叠加 attribute/light/door 标记。`SetMapData` 与 `SetMapDataEx` 分别记录整格或字段级 undo snapshot，UndoList 最多保留 30 项，Ctrl+Z 触发 Undo。`mbFill` 扫描全图 even/even cell 的匹配 tile 类别，而不是只填连通区；`mbFillAttrib` 询问方形半径，attribute brush 可在 Shift 时覆盖 5×5 区域；eraser 清理前景（Alt 改为中间层）、动画和 door 元数据，Ctrl 半径 1、Shift 半径 10（覆盖 Ctrl），Ctrl 还清背景 attribute。dirty flag 并非所有修改一致：door 点击即使取消也设 `Edited`；eraser/attribute 的 mouse-down early-return 和 `MapScroll1Click` 的数据移动没有相应标记。
+
+**〔地图文件与保存提示〕** `LoadFromFile`/`SaveToFile` 的实际 file I/O body 均注释掉，前者会返回 false，后者初始化并保留 false。Open、Open-old-format、batch-convert 都调用此 loader；Save As 调用 saver，Save 也转向 Save As，因此这里没有 active main-map serializer/loader。`VerifyWork` 收到 yes 会触发 SaveAs/DoSaveSegments，但不检查写入是否成功后再返回 true；源码路径允许其调用方继续，而保存失败/取消时 `Edited` 仍可能保持。另有 bitmap 导出 handler，主 DFM 中两个菜单项绑定到它；实现用 Sender.Tag 作缩放除数并写固定 `map.bmp`，未运行。
+
+**〔Segment 与声明差异〕** `LoadSegment`/`SaveSegment` 的 `.sem` I/O body 注释掉；`DoEditSegment` 遍历 3×3、每格 40×40 的 segment grid，`DoSaveSegments` 调 saver 后设 `Edited := FALSE`。`segunit` 有独立 `.mp` 项目元数据保存/读取，但主菜单 `NewSegmentMap1Click` 的 `FrmSegment.Show` 是注释，MapEdit 源码搜索未找到 active `FrmSegment.Show/ShowModal` caller；DPR 自动创建窗体本身不显示它。另，`TTileInfo` 只有 `bFileIdx/wTileIdx` 字段，而 `TFrmMain.MArr` 声明为 `TTileInfo[]`；`GetMapData`/`SetMapData` 与其余主逻辑却把 `MArr` 当作含 `TMapInfo` 字段的 map-array 使用。这是可见源码声明/使用不一致；未做 Delphi compile，不推断 compiler 结果。
+
+**〔primary/source 边界〕** 仅记录 Preview MapEdit 的静态源码及资源绑定，不代表 EI 地图编辑器或 map-file 格式等价，也未实测保存、渲染、撤销或 segment 工作流。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 4 行将 `EdMain.pas` 的 3283 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 272/127701，partial 17/90886，excluded 43/60230，pending 61/36507。staged 仅有四个授权文档路径，`git diff --cached --check` 无输出；本地新增行的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均为 0 hits，完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
