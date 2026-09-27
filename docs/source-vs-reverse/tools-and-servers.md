@@ -223,7 +223,7 @@ GraphicEx（图像格式库）· MyDirect9（DX9 封装）· pngimage · DelphiZ
 |---|---|
 | `Tools/MapEdit/` 各文件实现主体 | 只读了文件清单与职责 |
 | `Tools/ImageEditor/` 顶层非第三方实现 | 只读了文件清单 |
-| LoginServer 登录服务业务链 | ✅ Round 835 全读 `netloginsvr`、`netlogingate`、`netgameserver` 与辅助通道；其 `_Oranze Library` 依赖仍逐文件待读 |
+| LoginServer（全量） | ✅ Round 835 应用层/线格式 + Round 836 `_Oranze Library`；本轮闭合 90 个此前 pending 条目，旧 covered 行保留 |
 | DataBaseServer 服务实现 | pending；仅已有 `netloginserver/netrungate` 分派与 `tablesdefine.cpp` 表字段证据，业务主体及 DB 侧便条语义仍待读 |
 | LoginServer/Common C++ 线格式 | ✅ Round 835 全读 `endecode.cpp/.h` 与 `mir2packet.cpp/.h`；DataBaseServer 副本待读核对 |
 | `DataBaseServer/Common/sqlhandler.cpp/.h`、`tablesdefine.h` | 未读；`tablesdefine.cpp` 已于 Round 828 提取并覆盖，见 §6 |
@@ -322,9 +322,9 @@ GameServer → DataBaseServer(GS_BPORT=6000) → ODBC → SQL Server 2000
 | `ATOM*_MC` vs `ATOM*_MAC` 的语义差别 | 未追（疑魔攻/魔防） |
 | 这些表与 `Users.db` 的实际对应 | 需读 `Users.db` 侧（超出本 Goal） |
 
-## 7. LoginServer 业务实现（Round 835）
+## 7. LoginServer 业务实现（Round 835–836）
 
-本节仅闭合 LoginServer 的应用层与本目录 C++ 编码/包辅助文件，不代表 90 个 LoginServer 台账条目全部完成；`_Oranze Library/` 的其余通用依赖仍按台账逐文件推进。完整读档清单见 `coverage-ledger.tsv` Round 835 条目。
+Round 835 全读 LoginServer 应用层与本目录 C++ 编码/包辅助文件；Round 836 再全读 `_Oranze Library/` 66 个文件。本轮清空了此前 90 个 pending LoginServer 条目；完整逐文件范围见 `coverage-ledger.tsv`。
 
 ### 7.1 进程入口、配置和连接
 
@@ -359,4 +359,14 @@ GameServer → DataBaseServer(GS_BPORT=6000) → ODBC → SQL Server 2000
 
 ### 7.5 本轮文件覆盖范围
 
-`LoginServer/Common/`：`endecode.cpp/.h`、`mir2packet.cpp/.h` 全读；`LoginServer/LoginServer/`：`LoginSvr.sln/.vcproj`、`dbtable.h`、`dlgcfg.cpp/.h`、`loginsvrwnd.cpp/.h`、`mir2dbhandler.cpp/.h`、`mir2wnd.cpp/.h`、`netUdpsender.cpp/.h`、`netcheckserver.cpp/.h`、`netgameserver.cpp/.h`、`netlogingate.cpp/.h`、`netloginsvr.cpp/.h`、`Res/resource.h` 全读。前两份 `.cpp` 原已 `covered`；Round 835 扩为完整实现阅读。未读的 `_Oranze Library/` 依赖不在本轮标 covered。
+`LoginServer/Common/`：`endecode.cpp/.h`、`mir2packet.cpp/.h` 全读；`LoginServer/LoginServer/`：`LoginSvr.sln/.vcproj`、`dbtable.h`、`dlgcfg.cpp/.h`、`loginsvrwnd.cpp/.h`、`mir2dbhandler.cpp/.h`、`mir2wnd.cpp/.h`、`netUdpsender.cpp/.h`、`netcheckserver.cpp/.h`、`netgameserver.cpp/.h`、`netlogingate.cpp/.h`、`netloginsvr.cpp/.h`、`Res/resource.h` 全读。前两份 `.cpp` 原已 covered；Round 835 扩为完整实现阅读。Round 836 全读 `_Oranze Library/` 66 个文件，见台账第 302–367 行；C++ 层没有以此替代 DataBaseServer 副本核验。
+
+### 7.6 `_Oranze Library` 共享实现（Round 836）
+
+- `_Oranze Library.vcproj` 是 VS 7.10 Win32 静态库项目，Release/Debug 分别输出 `_Oranze Library.lib` / `_Oranze Library_Debug.lib`；LoginSvr 项目对它作库链接。本节涉及 66 个 ledgered 文件，含库项目、网络/数据库基础设施、容器、邮件/HTTP、文件与图像封装。
+- `CIocpHandler` 以 IOCP 处理 overlapped TCP send/recv，接入和主动连接各由一个 Winsock event thread 管理；默认 worker 数为处理器数×2，另可选独立 dispatcher。每连接收发缓冲上限 `IOCP_MAXBUF=32768`；接收包边界由派生 `OnExtractPacket` 决定。`CIocpObject::Send` 可合并排队 packet，未启 dispatcher 时收包在 worker 内直接拆包/调 `OnRecv`。
+- `CNetBase` 初始化 Winsock 2.2；`CSockAddr` 接受点分 IP 或 `gethostbyname` 主机名。`CIntLock` 是进程内 critical section，`CInpLock` 是命名 mutex。库另含 40ms select-loop TCP/UDP handler：TCP 的默认接收是原始流切片；UDP 用包序号、ACK 窗口、RTO/重传与 Poll 连续交付，不等同 LoginServer 实际使用的 IOCP 协议实现。
+- ODBC `CDatabase` 管 ODBC3 环境，`CConnection` 管连接/事务，`CRecordset` 将每列绑定到 `SQL_C_CHAR` 缓冲并按列名/序号访问；无 result column 的执行返回 row count。`EndTran` 即使 `SQLEndTran` 失败也继续重置 autocommit，最终布尔值取重置操作结果，事务失败可仅留诊断记录。另一个 `CCodeBase` 是 Sequiter CodeBase DBF wrapper，含 Insert/Delete/Pack/Compress，和 ODBC 类是两条独立路径；本轮没有调用或连接任一路径。
+- 容器以指针所有权 API 为主：`CList` 双向链表，`CQueue/CStack` 派生其尾/头操作，`CIndexMap` 并行维护 hash 与遍历 list；`CMap` 各桶再用 BST。静态检查发现 `IHT_UNTOUCH` 分支把 `m_nRealSize` 设成 flag 值 1 而非 `nDemandSize`；`CFixedSizeAllocator::Init` 分配数组后未设置 `m_nCapacity`，`ConstructFreeList(0,m_nCapacity)` 得到空区间。两者属于源码缺陷，不是运行实测。
+- HTTP/URL、Base64、quoted-printable、UUDecode、MIME/POP3、脚本/注册表/日期日志是同一库的工具表面；本轮并未证明它们都从登录主流程调用。`CMimeDecoder` 对传入响应按 C 字符串查找边界；非 NUL 缓冲的完整性依赖调用方。`CVtImage` 包装 Victor 库的 BIF/BMP/GIF/JPG/PCX/PNG/TGA 打开/保存和编辑；`RealizePalette` 方法体调用同名方法，源码上形成自递归；选区 `Rotate` 分支若底层旋转失败仍落到 `return true`。这些路径均未在 Windows 上运行。
+- 本轮不构建 Win32 库、不启动登录服、不连接 ODBC、不调用 CodeBase，也不执行任一数据库变更 UI；保留 EI primary-static 与 Zircon 认证行为的对照边界。

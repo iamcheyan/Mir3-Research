@@ -11859,3 +11859,29 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔对照边界〕** 本轮只建立 LoginServer 源码事实；没有拿 EI primary-static 推导服务端认证/计费行为，也没完成 Zircon 账号认证链对照。DataBaseServer 网络实现、DB 侧线格式副本、`_Oranze Library/` 依赖仍待读。当前 ledger：393 文件/315324 行，covered 62/54513，partial 18/93108，excluded 43/60230，pending 270/107473。源码静读不等于游戏/服务运行验证。
 
 **〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 常量、EDCODE 自测、3 个 opcode 缺失验证、台账统计、28 个 Python 文件语法）；`git diff --check` 对本轮三份指定文件通过。未运行 LoginServer（Win32 服务及 ODBC/外部资源条件未建立），行为结论严格限于源码。
+
+## Round 836 — 2026-09-27：`_Oranze Library` 66 个文件全读并闭合 LoginServer 台账
+
+**〔范围〕** 使用 `Tools/source-read/read_src.py` 全读、全范围如下 66 个文件；每个文件的精确完整行范围已记录在 `coverage-ledger.tsv` 302–367 行：
+
+| 子域 | 文件 |
+|---|---|
+| 项目 | `_Oranze Library.sln`、`_Oranze Library.vcproj` |
+| 网络/线程 | `netbase.cpp/.h`、`netiocp.cpp/.h`、`nettcp.cpp/.h`、`netudp.cpp/.h`、`syncobj.cpp/.h` |
+| SQL 与 CodeBase | `database.cpp/.h`、`codebase.cpp/.h` |
+| 容器/算法 | `astar.h`、`bstree.h`、`fsa.h`、`indexmap.h`、`list.h`、`map.h`、`pqueue.h`、`queue.h`、`slist.h`、`squeue.h`、`stack.h`、`streambf.h`、`vector.h`、`prime.cpp/.h` |
+| 邮件/HTTP/编码 | `base64.cpp/.h`、`http.cpp/.h`、`imsgfmt.cpp/.h`、`mail.cpp/.h`、`mime.cpp/.h`、`pop3.cpp/.h`、`quotedpr.cpp/.h`、`uucp.cpp/.h`、`url.cpp/.h` |
+| 文件/字符串/系统小工具 | `datatype.h`、`datelog.cpp/.h`、`error.cpp/.h`、`file.cpp/.h`、`registry.cpp/.h`、`script.cpp/.h`、`stringex.cpp/.h`、`util.cpp/.h` |
+| 图像 | `vtimage.cpp/.h` |
+
+**〔IOCP 与网络〕** `_Oranze Library.vcproj` 是 VS 7.10 Win32 静态库。`CIocpHandler` 建 IOCP worker pool、可选 dispatcher、独立 Winsock event accept/connect 线程；对象以 ref count 阻止 pending I/O 尚未完成时销毁。IOCP receive buffer 为 32KiB，拆包边界交由派生类。库另有 select-loop TCP 原始流与 UDP sequence/ACK/window/RTO API；它们不能代替 LoginServer 应用实际使用的 IOCP handler。
+
+**〔ODBC 与 CodeBase 边界〕** ODBC `CDatabase` 设置 ODBC3 环境，`CConnection` 暴露 auto-commit transaction 控制，`CRecordset` 按 `SQL_C_CHAR` 将每列绑定到缓冲后按名/索引取值。`EndTran` 在 `SQLEndTran` 失败时只写诊断，再返回 auto-commit 恢复的结果。独立的 `CCodeBase` 继承 Sequiter `Data4`，提供 DBF 字段/索引/记录 Insert/Delete/Pack/Compress；不与 ODBC `CDatabase` 混为一类，本轮没有调用任何数据库 API。
+
+**〔数据结构缺陷〕** `CMap::InitHashTable(IHT_UNTOUCH)` 把 real size 设为 `nFlags`（1），而不是需求 bucket 数；`CFixedSizeAllocator::Init` 没有把 `nCapacity` 写入 `m_nCapacity`，随后 free-list 构造范围为 `[0,0)`。这是静态代码路径直接可见的两处分配/容量错误，未做 Win32 执行验证。另 `bstr::alloc` 使用 `new[]`，`expand` 用 `realloc` 操作同一指针；`bstr +=` 会触发该组合，属于分配器不匹配。
+
+**〔应用类与外围工具〕** MIME/HTTP/POP3 是完整独立工具面；MIME decoder 对输入使用 `strstr/strlen`，所以要求可读且 NUL 终止缓冲。UDP `DeleteHost` 在判空前解引用 `pHost`；UDP ACK 从 send 队列移除后有路径未 delete packet。`CVtImage` 包装 Victor 图像库、支持 BIF/BMP/GIF/JPG/PCX/PNG/TGA；`RealizePalette` 方法体调用同名成员形成自递归，选区 `Rotate` 的底层失败分支仍返回 true。这些是源码级异常点，不是本轮执行或安全测试。
+
+**〔覆盖与边界〕** Round 835 + Round 836 将 LoginServer/Common、LoginServer/LoginServer、LoginServer/_Oranze Library 的 ledger 所有 93 行全部置为 `covered`（本轮处理 90 条 pending，另保留此前 3 条 covered 的历史轮次）。`_Oranze Library` 的 66 条、合计 12,816 行由本轮逐文件全读。没有用此覆盖 DataBaseServer 同名实现，也没有把库文件清单等同于登录认证调用图；DataBaseServer 仍在待读。未运行 Win32 工程，未启动服务/连接数据库/写 System.db、Users.db 或 CodeBase 文件。当前 ledger：393 文件/315324 行，covered 128/67329，partial 18/93108，excluded 43/60230，pending 204/94657。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个 opcode 缺失验证、台账统计、28 个 Python 文件语法）；本轮三个指定文件 `git diff --check` 通过。Win32/网络/数据库行为未运行。

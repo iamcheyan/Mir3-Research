@@ -299,72 +299,72 @@ C-common	Source/Common/ZLibEx.pas	726	21853	pending
 C-common	Source/Common/ZLibx.pas	733	21557	pending	
 C-common	Source/Common/bass.pas	1021	52162	pending	
 C-common	Source/Common/mudutil.pas	1009	26358	pending	
-E-login	Source/LoginServer/_Oranze Library/_Oranze Library.sln	21	919	pending	
-E-login	Source/LoginServer/_Oranze Library/_Oranze Library.vcproj	651	15488	pending	
-E-login	Source/LoginServer/_Oranze Library/astar.h	426	8521	pending	
-E-login	Source/LoginServer/_Oranze Library/base64.cpp	131	2624	pending	
-E-login	Source/LoginServer/_Oranze Library/base64.h	35	647	pending	
-E-login	Source/LoginServer/_Oranze Library/bstree.h	478	9355	pending	
-E-login	Source/LoginServer/_Oranze Library/codebase.cpp	302	4471	pending	
-E-login	Source/LoginServer/_Oranze Library/codebase.h	121	2211	pending	
-E-login	Source/LoginServer/_Oranze Library/database.cpp	508	9146	pending	
-E-login	Source/LoginServer/_Oranze Library/database.h	143	2411	pending	
-E-login	Source/LoginServer/_Oranze Library/datatype.h	13	191	pending	
-E-login	Source/LoginServer/_Oranze Library/datelog.cpp	91	1615	pending	
-E-login	Source/LoginServer/_Oranze Library/datelog.h	37	510	pending	
-E-login	Source/LoginServer/_Oranze Library/error.cpp	35	449	pending	
-E-login	Source/LoginServer/_Oranze Library/error.h	32	347	pending	
-E-login	Source/LoginServer/_Oranze Library/file.cpp	92	1160	pending	
-E-login	Source/LoginServer/_Oranze Library/file.h	35	596	pending	
-E-login	Source/LoginServer/_Oranze Library/fsa.h	141	2269	pending	
-E-login	Source/LoginServer/_Oranze Library/http.cpp	960	20626	pending	
-E-login	Source/LoginServer/_Oranze Library/http.h	182	4353	pending	
-E-login	Source/LoginServer/_Oranze Library/imsgfmt.cpp	82	1768	pending	
-E-login	Source/LoginServer/_Oranze Library/imsgfmt.h	24	403	pending	
-E-login	Source/LoginServer/_Oranze Library/indexmap.h	107	1920	pending	
-E-login	Source/LoginServer/_Oranze Library/list.h	423	6980	pending	
-E-login	Source/LoginServer/_Oranze Library/mail.cpp	172	2783	pending	
-E-login	Source/LoginServer/_Oranze Library/mail.h	77	1351	pending	
-E-login	Source/LoginServer/_Oranze Library/map.h	236	4512	pending	
-E-login	Source/LoginServer/_Oranze Library/mime.cpp	626	12444	pending	
-E-login	Source/LoginServer/_Oranze Library/mime.h	131	2543	pending	
-E-login	Source/LoginServer/_Oranze Library/netbase.cpp	180	3661	pending	
-E-login	Source/LoginServer/_Oranze Library/netbase.h	64	1311	pending	
-E-login	Source/LoginServer/_Oranze Library/netiocp.cpp	1045	22074	pending	
-E-login	Source/LoginServer/_Oranze Library/netiocp.h	208	4942	pending	
-E-login	Source/LoginServer/_Oranze Library/nettcp.cpp	331	6567	pending	
-E-login	Source/LoginServer/_Oranze Library/nettcp.h	101	2307	pending	
-E-login	Source/LoginServer/_Oranze Library/netudp.cpp	629	13868	pending	
-E-login	Source/LoginServer/_Oranze Library/netudp.h	190	4597	pending	
-E-login	Source/LoginServer/_Oranze Library/pop3.cpp	309	6571	pending	
-E-login	Source/LoginServer/_Oranze Library/pop3.h	81	1501	pending	
-E-login	Source/LoginServer/_Oranze Library/pqueue.h	210	3954	pending	
-E-login	Source/LoginServer/_Oranze Library/prime.cpp	37	483	pending	
-E-login	Source/LoginServer/_Oranze Library/prime.h	25	327	pending	
-E-login	Source/LoginServer/_Oranze Library/queue.h	50	689	pending	
-E-login	Source/LoginServer/_Oranze Library/quotedpr.cpp	150	2889	pending	
-E-login	Source/LoginServer/_Oranze Library/quotedpr.h	29	557	pending	
-E-login	Source/LoginServer/_Oranze Library/registry.cpp	92	1731	pending	
-E-login	Source/LoginServer/_Oranze Library/registry.h	44	635	pending	
-E-login	Source/LoginServer/_Oranze Library/script.cpp	144	2576	pending	
-E-login	Source/LoginServer/_Oranze Library/script.h	64	1095	pending	
-E-login	Source/LoginServer/_Oranze Library/slist.h	23	263	pending	
-E-login	Source/LoginServer/_Oranze Library/squeue.h	23	269	pending	
-E-login	Source/LoginServer/_Oranze Library/stack.h	50	663	pending	
-E-login	Source/LoginServer/_Oranze Library/streambf.h	114	1918	pending	
-E-login	Source/LoginServer/_Oranze Library/stringex.cpp	405	5916	pending	
-E-login	Source/LoginServer/_Oranze Library/stringex.h	71	1503	pending	
-E-login	Source/LoginServer/_Oranze Library/syncobj.cpp	56	773	pending	
-E-login	Source/LoginServer/_Oranze Library/syncobj.h	42	591	pending	
-E-login	Source/LoginServer/_Oranze Library/url.cpp	184	3621	pending	
-E-login	Source/LoginServer/_Oranze Library/url.h	44	703	pending	
-E-login	Source/LoginServer/_Oranze Library/util.cpp	63	988	pending	
-E-login	Source/LoginServer/_Oranze Library/util.h	43	719	pending	
-E-login	Source/LoginServer/_Oranze Library/uucp.cpp	108	1940	pending	
-E-login	Source/LoginServer/_Oranze Library/uucp.h	27	450	pending	
-E-login	Source/LoginServer/_Oranze Library/vector.h	157	2703	pending	
-E-login	Source/LoginServer/_Oranze Library/vtimage.cpp	963	21754	pending	
-E-login	Source/LoginServer/_Oranze Library/vtimage.h	148	3325	pending	
+E-login	Source/LoginServer/_Oranze Library/_Oranze Library.sln	21	919	covered	Round 836 full 1–21: VS solution maps Debug/Release to Win32
+E-login	Source/LoginServer/_Oranze Library/_Oranze Library.vcproj	651	15488	covered	Round 836 full 1–651: VS 7.10 static-library settings, source/header inventory, Win32 Debug/Release
+E-login	Source/LoginServer/_Oranze Library/astar.h	426	8521	covered	Round 836 full 1–426: A* open/closed/successor ownership and path reconstruction
+E-login	Source/LoginServer/_Oranze Library/base64.cpp	131	2624	covered	Round 836 full 1–131: Base64 encode/decode, whitespace/padding handling
+E-login	Source/LoginServer/_Oranze Library/base64.h	35	647	covered	Round 836 full 1–35: allocation-owning Base64 API
+E-login	Source/LoginServer/_Oranze Library/bstree.h	478	9355	covered	Round 836 full 1–478: pointer BST insert/remove/traversal/search
+E-login	Source/LoginServer/_Oranze Library/codebase.cpp	302	4471	covered	Round 836 full 1–302: Sequiter CodeBase lifecycle, record/index, field wrappers and mutators
+E-login	Source/LoginServer/_Oranze Library/codebase.h	121	2211	covered	Round 836 full 1–121: CodeBase field/index types and API
+E-login	Source/LoginServer/_Oranze Library/database.cpp	508	9146	covered	Round 836 full 1–508: ODBC3 environment, connection transactions, statement/column binding and fetch
+E-login	Source/LoginServer/_Oranze Library/database.h	143	2411	covered	Round 836 full 1–143: ODBC database/connection/recordset contracts
+E-login	Source/LoginServer/_Oranze Library/datatype.h	13	191	covered	Round 836 full 1–13: byte/ushort/uint/ulong aliases
+E-login	Source/LoginServer/_Oranze Library/datelog.cpp	91	1615	covered	Round 836 full 1–91: date rollover, timestamped daily append log
+E-login	Source/LoginServer/_Oranze Library/datelog.h	37	510	covered	Round 836 full 1–37: CDateLog interface/state
+E-login	Source/LoginServer/_Oranze Library/error.cpp	35	449	covered	Round 836 full 1–35: CError message and OutputDebugString formatter
+E-login	Source/LoginServer/_Oranze Library/error.h	32	347	covered	Round 836 full 1–32: exception/error API
+E-login	Source/LoginServer/_Oranze Library/file.cpp	92	1160	covered	Round 836 full 1–92: stdio file wrapper, read/write/length/existence helpers
+E-login	Source/LoginServer/_Oranze Library/file.h	35	596	covered	Round 836 full 1–35: CFile API
+E-login	Source/LoginServer/_Oranze Library/fsa.h	141	2269	covered	Round 836 full 1–141: fixed-block free list allocator; Init/free-list bounds reviewed
+E-login	Source/LoginServer/_Oranze Library/http.cpp	960	20626	covered	Round 836 full 1–960: GET/POST/multipart, cookies, redirect, receive/file paths
+E-login	Source/LoginServer/_Oranze Library/http.h	182	4353	covered	Round 836 full 1–182: HTTP status/callback/request API
+E-login	Source/LoginServer/_Oranze Library/imsgfmt.cpp	82	1768	covered	Round 836 full 1–82: case-insensitive header/name parsing and folded continuation values
+E-login	Source/LoginServer/_Oranze Library/imsgfmt.h	24	403	covered	Round 836 full 1–24: internet-message query API
+E-login	Source/LoginServer/_Oranze Library/indexmap.h	107	1920	covered	Round 836 full 1–107: hash-map plus insertion-order traversal list
+E-login	Source/LoginServer/_Oranze Library/list.h	423	6980	covered	Round 836 full 1–423: doubly linked pointer list, compare/remove/swap ownership
+E-login	Source/LoginServer/_Oranze Library/mail.cpp	172	2783	covered	Round 836 full 1–172: MIME header/body/attachment extraction
+E-login	Source/LoginServer/_Oranze Library/mail.h	77	1351	covered	Round 836 full 1–77: parsed mail and attachment cursor API
+E-login	Source/LoginServer/_Oranze Library/map.h	236	4512	covered	Round 836 full 1–236: string-sum hash buckets backed by BST
+E-login	Source/LoginServer/_Oranze Library/mime.cpp	626	12444	covered	Round 836 full 1–626: MIME encode/decode, multipart recursion and transfer decoding
+E-login	Source/LoginServer/_Oranze Library/mime.h	131	2543	covered	Round 836 full 1–131: MIME item/encoder/decoder contracts
+E-login	Source/LoginServer/_Oranze Library/netbase.cpp	180	3661	covered	Round 836 full 1–180: Winsock base and address parsing/comparison
+E-login	Source/LoginServer/_Oranze Library/netbase.h	64	1311	covered	Round 836 full 1–64: CNetBase/CSockAddr API, Winsock 2.2
+E-login	Source/LoginServer/_Oranze Library/netiocp.cpp	1045	22074	covered	Round 836 full 1–1045: overlapped send/receive, worker/accept/connect/dispatcher lifecycle
+E-login	Source/LoginServer/_Oranze Library/netiocp.h	208	4942	covered	Round 836 full 1–208: IOCP object/operation contracts and 32KiB cap
+E-login	Source/LoginServer/_Oranze Library/nettcp.cpp	331	6567	covered	Round 836 full 1–331: nonblocking TCP select thread, queued send and stream receive
+E-login	Source/LoginServer/_Oranze Library/nettcp.h	101	2307	covered	Round 836 full 1–101: TCP status and packet API
+E-login	Source/LoginServer/_Oranze Library/netudp.cpp	629	13868	covered	Round 836 full 1–629: indexed UDP queues, ACK/retry, polling and IO thread
+E-login	Source/LoginServer/_Oranze Library/netudp.h	190	4597	covered	Round 836 full 1–190: UDP packet/host/handler contract and retransmission constants
+E-login	Source/LoginServer/_Oranze Library/pop3.cpp	309	6571	covered	Round 836 full 1–309: POP3 connect/auth, UIDL/list/retrieve/delete/quit
+E-login	Source/LoginServer/_Oranze Library/pop3.h	81	1501	covered	Round 836 full 1–81: POP3 command/status/list API
+E-login	Source/LoginServer/_Oranze Library/pqueue.h	210	3954	covered	Round 836 full 1–210: binary-heap priority queue and indexed dequeue
+E-login	Source/LoginServer/_Oranze Library/prime.cpp	37	483	covered	Round 836 full 1–37: integer primality and round-up/down helpers
+E-login	Source/LoginServer/_Oranze Library/prime.h	25	327	covered	Round 836 full 1–25: prime helper API
+E-login	Source/LoginServer/_Oranze Library/queue.h	50	689	covered	Round 836 full 1–50: CList-backed FIFO queue
+E-login	Source/LoginServer/_Oranze Library/quotedpr.cpp	150	2889	covered	Round 836 full 1–150: quoted-printable encoding/decoding
+E-login	Source/LoginServer/_Oranze Library/quotedpr.h	29	557	covered	Round 836 full 1–29: quoted-printable API
+E-login	Source/LoginServer/_Oranze Library/registry.cpp	92	1731	covered	Round 836 full 1–92: HKLM registry create/query/write helpers
+E-login	Source/LoginServer/_Oranze Library/registry.h	44	635	covered	Round 836 full 1–44: registry wrapper API
+E-login	Source/LoginServer/_Oranze Library/script.cpp	144	2576	covered	Round 836 full 1–144: key/value script parser for bound int/string/array entries
+E-login	Source/LoginServer/_Oranze Library/script.h	64	1095	covered	Round 836 full 1–64: script node/array storage and parse limits
+E-login	Source/LoginServer/_Oranze Library/slist.h	23	263	covered	Round 836 full 1–23: critical-section-locked CList subtype
+E-login	Source/LoginServer/_Oranze Library/squeue.h	23	269	covered	Round 836 full 1–23: critical-section-locked CQueue subtype
+E-login	Source/LoginServer/_Oranze Library/stack.h	50	663	covered	Round 836 full 1–50: CList-backed LIFO stack
+E-login	Source/LoginServer/_Oranze Library/streambf.h	114	1918	covered	Round 836 full 1–114: realloc-backed stream append/remove buffer
+E-login	Source/LoginServer/_Oranze Library/stringex.cpp	405	5916	covered	Round 836 full 1–405: bstr storage/operators and string/trim/split helpers
+E-login	Source/LoginServer/_Oranze Library/stringex.h	71	1503	covered	Round 836 full 1–71: bstr/string-helper contracts
+E-login	Source/LoginServer/_Oranze Library/syncobj.cpp	56	773	covered	Round 836 full 1–56: critical-section and named-mutex operations
+E-login	Source/LoginServer/_Oranze Library/syncobj.h	42	591	covered	Round 836 full 1–42: CIntLock/CInpLock aliases
+E-login	Source/LoginServer/_Oranze Library/url.cpp	184	3621	covered	Round 836 full 1–184: URL split/encode/decode/query extraction
+E-login	Source/LoginServer/_Oranze Library/url.h	44	703	covered	Round 836 full 1–44: URL item and codec API
+E-login	Source/LoginServer/_Oranze Library/util.cpp	63	988	covered	Round 836 full 1–63: hex conversion functions
+E-login	Source/LoginServer/_Oranze Library/util.h	43	719	covered	Round 836 full 1–43: arithmetic/hex utility macros/templates
+E-login	Source/LoginServer/_Oranze Library/uucp.cpp	108	1940	covered	Round 836 full 1–108: UUencoded file detection and decode
+E-login	Source/LoginServer/_Oranze Library/uucp.h	27	450	covered	Round 836 full 1–27: decoder API only; encoder intentionally absent
+E-login	Source/LoginServer/_Oranze Library/vector.h	157	2703	covered	Round 836 full 1–157: HeapAlloc/HeapReAlloc pointer vector and clear
+E-login	Source/LoginServer/_Oranze Library/vtimage.cpp	963	21754	covered	Round 836 full 1–963: Victor image wrapper load/save/edit/palette/error paths
+E-login	Source/LoginServer/_Oranze Library/vtimage.h	148	3325	covered	Round 836 full 1–148: image API and wrapper state
 E-login	Source/LoginServer/Common/endecode.cpp	382	11764	covered	Round 835 full 1–382: active 6bit/key/position XOR path, global key switching, in-place source mutation, legacy routines inactive; DataBaseServer duplicate and Delphi behavioral comparison remain separate
 E-login	Source/LoginServer/Common/endecode.h	87	2085	covered	Round 835 full 1–87: wire structs, 22-char encoded block, key APIs, encode/decode contracts
 E-login	Source/LoginServer/Common/mir2packet.cpp	110	2056	covered	Round 835 full 1–110: heap packet growth, text/numeric/encoded attach; encoded attach delegates mutating encoder
