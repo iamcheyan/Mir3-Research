@@ -12323,3 +12323,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔primary/source 边界〕** 只记录 Preview MapEdit 的 dialog、DFM reader view 与静态调用关系；未运行 Delphi build/UI、undo 或 map-data runtime，也未比较 EI 行为。
 
 **〔覆盖与验证〕** ledger 第 10 行将 `MapSize.pas` 的 52 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 278/131189，partial 17/90886，excluded 43/60230，pending 55/33019。staged 仅有四个授权文档路径，`git diff --cached --check` 无输出；本地新增行的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均为 0 hits，完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
+
+## Round 870 — 2026-09-28：MapEdit CellMove object tool
+
+**〔范围与入口〕** source-reader 全读 `Source/Tools/MapEdit/MoveObj.pas`（1–96，CP949），搜索 exact-name callers，并读取 32 行 mixed `MoveObj.dfm`。`MapEdit.dpr` include/auto-create 此窗体；`EdMain.dfm` 的 CellMove item 绑定 `CellMove1Click`，后者调用 `FrmMoveObj.Execute`。Execute 清空 `Edit1`/`Edit3`/`Edit4` 后用 `Show` 打开 modeless form。DFM 可见 Button1/2 的 click bindings；`dfm_parse.py tree` 在 EOF 抛 `IndexError`，完整几何/captions 未恢复。
+
+**〔Button1 位移与输入边界〕** `Edit1` 解析 object id（失败为 -1），`Edit3` 解析 `y`（失败为 0）；guard 只要求 `obj >= 0` 且 `y < 10`，没有 `y >= 0`。循环扫描 `i=0..MAXX-10`、`k=MAXY-10..0`，按 `(FrImg and $7FFF) = obj+1` 匹配；source cell 直接保留 `$8000` 并清 low bits，随后读取目标 `MapData[i,k+y].FrImg` 的 `$8000` 并用 `SetMapDataEx` 写入。负 y 在 setter bounds guard 之前直接读 `k+y`；对于抵达 `MAXY-1` 的目标，`SetMapDataEx` 因要求 `y < MAXY-1` 而拒写，此时源格已直接清除。
+
+**〔Button2 清除与 undo〕** `Edit4` 解析 id（失败为 -1），对非负 id 遍历全 grid，匹配后直接清除 `FrImg` low bits、保留 `$8000`。两个 handler 虽包在 `CopyTempBegin/End` 中，source 清除与 Button2 全部操作都不是 `SetMapData`/`SetMapDataEx` 记录；Button1 只记录通过 setter 的目标 field。`CopyTempEnd` 仅在 temporary undo record 有记录项时保存，否则释放；因此这两条操作的 undo 记录不完整，Button2 的 temporary record 为空。两 handler 均无 `Edited` 赋值、`MapPaint.Refresh` 或关闭窗体调用。
+
+**〔primary/source 边界〕** 仅为 Preview 源码与 mixed DFM reader view 的静态观察；未做 Delphi build、移动/清除、重绘、undo runtime 或 EI 对比。
+
+**〔覆盖与验证〕** ledger 第 11 行登记 `MoveObj.pas` 96 行为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 279/131285，partial 17/90886，excluded 43/60230，pending 54/32923。staged 仅四个授权文档路径，`git diff --cached --check` 无输出；新增行 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均 0 hits；完整 staged diff 已复核。临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。

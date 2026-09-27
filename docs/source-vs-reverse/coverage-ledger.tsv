@@ -8,7 +8,7 @@ E-tools	Source/Tools/MapEdit/HUtil32.pas	2682	63476	covered	Round 866 full read 
 E-tools	Source/Tools/MapEdit/ImgMan.pas	557	15852	covered	Round 867 full read (CP949; source-reader reports 557 lines vs stale 550-line entry); no external import/caller found; screen/login/buffer/monster managers, declaration mismatches, malformed GetImage and lazy-cache offset/init/cleanup issues; no Delphi/runtime/EI comparison
 E-tools	Source/Tools/MapEdit/MapEdit.dpr	43	1489	covered	Round 868 full read (CP949); lists 17 project units plus Forms; HUtil32/DES explicitly resolve under Common and WIL under Wil; creates TFrmMain then 13 further forms before Application.Run; ImgMan omitted; no Delphi/runtime/EI comparison
 E-tools	Source/Tools/MapEdit/MapSize.pas	52	954	covered	Round 869 full read (CP949); mrOk-only dimensions default 20/fallback 1; New clears MArr/undo via NewMap, Resize updates dimensions/canvas without data snapshot or Edited; DFM bounds unavailable; no Delphi/runtime/EI comparison
-E-tools	Source/Tools/MapEdit/MoveObj.pas	96	2045	pending	
+E-tools	Source/Tools/MapEdit/MoveObj.pas	96	2045	covered	Round 870 full read (CP949); modeless CellMove tool, offset guard admits negative y; source clears bypass undo and final-row destination is rejected; clear-only button changes untracked; no Delphi/runtime/EI comparison
 E-tools	Source/Tools/MapEdit/ObjEdit.pas	1018	26715	pending	
 E-tools	Source/Tools/MapEdit/ObjSet.pas	484	12562	pending	
 E-tools	Source/Tools/MapEdit/SmTile.pas	155	4251	pending	
