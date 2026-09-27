@@ -133,7 +133,7 @@ SendSocket(EncodeMessage(msg)
 | `wmM3Def.pas` | M3Def reader selected by EdMain's failed-MyImage `.Lib` → sibling `.wil` fallback; decodes WIX-indexed image rows to bitmaps and has an ARGB texture-conversion override with no MapEdit caller found |
 | `wmM3Zip.pas` | MapEdit-unreferenced `TWMM3ZipImages` source; contains a sibling `.Idx` loader and compressed cached-texture path, but no WIL factory branch or caller was found; header/decompressed-length checks are missing and texture writes ignore pitch |
 | `wmMyImage.pas` | Selected `.Lib` reader; `WORKFILE` gates bitmap, texture-copy, and image/index edit APIs, but the project build define is unverified |
-| `wmUtil.pas` | Image-format helper unit |
+| `wmUtil.pas` | Not imported by DPR-selected `Wil/WIL.pas`; within MapEdit, only legacy, unselected `o_WIL.pas` imports it. Its table converters, palette helpers, and zlib wrappers have no verified caller in the selected MapEdit path |
 | `ObjEdit.pas` / `ObjSet.pas` / `FObj.pas` | 地图对象编辑 |
 | `DoorDlg.pas` | 门编辑（对应 `Envir.pas` 的 `PTDoorInfo`） |
 | `MapSize.pas` | 地图尺寸 |
