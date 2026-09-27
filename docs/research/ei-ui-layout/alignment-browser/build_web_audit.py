@@ -676,7 +676,8 @@ def audit_generic(records, kind, idx, extra_zh_attest: set[str], attest_pool: se
                   looks_site_count: dict | None = None, npc_coord: dict | None = None,
                   item_fp: dict | None = None, zircon_rows_by_index: dict | None = None,
                   item_rev: dict | None = None, wiki_ver: dict | None = None,
-                  wiki_section: str = ""):
+                  wiki_section: str = "", legacy_map_codes: set | None = None,
+                  legacy_map_names: set | None = None):
     """物品 / 技能 / NPC / 地图 / 刷新 / 任务的通用网络审计层。"""
     out = []
     for rec in records:
@@ -935,6 +936,17 @@ def audit_generic(records, kind, idx, extra_zh_attest: set[str], attest_pool: se
                 excluded.append({"candidate": "无 Zircon 对应",
                                  "reason": "网络数据集把该实体标为老版侧存在且不含 zircon",
                                  "evidence": "https://mir2ei.iamcheyan.com/data/wiki_data_v2.json"})
+            elif (kind == "map" and z.get("exists") and legacy_map_codes is not None):
+                _code = zfields.get("FileName")
+                _desc = zfields.get("Description")
+                if _code not in legacy_map_codes and _desc not in legacy_map_names:
+                    status = "zircon-only-after-web-audit"
+                    excluded.append({
+                        "candidate": "无老版地图对应",
+                        "reason": "地图码不在老版全集（MUD3 Mapinfo.txt + MonGen + 百科地图表，共 %d 个码）内，且中文描述也不在老版地图名内" % len(legacy_map_codes),
+                        "evidence": "https://mir2ei.iamcheyan.com/data/wiki_data_v2.json + /data/NAS/TMP/Mud3/Envir/Mapinfo.txt",
+                    })
+                    alias_chain.append(f"地图码 {_code} 不在老版地图全集内")
         why_m = why_z = ""
         if status.startswith("both-resolved"):
             why_m = "已由外部别名链闭合，不能判为 mir2ei 独有。"
@@ -991,6 +1003,30 @@ def propagate_respawns(records, monster_records, map_records):
         ms, ps = mstat.get(mon_idx), mapstat.get(m_idx)
         if rec["conclusion"]["status"] in {"production-applied", "conflict"}:
             out.append(rec); continue
+        if ms == "zircon-only-after-web-audit":
+            rec["conclusion"]["status"] = "zircon-only-after-web-audit"
+            rec["direction"] = "zircon-only"
+            rec["web_audit"]["alias_chain"] = [
+                f"RespawnInfo[{left.get('Index')}]",
+                f"Monster[Index {mon_idx}] = zircon-only-after-web-audit（老版无该怪物）",
+                f"Map[Index {m_idx}] 状态={ps or 'unknown'}",
+            ]
+            rec["web_audit"]["external_sources"] = [src_ref("mir2ei-wiki-json",
+                note="怪物身份经网络审计判为 Zircon 侧独有后传播到刷新记录")]
+            rec["web_audit"]["confidence"] = "medium"
+            rec["web_audit"]["review_required"] = True
+            rec["web_audit"]["excluded_candidates"] = [{
+                "candidate": "老版刷怪记录",
+                "reason": "所绑定怪物在 mir2ei 百科中标记为 ver=[zircon]（老版无此怪物），"
+                          "老版 MonGen 不可能有对应刷新行",
+                "evidence": "https://mir2ei.iamcheyan.com/data/wiki_data_v2.json",
+            }]
+            rec["web_audit"]["why_not_zircon_only"] = ""
+            rec["web_audit"]["why_not_mir2ei_only"] = "刷新记录属 Zircon RespawnInfo，不是 mir2ei 独有。"
+            rec["conclusion"]["title"] = STATUS_TITLES["zircon-only-after-web-audit"]
+            rec["conclusion"]["next_action"] = NEXT_ACTION["zircon-only-after-web-audit"]
+            rec["conclusion"]["rationale"] = (
+                "刷新所绑定怪物经网络审计判为 Zircon 侧独有（老版 MUD3 MonGen 无该怪物），因此刷新记录同为检索后 Zircon 独有。")
         if ms and ms.startswith("both-resolved"):
             rec["conclusion"]["status"] = "both-resolved-by-web-alias"
             rec["direction"] = "both"
@@ -1136,6 +1172,13 @@ def main() -> None:
                                       "dist": _cands[0][0], "map": _code,
                                       "x": _cx, "y": _cy}
 
+    # 老版地图码全集：MUD3 Mapinfo.txt + MonGen + 百科地图表
+    LEGACY_MAP_CODES = set((wiki.get("mud3", {}).get("mapinfo") or {}).keys())
+    LEGACY_MAP_CODES |= set((wiki.get("mud3", {}).get("spawns") or {}).keys())
+    LEGACY_MAP_CODES |= {m.get("file") for m in wiki.get("maps", []) if m.get("file")}
+    LEGACY_MAP_NAMES = set((wiki.get("mud3", {}).get("mapinfo") or {}).values())
+    LEGACY_MAP_NAMES |= {m.get("name") for m in wiki.get("maps", []) if m.get("name")}
+
     mud3_names = {r["Name"] for r in mud3["monsters"] if r.get("Name")}
     mud3_items = {r["Name"] for r in mud3["items"] if r.get("Name")}
     mud3_magic = {r["Name"] for r in mud3["magic"] if r.get("Name")}
@@ -1226,7 +1269,8 @@ def main() -> None:
                                            direct_code_zh=mud3_mapinfo, zircon_names=ZSET["map"],
                                            zircon_rows=ZROWS["map"][0], zircon_kind="MapInfo",
                                            zname_field="Description", wiki_ver=WIKI_VER,
-                                           wiki_section="maps")
+                                           wiki_section="maps", legacy_map_codes=LEGACY_MAP_CODES,
+                                           legacy_map_names=LEGACY_MAP_NAMES)
         elif name == "npcs":
             payloads[name] = audit_generic(recs, "npc", idx, wiki_npc_zh | wiki_npc_names | merchant_zh, pool,
                                            zircon_names=ZSET["npc"], zircon_rows=ZROWS["npc"][0],

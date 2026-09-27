@@ -23,24 +23,24 @@
 | zircon-only | 4,133 | 2,350 | **1,067** |
 
 新分类下没有一条记录停留在旧的 `mir2ei-only` / `zircon-only` / `pending-evidence` 终态；
-未闭合项统一进入 **`pending-web-evidence`（2,907 条）**，并写清检索词、外部来源与排除理由。
+未闭合项统一进入 **`pending-web-evidence`（第二轮收敛到 414 条）**，并写清检索词、外部来源与排除理由。
 
 | 新状态 | 第一轮 | 第二轮 |
 |---|---:|---:|
 | `both-resolved-by-web-alias`（经网络别名链闭合） | 1,921 | **3,429** |
-| `pending-web-evidence`（有候选/缺口，未定终态） | 2,907 | **715** |
+| `pending-web-evidence`（有候选/缺口，未定终态） | 2,907 | **414** |
 | `both-resolved`（原已闭合，无需改名） | 326 | 259 |
 | `conflict` | 116 | 116 |
 | `partial` | 47 | 47 |
 | `production-applied` | 91 | 91 |
 | `mir2ei-only-after-web-audit` | 0 | **145** |
-| `zircon-only-after-web-audit` | 0 | **606** |
+| `zircon-only-after-web-audit` | 0 | **907** |
 | `source-unreachable` | 0 | **0** |
 
 **为什么现在有 `*-after-web-audit` 终态**：只有在拿到**外部来源**明确记录「该实体只存在于一侧」时才升级——
 本轮用的是 mir2ei 百科数据集的版本标签（`ver=[zircon]` / `ver` 不含 zircon），
 以及老版 MUD3 DAT 全量清单（433 怪物 / 1143 物品 / 105 技能）的完备性。
-没有外部依据的仍留在 `pending-web-evidence`（715 条），**不把「没搜到」写成「没有对应」**。
+没有外部依据的仍留在 `pending-web-evidence`（414 条），**不把「没搜到」写成「没有对应」**。
 `source-unreachable` 仍是 0：不可达的是**来源**（见 §6），不是记录级结论。
 
 ---
@@ -129,13 +129,18 @@ provenance 构成：`mir2ei-wiki-json` 2,009 · `local-candidate:db_names` 2,105
 | 17 | 百度百科 · 钉耙猫 | `https://baike.baidu.com/item/钉耙猫/5630928` | 语义直译证据（耙/rake） |
 | 18 | 知乎 · 光通 1.45 技能攻略 | `https://zhuanlan.zhihu.com/p/649403177` | 技能中文名佐证 |
 | 19 | 传奇三资料 archive | `https://mir3.iamcheyan.com/` | 网站侧出处（17173 镜像） |
+| 20 | 老版 RaceImg 交叉表（本地推导 + 像素复核） | `mir2ei.iamcheyan.com/data/wiki_data_v2.json` + `MonsterLookup.cs` + EI `Mon-*.wil` | 无名称图像身份通道 |
+| 21 | EI 3.0 客户端图库清单 | `https://mir3.iamcheyan.com/library.html` | 老版美术只存在于 Mon-1..16 |
+| 22 | 老版 MUD3 Merchant.txt 坐标表 | `mir2ei.iamcheyan.com/data/wiki_data_v2.json`（`mud3.merchants` 318 条） | NPC 坐标通道 |
+| 23 | 17173 传奇3 任务攻略（3G 江湖任务） | `https://mir3.17173.com/mission/rw3.htm` | 任务桥接尝试与失败证据 |
+| 24 | 新浪 NPC 功能列表（2003） | `https://games.sina.com.cn/z/mir3/2003-06-12/12217.shtml` | NPC 坐标通道独立佐证 |
 
 另：**每一条网站侧记录**都附带其真实可访问归档页 URL
 （`https://mir3.iamcheyan.com/mobs/mob-N.html` / `/items/item-N.html` / `/skills/skill-*.html`，实测 HTTP 200）。
 
 ### 3.1 已执行的检索词（13 条，逐条记录结果）
 
-见 `artifacts/web-entity-audit-2026-09-26/search_queries.json`。要点：
+见 `artifacts/web-entity-audit-2026-09-26/search_queries.json`（22 条）。要点：
 
 - `site:lomcn.net Mir3 Zircon monster list` → 命中 LOMCN Mir3 怪物库（本轮最有价值的英文名来源）。
 - `传奇3 钉耙猫 多钩猫 怪物 英文名 Raking Cat` → 确认两只猫是两个独立怪物，语义直译。
@@ -157,13 +162,13 @@ provenance 构成：`mir2ei-wiki-json` 2,009 · `local-candidate:db_names` 2,105
 
 | 分类 | 记录 | 检索前 mir2ei-only | 检索后 mir2ei-only | 检索前 Zircon-only | 检索后 Zircon-only | 检索后 both |
 |---|---:|---:|---:|---:|---:|---:|
-| 怪物 | 527 | 87 | **55** | 373 | **126** | **346** |
-| NPC | 294 | 0 | 0 | 106 | **59** | **235** |
-| 物品 | 1,402 | 324 | **158** | 1,031 | **432** | **812** |
-| 技能 | 176 | 2 | **1** | 115 | **93** | **82** |
-| 地图 | 472 | 0 | 0 | 450 | **173** | **299** |
-| 刷新 | 2,475 | 0 | 0 | 2,058 | **184** | **2,291** |
-| 任务 | 62 | 62 | 62 | 0 | 0 | 0 |
+| monster | 527 | 87 | 55 | 373 | 126 | 346 |
+| npc | 294 | 0 | 0 | 106 | 59 | 235 |
+| item | 1402 | 324 | 158 | 1031 | 432 | 812 |
+| skill | 176 | 2 | 1 | 115 | 93 | 82 |
+| map | 472 | 0 | 0 | 450 | 173 | 299 |
+| respawn | 2475 | 0 | 0 | 2058 | 184 | 2291 |
+| quest | 62 | 62 | 62 | 0 | 0 | 0 |
 
 每类均断言 `mir2ei-only + zircon-only + both = total`（`verify_web_audit.py` 第 2 组检查）。
 
@@ -171,13 +176,13 @@ provenance 构成：`mir2ei-wiki-json` 2,009 · `local-candidate:db_names` 2,105
 
 | 分类 | 网络别名闭合 | 双方闭合 | 待网络证据 | mir2ei 检索后独有 | Zircon 检索后独有 | 冲突 | 部分 | 已应用 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| 怪物 | 329 | 0 | 73 | 45 | 68 | 12 | 0 | 0 |
-| NPC | 103 | 19 | 59 | 0 | 0 | 9 | 31 | 73 |
-| 物品 | 811 | 0 | 60 | 99 | 432 | 0 | 0 | 0 |
-| 技能 | 82 | 0 | 0 | 1 | 93 | 0 | 0 | 0 |
-| 地图 | 160 | 0 | 277 | 0 | 13 | 6 | 16 | 0 |
-| 刷新 | 1,944 | 240 | 184 | 0 | 0 | 89 | 0 | 18 |
-| 任务 | 0 | 0 | 62 | 0 | 0 | 0 | 0 | 0 |
+| monster | 329 | 0 | 73 | 45 | 68 | 12 | 0 | 0 |
+| npc | 103 | 19 | 59 | 0 | 0 | 9 | 31 | 73 |
+| item | 811 | 0 | 60 | 99 | 432 | 0 | 0 | 0 |
+| skill | 82 | 0 | 0 | 1 | 93 | 0 | 0 | 0 |
+| map | 160 | 0 | 28 | 0 | 262 | 6 | 16 | 0 |
+| respawn | 1944 | 240 | 132 | 0 | 52 | 89 | 0 | 18 |
+| quest | 0 | 0 | 62 | 0 | 0 | 0 | 0 | 0 |
 
 ### 4.3 典型闭合样例
 
@@ -191,7 +196,7 @@ provenance 构成：`mir2ei-wiki-json` 2,009 · `local-candidate:db_names` 2,105
 - **刷新**：`RespawnInfo[4167] Chicken / 0 / Spawn Ring 1` —— 怪物身份闭合后传播为双方记录，
   坐标与刷新量仍按维度单独判定，不做推断写入。
 
-### 4.4 为什么仍有 715 条待网络证据
+### 4.4 为什么仍有 414 条待网络证据
 
 诚实原因（不是「Zircon 没有」）：
 
@@ -205,6 +210,9 @@ provenance 构成：`mir2ei-wiki-json` 2,009 · `local-candidate:db_names` 2,105
    （例：老版 `D1101` 为潘夜系 10 种，Zircon `D1101` 仅 2 种），因此刷新记录不做身份外推。
 4. **候选存在但证据不足**：如 `钉耙猫` 在 Zircon 客户端有 `RakingCat`（`Mon-28` shape 6）资源，
    但当前 `MonsterInfo` 无对应行 → 记 `excluded_candidates` + `pending-web-evidence`，不升级、也不判独有。
+5. **任务类（62 条）**：资料站 24 条 mission 是 17173 攻略文而非任务定义表；经 NPC 中文名→Zircon NPC→
+   `StartQuests` 桥接后仅 4 条产出候选且全部错配 → 全部保留 `pending-web-evidence`，
+   桥接失败过程写入 `excluded_candidates`（证据：`https://mir3.17173.com/mission/rw3.htm`）。
 
 ---
 
@@ -299,7 +307,7 @@ provenance 构成：`mir2ei-wiki-json` 2,009 · `local-candidate:db_names` 2,105
 | # | 条件 | 状态 |
 |---|---|---|
 | 1 | 网站/当前 Zircon 每类所有记录都有检索状态 | ✅ 5,408/5,408 |
-| 2 | 所有旧 mir2ei-only/zircon-only 都已重新审计 | ✅ 旧终态 0 残留；751 条升级为 `*-after-web-audit` 终态，其余有候选者保留待证据；来源级限制在 §6 披露 |
+| 2 | 所有旧 mir2ei-only/zircon-only 都已重新审计 | ✅ 旧终态 0 残留；1,052 条升级为 `*-after-web-audit` 终态，其余有候选者保留待证据；来源级限制在 §6 披露 |
 | 3 | 每条 resolved-by-web-alias 都有外部 URL + 本地证据 + alias chain | ✅ 3,429/3,429（校验项 8） |
 | 4 | 搜索结果与外部来源保存为机器可读 JSON/TSV | ✅ `external_sources.json` / `search_queries.json` / `audit_ledger.tsv` |
 | 5 | 独立统计校验无丢行、无重复、方向可加总 | ✅ 58 项 0 失败 |
