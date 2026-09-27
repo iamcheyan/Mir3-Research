@@ -12299,3 +12299,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔monster cache 与 source 边界〕** `TMonsterImage` 声明 300 个 race slot 和 `MAXMONMEMORY` 阈值；重复 `LoadMonster` 早退时返回预置 nil，新加载超限时至多 free 一个最旧列表；`FreeMonster` 无可见 race 范围检查，`Initialize` 为空，destructor 只调 inherited。上述均为源码文本控制流与可见声明/实现关系；未做 Delphi 编译、缓存运行/资源格式验证或 EI 等价比较。
 
 **〔覆盖与验证〕** ledger 第 8 行按 source-reader 的 557 行将 `ImgMan.pas` 登记为 covered（原行数 550 已纠正）。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 276/131094，partial 17/90886，excluded 43/60230，pending 57/33114。staged 仅有四个授权文档路径，`git diff --cached --check` 无输出；本地新增行的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均为 0 hits，完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
+
+## Round 868 — 2026-09-28：MapEdit DPR project graph and startup
+
+**〔范围〕** source-reader 全读 `Source/Tools/MapEdit/MapEdit.dpr`（1–43，CP949）；交叉以 source-reader exact-name 搜索核对 unit/form declarations 与 resources。
+
+**〔project graph〕** `uses` 包含 17 个项目 unit（EdMain、mpalett、FObj、ObjEdit、ObjSet、Tile、MapSize、segunit、SmTile、glight、DoorDlg、FScrlXY、MoveObj、about、HUtil32、DES、WIL）及 VCL `Forms`。`HUtil32`/`DES` 的显式路径在 `..\..\Common\`，`WIL` 指向 `Wil\WIL.pas`。`ImgMan` 未列入 DPR，且此前全 Source exact-name 搜索未找到外部 import/caller；不把该文件认定为此 project 的编译单元或 runtime manager。
+
+**〔启动顺序〕** `Application.Initialize` 后设 `Application.Title`，依次 `CreateForm`：`TFrmMain`、`TFrmMainPal`、`TFrmObj`、`TFrmObjEdit`、`TFrmObjSet`、`TFrmTile`、`TFrmMapSize`、`TFrmSegment`、`TFrmSmTile`、`TFrmGetLight`、`TFrmDoorDlg`、`TFrmScrollMap`、`TFrmMoveObj`、`TForm1`，再执行 `Application.Run`。文本搜索找到对应 form class 与可见 resource roots；这只是项目源码中的调用顺序，不证明运行可见性或 build 成功。DPR 有 `{$R *.RES}`，本轮未检查 RES 内容。
+
+**〔primary/source 边界〕** 仅记录 Preview 项目入口及其显式源路径；未运行 Delphi build/startup、检查 MapEdit binary 或比较 EI project/unit-resolution behavior。
+
+**〔覆盖与验证〕** ledger 第 9 行登记 `MapEdit.dpr` 43 行为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 277/131137，partial 17/90886，excluded 43/60230，pending 56/33071。staged 仅有四个授权文档路径，`git diff --cached --check` 无输出；本地新增行的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均为 0 hits，完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
