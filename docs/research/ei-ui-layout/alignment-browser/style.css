@@ -123,12 +123,12 @@ button { color: inherit; }
 .limit-list code { font: 10px var(--mono); }
 @media (max-width: 980px) { .audit-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 620px) { .audit-strip { grid-template-columns: 1fr; } }
-.coverage-table.audit-table > div { grid-template-columns: minmax(64px, 1fr) repeat(7, minmax(58px, .78fr)); }
-@media (max-width: 980px) { .coverage-table.audit-table > div { grid-template-columns: minmax(56px, 1fr) repeat(7, minmax(52px, .78fr)); font-size: 9px; } }
+.coverage-table.audit-table > div { grid-template-columns: minmax(58px, 1fr) repeat(9, minmax(52px, .72fr)); }
+@media (max-width: 980px) { .coverage-table.audit-table > div { grid-template-columns: minmax(50px, 1fr) repeat(9, minmax(46px, .72fr)); font-size: 9px; } }
 /* 移动端宽度收敛：审计新增区块不得撑破 390px 视口 */
 .overview-card, .overview-card.wide, .status-summary-large, .diff-zone, .record-row, .ledger, .workspace-panel { min-width: 0; }
 .audit-strip > span, .record-summary > span, .record-meta-grid span { min-width: 0; }
 .coverage-table { max-width: 100%; }
-@media (max-width: 620px) { .coverage-table.audit-table > div { grid-template-columns: minmax(48px, 1fr) repeat(7, minmax(44px, .7fr)); font-size: 8px; gap: 5px; } .audit-timeline > div { padding-left: 36px; } }
+@media (max-width: 620px) { .coverage-table.audit-table > div { grid-template-columns: minmax(44px, 1fr) repeat(9, minmax(40px, .7fr)); font-size: 8px; gap: 4px; } .audit-timeline > div { padding-left: 36px; } }
 html { overflow-x: hidden; }
 .topbar { width: 100%; max-width: 100%; }

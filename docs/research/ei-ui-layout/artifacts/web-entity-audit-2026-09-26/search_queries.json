@@ -89,6 +89,42 @@
     ]
   },
   {
+    "q": "传奇3 怪物 RaceImg 外观 图库 Mon-1.wil 对照 Zircon",
+    "outcome": "未找到公开的 RaceImg 交叉表；改为本地推导并用 EI 客户端 Mon-*.wil 与 Zircon Mon-*.Zl 的逐帧尺寸/像素复核验证（8/10 锚点尺寸序列一致）",
+    "sources": [
+      "https://www.lomcn.net/wiki/index.php/Monster_Database"
+    ]
+  },
+  {
+    "q": "传奇3 任务 名称 列表 万事通 王大人 英文 QuestInfo",
+    "outcome": "命中 17173 任务攻略页与新浪新手资料：确认资料站 mission 页是「任务攻略文/流程文」，不是任务定义表；王大人任务链在资料站与 Zircon QuestInfo 之间不存在逐条对应",
+    "sources": [
+      "https://mir3.17173.com/mission/rw3.htm",
+      "https://games.sina.com.cn/z/mir3/3/xsmj/21.shtml"
+    ]
+  },
+  {
+    "q": "Legend of Mir 3 quest list \"Curing the Poison\" \"Elephants on Parade\"",
+    "outcome": "无结果 —— Zircon QuestInfo 任务名在英文社区无公开对照表；记入排除依据，不据此判独有",
+    "sources": []
+  },
+  {
+    "q": "传奇3 NPC 商人 名称 列表 铁匠 药剂师 书店 中文",
+    "outcome": "命中新浪 NPC 功能列表与官方 NPC 坐标指引；取得老版 NPC 中文名+坐标，与 MUD3 Merchant.txt 坐标通道互证",
+    "sources": [
+      "https://games.sina.com.cn/z/mir3/2003-06-12/12217.shtml",
+      "http://mir3.youxi.com/211371965/211372894/211387048.html"
+    ]
+  },
+  {
+    "q": "传奇3 装备 名称 中英对照 屠龙 裁决 井中月 英文名",
+    "outcome": "命中 17173/知乎/百度装备出处大全：确认「潘夜井中月/祖玛裁决/屠龙」等前缀族命名法，与 Zircon 的 Banya/Zuma 前缀物品命名一致，用于物品族别名佐证",
+    "sources": [
+      "http://mir3.17173.com/content/2012-10-14/20121014224614954.shtml",
+      "https://zhuanlan.zhihu.com/p/501011924"
+    ]
+  },
+  {
     "q": "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
     "outcome": "命中官方地图清单（边境村落/银杏村落/比奇县/盟重县/潘夜岛/诺玛遗址/沙巴克），用于地图中文名佐证",
     "sources": [

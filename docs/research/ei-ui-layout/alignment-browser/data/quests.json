@@ -698,9 +698,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-chuji-战士",
           "detail": "初级任务（战士）"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -1389,9 +1400,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-chuji-法师",
           "detail": "初级任务（法师）"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -2062,9 +2084,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-chuji-道士",
           "detail": "初级任务（道士）"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -2318,9 +2351,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-zhongji-王大人",
           "detail": "王大人"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -2625,9 +2669,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-zhongji-比奇省",
           "detail": "比奇省"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -2903,9 +2958,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-zhongji-药剂师",
           "detail": "药剂师"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -3162,9 +3228,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-zhongji-轻型盔甲",
           "detail": "轻型盔甲"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -3739,9 +3816,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-zhongji-半兽人",
           "detail": "半兽人"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -4157,9 +4245,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-zhongji-被盗灵魂",
           "detail": "被盗灵魂"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -4440,9 +4539,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-zhongji-七点毒蛇",
           "detail": "七点毒蛇"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -4969,9 +5079,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-zhongji-堕落道士",
           "detail": "堕落道士"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -5387,9 +5508,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-zhongji-沃玛教主",
           "detail": "沃玛教主"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "medium",
@@ -5633,9 +5765,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-skill-战士",
           "detail": "战士技能学习任务"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -5964,9 +6107,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-skill-道士",
           "detail": "道士技能学习任务"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -6250,9 +6404,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-skill-法师",
           "detail": "法师技能学习任务"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -6923,9 +7088,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-wanshitong-比奇",
           "detail": "万事通随机任务（比奇）"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -7431,9 +7607,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-wanshitong-银杏",
           "detail": "万事通随机任务（银杏）"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -7723,9 +7910,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-wanshitong-边境",
           "detail": "万事通随机任务（边境）"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -8231,9 +8429,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-wanshitong-道馆",
           "detail": "万事通随机任务（道馆）"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -8637,9 +8846,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-wanshitong-毒蛇",
           "detail": "万事通随机任务（毒蛇）"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -9037,9 +9257,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-wanshitong-盟重",
           "detail": "万事通随机任务（盟重）"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -9524,9 +9755,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-wanshitong-绿洲",
           "detail": "万事通随机任务（绿洲）"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -9918,9 +10160,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-wanshitong-沙漠土城",
           "detail": "万事通随机任务（沙漠土城）"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",
@@ -10654,9 +10907,20 @@
           "kind": "mir2ei-side",
           "ref": "mission-wanshitong-出材料地点",
           "detail": "万事通随机任务（出材料地点）"
+        },
+        {
+          "kind": "quest-bridge-attempt",
+          "ref": "mission-cross-reference.json",
+          "detail": "NPC 桥接失败：攻略文与任务定义表不同构"
         }
       ],
-      "excluded_candidates": [],
+      "excluded_candidates": [
+        {
+          "candidate": "Zircon QuestInfo 38 条任务",
+          "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+          "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC"
+        }
+      ],
       "why_not_mir2ei_only": "资料站条目存在但尚无外部来源确认的 Zircon 别名；不得直接判为 mir2ei 独有。",
       "why_not_zircon_only": "Zircon 实体存在但资料站子集未收录；不构成 Zircon 独有。",
       "confidence": "low",

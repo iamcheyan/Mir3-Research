@@ -46,13 +46,13 @@
       "maps": 3
     },
     "status": {
-      "both-resolved": 323,
-      "both-resolved-by-web-alias": 1924,
+      "both-resolved": 259,
+      "both-resolved-by-web-alias": 3429,
       "partial": 47,
       "conflict": 116,
-      "pending-web-evidence": 2907,
-      "mir2ei-only-after-web-audit": 0,
-      "zircon-only-after-web-audit": 0,
+      "pending-web-evidence": 715,
+      "mir2ei-only-after-web-audit": 145,
+      "zircon-only-after-web-audit": 606,
       "source-unreachable": 0,
       "retain-current": 0,
       "production-applied": 91
@@ -129,29 +129,31 @@
       "quests": 62
     },
     "audit_status": {
-      "both-resolved-by-web-alias": 1924,
-      "pending-web-evidence": 2907,
+      "both-resolved-by-web-alias": 3429,
       "conflict": 116,
-      "both-resolved": 323,
+      "mir2ei-only-after-web-audit": 145,
+      "pending-web-evidence": 715,
+      "zircon-only-after-web-audit": 606,
       "partial": 47,
-      "production-applied": 91
+      "production-applied": 91,
+      "both-resolved": 259
     },
     "audit_direction": {
-      "both": 2737,
-      "mir2ei-only": 321,
-      "zircon-only": 2350
+      "both": 4065,
+      "mir2ei-only": 276,
+      "zircon-only": 1067
     },
     "audit_web_search_status": {
-      "family-rule-search": 3324,
-      "family-search-no-result": 2084
+      "family-rule-search": 4324,
+      "family-search-no-result": 1084
     },
     "audit_coverage": {
       "monster": {
         "total": 527,
         "direction": {
-          "both": 144,
-          "mir2ei-only": 84,
-          "zircon-only": 299
+          "both": 346,
+          "mir2ei-only": 55,
+          "zircon-only": 126
         },
         "direction_before_audit": {
           "both": 67,
@@ -159,26 +161,28 @@
           "zircon-only": 373
         },
         "status": {
-          "both-resolved-by-web-alias": 124,
-          "pending-web-evidence": 388,
+          "both-resolved-by-web-alias": 329,
           "conflict": 12,
-          "both-resolved": 3
+          "mir2ei-only-after-web-audit": 45,
+          "pending-web-evidence": 73,
+          "zircon-only-after-web-audit": 68
         },
         "previous_status": {
-          "both-resolved-by-web-alias": 121,
-          "pending-web-evidence": 388,
+          "both-resolved-by-web-alias": 329,
           "conflict": 12,
-          "both-resolved": 6
+          "mir2ei-only-after-web-audit": 45,
+          "pending-web-evidence": 73,
+          "zircon-only-after-web-audit": 68
         },
-        "review_required": 400,
-        "web_alias_closed": 124,
-        "with_external_source": 473
+        "review_required": 198,
+        "web_alias_closed": 329,
+        "with_external_source": 480
       },
       "npc": {
         "total": 294,
         "direction": {
-          "both": 217,
-          "zircon-only": 77
+          "both": 235,
+          "zircon-only": 59
         },
         "direction_before_audit": {
           "both": 188,
@@ -186,30 +190,30 @@
         },
         "status": {
           "partial": 31,
-          "both-resolved-by-web-alias": 53,
-          "pending-web-evidence": 77,
+          "both-resolved-by-web-alias": 103,
           "conflict": 9,
-          "both-resolved": 51,
-          "production-applied": 73
+          "production-applied": 73,
+          "both-resolved": 19,
+          "pending-web-evidence": 59
         },
         "previous_status": {
           "partial": 31,
-          "both-resolved-by-web-alias": 53,
-          "pending-web-evidence": 77,
+          "both-resolved-by-web-alias": 103,
           "conflict": 9,
-          "both-resolved": 51,
-          "production-applied": 73
+          "production-applied": 73,
+          "both-resolved": 19,
+          "pending-web-evidence": 59
         },
-        "review_required": 117,
-        "web_alias_closed": 53,
-        "with_external_source": 87
+        "review_required": 99,
+        "web_alias_closed": 103,
+        "with_external_source": 186
       },
       "item": {
         "total": 1402,
         "direction": {
-          "both": 410,
-          "mir2ei-only": 174,
-          "zircon-only": 818
+          "both": 812,
+          "mir2ei-only": 158,
+          "zircon-only": 432
         },
         "direction_before_audit": {
           "both": 47,
@@ -217,23 +221,27 @@
           "zircon-only": 1031
         },
         "status": {
-          "both-resolved-by-web-alias": 410,
-          "pending-web-evidence": 992
+          "both-resolved-by-web-alias": 811,
+          "mir2ei-only-after-web-audit": 99,
+          "pending-web-evidence": 60,
+          "zircon-only-after-web-audit": 432
         },
         "previous_status": {
-          "both-resolved-by-web-alias": 410,
-          "pending-web-evidence": 992
+          "both-resolved-by-web-alias": 811,
+          "mir2ei-only-after-web-audit": 99,
+          "pending-web-evidence": 60,
+          "zircon-only-after-web-audit": 432
         },
-        "review_required": 992,
-        "web_alias_closed": 410,
-        "with_external_source": 1397
+        "review_required": 591,
+        "web_alias_closed": 811,
+        "with_external_source": 1402
       },
       "skill": {
         "total": 176,
         "direction": {
-          "both": 78,
+          "both": 82,
           "mir2ei-only": 1,
-          "zircon-only": 97
+          "zircon-only": 93
         },
         "direction_before_audit": {
           "both": 59,
@@ -241,15 +249,17 @@
           "zircon-only": 115
         },
         "status": {
-          "both-resolved-by-web-alias": 78,
-          "pending-web-evidence": 98
+          "both-resolved-by-web-alias": 82,
+          "mir2ei-only-after-web-audit": 1,
+          "zircon-only-after-web-audit": 93
         },
         "previous_status": {
-          "both-resolved-by-web-alias": 78,
-          "pending-web-evidence": 98
+          "both-resolved-by-web-alias": 82,
+          "mir2ei-only-after-web-audit": 1,
+          "zircon-only-after-web-audit": 93
         },
-        "review_required": 98,
-        "web_alias_closed": 78,
+        "review_required": 94,
+        "web_alias_closed": 82,
         "with_external_source": 176
       },
       "map": {
@@ -265,46 +275,48 @@
         "status": {
           "conflict": 6,
           "partial": 16,
-          "both-resolved-by-web-alias": 46,
-          "pending-web-evidence": 404
+          "both-resolved-by-web-alias": 160,
+          "zircon-only-after-web-audit": 13,
+          "pending-web-evidence": 277
         },
         "previous_status": {
           "conflict": 6,
           "partial": 16,
-          "both-resolved-by-web-alias": 46,
-          "pending-web-evidence": 404
+          "both-resolved-by-web-alias": 160,
+          "zircon-only-after-web-audit": 13,
+          "pending-web-evidence": 277
         },
-        "review_required": 426,
-        "web_alias_closed": 46,
+        "review_required": 312,
+        "web_alias_closed": 160,
         "with_external_source": 194
       },
       "respawn": {
         "total": 2475,
         "direction": {
-          "both": 1589,
-          "zircon-only": 886
+          "both": 2291,
+          "zircon-only": 184
         },
         "direction_before_audit": {
           "zircon-only": 2058,
           "both": 417
         },
         "status": {
-          "both-resolved-by-web-alias": 1213,
-          "pending-web-evidence": 886,
+          "both-resolved-by-web-alias": 1944,
+          "pending-web-evidence": 184,
           "conflict": 89,
-          "both-resolved": 269,
+          "both-resolved": 240,
           "production-applied": 18
         },
         "previous_status": {
-          "both-resolved-by-web-alias": 1213,
-          "pending-web-evidence": 886,
+          "both-resolved-by-web-alias": 1944,
+          "pending-web-evidence": 184,
           "conflict": 89,
-          "both-resolved": 269,
+          "both-resolved": 240,
           "production-applied": 18
         },
-        "review_required": 2188,
-        "web_alias_closed": 1213,
-        "with_external_source": 1216
+        "review_required": 2217,
+        "web_alias_closed": 1944,
+        "with_external_source": 1944
       },
       "quest": {
         "total": 62,
@@ -587,7 +599,7 @@
     "网站地图为 3 组/22 区域图，不是 627 张逐图 MapInfo。",
     "Users.db 未写入。"
   ],
-  "audited_at": "2026-09-26T14:10:43.342938+00:00",
+  "audited_at": "2026-09-27T01:28:02.792970+00:00",
   "external_sources": {
     "mir2ei-wiki-json": {
       "url": "https://mir2ei.iamcheyan.com/data/wiki_data_v2.json",
@@ -785,6 +797,59 @@
         "skill-zh-attestation"
       ]
     },
+    "mud3-raceimg-crosswalk": {
+      "url": "https://mir3.iamcheyan.com/data/wiki_data_v2.json",
+      "title": "老版 MUD3 monster.dat RaceImg → Zircon Mon-N.Zl 图库/shape 交叉表（本地推导 + 像素复核）",
+      "publisher": "本地：docs/research/mud3-dat-decoded/monster.json + zircon/GodotClient/Formats/MonsterLookup.cs + EI 客户端 Data/Mon-*.wil",
+      "accessed_at": "2026-09-26T19:00+09:00",
+      "excerpt": "RaceImg = (lib-1)*10 + shape；10 个已知锚点 8 个尺寸序列完全一致；EI Mon-N.wil 与 Zircon Mon-N.Zl 逐帧尺寸 115/150 恒等，同 lib/shape 逐帧平均色差 4.28-9.87（BC1 再编码量级），判定为同一美术。",
+      "used_for": [
+        "legacy-raceimg-image",
+        "identity-without-names"
+      ]
+    },
+    "mud3-merchant-coord": {
+      "url": "https://mir2ei.iamcheyan.com/data/wiki_data_v2.json",
+      "title": "老版 MUD3 Merchant.txt 商人坐标表（318 条）↔ Zircon NPCInfo(Region 质心)",
+      "publisher": "本地 /data/NAS/TMP/Mud3/Envir/Merchant.txt（GB18030）+ mir2ei 百科 mud3.merchants",
+      "accessed_at": "2026-09-26T19:00+09:00",
+      "excerpt": "318 条 {name, map, x, y, script}；与 Zircon NPCInfo 的 MapRegion.PointRegion.CenterX/Y 对齐，130 条距离 0 唯一命中，且多数 script 名与 Zircon NPC 的 _Identity 段一致。",
+      "used_for": [
+        "legacy-npc-coord"
+      ]
+    },
+    "ei-client-resources": {
+      "url": "https://mir3.iamcheyan.com/library.html",
+      "title": "EI 3.0 客户端 Data/ 图库（Mon-1..16.wil 等 36 个怪物库）",
+      "publisher": "本地客户端副本 /data/NAS/TMP/EI传奇3.0客户端/Data",
+      "accessed_at": "2026-09-26T19:00+09:00",
+      "excerpt": "Mon-1..Mon-16.wil + DMon-1 + MonImg/MonMagic；老版怪物美术只存在于 Mon-1..16，Zircon 另加 Mon-17..34 新美术。",
+      "used_for": [
+        "resource-library-scope"
+      ]
+    },
+    "17173-mir3-mission": {
+      "url": "https://mir3.17173.com/mission/rw3.htm",
+      "title": "17173 传奇3 专区 · 3G 江湖任务（王大人任务链，含 NPC 坐标）",
+      "accessed_at": "2026-09-26T19:00+09:00",
+      "bytes": 38520,
+      "excerpt": "王大人任务 3-1：比奇县的王大人(193:223) → 说服书店主人英勋(170:246) 与中药商郑雄(189:255) 加入比奇商会。资料站 mission 页是**任务攻略文**，不是任务定义表。",
+      "used_for": [
+        "quest-mapping-attempt",
+        "why-not-mir2ei-only"
+      ]
+    },
+    "sina-mir3-npc-list": {
+      "url": "https://games.sina.com.cn/z/mir3/2003-06-12/12217.shtml",
+      "title": "NPC功能列表_传奇三_新浪游戏 (2003-06-12)",
+      "accessed_at": "2026-09-26T19:00+09:00",
+      "bytes": 72363,
+      "raw_copy": "raw/games.sina.com.cn_z_mir3_2003-06-12_12217.shtml",
+      "excerpt": "老版 NPC 中文名 + 地图码 + 坐标：怪物租赁商 0(352,282) · 六面神石1 0(498,463) · 六面神石4 0(379,444) · 路标栏 0(450,386)；与 Zircon NPCInfo 的 MapRegion 质心通道互为独立佐证。",
+      "used_for": [
+        "legacy-npc-coord-corrob"
+      ]
+    },
     "mir3-archive-site": {
       "url": "https://mir3.iamcheyan.com/",
       "title": "传奇三 · 资料 archive（17173 传奇3 专区镜像）",
@@ -887,6 +952,42 @@
       ]
     },
     {
+      "q": "传奇3 怪物 RaceImg 外观 图库 Mon-1.wil 对照 Zircon",
+      "outcome": "未找到公开的 RaceImg 交叉表；改为本地推导并用 EI 客户端 Mon-*.wil 与 Zircon Mon-*.Zl 的逐帧尺寸/像素复核验证（8/10 锚点尺寸序列一致）",
+      "sources": [
+        "https://www.lomcn.net/wiki/index.php/Monster_Database"
+      ]
+    },
+    {
+      "q": "传奇3 任务 名称 列表 万事通 王大人 英文 QuestInfo",
+      "outcome": "命中 17173 任务攻略页与新浪新手资料：确认资料站 mission 页是「任务攻略文/流程文」，不是任务定义表；王大人任务链在资料站与 Zircon QuestInfo 之间不存在逐条对应",
+      "sources": [
+        "https://mir3.17173.com/mission/rw3.htm",
+        "https://games.sina.com.cn/z/mir3/3/xsmj/21.shtml"
+      ]
+    },
+    {
+      "q": "Legend of Mir 3 quest list \"Curing the Poison\" \"Elephants on Parade\"",
+      "outcome": "无结果 —— Zircon QuestInfo 任务名在英文社区无公开对照表；记入排除依据，不据此判独有",
+      "sources": []
+    },
+    {
+      "q": "传奇3 NPC 商人 名称 列表 铁匠 药剂师 书店 中文",
+      "outcome": "命中新浪 NPC 功能列表与官方 NPC 坐标指引；取得老版 NPC 中文名+坐标，与 MUD3 Merchant.txt 坐标通道互证",
+      "sources": [
+        "https://games.sina.com.cn/z/mir3/2003-06-12/12217.shtml",
+        "http://mir3.youxi.com/211371965/211372894/211387048.html"
+      ]
+    },
+    {
+      "q": "传奇3 装备 名称 中英对照 屠龙 裁决 井中月 英文名",
+      "outcome": "命中 17173/知乎/百度装备出处大全：确认「潘夜井中月/祖玛裁决/屠龙」等前缀族命名法，与 Zircon 的 Banya/Zuma 前缀物品命名一致，用于物品族别名佐证",
+      "sources": [
+        "http://mir3.17173.com/content/2012-10-14/20121014224614954.shtml",
+        "https://zhuanlan.zhihu.com/p/501011924"
+      ]
+    },
+    {
       "q": "传奇3 地图 比奇 盟重 潘夜 英文名 Bichon Numa map name",
       "outcome": "命中官方地图清单（边境村落/银杏村落/比奇县/盟重县/潘夜岛/诺玛遗址/沙巴克），用于地图中文名佐证",
       "sources": [
@@ -895,8 +996,8 @@
     }
   ],
   "web_audit": {
-    "external_sources": 19,
-    "search_queries": 13,
+    "external_sources": 24,
+    "search_queries": 18,
     "rule_query_groups": {
       "zh-en-dictionary": 3,
       "wemade-english": 2,
@@ -904,7 +1005,9 @@
       "legacy-chinese-attestation": 2,
       "official-zh-strings": 1,
       "map-zh-attestation": 1,
-      "version-scope": 1
+      "version-scope": 1,
+      "npc-coord": 2,
+      "legacy-image-crosswalk": 3
     },
     "alias_index": {
       "zh2en_edges": 2449,

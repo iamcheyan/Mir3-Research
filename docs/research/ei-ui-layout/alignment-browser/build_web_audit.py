@@ -234,6 +234,85 @@ def build_alias_index(wiki: dict, lomcn: list[list[str]], db_names: dict, mud3: 
 
 
 # ---------------------------------------------------------------- legacy DAT links
+STDMODE_TYPE = {5: "Weapon", 10: "Armour", 11: "Armour", 20: "Necklace", 22: "Ring",
+                24: "Bracelet", 26: "Bracelet", 25: "Poison", 30: "Nothing", 31: "Consumable",
+                40: "Ore", 41: "Currency", 51: "Book", 58: "Nothing", 99: "Nothing",
+                52: "Nothing", 44: "Nothing", 3: "Consumable", 4: "Book", 0: "Consumable"}
+
+
+def _item_score(legacy: dict, zrow: dict) -> tuple[int, list[str]]:
+    """老版 stditem 与 Zircon ItemInfo 的指纹一致度（价格/类型/等级/Shape）。"""
+    score, notes = 0, []
+    t = STDMODE_TYPE.get(legacy.get("StdMode"))
+    if t and zrow.get("ItemType") == t:
+        score += 3
+        notes.append("type")
+    elif t:
+        notes.append(f"type?({t}!={zrow.get('ItemType')})")
+    lp, zp = legacy.get("Price"), zrow.get("Price")
+    if lp and zp is not None:
+        if lp == zp:
+            score += 3
+            notes.append("price")
+        else:
+            notes.append(f"price?({lp}!={zp})")
+    ln, zr = legacy.get("NeedLevel"), zrow.get("RequiredAmount")
+    if ln and zr is not None and ln % 100 == zr:
+        score += 2
+        notes.append("level")
+    if legacy.get("Shape") is not None and zrow.get("Shape") is not None and legacy["Shape"] == zrow["Shape"]:
+        score += 1
+        notes.append("shape")
+    return score, notes
+
+
+def _item_fingerprint_closure(legacy_items: list, ws_rows: list, website_items: list) -> dict:
+    """老版 Looks == Zircon Image 后的保守消歧。
+
+    仅当 (a) 同图候选唯一，或 (b) 指纹分 >= 6 且领先次优 >= 3，
+    并且该 (网站物品 -> Zircon 行) 映射在同图网站物品之间单射时才闭合。
+    """
+    img_rows: dict = defaultdict(list)
+    for r in ws_rows:
+        if r.get("Image") is not None:
+            img_rows[r["Image"]].append(r)
+    std_by_name = {r["Name"]: r for r in legacy_items if r.get("Name")}
+    per_looks: dict = defaultdict(list)
+    for w in website_items:
+        lr = std_by_name.get(w.get("name"))
+        if lr is None or lr.get("Looks") is None:
+            continue
+        cands = img_rows.get(lr["Looks"], [])
+        if not cands:
+            continue
+        scored = sorted((( _item_score(lr, z), z) for z in cands), key=lambda x: -x[0][0])
+        per_looks[lr["Looks"]].append((w.get("name"), scored))
+    out = {}
+    for looks, entries in per_looks.items():
+        # 先决定每个网站物品的候选
+        picks = {}
+        for name, scored in entries:
+            top = scored[0]
+            second = scored[1] if len(scored) > 1 else None
+            if len(scored) == 1:
+                picks[name] = (top[1], "image-1to1", top[0][0], top[0][1])
+            elif top[0][0] >= 6 and (second is None or top[0][0] - second[0][0] >= 3):
+                picks[name] = (top[1], "fingerprint", top[0][0], top[0][1])
+        # 单射检查：同一个 Zircon 行不能同时被两个网站物品独占闭合
+        claims = defaultdict(list)
+        for name, (zrow, how, sc, notes) in picks.items():
+            claims[zrow["Index"]].append(name)
+        for zidx, names in claims.items():
+            if len(names) > 1 and len(entries) > 1:
+                continue
+            for name in names:
+                zrow, how, sc, notes = picks[name]
+                out[name] = {"zircon_index": zrow["Index"], "zircon_name": zrow.get("ItemName"),
+                             "how": how, "score": sc, "notes": notes,
+                             "looks": looks, "image": zrow.get("Image")}
+    return out
+
+
 def _legacy_links(records, index_field="Index"):
     """老版 DAT 解码报告里已确认的 → Zircon (id=N) 映射。"""
     out = {}
@@ -345,7 +424,8 @@ def zircon_side_from_row(kind: str, row: dict, index_field: str, name_field: str
 
 
 def audit_monsters(records, ws_by_index, wiki, idx, lomcn_norm, lomcn_rows, attest_pool, site_names,
-                   legacy_link=None):
+                   legacy_link=None, raceimg=None, site_names_zh=None, sina_names=None,
+                   wiki_ver=None, wiki_section="monsters"):
     """怪物：网站 154 / Zircon 434 双向，方向按扩展 mir2ei 侧证据重算。"""
     wiki_by_en, wiki_by_zh = {}, {}
     for m in wiki["monsters"]:
@@ -375,6 +455,23 @@ def audit_monsters(records, ws_by_index, wiki, idx, lomcn_norm, lomcn_rows, atte
                 wname = lomcn_rows[lomcn_norm[nkey(zimage)]][0]
                 alias_chain.append(f"Wemade={wname}")
                 sources.append(src_ref("lomcn-mir3-monster-db", note=f"LOMCN Mir3 怪物库含 {wname}"))
+            # 反向图像通道：Zircon Image -> (lib,shape) -> 老版 RaceImg -> MUD3 中文名
+            if raceimg and zimage:
+                _res = raceimg["img2res"].get(zimage)
+                if _res:
+                    _legacy = sorted({strip_variant(r["Name"]) for r in raceimg["by_base"].values()
+                                      if raceimg["resolve"](r.get("RaceImg")) == _res and r.get("Name")})
+                    if _legacy:
+                        provs.add("legacy-raceimg-image")
+                        alias_chain.append(f"老版图像通道 Mon-{_res[0]}:{_res[1]} → 中文名 {_legacy[:3]}")
+                        for _zh in _legacy[:3]:
+                            att = ("exact" if _zh in attest_pool else
+                                   ("sina" if _zh in (sina_names or set()) else "legacy-only"))
+                            extended_attested.append({"zh": _zh,
+                                                      "provenance": ["mud3-monster.dat:RaceImg"],
+                                                      "match": att})
+                        sources.append(src_ref("mud3-raceimg-crosswalk",
+                                               note=f"Mon-{_res[0]}:{_res[1]} ← 老版 RaceImg 反查中文名 {_legacy[:3]}"))
             for key in (zname, zimage):
                 if not key:
                     continue
@@ -405,6 +502,29 @@ def audit_monsters(records, ws_by_index, wiki, idx, lomcn_norm, lomcn_rows, atte
                 sources.append({"source_id": "mir3-archive-record", "url": au,
                                 "title": f"传奇三资料 archive · {mname}",
                                 "accessed_at": SRC.ACCESSED, "excerpt": (mname or "")[:80]})
+            # 老版 RaceImg 图像通道：网站中文名 -> MUD3 记录 -> (lib,shape) -> Zircon Index
+            ri = (raceimg or {}).get("by_base", {}).get(strip_variant(mname))
+            if ri is not None and raceimg:
+                res, imgs, rows_ = raceimg["rows"](ri.get("RaceImg"))
+                if res:
+                    if len(rows_) == 1:
+                        provs.add("legacy-raceimg-image")
+                        z = zircon_side_from_row("MonsterInfo", rows_[0], "Index", "MonsterName")
+                        z["image"] = rows_[0].get("Image")
+                        alias_chain.append(
+                            f"老版 RaceImg={ri.get('RaceImg')} → Mon-{res[0]}:{res[1]} → {rows_[0].get('MonsterName')}")
+                        local_ev.append({"kind": "mud3-monster.dat + MonsterLookup",
+                                         "ref": f"RaceImg={ri.get('RaceImg')} → Mon-{res[0]}:{res[1]}",
+                                         "detail": "老版图像索引经 EI/Zircon 同布局图库唯一反查到 MonsterInfo 行"})
+                        sources.append(src_ref("mud3-raceimg-crosswalk",
+                                               note=f"RaceImg={ri.get('RaceImg')} → Mon-{res[0]}:{res[1]} → {rows_[0].get('MonsterName')}"))
+                    elif rows_:
+                        excluded.append({
+                            "candidate": rows_[0].get("MonsterName"),
+                            "reason": f"老版 RaceImg={ri.get('RaceImg')} → Mon-{res[0]}:{res[1]} 命中 {len(rows_)} 个 MonsterInfo 行，非唯一",
+                            "evidence": "mud3 RaceImg × MonsterLookup",
+                        })
+                        alias_chain.append(f"候选(非唯一): RaceImg={ri.get('RaceImg')} → {[r.get('MonsterName') for r in rows_[:3]]}")
             link = legacy_link.get(mname) or legacy_link.get(strip_variant(mname))
             if link:
                 provs.add("legacy-dat-link")
@@ -446,7 +566,32 @@ def audit_monsters(records, ws_by_index, wiki, idx, lomcn_norm, lomcn_rows, atte
 
         web_alias = bool(provs & {"zh-en-dictionary", "wemade-english",
                                   "github-suprcode-chinese-messages", "semantic-alias",
-                                  "legacy-dat-link"})
+                                  "legacy-dat-link", "legacy-raceimg-image"})
+
+        # ---- 网络数据集的版本标签（ver）作为跨版本归属的外部证据
+        LEGACY_TAGS = {"mud3", "ei", "mei"}
+        ver_zircon_only = ver_mir2ei_only = False
+        if wiki_ver:
+            _table = wiki_ver.get(wiki_section, {})
+            _zver = _table.get(("en", nkey(zname))) if z.get("exists") else None
+            _mver = ((_table.get(("zh", nkey(mname))) or _table.get(("en", nkey(mname))))
+                     if m.get("exists") else None)
+            if _zver:
+                provs.add("wiki-ver-tag")
+                alias_chain.append(f"mir2ei 百科 ver={sorted(_zver)}")
+                sources.append(src_ref("mir2ei-wiki-json",
+                                       note=f"{wiki_section} 条目 {zname} ver={sorted(_zver)}"))
+                if _zver & LEGACY_TAGS:
+                    extended_attested.append({"zh": zname, "provenance": ["mir2ei-wiki-ver"],
+                                              "match": "version-tag:" + ",".join(sorted(_zver))})
+                elif _zver == frozenset({"zircon"}):
+                    ver_zircon_only = True
+            if _mver is not None and not (_mver & {"zircon"}):
+                provs.add("wiki-ver-tag")
+                alias_chain.append(f"mir2ei 百科 ver={sorted(_mver)}（不含 zircon）")
+                sources.append(src_ref("mir2ei-wiki-json",
+                                       note=f"{wiki_section} 条目 {mname} ver={sorted(_mver)}"))
+                ver_mir2ei_only = True
         # 方向重算：Zircon 侧实体若有任何经来源的中文名落到 mir2ei/老版/资料站清单，则方向为 both
         zexists, mexists = bool(z.get("exists")), bool(m.get("exists"))
         ext_mir2ei = bool(extended_attested) or mexists
@@ -474,6 +619,18 @@ def audit_monsters(records, ws_by_index, wiki, idx, lomcn_norm, lomcn_rows, atte
         else:
             status = "pending-web-evidence"
 
+        # 网络数据集的版本标签作为「一侧独有」的最终外部证据
+        if status == "pending-web-evidence":
+            if ver_zircon_only:
+                status = "zircon-only-after-web-audit"
+                excluded.append({"candidate": "无 mir2ei/老版对应",
+                                 "reason": "网络数据集把该实体标为仅 Zircon 存在（ver=[zircon]）",
+                                 "evidence": "https://mir2ei.iamcheyan.com/data/wiki_data_v2.json"})
+            elif ver_mir2ei_only:
+                status = "mir2ei-only-after-web-audit"
+                excluded.append({"candidate": "无 Zircon 对应",
+                                 "reason": "网络数据集把该实体标为老版侧存在且不含 zircon",
+                                 "evidence": "https://mir2ei.iamcheyan.com/data/wiki_data_v2.json"})
         why_m = why_z = ""
         if status in {"both-resolved-by-web-alias", "both-resolved"}:
             why_m = "已由别名链闭合到 Zircon Index，不能判为 mir2ei 独有。"
@@ -516,7 +673,10 @@ def audit_generic(records, kind, idx, extra_zh_attest: set[str], attest_pool: se
                   zindex_field: str = "Index", zname_field: str = "Name",
                   legacy_link: dict | None = None, img_index: dict | None = None,
                   looks_legacy: dict | None = None, legacy_items: list | None = None,
-                  looks_site_count: dict | None = None):
+                  looks_site_count: dict | None = None, npc_coord: dict | None = None,
+                  item_fp: dict | None = None, zircon_rows_by_index: dict | None = None,
+                  item_rev: dict | None = None, wiki_ver: dict | None = None,
+                  wiki_section: str = ""):
     """物品 / 技能 / NPC / 地图 / 刷新 / 任务的通用网络审计层。"""
     out = []
     for rec in records:
@@ -574,7 +734,20 @@ def audit_generic(records, kind, idx, extra_zh_attest: set[str], attest_pool: se
                                  "detail": f"tag={link['tag']} → {link['zircon_name']} id={link['zircon_index']}"})
                 sources.append(src_ref("mir2ei-wiki-json",
                                        note=f"老版 DAT 解码对照表: {mname} → {link['zircon_name']} (id={link['zircon_index']})"))
-            if not link and looks_legacy and zircon_rows:
+            fp = (item_fp or {}).get(mname) if kind == "item" else None
+            if fp and not link:
+                provs.add("legacy-item-fingerprint")
+                z = zircon_side_from_row(zircon_kind, zircon_rows_by_index[fp["zircon_index"]],
+                                         zindex_field, zname_field)
+                alias_chain.append(
+                    f"老版 stditem Looks={fp['looks']} == Zircon Image={fp['image']} + 指纹({','.join(fp['notes'])}) → {fp['zircon_name']}")
+                local_ev.append({"kind": "mud3-stditem + ItemInfo",
+                                 "ref": f"Looks={fp['looks']} score={fp['score']}",
+                                 "detail": f"外观图 ID 一致且 {'同图唯一' if fp['how']=='image-1to1' else '价格/类型/等级指纹唯一领先'}"})
+                sources.append({"source_id": "mir3-archive-record", "url": archive_url(kind, rec["id"]) or "",
+                                "title": f"传奇三资料 archive · {mname}",
+                                "accessed_at": SRC.ACCESSED, "excerpt": mname or ""})
+            if not link and not fp and looks_legacy and zircon_rows:
                 lrec = next((x for x in (legacy_items or []) if x.get("Name") == mname), None)
                 if lrec is not None:
                     lk = lrec.get("Looks")
@@ -608,6 +781,45 @@ def audit_generic(records, kind, idx, extra_zh_attest: set[str], attest_pool: se
                 for p in pr:
                     if p.startswith("mir2ei-wiki") or p.startswith("github"):
                         sources.append(src_ref("mir2ei-wiki-json", note=f"zh->en 别名: {mname} → {en}"))
+        if item_rev and kind == "item" and z.get("exists") and z.get("index") in item_rev:
+            _ir = item_rev[z["index"]]
+            provs.add("legacy-item-image-reverse")
+            alias_chain.append(f"Zircon Image={_ir['image']} → 老版 stditem Looks 唯一中文名 {_ir['mud3_name']}")
+            local_ev.append({"kind": "mud3-stditem + ItemInfo",
+                             "ref": f"Image={_ir['image']}",
+                             "detail": f"老版同外观图 ID 记录唯一：{_ir['mud3_name']}"})
+            sources.append(src_ref("mud3-raceimg-crosswalk",
+                                   note=f"stditem.Looks==ItemInfo.Image={_ir['image']} → {_ir['mud3_name']}"))
+            extended_attested.append({"zh": _ir["mud3_name"],
+                                      "provenance": ["mud3-stditem:Looks==Image"], "match": "exact"})
+        if npc_coord and kind == "npc" and z.get("exists") and z.get("index") in npc_coord:
+            _nc = npc_coord[z["index"]]
+            _ident = str(zfields.get("_Identity") or "")
+            _script_hit = bool(_nc.get("script")) and _nc["script"] in _ident
+            provs.add("legacy-npc-coord")
+            alias_chain.append(
+                f"老版 Merchant.txt {_nc['mud3_name']} @ {_nc['map']}({_nc['x']},{_nc['y']}) 距离 {_nc['dist']}"
+                + ("；script 与 _Identity 一致" if _script_hit else ""))
+            local_ev.append({"kind": "mud3-merchant-coord",
+                             "ref": f"{_nc['map']}({_nc['x']},{_nc['y']})",
+                             "detail": f"老版商人 {_nc['mud3_name']} script={_nc['script']} 距离={_nc['dist']}"})
+            sources.append(src_ref("mud3-merchant-coord",
+                                   note=f"{_nc['mud3_name']} @ {_nc['map']}({_nc['x']},{_nc['y']}) → {zname}"))
+            extended_attested.append({"zh": _nc["mud3_name"],
+                                      "provenance": ["mud3-merchant-coord"],
+                                      "match": "exact" if _script_hit else "coord-only"})
+        if kind == "quest" and m.get("exists"):
+            # 任务桥接尝试（NPC 中文名 -> Zircon NPC -> 该 NPC 起始任务）已执行但失败：
+            # 资料站 mission 页是攻略文，NPC 引用含排版噪声，24 条只有 4 条产出候选且全部错配。
+            excluded.append({
+                "candidate": "Zircon QuestInfo 38 条任务",
+                "reason": "资料站 24 条 mission 是 17173 任务攻略文（raw_step_count 含排版噪声），非任务定义表；"
+                          "经 NPC 中文名→Zircon NPC→StartQuests 桥接后 24 条仅 4 条产出候选且全部错配",
+                "evidence": "https://mir3.17173.com/mission/rw3.htm + Zircon QuestInfo.StartNPC/FinishNPC",
+            })
+            local_ev.append({"kind": "quest-bridge-attempt",
+                             "ref": "mission-cross-reference.json",
+                             "detail": "NPC 桥接失败：攻略文与任务定义表不同构"})
         if mname and mname in extra_zh_attest:
             provs.add("legacy-chinese-attestation")
             extended_attested.append({"zh": mname, "provenance": ["legacy-chinese-attestation"], "match": "exact"})
@@ -629,8 +841,35 @@ def audit_generic(records, kind, idx, extra_zh_attest: set[str], attest_pool: se
         web_alias = bool(provs & {"mir2ei-wiki-json", "github-suprcode-chinese-messages",
                                   "legacy-chinese-attestation", "official-zh-strings",
                                   "semantic-alias", "zh-en-dictionary", "wemade-english",
-                                  "legacy-dat-link", "legacy-looks-image"})
+                                  "legacy-dat-link", "legacy-looks-image", "map-zh-attestation",
+                                  "legacy-npc-coord", "legacy-item-fingerprint",
+                                  "legacy-item-image-reverse"})
         zexists, mexists = bool(z.get("exists")), bool(m.get("exists"))
+
+        # ---- 网络数据集的版本标签（ver）作为跨版本归属的外部证据
+        LEGACY_TAGS = {"mud3", "ei", "mei"}
+        ver_zircon_only = ver_mir2ei_only = False
+        if wiki_ver:
+            _table = wiki_ver.get(wiki_section, {})
+            _zver = _table.get(("en", nkey(zname))) if z.get("exists") else None
+            _mver = ((_table.get(("zh", nkey(mname))) or _table.get(("en", nkey(mname))))
+                     if m.get("exists") else None)
+            if _zver:
+                provs.add("wiki-ver-tag")
+                alias_chain.append(f"mir2ei 百科 ver={sorted(_zver)}")
+                sources.append(src_ref("mir2ei-wiki-json",
+                                       note=f"{wiki_section} 条目 {zname} ver={sorted(_zver)}"))
+                if _zver & LEGACY_TAGS:
+                    extended_attested.append({"zh": zname, "provenance": ["mir2ei-wiki-ver"],
+                                              "match": "version-tag:" + ",".join(sorted(_zver))})
+                elif _zver == frozenset({"zircon"}):
+                    ver_zircon_only = True
+            if _mver is not None and not (_mver & {"zircon"}):
+                provs.add("wiki-ver-tag")
+                alias_chain.append(f"mir2ei 百科 ver={sorted(_mver)}（不含 zircon）")
+                sources.append(src_ref("mir2ei-wiki-json",
+                                       note=f"{wiki_section} 条目 {mname} ver={sorted(_mver)}"))
+                ver_mir2ei_only = True
         ext = bool(extended_attested) or mexists
         direction = "both" if (zexists and ext) else ("zircon-only" if zexists else "mir2ei-only")
 
@@ -657,6 +896,45 @@ def audit_generic(records, kind, idx, extra_zh_attest: set[str], attest_pool: se
         else:
             status = "pending-web-evidence"
 
+        LEGACY_TAGS = {"mud3", "ei", "mei"}
+        if wiki_ver:
+            table = wiki_ver.get(wiki_section, {})
+            zver = table.get(("en", nkey(zname))) if z.get("exists") else None
+            mver = (table.get(("zh", nkey(mname))) or table.get(("en", nkey(mname)))) if m.get("exists") else None
+            if zver:
+                provs.add("wiki-ver-tag")
+                alias_chain.append(f"mir2ei 百科 ver={sorted(zver)}")
+                sources.append(src_ref("mir2ei-wiki-json",
+                                       note=f"{wiki_section} 条目 {zname} ver={sorted(zver)}"))
+                if zver & LEGACY_TAGS:
+                    # 网络数据集明确记录该实体同时存在于老版/EI/mir3ei 侧
+                    extended_attested.append({"zh": zname, "provenance": ["mir2ei-wiki-ver"],
+                                              "match": "version-tag:" + ",".join(sorted(zver))})
+                elif zver == frozenset({"zircon"}) and status == "pending-web-evidence":
+                    status = "zircon-only-after-web-audit"
+                    excluded.append({"candidate": "无 mir2ei/老版对应",
+                                     "reason": "网络数据集把该实体标为仅 Zircon 存在（ver=[zircon]）",
+                                     "evidence": "https://mir2ei.iamcheyan.com/data/wiki_data_v2.json"})
+            if mver is not None and not (mver & {"zircon"}) and status == "pending-web-evidence":
+                status = "mir2ei-only-after-web-audit"
+                provs.add("wiki-ver-tag")
+                alias_chain.append(f"mir2ei 百科 ver={sorted(mver)}（不含 zircon）")
+                sources.append(src_ref("mir2ei-wiki-json",
+                                       note=f"{wiki_section} 条目 {mname} ver={sorted(mver)}"))
+                excluded.append({"candidate": "无 Zircon 对应",
+                                 "reason": f"网络数据集把该实体标为 {sorted(mver)}，不含 zircon",
+                                 "evidence": "https://mir2ei.iamcheyan.com/data/wiki_data_v2.json"})
+        if status == "pending-web-evidence":
+            if ver_zircon_only:
+                status = "zircon-only-after-web-audit"
+                excluded.append({"candidate": "无 mir2ei/老版对应",
+                                 "reason": "网络数据集把该实体标为仅 Zircon 存在（ver=[zircon]）",
+                                 "evidence": "https://mir2ei.iamcheyan.com/data/wiki_data_v2.json"})
+            elif ver_mir2ei_only:
+                status = "mir2ei-only-after-web-audit"
+                excluded.append({"candidate": "无 Zircon 对应",
+                                 "reason": "网络数据集把该实体标为老版侧存在且不含 zircon",
+                                 "evidence": "https://mir2ei.iamcheyan.com/data/wiki_data_v2.json"})
         why_m = why_z = ""
         if status.startswith("both-resolved"):
             why_m = "已由外部别名链闭合，不能判为 mir2ei 独有。"
@@ -768,6 +1046,95 @@ def main() -> None:
             looks_site_count[_l["Looks"]] += 1
     ws_rows = load_json(WORKSPACE / "MonsterInfo.json", {}).get("rows", [])
     ws_by_index = {r["Index"]: r for r in ws_rows}
+    _looks_rows = defaultdict(list)
+    for _r in mud3["items"]:
+        if _r.get("Looks") is not None and _r.get("Name"):
+            _looks_rows[_r["Looks"]].append(_r)
+    ITEM_REV = {}
+    for _r in load_json(WORKSPACE / "ItemInfo.json", {}).get("rows", []):
+        _c = sorted({c["Name"] for c in _looks_rows.get(_r.get("Image"), [])})
+        if len(_c) == 1:
+            ITEM_REV[_r["Index"]] = {"mud3_name": _c[0], "image": _r.get("Image")}
+    ITEM_FP = _item_fingerprint_closure(mud3["items"],
+                                        load_json(WORKSPACE / "ItemInfo.json", {}).get("rows", []),
+                                        load_json(WEBSITE / "data/items.json", []))
+
+    # ---- 老版 RaceImg -> (Mon_lib, shape) -> Zircon MonsterImage -> MonsterInfo 行
+    # 假说 RaceImg = (lib-1)*10 + shape；10 个已知锚点 8 个尺寸序列完全一致，
+    # 且 EI Mon-N.wil 与 Zircon Mon-N.Zl 同 lib/shape 逐帧尺寸 115/150 恒等、
+    # 逐帧平均色差 4.28-9.87（BC1 再编码量级）→ 同一美术。作为**候选通道**，
+    # 命中一律 review_required。
+    _ml = (ZIRCON / "GodotClient/Formats/MonsterLookup.cs").read_text(encoding="utf-8")
+    img2res = {}
+    for _m in re.finditer(r"\{\s*MonsterImage\.(\w+),\s*\(LibraryFile\.(Mon_\d+|CastleFlag),\s*(\d+)\)\s*\}", _ml):
+        if _m.group(2) == "CastleFlag":
+            continue
+        img2res[_m.group(1)] = (int(_m.group(2).split("_")[-1]), int(_m.group(3)))
+    res2img = defaultdict(list)
+    for _img, _res in img2res.items():
+        res2img[_res].append(_img)
+    img_rows = defaultdict(list)
+    for _r in ws_rows:
+        if _r.get("Image"):
+            img_rows[_r["Image"]].append(_r)
+    mud3_by_base = {}
+    for _r in mud3["monsters"]:
+        if _r.get("Name"):
+            mud3_by_base.setdefault(strip_variant(_r["Name"]), _r)
+
+    def raceimg_resolve(race_img):
+        if not isinstance(race_img, int) or race_img <= 0:
+            return None
+        return (race_img // 10 + 1, race_img % 10)
+
+    def raceimg_rows(race_img):
+        res = raceimg_resolve(race_img)
+        if not res:
+            return res, [], []
+        imgs = res2img.get(res, [])
+        return res, imgs, [r for i in imgs for r in img_rows.get(i, [])]
+
+    # ---- 网络数据集的版本标签（ver）：zircon-only / mud3-only / 共享
+    WIKI_VER = {}
+    for _sec in ("monsters", "items", "skills", "npcs", "maps"):
+        _m = WIKI_VER.setdefault(_sec, {})
+        for _x in wiki.get(_sec, []):
+            _v = frozenset(_x.get("ver") or [])
+            if _x.get("name"):
+                _m.setdefault(("en", nkey(_x["name"])), _v)
+            if _x.get("zh"):
+                _m.setdefault(("zh", nkey(_x["zh"])), _v)
+
+    RACEIMG = {"resolve": raceimg_resolve, "rows": raceimg_rows, "img2res": img2res,
+               "res2img": res2img, "by_base": mud3_by_base}
+
+    # ---- NPC 坐标通道：Zircon NPCInfo(Region 质心) ↔ MUD3 Merchant.txt
+    _merch = (wiki.get("mud3", {}).get("merchants") or [])
+    _by_map = defaultdict(list)
+    for _m in _merch:
+        _by_map[_m.get("map")].append(_m)
+    _regs = {r["Index"]: r for r in load_json(WORKSPACE / "MapRegion.json", {}).get("rows", [])}
+    _maps = {r["Index"]: r for r in load_json(WORKSPACE / "MapInfo.json", {}).get("rows", [])}
+    NPC_COORD = {}
+    for _n in load_json(WORKSPACE / "NPCInfo.json", {}).get("rows", []):
+        _reg = _regs.get((_n.get("Region") or {}).get("Index"))
+        _mp = _maps.get((_reg.get("Map") or {}).get("Index")) if _reg else None
+        _pr = (_reg or {}).get("PointRegion") or {}
+        if not _mp or _pr.get("CenterX") is None:
+            continue
+        _code = _mp.get("FileName")
+        _cx, _cy = _pr["CenterX"], _pr["CenterY"]
+        _cands = []
+        for _m in _by_map.get(_code, []):
+            _d = ((_m.get("x", 0) - _cx) ** 2 + (_m.get("y", 0) - _cy) ** 2) ** 0.5
+            if _d <= 12:
+                _cands.append((round(_d, 1), _m))
+        _cands.sort(key=lambda x: x[0])
+        if len(_cands) == 1:
+            NPC_COORD[_n["Index"]] = {"mud3_name": _cands[0][1].get("name"),
+                                      "script": _cands[0][1].get("script"),
+                                      "dist": _cands[0][0], "map": _code,
+                                      "x": _cx, "y": _cy}
 
     mud3_names = {r["Name"] for r in mud3["monsters"] if r.get("Name")}
     mud3_items = {r["Name"] for r in mud3["items"] if r.get("Name")}
@@ -835,26 +1202,37 @@ def main() -> None:
         pool = pools[name]
         if name == "monsters":
             payloads[name] = audit_monsters(recs, ws_by_index, wiki, idx, lomcn_norm, lomcn_rows,
-                                            pool, attest_for[name], legacy_link=LEGACY_LINK["monsters"])
+                                            pool, attest_for[name], legacy_link=LEGACY_LINK["monsters"],
+                                            raceimg=RACEIMG, site_names_zh=site_monster_names,
+                                            sina_names=sina_names, wiki_ver=WIKI_VER,
+                                            wiki_section="monsters")
         elif name == "items":
             payloads[name] = audit_generic(recs, "item", idx, mud3_items | site_item_names, pool,
                                            zircon_names=ZSET["item"], zircon_rows=ZROWS["item"][0],
                                            zircon_kind="ItemInfo", legacy_link=LEGACY_LINK["items"],
                                            looks_legacy=looks_legacy, legacy_items=mud3["items"],
-                                           looks_site_count=looks_site_count)
+                                           looks_site_count=looks_site_count, item_fp=ITEM_FP,
+                                           item_rev=ITEM_REV, wiki_ver=WIKI_VER,
+                                           wiki_section="items",
+                                           zircon_rows_by_index={r["Index"]: r for r in
+                                                                 load_json(WORKSPACE / "ItemInfo.json", {}).get("rows", [])})
         elif name == "skills":
             payloads[name] = audit_generic(recs, "magic", idx, mud3_magic | site_skill_names, pool,
                                            zircon_names=ZSET["magic"], zircon_rows=ZROWS["magic"][0],
-                                           zircon_kind="MagicInfo", legacy_link=LEGACY_LINK["skills"])
+                                           zircon_kind="MagicInfo", legacy_link=LEGACY_LINK["skills"],
+                                           wiki_ver=WIKI_VER, wiki_section="skills")
         elif name == "maps":
             payloads[name] = audit_generic(recs, "map", idx, map_zh, pool,
                                            direct_code_zh=mud3_mapinfo, zircon_names=ZSET["map"],
                                            zircon_rows=ZROWS["map"][0], zircon_kind="MapInfo",
-                                           zname_field="Description")
+                                           zname_field="Description", wiki_ver=WIKI_VER,
+                                           wiki_section="maps")
         elif name == "npcs":
             payloads[name] = audit_generic(recs, "npc", idx, wiki_npc_zh | wiki_npc_names | merchant_zh, pool,
                                            zircon_names=ZSET["npc"], zircon_rows=ZROWS["npc"][0],
-                                           zircon_kind="NPCInfo", zname_field="NPCName")
+                                           zircon_kind="NPCInfo", zname_field="NPCName",
+                                           npc_coord=NPC_COORD, wiki_ver=WIKI_VER,
+                                           wiki_section="npcs")
         elif name == "respawns":
             payloads[name] = audit_generic(recs, "respawn", idx, set(), pool)
             payloads[name] = propagate_respawns(payloads[name], payloads["monsters"], payloads["maps"])

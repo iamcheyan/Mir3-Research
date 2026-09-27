@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-26T14:10:43.336555+00:00",
+  "generated_at": "2026-09-27T01:28:02.786323+00:00",
   "data_version": "MIR3-WEB-ENTITY-AUDIT-2026.09.26",
   "goal": "mir2ei ↔ Zircon 全量实体映射 · 网络检索闭合审计",
   "source_totals": {
@@ -15,9 +15,9 @@
     "monster": {
       "total": 527,
       "direction": {
-        "both": 144,
-        "mir2ei-only": 84,
-        "zircon-only": 299
+        "both": 346,
+        "mir2ei-only": 55,
+        "zircon-only": 126
       },
       "direction_before_audit": {
         "both": 67,
@@ -25,26 +25,28 @@
         "zircon-only": 373
       },
       "status": {
-        "both-resolved-by-web-alias": 124,
-        "pending-web-evidence": 388,
+        "both-resolved-by-web-alias": 329,
         "conflict": 12,
-        "both-resolved": 3
+        "mir2ei-only-after-web-audit": 45,
+        "pending-web-evidence": 73,
+        "zircon-only-after-web-audit": 68
       },
       "previous_status": {
-        "both-resolved-by-web-alias": 121,
-        "pending-web-evidence": 388,
+        "both-resolved-by-web-alias": 329,
         "conflict": 12,
-        "both-resolved": 6
+        "mir2ei-only-after-web-audit": 45,
+        "pending-web-evidence": 73,
+        "zircon-only-after-web-audit": 68
       },
-      "review_required": 400,
-      "web_alias_closed": 124,
-      "with_external_source": 473
+      "review_required": 198,
+      "web_alias_closed": 329,
+      "with_external_source": 480
     },
     "npc": {
       "total": 294,
       "direction": {
-        "both": 217,
-        "zircon-only": 77
+        "both": 235,
+        "zircon-only": 59
       },
       "direction_before_audit": {
         "both": 188,
@@ -52,30 +54,30 @@
       },
       "status": {
         "partial": 31,
-        "both-resolved-by-web-alias": 53,
-        "pending-web-evidence": 77,
+        "both-resolved-by-web-alias": 103,
         "conflict": 9,
-        "both-resolved": 51,
-        "production-applied": 73
+        "production-applied": 73,
+        "both-resolved": 19,
+        "pending-web-evidence": 59
       },
       "previous_status": {
         "partial": 31,
-        "both-resolved-by-web-alias": 53,
-        "pending-web-evidence": 77,
+        "both-resolved-by-web-alias": 103,
         "conflict": 9,
-        "both-resolved": 51,
-        "production-applied": 73
+        "production-applied": 73,
+        "both-resolved": 19,
+        "pending-web-evidence": 59
       },
-      "review_required": 117,
-      "web_alias_closed": 53,
-      "with_external_source": 87
+      "review_required": 99,
+      "web_alias_closed": 103,
+      "with_external_source": 186
     },
     "item": {
       "total": 1402,
       "direction": {
-        "both": 410,
-        "mir2ei-only": 174,
-        "zircon-only": 818
+        "both": 812,
+        "mir2ei-only": 158,
+        "zircon-only": 432
       },
       "direction_before_audit": {
         "both": 47,
@@ -83,23 +85,27 @@
         "zircon-only": 1031
       },
       "status": {
-        "both-resolved-by-web-alias": 410,
-        "pending-web-evidence": 992
+        "both-resolved-by-web-alias": 811,
+        "mir2ei-only-after-web-audit": 99,
+        "pending-web-evidence": 60,
+        "zircon-only-after-web-audit": 432
       },
       "previous_status": {
-        "both-resolved-by-web-alias": 410,
-        "pending-web-evidence": 992
+        "both-resolved-by-web-alias": 811,
+        "mir2ei-only-after-web-audit": 99,
+        "pending-web-evidence": 60,
+        "zircon-only-after-web-audit": 432
       },
-      "review_required": 992,
-      "web_alias_closed": 410,
-      "with_external_source": 1397
+      "review_required": 591,
+      "web_alias_closed": 811,
+      "with_external_source": 1402
     },
     "skill": {
       "total": 176,
       "direction": {
-        "both": 78,
+        "both": 82,
         "mir2ei-only": 1,
-        "zircon-only": 97
+        "zircon-only": 93
       },
       "direction_before_audit": {
         "both": 59,
@@ -107,15 +113,17 @@
         "zircon-only": 115
       },
       "status": {
-        "both-resolved-by-web-alias": 78,
-        "pending-web-evidence": 98
+        "both-resolved-by-web-alias": 82,
+        "mir2ei-only-after-web-audit": 1,
+        "zircon-only-after-web-audit": 93
       },
       "previous_status": {
-        "both-resolved-by-web-alias": 78,
-        "pending-web-evidence": 98
+        "both-resolved-by-web-alias": 82,
+        "mir2ei-only-after-web-audit": 1,
+        "zircon-only-after-web-audit": 93
       },
-      "review_required": 98,
-      "web_alias_closed": 78,
+      "review_required": 94,
+      "web_alias_closed": 82,
       "with_external_source": 176
     },
     "map": {
@@ -131,46 +139,48 @@
       "status": {
         "conflict": 6,
         "partial": 16,
-        "both-resolved-by-web-alias": 46,
-        "pending-web-evidence": 404
+        "both-resolved-by-web-alias": 160,
+        "zircon-only-after-web-audit": 13,
+        "pending-web-evidence": 277
       },
       "previous_status": {
         "conflict": 6,
         "partial": 16,
-        "both-resolved-by-web-alias": 46,
-        "pending-web-evidence": 404
+        "both-resolved-by-web-alias": 160,
+        "zircon-only-after-web-audit": 13,
+        "pending-web-evidence": 277
       },
-      "review_required": 426,
-      "web_alias_closed": 46,
+      "review_required": 312,
+      "web_alias_closed": 160,
       "with_external_source": 194
     },
     "respawn": {
       "total": 2475,
       "direction": {
-        "both": 1589,
-        "zircon-only": 886
+        "both": 2291,
+        "zircon-only": 184
       },
       "direction_before_audit": {
         "zircon-only": 2058,
         "both": 417
       },
       "status": {
-        "both-resolved-by-web-alias": 1213,
-        "pending-web-evidence": 886,
+        "both-resolved-by-web-alias": 1944,
+        "pending-web-evidence": 184,
         "conflict": 89,
-        "both-resolved": 269,
+        "both-resolved": 240,
         "production-applied": 18
       },
       "previous_status": {
-        "both-resolved-by-web-alias": 1213,
-        "pending-web-evidence": 886,
+        "both-resolved-by-web-alias": 1944,
+        "pending-web-evidence": 184,
         "conflict": 89,
-        "both-resolved": 269,
+        "both-resolved": 240,
         "production-applied": 18
       },
-      "review_required": 2188,
-      "web_alias_closed": 1213,
-      "with_external_source": 1216
+      "review_required": 2217,
+      "web_alias_closed": 1944,
+      "with_external_source": 1944
     },
     "quest": {
       "total": 62,
@@ -209,6 +219,6 @@
     "legacy_zh_names": 1602,
     "sina_names": 386
   },
-  "external_source_count": 19,
-  "search_query_count": 13
+  "external_source_count": 24,
+  "search_query_count": 18
 }

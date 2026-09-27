@@ -195,6 +195,59 @@
       "skill-zh-attestation"
     ]
   },
+  "mud3-raceimg-crosswalk": {
+    "url": "https://mir3.iamcheyan.com/data/wiki_data_v2.json",
+    "title": "老版 MUD3 monster.dat RaceImg → Zircon Mon-N.Zl 图库/shape 交叉表（本地推导 + 像素复核）",
+    "publisher": "本地：docs/research/mud3-dat-decoded/monster.json + zircon/GodotClient/Formats/MonsterLookup.cs + EI 客户端 Data/Mon-*.wil",
+    "accessed_at": "2026-09-26T19:00+09:00",
+    "excerpt": "RaceImg = (lib-1)*10 + shape；10 个已知锚点 8 个尺寸序列完全一致；EI Mon-N.wil 与 Zircon Mon-N.Zl 逐帧尺寸 115/150 恒等，同 lib/shape 逐帧平均色差 4.28-9.87（BC1 再编码量级），判定为同一美术。",
+    "used_for": [
+      "legacy-raceimg-image",
+      "identity-without-names"
+    ]
+  },
+  "mud3-merchant-coord": {
+    "url": "https://mir2ei.iamcheyan.com/data/wiki_data_v2.json",
+    "title": "老版 MUD3 Merchant.txt 商人坐标表（318 条）↔ Zircon NPCInfo(Region 质心)",
+    "publisher": "本地 /data/NAS/TMP/Mud3/Envir/Merchant.txt（GB18030）+ mir2ei 百科 mud3.merchants",
+    "accessed_at": "2026-09-26T19:00+09:00",
+    "excerpt": "318 条 {name, map, x, y, script}；与 Zircon NPCInfo 的 MapRegion.PointRegion.CenterX/Y 对齐，130 条距离 0 唯一命中，且多数 script 名与 Zircon NPC 的 _Identity 段一致。",
+    "used_for": [
+      "legacy-npc-coord"
+    ]
+  },
+  "ei-client-resources": {
+    "url": "https://mir3.iamcheyan.com/library.html",
+    "title": "EI 3.0 客户端 Data/ 图库（Mon-1..16.wil 等 36 个怪物库）",
+    "publisher": "本地客户端副本 /data/NAS/TMP/EI传奇3.0客户端/Data",
+    "accessed_at": "2026-09-26T19:00+09:00",
+    "excerpt": "Mon-1..Mon-16.wil + DMon-1 + MonImg/MonMagic；老版怪物美术只存在于 Mon-1..16，Zircon 另加 Mon-17..34 新美术。",
+    "used_for": [
+      "resource-library-scope"
+    ]
+  },
+  "17173-mir3-mission": {
+    "url": "https://mir3.17173.com/mission/rw3.htm",
+    "title": "17173 传奇3 专区 · 3G 江湖任务（王大人任务链，含 NPC 坐标）",
+    "accessed_at": "2026-09-26T19:00+09:00",
+    "bytes": 38520,
+    "excerpt": "王大人任务 3-1：比奇县的王大人(193:223) → 说服书店主人英勋(170:246) 与中药商郑雄(189:255) 加入比奇商会。资料站 mission 页是**任务攻略文**，不是任务定义表。",
+    "used_for": [
+      "quest-mapping-attempt",
+      "why-not-mir2ei-only"
+    ]
+  },
+  "sina-mir3-npc-list": {
+    "url": "https://games.sina.com.cn/z/mir3/2003-06-12/12217.shtml",
+    "title": "NPC功能列表_传奇三_新浪游戏 (2003-06-12)",
+    "accessed_at": "2026-09-26T19:00+09:00",
+    "bytes": 72363,
+    "raw_copy": "raw/games.sina.com.cn_z_mir3_2003-06-12_12217.shtml",
+    "excerpt": "老版 NPC 中文名 + 地图码 + 坐标：怪物租赁商 0(352,282) · 六面神石1 0(498,463) · 六面神石4 0(379,444) · 路标栏 0(450,386)；与 Zircon NPCInfo 的 MapRegion 质心通道互为独立佐证。",
+    "used_for": [
+      "legacy-npc-coord-corrob"
+    ]
+  },
   "mir3-archive-site": {
     "url": "https://mir3.iamcheyan.com/",
     "title": "传奇三 · 资料 archive（17173 传奇3 专区镜像）",
