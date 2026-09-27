@@ -11985,3 +11985,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔边界与落盘〕** README D4 补充 `ISM_USER_INFO → TUserInfo → SM_USER_INFO` 的源码侧路由，`tools-and-servers.md` §12 记录 command dispatch 和 payload 改写，ledger 第 134 行将 `UserSystem.pas` 从 pending 改为 covered。未据此推断线上状态语义或 EI 数据库映射；未启动服务、改数据库或 Zircon。
 
 **〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 246/95377，partial 17/90886，excluded 43/60230，pending 87/68831。四个指定文件的 `git diff --check` 通过；`privacy_scan.py --staged` 对 4 个暂存文件通过。未运行 GameServer/多服/数据库。
+
+## Round 844 — 2026-09-27：GameServer CRC helper 与 hash-list 语义
+
+**〔范围〕** 经 source-reader 全读 `GameServer/crc_32.pas`（1–54）与 `ElHashList.pas`（1–325），并全源码范围 grep `CrcStr`/`crc32`、`TElHashList.Create`/`ehtCRC32`。读取范围不含非源码资源；`ElHashList` 的相关内容按完整读入台账。
+
+**〔CRC 与消费者〕** `crc_32` 用 `$EDB88320` 生成 reflected 256 项表；`CrcStr` 以 0 为 seed，按 `byte(Str[i])` 逐字符更新且无 final XOR。对该递推的独立 Python 翻译将 ASCII `123456789` 算为 `2DFD2D88`，而 `zlib.crc32` 为 `CBF43926`；这是算法翻译对照，不是 Pascal/Windows runtime 结果。source-reader 找到的直接 `CrcStr` caller 只有 `ElHashList`；其它 `Source/Client/DrawHint` 与 ImageEditor/DelphiZlib CRC API 名称相近但接口/实现不同。
+
+**〔hash-list 行为〕** `TElHashList` 提供 MD5/quick/CRC32 三模式，但 CRC/quick 只保存并比较 32-bit hash、不保留原始 key；不同 key 的 hash 碰撞会折叠为相同查找/重复项。Duplicate enum 有 `himMove`，duplicate switch 却只显式处理 ignore/raise/replace，`himInsert`/`himMove` 都继续新增记录；ignore/raise 在 `New(P)` 后不 dispose，`Delete` 也移除指针并搬移数组但不释放 record（MD5 模式另有 digest allocation）。均为静态代码观察。
+
+**〔使用边界与落盘〕** 全源码 grep 未发现 `TElHashList.Create` 的非注释外部调用；FriendSystem/TagSystem/UserMgr 仅保留注释提及并实际构造 `TList`/`TStringList`。README D5 新增 helper 与 EI MirDB 的证据边界，`tools-and-servers.md` §13 记录公式、hash-only collision 和 duplicate cleanup 行为；ledger 第 101/136 行将两个文件登记 covered。未据此断言部署服务确实使用该 helper，也未建立 EI `.db` checksum/schema 映射。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 248/95756，partial 17/90886，excluded 43/60230，pending 85/68452。四个指定文件的 `git diff --check` 通过；`privacy_scan.py --staged` 对 4 个暂存文件通过。无 Delphi/Windows 构建或运行验证。

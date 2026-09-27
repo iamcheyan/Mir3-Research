@@ -98,7 +98,7 @@ A/C-server	Source/GameServer/CryptMd5.pas	497	18297	pending
 A/C-server	Source/GameServer/DBSQL.pas	1050	33281	covered	Round 839 full 1–1050: ADO SQL sidecar for user market/guild board; direct/stored-procedure SQL construction, not character-record mapper
 A/C-server	Source/GameServer/DragonSystem.pas	604	18322	partial	Round 816: DecodeStrInfo状态机格式；其余实现待读
 A/C-server	Source/GameServer/EDCode.pas	464	15569	covered	Round 803 diff
-A/C-server	Source/GameServer/ElHashList.pas	325	9435	pending	
+A/C-server	Source/GameServer/ElHashList.pas	325	9435	covered	Round 844 full 1–325; hash-only lookup/duplicate modes, CRC/quick collision aliasing, delete/discard cleanup gaps; no in-package constructor caller found
 A/C-server	Source/GameServer/Envir.pas	1540	51192	covered	Round 808/812: 世界模型+.map格式+对象注册+移动门+门+MapQuest+EnvirList
 A/C-server	Source/GameServer/Event.pas	323	7629	covered	Round 829 type constants; Round 834 full 1–323: 4 derived event classes + manager, scheduler/closed lifecycle, mine-map exception, mining/Magic callsites, Zircon comparison; no EI server-semantic equivalence inferred
 A/C-server	Source/GameServer/FSrvValue.pas	93	2329	pending	
@@ -133,7 +133,7 @@ A/C-server	Source/GameServer/UserMgr.pas	726	21672	covered	Round 802 FriendSyste
 A/C-server	Source/GameServer/UserMgrEngn.pas	276	6926	covered	Round 842 full 1–276; suspended-thread lifecycle, stClient/DB/interserver queue paths, verified caller families
 A/C-server	Source/GameServer/UserSystem.pas	153	4879	covered	Round 843 full 1–153; ISM_FRIEND_OPEN/CLOSE/USER_INFO dispatch methods, slash-body parsing and SM_USER_INFO client response
 A/C-server	Source/GameServer/UsrEngn.pas	3696	122341	covered	Round 803 校验和 + 好友透传
-A/C-server	Source/GameServer/crc_32.pas	54	972	pending	
+A/C-server	Source/GameServer/crc_32.pas	54	972	covered	Round 844 full 1–54; reflected EDB88320 table, zero-seed/no-final-XOR CrcStr; only direct consumer is ElHashList
 A/C-server	Source/GameServer/itmunit.pas	897	29538	partial	Round 816: 升级两公式/攻速有符号编码/Desc映射/GetUpgradeStdItem；8个UpgradeRandom*实现待读
 A/C-server	Source/GameServer/svMain.pas	1880	60780	covered	Round 808 EnvirDir 读取点
 D-client	Source/Client/Actor.pas	4743	194647	partial	Round 819: 动作帧公式+46表329项+HA全表+CurrentAction映射+Shift重复定义查明；Run/ReadyAction/THumActor实现待读
