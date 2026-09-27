@@ -12049,3 +12049,17 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔未验证〕** `BoViewHackCode` 有 `ObjBase` 活跃消费者；`BoViewAdmissionFail` 在所检 GameServer 源码中除注释外无消费者。`DecLimitTime` 出现在面板及启动/保存配置路径，但没有找到运行时读取点。未运行 Windows GameServer，也未比较 Zircon。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 104 行将 93 行 `FSrvValue.pas` 登记 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；台账为 393 文件/315324 行：covered 252/97574，partial 17/90886，excluded 43/60230，pending 81/66634。四个指定文档路径 `git diff --check` 通过。无 Windows/GameServer 运行验证。
+
+## Round 849 — 2026-09-27：Preview ImageEditor 主窗体与 WIL/Lib 编辑流
+
+**〔范围〕** 经 `Tools/source-read/read_src.py show` 全读 `ImageEditor.dpr`（1–26）、`FrmMain.pas`（1–1285）、`FrmAdd.pas`（1–1149）、`FrmAlpha.pas`（1–420）、`FrmDel.pas`（1–111）、`FrmOut.pas`（1–325）。`FrmMain.dfm` 为文本（1–1752）；`dfm_parse.py tree` 因文件以 `object FormMain:` 而不是 `TPF0` 开头未能解析，改用 source-reader 读取原文中的窗口属性/控件。另读 `WIL.pas` 工厂（125–163），并 source-reader grep 核实 helper 调用及 `FSaveDir`/`FormatBitmap` 引用。没有运行或调用会写入 `.Wil`/`.Lib` 的工具操作。
+
+**〔启动、窗口与资源路由〕** project 建立 `TFormMain` 后依序创建 add/delete/export/conversion dialogs。主窗体 DFM client area 为 1102×789；上方 toolbar、中间 scroll/render panel、下方 16 列 `DrawGrid` 与 status bar。DFM 的 `PanelDraw` 初始 1024×768，在 `FormCreate` 改为 1920×1080；`MyDevice` 同为 windowed 1920×1080，初始化时建立 texture/render target 并启动 timer。Mir3 `.wil` handler 选择 `t_wmM3Def`，custom `.Lib` handler 选择 `t_wmMyImage`，`CreateWMImages` 分别创建 `TWMM3DefImages`/`TWMMyImageImages`；main grid 选中后复制数据至纹理并更新坐标/格式状态栏。
+
+**〔编辑与转换数据流〕** add/delete 都拒绝未初始化、read-only 或非 `TWMMyImageImages` 对象。`FrmAdd` 的 image/offset/no-stream、append/insert/replace 分支可读取 BMP/PNG/TGA 并编码写入 `.Lib` 数据区及 index list；coordinate/format sidecars 来自 `IMAGEOFFSETDIR` text files。`FrmDel` 以起止 index 算 data offsets，移除 archive bytes 并更新 offset list。主窗口活动 WIL→Lib click 只打开 `TfrmConvertDlg`；`FrmAlpha` 解码 `TWMM3DefImages`、逐图编码并写入 `TWMMyImageImages`。旧的 main-unit inline converter 在注释块中，不能当活动实现。
+
+**〔导出与静态偏差〕** `FrmOut` 可输出普通 BMP 或通过 D3DX 输出 BMP/PNG/TGA/DDS；可选文本 sidecar 记录 x/y、shadow offset/flag，以及 custom 格式码。勾选 `Out_Clear` 会在 index 校验前递归删除输入目录文本框路径，未执行此删除操作。主表 `COL_COUNT=16`，但 Add/Delete 的 refresh 使用 `ImageCount div 6 + 1`，可能生成额外空行。`FrmAdd.File_AddClick` 先把文件路径降为 basename 再用 `ExtractFilePath` 组合 offset sidecar，因此显式文件选择路径可能查到工作目录而不是所选文件目录；纯静态观察。source-reader grep 中 main-unit `FormatBitmap` 唯一 call 在已注释的旧 converter；`FSaveDir` 只看到声明、初始化空值及 timer 检查/调用，无 assignment 命中，截图导出分支在当前源内看似未接通。
+
+**〔primary/source 对照〕** **Primary:** 本轮未对 EI primary-static/editor/UI 或游戏内渲染作并列检查。**Source:** Preview Delphi ImageEditor 的主窗体 DFM、`.wil`/`.Lib` 工厂和导入/删除/导出/转换流。**Difference:** 目前无法建立此作者工具与 EI 游戏客户端界面/资源表现的一一对应，也不宣称存在已验证的 primary-source delta。**Conclusion:** 只保留为 Preview source-side authoring-tool 证据，不外推 EI 客户端 UI、WIL 显示或 Zircon 行为。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 29–33、35 行将六个全读文件（共 3316 行）登记 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；`ledger.py --summary` 同为 393 文件/315324 行：covered 258/100890，partial 17/90886，excluded 43/60230，pending 75/63318。四个指定文档路径 `git diff --check` 通过。没有运行 ImageEditor 或执行任何资源写入。

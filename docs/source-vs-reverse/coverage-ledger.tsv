@@ -26,13 +26,13 @@ E-tools	Source/Tools/ImageEditor/DES.pas	563	16633	pending
 E-tools	Source/Tools/ImageEditor/DLLFile.pas	4977	519550	pending	
 E-tools	Source/Tools/ImageEditor/DLLLoader.pas	1134	36886	pending	
 E-tools	Source/Tools/ImageEditor/DropGroupPas.pas	114	2662	pending	
-E-tools	Source/Tools/ImageEditor/FrmAdd.pas	1149	41794	pending	
-E-tools	Source/Tools/ImageEditor/FrmAlpha.pas	420	12856	pending	
-E-tools	Source/Tools/ImageEditor/FrmDel.pas	111	3208	pending	
-E-tools	Source/Tools/ImageEditor/FrmMain.pas	1285	43419	pending	
-E-tools	Source/Tools/ImageEditor/FrmOut.pas	325	10788	pending	
+E-tools	Source/Tools/ImageEditor/FrmAdd.pas	1149	41794	covered	Round 849 full 1–1149; writable TWMMyImage image/offset import, BMP/PNG/TGA conversion, insert/append/replace and index updates; explicit-file sidecar path and 6-vs-16 grid-count mismatch are static-only
+E-tools	Source/Tools/ImageEditor/FrmAlpha.pas	420	12856	covered	Round 849 full 1–420; active WIL→Lib dialog converts TWMM3DefImages entries into TWMMyImageImages; indexed R5G6B5 encoding and batch/single paths; no execution
+E-tools	Source/Tools/ImageEditor/FrmDel.pas	111	3208	covered	Round 849 full 1–111; writable TWMMyImage delete range removes bytes and updates index; refresh uses ImageCount div 6 despite main's 16 columns; static-only
+E-tools	Source/Tools/ImageEditor/FrmMain.pas	1285	43419	covered	Round 849 full 1–1285; `.wil`/`.Lib` class dispatch, DX9 grid/render, 16 columns and 1920×1080 target, dialog routes; text DFM 1–1752 read by source-reader after TPF0 parser rejection; inline converter commented, FSaveDir has no assignment found
+E-tools	Source/Tools/ImageEditor/FrmOut.pas	325	10788	covered	Round 849 full 1–325; indexed image export and coordinate sidecar; Out_Clear recursively deletes chosen directory before index-range validation; static-only
 E-tools	Source/Tools/ImageEditor/HUtil32.pas	2682	63476	pending	
-E-tools	Source/Tools/ImageEditor/ImageEditor.dpr	26	710	pending	
+E-tools	Source/Tools/ImageEditor/ImageEditor.dpr	26	710	covered	Round 849 full 1–26; application startup and main/add/delete/export/conversion form creation order
 E-tools	Source/Tools/ImageEditor/MyCommon.pas	526	19429	pending	
 E-tools	Source/Tools/ImageEditor/MyD3DX9.pas	11277	453687	pending	
 E-tools	Source/Tools/ImageEditor/WIL.pas	523	14765	pending	
