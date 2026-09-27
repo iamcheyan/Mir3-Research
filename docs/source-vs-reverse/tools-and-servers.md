@@ -419,3 +419,12 @@ Round 835 全读 LoginServer 应用层与本目录 C++ 编码/包辅助文件；
 - `THashInsertDupesMode` declares `himMove`, but the duplicate switch handles only ignore/raise/replace; `himInsert` and `himMove` fall through to insert a new record at `Index`. Ignore/raise paths return or raise after `New(P)` without disposing the allocation. `Delete` shifts the pointer list but does not dispose the removed hash record (nor a separately allocated MD5 digest).
 - Source-reader search finds `CrcStr` only inside `ElHashList`; no non-comment `TElHashList.Create` callsite outside its constructor. FriendSystem/TagSystem/UserMgr mention that class only in comments and construct `TList`/`TStringList` instead. Other repository matches in Client/DrawHint and ImageEditor/DelphiZlib use separate CRC APIs; no equivalent runtime use is inferred.
 - This legacy helper does not establish a MirDB checksum, any EI `.db` mapping, or active GameServer behavior; no Delphi build or runtime exercise was available.
+
+## 14. GameServer `TFrontEngine` load/save queues（Round 846）
+
+- `svMain` 创建 suspended `TFrontEngine`，完成初始化后 `Resume`；close timer 在 `UserEngine.GetRealUserCount = 0` 且 `FrontEngine.IsFinished` 时退出。`Execute` 每轮跑 `ProcessReadyPlayers` 与 `ProcessEtc`，异常只输出固定文本，sleep 1 ms 后检查 `Terminated`。
+- `LoadPlayer`、`ChangeUserInfos`、`AddDBData` 分别入 ready、gold-change、DB-message lists；`ProcessReadyPlayers` 在 `fuLock` 下复制待处理列表并清空 ready/change/data lists，锁外执行工作，保存队列则保留到成功或超时删除。加载经 `LoadHumanCharacter` 得 `FDBRecord` 后交 `UserEngine.AddNewUser`；失败路径调用 forced-close，外层还调用 `RunSocket.CloseUser`。
+- `UsrEngn.SavePlayer` 先以 `FDBMakeHumRcd` 组 `PTSaveRcd`，再 `AddSavePlayer`；FrontEngine 每隔超过 500 ms 重试 `SaveHumanCharacter`。若 `savefail > 20`，即使本轮保存仍失败也走删除分支、设 `hum.BoSaveOk := TRUE` 并记超时警告；这是源码中的失败放弃路径，不代表实际运行中已触发。
+- `ChangeUserInfos` 经队列加载记录（传 `"1"` 作 uid/address、certify=1），仅在 `0 < Gold + ChangeGold < MAXGOLD` 时改金币并保存；成功才通知 `UserEngine.ChangeAndSaveOk`。`ObjBase` 的金币增减命令在目标不属于当前/其它服时走此路径。
+- `CmdMgr` 把编码后的用户消息入 `fDBDatas`；处理端通过 `RunDB.SendNonBlockDatas` → `SendRDBSocket(0, data)` 送 DB socket。`CmdMgr` 中旧的直接发送/等待循环是注释代码。`HasServerHeavyLoad` 仅检查保存队列数量达到 1000，影响 `UsrEngn` 的角色上线与周期保存；`IsFinished` 仅检查保存队列为空，并被关服 timer 使用。
+- 静态读数；未在 Windows GameServer/DB server 中运行。此队列和 RunDB character-record socket 不证明 EI MirDB `.db` 的格式或来源。

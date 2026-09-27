@@ -12009,3 +12009,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔覆盖〕** `coverage-ledger.tsv` 第 97 行把 `CryptMd5.pas` 全读登记为 covered；与 Round 844 的 `ElHashList`/`crc_32` 一起覆盖 MD5/quick/CRC hash-list 代码依赖。README D5 与 `tools-and-servers.md` §13 延伸该 helper 的 legacy-use 与 EI DB 边界。
 
 **〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 249/96253，partial 17/90886，excluded 43/60230，pending 84/67955。四个指定文件的 `git diff --check` 通过；`privacy_scan.py --staged` 对 4 个暂存文件通过。无 Delphi/Windows 构建或运行验证。
+
+## Round 846 — 2026-09-27：GameServer `TFrontEngine` 角色与 DB 消息队列
+
+**〔范围〕** 经 source-reader 全读 `GameServer/FrnEngn.pas`（1–457），并追踪 `svMain` 的建线程/resume/关服检查（420–430、1654–1658、1803–1808）、`UsrEngn` 的 save/enqueue/heavy-load 调用、`CmdMgr` 的 DB data 入列和 `RunDB.SendNonBlockDatas` 实现、`ObjBase` 的 gold-adjust caller。调用片段不登记为完整覆盖。
+
+**〔队列与角色加载〕** suspended `TFrontEngine` 持 ready/save/change/DB-data 四类列表；`ProcessReadyPlayers` 在 `fuLock` 下复制快照，清空 ready/change/data，锁外逐项处理，保存队列继续保留到移除。RunGate 的 `LoadPlayer` 建 ready request；worker 经 `LoadHumanCharacter` 取 `FDBRecord` 并交 `UserEngine.AddNewUser`。失败时 `OpenUserCharactor` 先 `SendForcedClose`，回到 batch handler 后还有 `RunSocket.CloseUser` 分支。worker 每圈再执行 `ProcessEtc`，按小时设置 `MirDayTime`，loop sleep 1ms。
+
+**〔保存、金币与 DB message〕** `UsrEngn.SavePlayer` 用 `FDBMakeHumRcd` 准备 `PTSaveRcd` 后入保存队列；FrontEngine 超过 500 ms 才重试 `SaveHumanCharacter`。分支条件是 `SaveHumanCharacter(...) or (savefail > 20)`，因此超过阈值即使本次保存失败也会删除队列项、标记 `hum.BoSaveOk` 并记录超时警告；不是成功落库证明。Gold-change worker 以硬编码 `'1'` uid/address 与 certification 1 加载记录，只在余额严格位于 `(0, MAXGOLD)` 时修改并保存，成功才 `ChangeAndSaveOk`。`CmdMgr` 的 `AddDBData` 入列经过 `SendNonBlockDatas` 调用 `RunDB.SendRDBSocket(0, data)`；CmdMgr 旧直接发送和 `g_DbUse` 等待处于注释中。
+
+**〔运行边界〕** `HasServerHeavyLoad` 只按 SavePlayers 数量 ≥1000 返回；`UsrEngn` 用它推迟建号/角色恢复和周期保存。`IsFinished` 只检保存队列，svMain 在 real-user count 为 0 时用它触发关闭，未包含 ready/change/DB-data 队列。均为静态路径；未运行 Windows、多服或 DB server。RunDB character-record transport 不等于 EI MirDB 文件。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 106 行登记 `FrnEngn.pas` 全读；README D5 与 `tools-and-servers.md` §14 记录队列关系、DB 边界与失败放弃分支。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；台账为 393 文件/315324 行：covered 250/96710，partial 17/90886，excluded 43/60230，pending 83/67498。四个指定文件的 `git diff --check` 通过；`privacy_scan.py --staged` 对 4 个暂存文件通过。未运行 Windows GameServer/DB server。

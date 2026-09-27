@@ -103,7 +103,7 @@ A/C-server	Source/GameServer/Envir.pas	1540	51192	covered	Round 808/812: 世界�
 A/C-server	Source/GameServer/Event.pas	323	7629	covered	Round 829 type constants; Round 834 full 1–323: 4 derived event classes + manager, scheduler/closed lifecycle, mine-map exception, mining/Magic callsites, Zircon comparison; no EI server-semantic equivalence inferred
 A/C-server	Source/GameServer/FSrvValue.pas	93	2329	pending	
 A/C-server	Source/GameServer/FriendSystem.pas	988	32581	covered	Round 802 好友系统
-A/C-server	Source/GameServer/FrnEngn.pas	457	12405	pending	
+A/C-server	Source/GameServer/FrnEngn.pas	457	12405	covered	Round 846 full 1–457; FrontEngine load/save/change/DB-message queues, 500ms retry and >20 failure discard path, shutdown/heavy-load checks
 A/C-server	Source/GameServer/Guild.pas	3600	121469	covered	Round 827 partial notes superseded where corrected; Round 834 full 1–3600: save/war/rank/ally/estate/decor/SQL-board implementation and callers; active war 6h (3h stale comment), MakeAlly caller checks, immediate+deferred write; items-systems §17.1
 A/C-server	Source/GameServer/IdSrvClient.pas	549	16935	covered	Round 803 公钥协商链
 A/C-server	Source/GameServer/InterMsgClient.pas	279	8362	covered	Round 841 full 1–279: parenthesized interserver TCP client, buffered ISM dispatch, master address/port and 20s reconnect trigger
