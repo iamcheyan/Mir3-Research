@@ -12344,8 +12344,24 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 
 **〔交互与 undo〕** `PboxMouseDown` 把鼠标坐标换算成相对格，可分别编辑 mark、background/middle tile、object image、light 和 door/core-door metadata；background tile 只在 x/y 均为偶数时添加，SmTile/Tile palette 的 caller 会设定 `CanDrawSmTitle` 与中层/背景模式。`PboxPaint` 按 checkbox 绘制各图层与 marks/light/door overlay。`CopyPiece` 保存最多 20 个逐 piece undo entry，Ctrl+Z 恢复或删除最后一次触及的 record；方向按钮调用的 `ShiftPieces` 直接移动所有相对坐标而不调用 `CopyPiece`，所以这些位移不能由该 undo path 回退。`BtnClearClick` 调用 `ClearPiece` 同时清除 pieces 和 undo。DFM 上 `Button1` 绑定的 `Button1Click` 当前主体全部注释掉。
 
-**〔调用方与追加路径〕** `ObjSet.SetGridDblClick` 在列表非 nil 时复制选中 set，仅在 Execute 返回 true 时复制结果并 `UpdateSet`；取消时外部列表不变。`FrmObjSet.Execute` 调用 `Show`，为 modeless。随后 `EdMain.MapPaintMouseUp` 请求 `SetGrid.RowCount-1`；ObjSet 将 `RowCount` 设为 `SetList.Count+1`，而 `GetSet` 只接受至 `SetList.Count-1`，所以该索引是空 append row，返回 nil。handler 将地图矩形选区写入临时列表，ObjEdit 克隆后仅释放临时 `TList` 容器；mrOk 时 `UpdateSet` 在末尾 append 返回列表，取消时不插入，不覆盖既有 set。独立菜单 `RunObjEditer1Click` 仅调用 Execute，不在该 handler 导入/导出 caller list。
+**〔调用方与追加路径〕** `ObjSet.SetGridDblClick` 在列表非 nil 时复制选中 set，仅在 Execute 返回 true 时复制结果并 `UpdateSet`；取消时外部列表不变。`FrmObjSet.Execute` 调用 `Show`，为 modeless。随后 `EdMain.MapPaintMouseUp` 请求 `SetGrid.RowCount-1`；通常的 `RowCount=SetList.Count+1` 使该索引成为 nil append row，选择矩形只在 `mrOk` 后追加。例外是 `PasteSet` 插入 buffer 但未更新 `RowCount`；此后同一索引可能是最后一个真实 set，地图矩形选择会在 ObjEdit 确认前清空/替换它，取消时该 slot 留下矩形快照。独立菜单 `RunObjEditer1Click` 仅调用 Execute，不在该 handler 导入/导出 caller list。
 
 **〔生命周期与 primary/source 边界〕** `FormDestroy` 释放两个 list 容器但不调用 `ClearPiece` 清理仍留在其中的记录；这是静态 ownership 路径观察。只根据 Preview source/mixed DFM；未运行 Delphi build、UI、取消/undo 场景或 EI 对比。
 
 **〔覆盖与验证〕** ledger 第 12 行登记 `ObjEdit.pas` 的 1,018 行为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 280/132303，partial 17/90886，excluded 43/60230，pending 53/31905。staged 仅四个授权文档路径，`git diff --cached --check` 无输出；新增行 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均 0 hits；完整 staged diff 已复核。临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
+
+## Round 872 — 2026-09-28：MapEdit ObjSet manager
+
+**〔范围、资源与启动〕** source-reader 分三段全读 `Source/Tools/MapEdit/ObjSet.pas`（1–484，CP949），读 35 行 mixed DFM，并搜索 EdMain/Tile callers。DPR include/auto-create `TFrmObjSet`；`TFrmMain.FormShow` 调 `InitializeObjSet`，其读取 `mir.set`。ObjSet.Execute 只调用 `Show`，为 modeless manager。DFM 可见 stay-on-top、DrawGrid 的 click/double-click/draw/key bindings 与 Save/Load dialogs；`dfm_parse.py tree` 在 EOF 抛 `IndexError`，未恢复完整 layout/captions。
+
+**〔list 与 row-count 状态〕** `SetList` 是 `TList` of `TList`，每个 set 持有 `PTPieceInfo` records；`Buffers` 保存 CopySet 的副本。`GetSet` 仅接受 `0..SetList.Count-1`。Load/update/insert/delete 都将 `SetGrid.RowCount` 设为 `SetList.Count+1`，把末行留作 append row；`PasteSet` 只 `SetList.Insert`，没有刷新 RowCount，按键 caller 也只 `SetGrid.Refresh`。因此 paste 后末行不再是 append row；ObjEdit 选区路径以 `RowCount-1` 查询时可能命中末尾真实 set，并在 modal 结果前替换它。
+
+**〔键盘与双击编辑〕** Ctrl+Insert 把选中 list 复制到 Buffers；Shift+Insert 将缓冲复制品插入；bare Insert 插入 nil slot；Ctrl+Delete 删除 set，bare Delete 只会删除 nil slot；Enter 走双击编辑。双击将选中 set 复制到 ObjEdit，只有 mrOk 时复制编辑结果并 UpdateSet，取消保留原 SetList。Copy/paste/insert/delete 对 grid 行数的维护并不一致，其中 paste 的 stale-row 行为如上。
+
+**〔mir.set 读写〕** `SaveToFile` 写 `NEW` marker、`[index]` 分段与 14 个空格分隔字段；`LoadFromFile` 把方括号行当分段边界而忽略数值 index。`NEW` 使所有数值用 `StrToIntDef` 原样读；旧式路径由 `Str_ToInt1` 将十进制数拆成 `k div 10000` / `k mod 10000`，转换为 `i*65535+j`。Save 跳过 nil slot，Load 不依据 header index 重建空位，因此 list holes 不保留。文件不存在时 `LoadFromFile` 不调用 `ClearSet`，但仍按当前 `SetList.Count` 重设 RowCount。
+
+**〔地图放置与静态边界〕** grid click 设 `mdObjSet` 并建立 set cursor；main form 的 `DrawObjectSet` 在 undo bracket 内检查前景 object collision，再用 setters 写 background/middle/front、mark、animation、light、door，并由 caller 标记 Edited。`ClearSet` 将每个 slot 强制当作非 nil `TList` 并解引用；bare Insert 创建的 nil slot 随后走 clear/reload 可触发非法 dereference。`SetGridDrawCell` 只要任一 piece 有 animation 就显示 tick 文本，但文本读取最后一个 piece 的 `anitick`。创建选区新 set 的路径释放临时 TList 容器但未 Dispose 内部 records；ObjEdit.FormDestroy 同样未清理仍持有的记录。ObjSet.FormCreate 分配 SetList/Buffers，但源码没有相应 destroy handler 释放容器和剩余 record pointers。
+
+**〔primary/source 边界〕** 仅 Preview Delphi 源码和 mixed DFM 静态观察；未运行 Delphi build、mir.set round-trip、paste/row-count、清除 nil slot、地图 stamping 或 EI 对比。
+
+**〔覆盖与验证〕** ledger 第 13 行登记 `ObjSet.pas` 的 484 行为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 281/132787，partial 17/90886，excluded 43/60230，pending 52/31421。staged 仅四个授权文档路径，`git diff --cached --check` 无输出；新增行 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均 0 hits；完整 staged diff 已复核。临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
