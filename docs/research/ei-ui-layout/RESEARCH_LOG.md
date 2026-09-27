@@ -12107,3 +12107,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔调用边界与 primary/source〕** 全 `Source` 中 `TDLLLoader` 只有 `DLLFile` 这一调用单元；`FindExport`、`FindExportPerIndex`、`GetExportList` 未找到外部 caller。`DLLFile` 本身没有外部 source reference，ImageEditor 项目引用表也不包含 loader/payload，故完整 mapper 实现不等于已证实的应用运行路径。**Primary:** 未比对 EI。**Source:** Preview 手写 PE32 mapper。**Difference:** source caller reachability 不成立；不外推 EI 客户端或音频行为，也不作安全评估。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 27 行将 `DLLLoader.pas` 的 1,134 行登记 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 protocol constants、EDCODE selftest、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；`ledger.py --summary`：393 文件/315324 行，covered 261/107564，partial 17/90886，excluded 43/60230，pending 72/56644。四个授权文档路径的 `git diff --check` 通过。未执行 native mapper/DLL。
+
+## Round 853 — 2026-09-27：ImageEditor `WM_DROPFILES` helper 与可达性
+
+**〔范围〕** source-reader 全读 `DropGroupPas.pas`（1–114，CP949）与实际 `FrmAlpha.dfm`（1–232）；读取 `FrmAlpha.pas` 的 unit/import 搜索并对全 `Source` 搜索 `DropGroupPas`、`TDropFileGroupBox`、`OnDropFile`。Win32 API contract 对照 Microsoft Learn 的 [`WM_DROPFILES`](https://learn.microsoft.com/en-us/windows/win32/shell/wm-dropfiles)、[`DragFinish`](https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-dragfinish)、[`DragAcceptFiles`](https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-dragacceptfiles)；未运行 ImageEditor。
+
+**〔组件生命周期与消息处理〕** constructor 创建 `TStringList`、设 `FActive=False`/`FAutoActive=True`；创建 window handle 后默认调用 `DragAcceptFiles(Handle, TRUE)`。`WMDropFiles` 从 `Msg.Drop` 读取文件数，清空并重填 exposed `Files` list，只有列表非空才回调 `OnDropFile(Self)`。析构释放 list；事件列表只通过源码 helper 暴露，没有其他 caller。
+
+**〔HDROP/窗口状态差异〕** Microsoft 文档说明 `WM_DROPFILES` 的 `wParam` 是待查询的 `HDROP`，`DragFinish` 接受该 `HDROP` 并释放系统 transfer memory，`DragAcceptFiles(hwnd,FALSE)` 才停止窗口接受拖放。源码 `ChangeActive(FALSE)` 却调用 `DragFinish(Handle)`（HWND 参数而非 HDROP），没有调用 `DragAcceptFiles(...,FALSE)`；`WMDropFiles` 查询 `Msg.Drop` 后也未 `DragFinish(Msg.Drop)`。这是 API 合约对照下的静态 handle/cleanup mismatch，未执行验证。
+
+**〔表单可达性与 primary/source〕** `FrmAlpha.pas` 只在 uses 引入 `DropGroupPas`；ImageEditor 搜索中 `TDropFileGroupBox` 与 `OnDropFile` 都只有组件单元自身命中，完整 `FrmAlpha.dfm` 无该组件或事件，FrmAlpha source 也无 drop handler。故目前没有证据表明转换对话框使用该 helper。**Primary:** 未比较 EI。**Source:** Preview `WM_DROPFILES` helper。**Difference:** helper implementation 不等于活动 ImageEditor file-drop flow；不外推 EI UI 行为。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 28 行将 `DropGroupPas.pas` 的 114 行登记 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 protocol constants、EDCODE selftest、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；`ledger.py --summary`：393 文件/315324 行，covered 262/107678，partial 17/90886，excluded 43/60230，pending 71/56530。四个授权文档路径的 `git diff --check` 通过。未运行 ImageEditor。
