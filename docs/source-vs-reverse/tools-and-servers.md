@@ -664,6 +664,12 @@ Round 835 全读 LoginServer 应用层与本目录 C++ 编码/包辅助文件；
 - A full authorized-reader comparison of the two Common sources found identical functional code; differences are the unit declaration, whitespace/alignment, and blank lines. The no-allocation/suppressed-error `CompressBufZ`/`DecompressBufZ` implementations and stream EOF/error/seek defects are therefore shared (see §16ab).
 - Source-wide search found only `Source/Common/ZLibx.pas` and the separate `Source/Tools/ImageEditor/Common/ZLibx.pas` unit declarations, with no import, project mapping, or caller. The ImageEditor copy was not compared for equivalence. No Delphi build or runtime test was performed.
 
+## 16ad. `Source/Common/bass.pas` BASS 2.4 external API binding（Round 924）
+
+- Full read: 1,021 lines / 52,162 bytes (CP949). The Un4seen BASS 2.4 unit declares platform imports (`bass.dll`, `libbass.so`, `libbass.dylib`) with Windows `stdcall` and non-Windows `cdecl`, plus constants, 32-bit `DWORD` handles, callback types and device/sample/channel/plugin/effect records. Some records have `CPUX64` padding; `BASS_Init` uses Windows handle/GUID types only on Windows, and DirectSound/EAX imports are Windows-only.
+- The unit's local implementations are `BASS_SPEAKER_N` (speaker index shifted left 24) and the Windows-only `BASS_SetEAXPreset` (predefined EAX environments; unknown values return false); the remaining API surface is imported from BASS. No compiler/ABI validation was performed.
+- Client `ClMain` imports `Bass` and calls `BASS_Init`; `SoundUtil` imports `Bass` and calls stream/play functions. `Mir3.dpr` lists `ClMain` and `SoundUtil` but has no explicit `Bass in ...` mapping, so selection of `Source/Common/bass.pas` is unverified. ImageEditor has a separate same-named Common binding with no found caller/project binding; its embedded `BassDLL` PE is not connected to these external imports. No ImageEditor or Client audio equivalence/runtime is established.
+
 ## 17. Preview ImageEditor WIL/Lib authoring UI（Round 849）
 
 - `ImageEditor.dpr` creates `TFormMain`, then the add/delete/export/conversion dialogs. Main form `FrmMain.dfm` is textual (1–1752); `dfm_parse.py tree` rejected its `object FormMain:` prefix because the parser expects `TPF0`, so geometry and controls were read with the source-reader. The form client area is 1102×789; toolbar/status/grid surround a scrollable render panel. DFM `MyDevice` and runtime `PanelDraw` use 1920×1080, windowed rendering.

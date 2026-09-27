@@ -297,7 +297,7 @@ C-common	Source/Common/Scanf.pas	256	6006	covered	Round 920/921 full reads: unli
 C-common	Source/Common/SscanfUtil.pas	256	6011	covered	Round 921 full read: complete body identical to Scanf.pas except unit declaration; same parser bounds/literal/conversion defects; neither unit mapped or actively called
 C-common	Source/Common/ZLibEx.pas	726	21853	covered	Round 922 full read: zlib 1.0.4 stream/buffer wrappers; Z-helper allocations commented and errors swallowed; EOF/truncation, error-class, reset-position and cleanup defects; Client wmM3Zip calls DecompressBuf but Common copy resolution unverified
 C-common	Source/Common/ZLibx.pas	733	21557	covered	Round 923 full read: ZLibx functional implementation matches ZLibEx except unit name/formatting; same buffer/stream defects; no project map, imports, or callers; ImageEditor Common copy remains distinct
-C-common	Source/Common/bass.pas	1021	52162	pending	
+C-common	Source/Common/bass.pas	1021	52162	covered	Round 924 full read: BASS 2.4 external API surface with platform libraries/calling conventions, callback/record declarations, speaker and Windows EAX helpers; Client BASS calls do not resolve this unit because Mir3.dpr lacks explicit Bass source mapping; ImageEditor same-name binding/payload separate; no ABI or runtime validation
 C-common	Source/Common/mudutil.pas	1009	26358	pending	
 E-login	Source/LoginServer/_Oranze Library/_Oranze Library.sln	21	919	covered	Round 836 full 1–21: VS solution maps Debug/Release to Win32
 E-login	Source/LoginServer/_Oranze Library/_Oranze Library.vcproj	651	15488	covered	Round 836 full 1–651: VS 7.10 static-library settings, source/header inventory, Win32 Debug/Release
