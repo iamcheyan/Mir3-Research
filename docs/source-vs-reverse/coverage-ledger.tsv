@@ -160,7 +160,7 @@ D-client	Source/Client/SoundUtil.pas	735	19504	covered	Round 906: dual SoundMana
 D-client	Source/Client/WIL.pas	749	21533	covered	Round 807 图库格式
 D-client	Source/Client/clEvent.pas	218	5444	covered	Round 907: SM_SHOWEVENT field mapping, local/server callers, six event render cases, manager lifecycle, stale fire light and distance cleanup
 D-client	Source/Client/cliUtil.pas	1258	42862	covered	Round 908: active draw/fade helpers, no-op legacy fog/MMX routines, uncalled color caches, startup surfaces without unload caller
-D-client	Source/Client/magiceff.pas	1621	53077	partial	Round 826: 15 类 + TMagicEff基类(Run 10s超时/DrawEff飞行vs爆炸/Dir16*10/GetFlyXY 900ms)；其余12类实现待读
+D-client	Source/Client/magiceff.pas	1621	53077	covered	Round 909: all 15 effect classes, spell/projectile factories and Actor/AxeMon/ClMain callers; corrected GetFlyXY/Shift timing, empty unused lighting stub, scroll-hide frame mismatch, nil dereference and inactive-list lifecycle gaps
 D-client	Source/Client/uWilFile.pas	582	21446	covered	Round 807 路径表与回退
 D-client	Source/Client/wmM2Def.pas	525	17922	pending	
 D-client	Source/Client/wmM2Zip.pas	302	9989	covered	Round 825: Mir2压缩格式全解(.WZX索引48B头/21B图头/双路径解码/Encode=5为16位/格式自动探测)
