@@ -11975,3 +11975,13 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔边界与落盘〕** README D4 增加 user-manager queue 路由注记，`tools-and-servers.md` §12 记录线程、selector 与调用关系，ledger 第 133 行把全读文件从 pending 改为 covered。`stDBServer` 消息 selector 不等于 EI MirDB 文件；本轮没有建立 `System.db`/`Users.db` schema 或来源映射，未改数据库/服务/Zircon。
 
 **〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 245/95224，partial 17/90886，excluded 43/60230，pending 88/68984。四个指定文件的 `git diff --check` 通过；`privacy_scan.py --staged` 对 4 个暂存文件通过。未运行 GameServer/多服/数据库。
+
+## Round 843 — 2026-09-27：GameServer UserSystem 跨服状态回送
+
+**〔范围〕** 通过 source-reader 全读 `GameServer/UserSystem.pas`（1–153），并读取 `UserMgr.pas` 对 `ISM_FRIEND_OPEN`/`ISM_FRIEND_CLOSE`/`ISM_USER_INFO` 的对象 dispatch（460–520）及 `OnSendInfoToOthers`（681–690）。这些局部调用点不登记为完整文件覆盖。
+
+**〔状态消息〕** `TUserMgr` 为已找到的 user function 设 `Msg.pInfo := Func.FInfo`，将上述三类命令分派到 `Func.FInfo.OnCmdChange`。`TUserInfo.OnCmdChange` 再进入相应 handler；本 unit 的 friend-open/close handlers 是空实现。`OnCmdISMUserInfo` 从 body 拆出 `UserName/ConnState/MapInfo/`，组出 client body `UserName/MapInfo`，并将状态转为 `SM_USER_INFO.Param`；非 `BoTestServer` 时状态被强制改为 `0`，然后用本机 gate/user handles 调 `UserMgrEngine.InterSendMsg(stClient, ...)`。`UserMgr.OnSendInfoToOthers` 生成匹配的 slash body 并以 `stOtherServer` 发送 `ISM_USER_INFO`。
+
+**〔边界与落盘〕** README D4 补充 `ISM_USER_INFO → TUserInfo → SM_USER_INFO` 的源码侧路由，`tools-and-servers.md` §12 记录 command dispatch 和 payload 改写，ledger 第 134 行将 `UserSystem.pas` 从 pending 改为 covered。未据此推断线上状态语义或 EI 数据库映射；未启动服务、改数据库或 Zircon。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 246/95377，partial 17/90886，excluded 43/60230，pending 87/68831。四个指定文件的 `git diff --check` 通过；`privacy_scan.py --staged` 对 4 个暂存文件通过。未运行 GameServer/多服/数据库。
