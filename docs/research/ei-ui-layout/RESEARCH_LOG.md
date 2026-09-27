@@ -12365,3 +12365,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔primary/source 边界〕** 仅 Preview Delphi 源码和 mixed DFM 静态观察；未运行 Delphi build、mir.set round-trip、paste/row-count、清除 nil slot、地图 stamping 或 EI 对比。
 
 **〔覆盖与验证〕** ledger 第 13 行登记 `ObjSet.pas` 的 484 行为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 281/132787，partial 17/90886，excluded 43/60230，pending 52/31421。staged 仅四个授权文档路径，`git diff --cached --check` 无输出；新增行 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均 0 hits；完整 staged diff 已复核。临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
+
+## Round 873 — 2026-09-28：MapEdit SmTile small-tile palette
+
+**〔范围与资源〕** source-reader 全读 `Source/Tools/MapEdit/SmTile.pas`（1–155，CP949），并读取 31 行 mixed `SmTile.dfm`、DPR 及 `EdMain`/`ObjEdit` 相关 caller。DPR auto-creates `TFrmSmTile`；DFM reader view 暴露 stay-on-top、FormCreate/FormShow、TileGrid draw/click 和 combo-change bindings。`dfm_parse.py list/tree` 只恢复 form root 与 `BorderStyle`，combo 内容及完整控件几何不可用。
+
+**〔两种 palette mode〕** `CanDrawSmTile` 仅在 `FrmObjEdit` 不可见且 `SpeedButton1.Down` 时进入 automatic 模式：3 列、每组 `MIDDLEBLOCK=60` 帧，预览列使用每个 group base 的 +33、+0、+17 帧；`UnitMax=ceil(ImageCount/60)`，但 `RowCount=UnitMax+1`，click 只接受 `<UnitMax` 的行，而 DrawCell 按 total `ImageCount` 检查行，因此额外行可能请求 selectable group range 之外的 frame。其它上下文按 5 列显示 individual frames，`RowCount=max(1, ImageCount div 5)`，非 5 的倍数时不创建容纳余数的最后一行。
+
+**〔选择和 caller〕** 两模式 click 都写 `mdMiddle` 与当前 library index；automatic 模式将选中行作为 60-frame group index，`EdMain.MapPaintMouseUp` 的 `mbAuto` 分支交给 `DrawAutoMiddleTile`，按 group base 生成中层图号。Individual 模式写 flattened image index；ObjEdit 将 palette reparent 到编辑器，其 piece-paint handler 经 `GetCurrentImageIndex`/`GetCurrentFileIndex` 读取中层图号与库号。`GetCurrentImageIndex` 对 `ImageCount` 做范围判断并在越界时返回 -1；未找到 active MapEdit caller 调用 `SetImageUnitCount`，`EdMain.FormShow` 的调用仍在注释内。
+
+**〔selector 与 source 边界〕** `SmTile.FormCreate` 原有 combo Items.Add 循环和 `ItemIndex := 0` 均已注释；在 inspected `Source/Tools` 中未找到其它 active `CBSmTitle` 列表初始化。`EdMain.InitWMImagesLib` 填充 70 项 `WilArr`，其中 small-tile 名称位于 3、17、31、45、59；但 `EdMain.WilSmTile` 可见函数体引用 `WilSmTileArr`，全 `Source` exact-name reader search 未找到该名称的声明，因此不能从现有文本确认 combo 到库的映射或 build/link 结果。此处只记录 Preview Delphi 源码/mixed DFM 的静态行为；未运行 build、palette/rendering、tile-placement 测试或 EI 比较。
+
+**〔覆盖与验证〕** ledger 第 14 行登记 `SmTile.pas` 的 155 行为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；源码台账为 393 文件/315324 行，covered 282/132942，partial 17/90886，excluded 43/60230，pending 51/31266。staged 仅四个授权文档路径，`git diff --cached --check` 无输出；staged additions 的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均 0 hits；完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
