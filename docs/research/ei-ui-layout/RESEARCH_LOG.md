@@ -12079,3 +12079,17 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔副本与 primary/source 边界〕** ImageEditor 树内 string/hex wrappers 未找到外部 caller；实际 buffer consumers 位于 local `wmMyImage.pas`。另有 `ImageEditor/Common/DES.pas`（同名 PChar API）及 `Source/Common/DES.pas`（PAnsiChar buffer declarations）；MapEdit 与 Client 的 `wmMyImage` 也有同名 buffer calls，但本轮没有证明这些副本实现相同或判定其编译解析目标。**Primary:** 未比较 EI 静态资源/协议。**Source:** Preview ImageEditor DES 与 `.Lib` 调用路径。**Difference:** 没有 EI 对照件可据此建立。**Conclusion:** 仅保留源码行为，不推导 EI 等价或安全适用性。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 25 行将 `DES.pas` 的 563 行登记 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；`ledger.py --summary`：393 文件/315324 行，covered 259/101453，partial 17/90886，excluded 43/60230，pending 74/62755。四个授权文档路径 `git diff --check` 通过。未运行 Delphi 或做真实 `.Lib` 写入。
+
+## Round 851 — 2026-09-27：ImageEditor 嵌入 BASS PE 与 loader 可达性
+
+**〔范围〕** 经 `Tools/source-read/read_src.py show` 全读 `DLLFile.pas`（1–4977，CP949；主要是 98,872-byte 常量数组），并读取尾部版本资源与 initialization/finalization（4920–4977）。配套检查 `DLLLoader.pas` 的状态字段/构造析构（319、636–655）、`Load`（694–1054）、`Unload`/导出查询（1056–1131）、`Common/bass.pas` 的 external declarations（808–840）、`ImageEditor.dproj` DCC references（54–76）；这些 supporting units 不是本轮全文件销账。
+
+**〔内嵌载荷与生命周期〕** `BassSize=98872`，`BassData` 是定长 byte array；起始 `MZ`/`PE` header 的 machine 为 `0x014C`（I386），resource 字符串包含 BASS `2.4.3`。若该 unit 被链接，initialization 会将数组写入 `TMemoryStream` 并调用 `BassDLL.Load`；其 Boolean result 未检查，stream 随后直接 Free，finalization 调用 `BassDLL.Free`。
+
+**〔manual loader〕** `TDLLLoader.Load` 校验 DOS/PE header 和 I386，VirtualAlloc 映射 image/sections，按有限的 relocation types 修正地址，使用 `LoadLibrary`/`GetProcAddress` 解析 imports，设定 section protection，调用 image entrypoint 的 PROCESS_ATTACH，再建 export lookup。`Unload` 调 PROCESS_DETACH、VirtualFree sections/image，并 FreeLibrary 外部依赖。析构与 unload 检查 `@DLLProc <> nil`（字段地址）而非检查 procedure pointer 是否已赋值；若 Load 在 entrypoint 初始化前失败，源码控制流可走到 nil 调用，未执行验证。
+
+**〔源码可达性〕** 全 `Source` 的 `DLLFile`/`BassDLL` 搜索只命中 `DLLFile.pas` 自身；`ImageEditor.dproj` 的 DCCReference 不包含 `DLLFile`/`DLLLoader`/`Common/bass.pas`。`Common/bass.pas` 声明 external `bass.dll` API，但 ImageEditor 搜索只有 declarations、没有 BASS 调用点，也没有任何 `BassDLL.FindExport` 消费者。因此不能从这批源码断言嵌入 DLL 在 ImageEditor app 中实际加载/使用；external `bass.dll` declarations 也不是该内存映射对象的动态导出绑定。
+
+**〔primary/source 对照〕** **Primary:** 本轮未检 EI 音频、资源或客户端 DLL。**Source:** Preview ImageEditor 的 PE byte-array、unit init/finalization 与 `DLLLoader` manual-map path。**Difference:** 查到的 project/source 引用没有连接到 BASS API caller。**Conclusion:** 仅登记为未证实可达的源码嵌入载荷；未运行原生 DLL，也不外推 EI behavior 或安全结论。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 26 行将 `DLLFile.pas` 的 4,977 行登记 covered，`DLLLoader.pas` 仍 pending。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 protocol constants、EDCODE selftest、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；`ledger.py --summary`：393 文件/315324 行，covered 260/106430，partial 17/90886，excluded 43/60230，pending 73/57778。四个授权文档路径的 `git diff --check` 通过。未运行 ImageEditor 或原生 DLL。

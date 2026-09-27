@@ -23,7 +23,7 @@ E-tools	Source/Tools/MapEdit/Wil/wmM3Zip.pas	217	6608	pending
 E-tools	Source/Tools/MapEdit/Wil/wmMyImage.pas	739	25737	pending	
 E-tools	Source/Tools/MapEdit/Wil/wmUtil.pas	4497	489745	pending	
 E-tools	Source/Tools/ImageEditor/DES.pas	563	16633	covered	Round 850 full 1–563 (CP949); 16-round DES core and string/hex/buffer contracts; ImageEditor buffer callers in wmMyImage cover marker and gated first-128-byte payload path; sibling copies not equated
-E-tools	Source/Tools/ImageEditor/DLLFile.pas	4977	519550	pending	
+E-tools	Source/Tools/ImageEditor/DLLFile.pas	4977	519550	covered	Round 851 full 1–4977 (CP949); 98,872-byte I386 BASS 2.4.3 PE array plus unit-init/finalization loader calls; no external DLLFile/BassDLL source reference found; loader return ignored
 E-tools	Source/Tools/ImageEditor/DLLLoader.pas	1134	36886	pending	
 E-tools	Source/Tools/ImageEditor/DropGroupPas.pas	114	2662	pending	
 E-tools	Source/Tools/ImageEditor/FrmAdd.pas	1149	41794	covered	Round 849 full 1–1149; writable TWMMyImage image/offset import, BMP/PNG/TGA conversion, insert/append/replace and index updates; explicit-file sidecar path and 6-vs-16 grid-count mismatch are static-only
