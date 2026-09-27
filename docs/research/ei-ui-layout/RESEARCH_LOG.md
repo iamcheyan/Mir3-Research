@@ -12185,3 +12185,17 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔primary/source 边界〕** 只记录 Preview ImageEditor 的共享变量与工具 helper；未对 EI 原版静态文件、helper、图库或游戏 UI 作并列核对。没有 Delphi 编译、运行或文件写入，不能据此推断 EI helper、client rendering 或库格式兼容行为。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 39 行将 root `ZShare.pas` 的 442 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 检查、ledger、29 个 Python 文件语法）；`ledger.py --summary`：393 文件/315324 行，covered 267/123128，partial 17/90886，excluded 43/60230，pending 66/41080。四个授权文档路径的 whitespace、staged privacy scan 与完整 diff review 另行完成；privacy scan 为本地临时 pattern check，不是仓库官方 scanner。
+
+## Round 859 — 2026-09-27：ImageEditor M3Def WIL index and run decoder
+
+**〔范围〕** 经 source-reader 全读 `Source/Tools/ImageEditor/wmM3Def.pas`（1–460，CP949），另读其 root `WIL.pas` 生命周期片段、`ImageEditor.dpr/.dproj`、`FrmMain`、`FrmAlpha`、`FrmOut` 的相关调用片段。`.dpr/.dproj` 显式引用 root unit，Debug/Release 均定义 `WORKFILE`，compiler 配置为 DCC32。Source-wide 搜索还找到 `Source/Tools/MapEdit/Wil/wmM3Def.pas` 与 `Source/Client/wmM3Def.pas`；不把两个副本当作本轮实现，也未比较其差异。未编译或运行 Delphi，也未读写 archive。
+
+**〔格式与 RLE〕** `Initialize` 先从 WIL header 的 `VerFlag=5000` 设置 `FNewFmt` 和 `ImageCount`；active `LoadIndex` 再从 `.WIX` byte 20 读取 count、byte 24 读取 signature，以 high word `$B13A` 选取 24/28-byte offset-table start，并在 table-size check 通过时以 WIX count 覆盖 `FImageCount`。旧图像头读取 `SizeOf(TWMImageInfo)-4`，新格式读取完整 record。active `Decode` 对每行读取 16-bit 长度，`$C0` 跳过零填充区，`$C1`–`$C3` 复制后续 word run；未知 tag 返回 false，但不检查 source bounds、row width 或 run count。只有注释中的旧 `Decode` 才根据 `FNewFmt` 加两行并裁切。bitmap 路径替换零 word 为 `g_OutBackColor`；direct texture 输出 `A8R8G8B8` 并由 word 是否为零决定 alpha 0/255。
+
+**〔调用与生命周期〕** root `TWMM3DefImages` 被工厂分派为 `t_wmM3Def`；WIL 打开、主网格 `CopyDataToTexture`、FrmOut alpha/普通导出和 FrmMain/FrmAlpha WIL→Lib 转换均有文本调用。转换调用把异常/空 bitmap 记成缺图；base `GetImageBitmap` 本身只是直达 override、没有 catch，所读网格和普通导出调用亦无外围 catch。`NewFmt` 驱动主窗状态栏旧/新格式标签。子类 `Finalize` 清 index list 再调用 base finalizer；base 释放缓存并关闭 stream；子类 destructor 只调用 inherited。
+
+**〔静态边界〕** active `LoadIndex` 的 `FileOpen` handle 未关闭；固定读取 WIX byte 20/24 发生在验证映射长度之前，offset pointer 只在后续 table-size 条件内分配，却在条件外读取及释放，失败时 `FImageCount` 仍可能是 WIL header count。只要 `fhandle>0`，外层就将 `Result` 设 True，即使 `CreateFile`/mapping/view/table-size 分支失败也可能继续初始化。图像 header read count 未检查，`dwImageLength*2` 未设 payload 上界；`GetImageBitmapEx` 不检查 seek，`CopyImageDataToTexture` 用 `Texture.Width` 作行步长而非 `Access.Pitch`，且不限制 decoded run totals。均为静态控制流发现，未复现。
+
+**〔primary/source 边界〕** 只记录 Preview ImageEditor root unit，不推断 MapEdit/Client 同名副本或 EI 的行为。没有 Delphi 编译、游戏运行、WIL/WIX 实测或 EI primary-static decoder 对照。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 40 行将 root `wmM3Def.pas` 的 460 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 检查、ledger、29 个 Python 文件语法）；`ledger.py --summary`：393 文件/315324 行，covered 268/123588，partial 17/90886，excluded 43/60230，pending 65/40620。四个授权文档路径的 whitespace 检查通过；staged additions 的 PEM private-key、AWS key、GitHub-token、credential-assignment、email 临时 patterns 均为 0 hits，完整 staged diff 已复核。该 pattern scan 是本地临时检查，不是仓库官方 scanner。未运行 Delphi/ImageEditor，也未读写 WIL/WIX。
