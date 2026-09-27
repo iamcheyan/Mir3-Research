@@ -638,6 +638,13 @@ Round 835 全读 LoginServer 应用层与本目录 C++ 编码/包辅助文件；
 - CRUD boundaries include `ReadRecord` returning true after a successful seek even on short read; `GetRecord` has no index check, `GetRecordDr` only rejects negative indices, and `Get` always returns `-1`. `AddRecord` consumes a blank slot before writing and does not restore it on failure. `DBSaveAs` ignores `FileCopyEx`'s result but returns true; `GetRcdFromFile` stores its open handle in the object field and never closes it. These are static behaviors of the uncalled `TFileDB` class, not observed active database writes.
 - No Delphi build, runtime, raw-file fixture, or EI layout comparison was performed.
 
+## 16z. `Source/Common/Scanf.pas` unlinked scanf-like parser（Round 920）
+
+- Full read: 256 lines / 6,006 bytes (CP949). `numScanf` supports `%d`/`%f`, moving a `LongInt`/`Extended` representation into caller-provided pointers; `strScanf` supports `%s` into an output string array. Unsupported directives stop parsing; this is a small scanf-like subset, not C `scanf`.
+- Both `ScanStr` helpers ignore their character parameter: format literals skip whitespace and advance one source character without checking it matches. `strScanf.GetString` treats the next format character as a delimiter. The numeric parser's `GetInt` sign condition rejects leading `+`, accepts a lone `-` into `StrToInt`, and can let conversion exceptions escape; `GetFloat` accepts arbitrary runs of signs/dots/exponents before `StrToFloat`.
+- Bounds are not robust: `GetInt`/`GetFloat` access `s[n]` before testing `n <= Length(s)`, so another conversion after input exhaustion can read out of range. `strScanf` loops from zero through `SizeOf(Strs)` rather than `High(Strs)` and can index beyond a short output array when enough `%s` directives are present; its empty-token `break` is commented out.
+- Source-wide search found no project binding, import, or active caller. `IntroScn` contains only a commented `strScanf` example. `Source/Common/SscanfUtil.pas` is a separate pending unit with the same exported names; no implementation equivalence is inferred. No Delphi build or runtime test was performed.
+
 ## 17. Preview ImageEditor WIL/Lib authoring UI（Round 849）
 
 - `ImageEditor.dpr` creates `TFormMain`, then the add/delete/export/conversion dialogs. Main form `FrmMain.dfm` is textual (1–1752); `dfm_parse.py tree` rejected its `object FormMain:` prefix because the parser expects `TPF0`, so geometry and controls were read with the source-reader. The form client area is 1102×789; toolbar/status/grid surround a scrollable render panel. DFM `MyDevice` and runtime `PanelDraw` use 1920×1080, windowed rendering.
