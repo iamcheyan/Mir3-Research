@@ -623,6 +623,13 @@ Round 835 全读 LoginServer 应用层与本目录 C++ 编码/包辅助文件；
 - `TimeIsOut` performs manual calendar arithmetic using non-leap `MonthDays[FALSE]`; December rollover increments month to 13 before the post-loop year correction. `FileCopy`/`FileCopyEx` do not check `FileRead`/`FileWrite` counts (a zero read with bytes remaining never reduces the loop counter), and `FileSize` omits `FindClose` after successful `FindFirst`. `SQLSafeToStr` consumes a following escape character without checking end-of-string; unknown escape codes are discarded. Its `\A`–`\H`, `\R`, `\N` substitutions are not a SQL parameterization contract.
 - No Delphi build, runtime, file fixture, or EI comparison was performed; project path resolution is source evidence only.
 
+## 16x. `Source/Common/HashTable.pas` unlinked Pascal hash utility（Round 918）
+
+- Full read: 319 lines / 7,049 bytes (CP949). `THashTable` uses a fixed `Buckets` array (default 256), singly linked `THashItem` chains with string key/value plus `Data` pointer and integer fields. There is no resize/rehash path; `Count` is bucket-array length and `RecordCount` counts allocated nodes.
+- `HashOf` rotates/xors character ordinals; `Find` walks one bucket chain with exact string equality. `IndexOf` only returns `HashOf(Name) mod bucketCount`, even for absent names; `Get`/`Put` and `Strings`/`Items` index bucket heads, not records. `Delete(Index)` removes that bucket's head node.
+- `Add`, the `Values` setter, and the `Datas` setter always prepend a new node without checking for an existing key. Newest duplicates shadow older ones in `Find`; `Remove` deletes only the first matching node, and `Modify`/`SetInteger` update only the first. `Add` declares `Boolean` but never assigns its result. A zero-sized table reaches modulo by zero in lookup/insertion; negative sizes are not validated.
+- Source-wide `THashTable`/`PHashItem` search found only this Pascal unit; there is no import or project mapping. Other `HashTable` matches are the separate LoginServer/DataBaseServer C++ `CMap`/`CIndexMap` APIs, not callers or equivalents. No Delphi build, runtime, or EI comparison was performed.
+
 ## 17. Preview ImageEditor WIL/Lib authoring UI（Round 849）
 
 - `ImageEditor.dpr` creates `TFormMain`, then the add/delete/export/conversion dialogs. Main form `FrmMain.dfm` is textual (1–1752); `dfm_parse.py tree` rejected its `object FormMain:` prefix because the parser expects `TPF0`, so geometry and controls were read with the source-reader. The form client area is 1102×789; toolbar/status/grid surround a scrollable render panel. DFM `MyDevice` and runtime `PanelDraw` use 1920×1080, windowed rendering.
