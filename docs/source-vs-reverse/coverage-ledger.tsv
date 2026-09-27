@@ -292,7 +292,7 @@ C-common	Source/Common/Grobal2 - 副本.pas	2599	96162	covered	Round 803 三表 
 C-common	Source/Common/Grobal2.pas	2862	105217	covered	Round 802/803/820: 474 常量 + QI_/QA_ opcode 表 + ET_ 命名空间
 C-common	Source/Common/HUtil32.pas	2214	60031	covered	Round 917 full CP949 read: shared parser/string/file/GDI/pointer/date helpers; zero-based string indexing, sign/escape/date/file-copy boundaries; Mir3/MapEdit map Common path, GameServer HUtil32 resolution unverified
 C-common	Source/Common/HashTable.pas	319	7049	covered	Round 918 full read: fixed chained buckets; Count is capacity; IndexOf is hash slot only; duplicate setters/Add and unset Boolean result; no Pascal callers or project map, separate C++ hash APIs
-C-common	Source/Common/MfdbDef.pas	1192	38265	pending	
+C-common	Source/Common/MfdbDef.pas	1192	38265	covered	Round 919 full read: conditional packed FDB records; Common copy selected by Server_JOB_ItemGen/RunDB character path; raw .db/.idx TFileDB has no external caller and is not mapped to EI System.db/Users.db; index/I/O/CRUD defects
 C-common	Source/Common/Scanf.pas	256	6006	pending	
 C-common	Source/Common/SscanfUtil.pas	256	6011	pending	
 C-common	Source/Common/ZLibEx.pas	726	21853	pending	
