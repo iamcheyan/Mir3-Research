@@ -12401,3 +12401,17 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔primary/source 边界〕** 仅为 Preview MapEdit 源码及 mixed DFM reader view 的静态控制流；未运行 Delphi build、dialog/键盘输入、map mutation/undo 或 EI 对照。DFM parser 对二进制资源失败，故不声称可接受数值范围或取消交互的实际控件行为。
 
 **〔覆盖与验证〕** ledger 第 16 行登记 `glight.pas` 的 42 行为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；ledger 为 393 文件/315324 行，covered 284/133147，partial 17/90886，excluded 43/60230，pending 49/31061。仅四个授权文档路径 staged，`git diff --cached --check` 无输出；15 条新增行的 PEM private-key、AWS access-key、GitHub-token、credential-assignment、email patterns 均为 0 hits。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
+
+## Round 876 — 2026-09-28：MapEdit legacy tile-attribute palette
+
+**〔范围与资源〕** source-reader 全读 `Source/Tools/MapEdit/mpalett.pas`（1–160，CP949），读取 24 行 mixed `mpalett.dfm`、DPR、`EdMain` 与 `Tile` 关联代码。DPR include 并 auto-create `TFrmMainPal`；DFM reader view 暴露 stay-on-top、`FormCreate`/`FormDestroy` 和 grid draw/click/key handlers，`MainPalGrid` 三列并 Align client。`dfm_parse.py list` 仅恢复 form 与 `<unknown type 0x12>` grid 项，未恢复 grid 默认行数/尺寸或完整属性。
+
+**〔分组预览与选择〕** `FormCreate` 令 `UnitMax=0`、创建 `AttrList` 并调用 `LoadAttribs`。`SetImageUnitCount(ucount)` 设 `ColCount=3`、`RowCount=ucount+1`；仅当现有属性数小于 `ucount` 时从 `AttrList.Count` 加到 `ucount`（含端点），可产生 `ucount+1` 项，既不裁剪较长列表也不校验负 `ucount`。`DrawCell` 和 click 都以 `idx=Row` 忽略 Col；有效 group 用主窗 `WilTile(0)` 绘制帧偏移 +22、0、+21 的三个半尺寸样例，draw/click 均要求 `idx<UnitMax`，所以额外 Row 不画样例也不选 group。click 在范围判断前就把 `DrawMode` 设为 `mdTile`，有效行再设 `ImageIndex=idx`、库索引 0 和 `TileAttrib=GetAttrib(idx)`。
+
+**〔属性文件与快捷键〕** `LoadAttribs` 在当前工作目录检查/读取 `Tile.atr`，清空 `AttrList` 后每个恰为 `'1'` 的行存入 `Pointer(1)`，其它行存 nil；`SaveAttribs` 将整个列表逐项写成 1/0 行，路径为 `BaseDir + '\Tile.Atr'`。`EdMain.FormCreate` 把 `BaseDir` 设成当时的 `GetCurrentDir`，因此读取使用当前目录、保存使用启动时捕获目录。F1 仅检查 `idx < AttrList.Count`，切换该项并保存/刷新；当扩容产生额外列表槽时，grid 的额外行可能通过 F1 改写该槽，但 click/draw 仍拒绝该 row。`GetAttrib` 同样只有上界判断；`MainIndex` 无额外读写或外部 caller 命中。
+
+**〔调用可达性与属性语义〕** DPR 创建 palette，但 `EdMain.FormShow` 的 `SetImageUnitCount` 与 `FrmMainPal.Show` 都被注释，`Tile1Click` 中 `FrmMainPal.Show` 也被注释而 active handler 调 `FrmTile.Show`；source-wide exact-name search 未找到其它 active palette setup/display caller。palette 中 `TileAttrib` 的唯一 main-painter 分支 `PutBigTileXY` 仍是注释；active 写入只保留地图单元原 `$8000` 位并加 tile index，不能据此认为 F1 标记会改变地图绘制。故只确认 form/event 与单元局部行为，不把 palette 的预览/标记路径认定为当前可用主 UI 流程。
+
+**〔primary/source 边界〕** 仅为 Preview MapEdit 静态源码与 mixed DFM reader view；未做 Delphi build、palette rendering、F1/文件 round-trip、tile painting 或 EI 比较。DFM parser 未恢复 grid 的默认尺寸/行数，启动后 palette population/display 也没有 active caller 被证实。
+
+**〔覆盖与验证〕** ledger 第 17 行登记 `mpalett.pas` 的 160 行为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；ledger 为 393 文件/315324 行，covered 285/133307，partial 17/90886，excluded 43/60230，pending 48/30901。仅四个授权文档路径 staged，`git diff --cached --check` 无输出；17 条新增行的 PEM private-key、AWS access-key、GitHub-token、credential-assignment、email patterns 均为 0 hits。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
