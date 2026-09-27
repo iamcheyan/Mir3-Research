@@ -35,7 +35,7 @@ E-tools	Source/Tools/ImageEditor/HUtil32.pas	2682	63476	covered	Round 854 full 1
 E-tools	Source/Tools/ImageEditor/ImageEditor.dpr	26	710	covered	Round 849 full 1–26; application startup and main/add/delete/export/conversion form creation order
 E-tools	Source/Tools/ImageEditor/MyCommon.pas	526	19429	covered	Round 855 full 1–526 (CP949); FrmMain.FormCreate calls GetFileVersion for ParamStr(0) then appends sVersion, result ignored; FrmMain.dfm:16 binds OnCreate; ZShare holds version record; other date/process/CPUID/IDE/version-resource helpers have no external caller found; runtime not verified
 E-tools	Source/Tools/ImageEditor/MyD3DX9.pas	11277	453687	covered	Round 856 full 1–11277 (CP949); D3DX9 Pascal bindings with external stdcall DLL/COM declarations and local math/value helper implementations; configured monolithic alias d3dx9_31.dll (SDK 31); root imports only in FrmAdd (API example commented) and FrmOut (texture export to BMP/PNG/TGA/DDS, HRESULT ignored); nested Plug/MyDirect9/include copy stays separately excluded; DCC32 configured, but unit resolution/link/runtime not verified
-E-tools	Source/Tools/ImageEditor/WIL.pas	523	14765	pending	
+E-tools	Source/Tools/ImageEditor/WIL.pas	523	14765	covered	Round 857 full 1–523 (CP949+mixed); traced root factory/cache/texture/zlib contracts and ImageEditor callers; supporting subclass/form excerpts only, separate MapEdit/Client WIL copies unreconciled; static decoder/index edge cases; no EI comparison or Delphi/runtime verification
 E-tools	Source/Tools/ImageEditor/ZShare.pas	442	12158	pending	
 E-tools	Source/Tools/ImageEditor/wmM3Def.pas	460	14541	pending	
 E-tools	Source/Tools/ImageEditor/wmMyImage.pas	745	25784	pending	
