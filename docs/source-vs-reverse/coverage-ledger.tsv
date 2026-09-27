@@ -22,7 +22,7 @@ E-tools	Source/Tools/MapEdit/Wil/wmM3Def.pas	457	14519	pending
 E-tools	Source/Tools/MapEdit/Wil/wmM3Zip.pas	217	6608	pending	
 E-tools	Source/Tools/MapEdit/Wil/wmMyImage.pas	739	25737	pending	
 E-tools	Source/Tools/MapEdit/Wil/wmUtil.pas	4497	489745	pending	
-E-tools	Source/Tools/ImageEditor/DES.pas	563	16633	pending	
+E-tools	Source/Tools/ImageEditor/DES.pas	563	16633	covered	Round 850 full 1–563 (CP949); 16-round DES core and string/hex/buffer contracts; ImageEditor buffer callers in wmMyImage cover marker and gated first-128-byte payload path; sibling copies not equated
 E-tools	Source/Tools/ImageEditor/DLLFile.pas	4977	519550	pending	
 E-tools	Source/Tools/ImageEditor/DLLLoader.pas	1134	36886	pending	
 E-tools	Source/Tools/ImageEditor/DropGroupPas.pas	114	2662	pending	

@@ -12063,3 +12063,19 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔primary/source 对照〕** **Primary:** 本轮未对 EI primary-static/editor/UI 或游戏内渲染作并列检查。**Source:** Preview Delphi ImageEditor 的主窗体 DFM、`.wil`/`.Lib` 工厂和导入/删除/导出/转换流。**Difference:** 目前无法建立此作者工具与 EI 游戏客户端界面/资源表现的一一对应，也不宣称存在已验证的 primary-source delta。**Conclusion:** 只保留为 Preview source-side authoring-tool 证据，不外推 EI 客户端 UI、WIL 显示或 Zircon 行为。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 29–33、35 行将六个全读文件（共 3316 行）登记 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；`ledger.py --summary` 同为 393 文件/315324 行：covered 258/100890，partial 17/90886，excluded 43/60230，pending 75/63318。四个指定文档路径 `git diff --check` 通过。没有运行 ImageEditor 或执行任何资源写入。
+
+## Round 850 — 2026-09-27：ImageEditor DES block helper 与 `.Lib` 消费边界
+
+**〔范围〕** 经 source-reader 全读 `Source/Tools/ImageEditor/DES.pas`（1–563，CP949）；另外读取 `ImageEditor.dproj` 的 Debug/Release define（13、32）、`WIL.pas` 的 `FPassword` field/property/default（56–79、117、260–280）、`wmMyImage.pas`（1–210、221–239、293–347）、`FrmAdd.pas` 的写入分支（667–713）。source-reader grep 检查全 `Source` 的 DES helper 引用、ImageEditor 的 password/WORKFILE/helper 调用，并看了 MapEdit/Client `wmMyImage` 调用片段；未运行 Delphi 或读写 `.Lib`。
+
+**〔算法与 API〕** DES 文件包含 IP/FP、E、P、S-box、PC-1/PC-2 表，16 轮子密钥与 Feistel 处理。Key 少于八字节时补 NUL，多于八字节仅读取前八字节。String/hex encrypt 末尾 NUL 输入会抛异常，再以 NUL 补到 8-byte boundary；`DecryStr` 只解完整 8-byte 块并移除全部末尾 NUL。Hex encrypt 输出小写；hex decrypt 对 `0-9a-fA-F` 解码、坏字符抛异常，奇数长度最后半字节不处理。
+
+**〔buffer 边界〕** `EncryBuffer` 先以 `AllocMem` 零填临时输入，分配 `nSourceLen + (8 - nSourceLen mod 8)`（已对齐也多分配一块），然后以 `nDestLen` 为实际写入上限；函数没有输出长度或失败返回值，空间不足时在逐字节循环内提前退出。`DecryBuffer` 只处理 `nSourceLen div 8` 个完整块，输出同样受 `nDestLen` 限制，不剥除补位且不清空未写到的目标尾部。String 与 buffer API 的补位/输出长度规则不同；这里只记录实现，不评价密码学强度。
+
+**〔WIL/Lib 消费者〕** Debug 与 Release 的 `DCC_Define` 均含 `WORKFILE`。`TWMBaseImages` 把 `FPassword` 初始化为空并公开读写 property；ImageEditor scoped search 未找到 active password setter。`TWMMyImageImages.Initialize` 仅在 `nVer=1` 且 Password 非空时令 `FCanEncry` 为真，再用 `DecryBuffer` 校验 8 字节 marker。`FormatDataBuffer` 在 `FCanEncry`、长度至少128、password 非空时仅处理数据前128字节。
+
+**〔条件冲突与写入差异〕** `FormatImageInfo` 对宽高做左移4位加随机低 nibble，读出时右移；DES 条件却要求 `FCanEncry` 且 `FPassword=''`，与 Initialize 的非空 password predicate 相反，因此在未改变已初始化 password 的状态下不成立。Append 分支的 `AddDataToFile(ImageInfo,...)` 调用两个格式 helper；insert/replace 路径先格式化 image-info 后走 offset-only writer，FrmAdd 搜索没有 `FormatDataBuffer` 调用。均是静态路径差异，无文件操作验证。
+
+**〔副本与 primary/source 边界〕** ImageEditor 树内 string/hex wrappers 未找到外部 caller；实际 buffer consumers 位于 local `wmMyImage.pas`。另有 `ImageEditor/Common/DES.pas`（同名 PChar API）及 `Source/Common/DES.pas`（PAnsiChar buffer declarations）；MapEdit 与 Client 的 `wmMyImage` 也有同名 buffer calls，但本轮没有证明这些副本实现相同或判定其编译解析目标。**Primary:** 未比较 EI 静态资源/协议。**Source:** Preview ImageEditor DES 与 `.Lib` 调用路径。**Difference:** 没有 EI 对照件可据此建立。**Conclusion:** 仅保留源码行为，不推导 EI 等价或安全适用性。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 25 行将 `DES.pas` 的 563 行登记 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；`ledger.py --summary`：393 文件/315324 行，covered 259/101453，partial 17/90886，excluded 43/60230，pending 74/62755。四个授权文档路径 `git diff --check` 通过。未运行 Delphi 或做真实 `.Lib` 写入。
