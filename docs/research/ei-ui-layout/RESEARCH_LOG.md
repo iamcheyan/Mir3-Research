@@ -11827,3 +11827,35 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔文档/覆盖〕** 更新 `items-systems.md`，逐条修正 Guild 3h、面对面规则归属、纯延迟保存、Castle 20:00、Tag 状态 2/双持久化推断、Relationship `MapInfo` 推断、Event 子类遗漏等旧表述。`coverage-ledger.tsv` 将上述 5 个文件由 `partial` 改为 `covered`，保留并标明旧轮次结论被纠正的历史。Round 834 不触碰服务、数据库、资源或 Zircon 源码。
 
 **〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（协议常量、EDCODE 自测、3 个缺失 opcode、销账统计、28 个 Python 文件语法）；`python3 Tools/source-read/ledger.py --summary`：393 文件/315324 行，covered 38/50043、partial 18/93108、excluded 43/60230、pending 294/111943。源码静读未运行游戏内行为；diff 检查与提交前审查在本批交付流程完成。
+
+## Round 835 — 2026-09-27：LoginServer 业务链与 C++ 线格式全读
+
+**〔范围〕** 通过 `Tools/source-read/read_src.py` 完整读取 26 个源文件：
+
+| 范围 | 文件 | 完整行范围 |
+|---|---|---:|
+| `Source/LoginServer/Common/` | `endecode.cpp` / `endecode.h` | 1–382 / 1–87 |
+| 同上 | `mir2packet.cpp` / `mir2packet.h` | 1–110 / 1–41 |
+| `Source/LoginServer/LoginServer/` | `LoginSvr.sln` / `LoginSvr.vcproj` | 1–21 / 1–475 |
+| 同上 | `dbtable.h`、`dlgcfg.cpp` / `.h` | 1–33、1–208 / 1–54 |
+| 同上 | `loginsvrwnd.cpp` / `.h`、`mir2dbhandler.cpp` / `.h` | 1–565 / 1–57、1–109 / 1–36 |
+| 同上 | `mir2wnd.cpp` / `.h`、`netUdpsender.cpp` / `.h` | 1–437 / 1–91、1–50 / 1–40 |
+| 同上 | `netcheckserver.cpp` / `.h`、`netgameserver.cpp` / `.h` | 1–97 / 1–34、1–833 / 1–66 |
+| 同上 | `netlogingate.cpp` / `.h`、`netloginsvr.cpp` / `.h` | 1–1217 / 1–139、1–1150 / 1–147 |
+| 同上 | `Res/resource.h` | 1–41 |
+
+`netgameserver.cpp`（旧 Round 820）与 `netlogingate.cpp`（旧 Round 802）原先只登记过 opcode 分派；本轮重新完整读取并扩展为实现覆盖。其余 24 个此前待读文件转为 `covered`。LoginServer `_Oranze Library/` 的通用依赖仍按文件待读，没有因应用层调用而批量视为已读。
+
+**〔启动与连接〕** `LoginSvr.sln/.vcproj` 是 VS 7.10 Win32 程序；`CLoginSvrWnd` 读取 `./LoginSvr.ini` 的两个 DSN 与三个端口后启动服务。`CLoginSvr::Startup` 建日志、初始化认证表与两个 ODBC 池、读取公有 IP/游戏服/选服 Gate 表、初始化 IOCP 并监听三端口。Gate 与 GameServer 接受连接前查 `TBL_PUBIPS`；CheckServer 端口独立。`OnReload` 重读表但未先清空相关列表；可能累加旧条目是源码级观察，未作服务运行验证。
+
+**〔认证与选服〕** `netlogingate.cpp` 的客户端分派只有 `CM_IDPASSWORD`、`CM_SELECTSERVER`、`CM_PROTOCOL`；Gate 先发公钥，接收 `%...$` 框架并校验默认消息块。账号路径读取 `TBL_ACCOUNT` 与计费/停权字段；连续失败限制、停权、删除/退服和 `PCHECK=3` 拒绝路径均见活动代码。SSN 结果对应的拒绝响应已注释。成功路径记录 `sCertUser` 并回选服响应；Gate 按服务器配置轮换。容量谓词为 `max < current`，等于 max 时不由该处拒绝。Gate 返回的版本 opcode 要求 `nRecog >= 20050501`。账户到期例程存在，但 `TID_CHECKEXPIRE` 的启动行被注释；`CheckDupIPs` 也无活动调度。
+
+**〔服间消息与计费〕** `netgameserver.cpp` 有七项 `ISM_*` 接收分派。在线数处理更新服务器条目并广播计数；时间账号检查归零后发到期消息，关服消息按 login ID 清理证书。Premium 查询读 `TBL_M2PREMIUMUSER`，回归活动读写 `EVENT_COMEBACK2005`；公钥请求回当前键，时间卡用户时长处理函数为空。CheckServer 每 5 秒输出在线/心跳/DB-error 状态，`OnRecv` 不接受应用数据。UDP sender 对三个地址逐个调用 `sendto`、不检查结果；构造路径只显式设置前两地址，第三地址初始化结果没有运行验证。
+
+**〔C++ 线格式〕** `endecode.cpp` 活动路径用位置因子与当前公钥做 XOR，再执行 6bit 打包；22 个编码字符构成一个默认消息块，原始 struct 含一个 `int` 与六个 `WORD`。编码过程原地修改输入缓冲区；旧编码例程仍在文件中，但不是当前 `CMir2Packet::AttachWithEncoding` 使用的路径。`fnMakeDefMessage` 未写 `wEtc/wEtc2`，Gate 响应将栈上整个 struct 编码，这是源码可见的未初始化字段风险，未做动态验证。`CMir2Packet` 以堆缓冲增长，最大受 IOCP 上限约束。
+
+**〔数据库写入边界〕** `CLoginSvrWnd::OnInitDB` 会删除/更新 PC ODBC 中的 `TBL_USINGIP`、`TBL_DUPIP` 与 `MR3_PCRoomStatusTable` 记录。本轮只读源码，没有执行这个 UI 命令，没有连接或写 System.db/Users.db/其他数据库。
+
+**〔对照边界〕** 本轮只建立 LoginServer 源码事实；没有拿 EI primary-static 推导服务端认证/计费行为，也没完成 Zircon 账号认证链对照。DataBaseServer 网络实现、DB 侧线格式副本、`_Oranze Library/` 依赖仍待读。当前 ledger：393 文件/315324 行，covered 62/54513，partial 18/93108，excluded 43/60230，pending 270/107473。源码静读不等于游戏/服务运行验证。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 常量、EDCODE 自测、3 个 opcode 缺失验证、台账统计、28 个 Python 文件语法）；`git diff --check` 对本轮三份指定文件通过。未运行 LoginServer（Win32 服务及 ODBC/外部资源条件未建立），行为结论严格限于源码。

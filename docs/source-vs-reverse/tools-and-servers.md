@@ -223,10 +223,10 @@ GraphicEx（图像格式库）· MyDirect9（DX9 封装）· pngimage · DelphiZ
 |---|---|
 | `Tools/MapEdit/` 各文件实现主体 | 只读了文件清单与职责 |
 | `Tools/ImageEditor/` 顶层非第三方实现 | 只读了文件清单 |
-| `LoginServer`/`DataBaseServer` 各 `net*.cpp` 的业务实现 | 只读了分派表与类名 |
-| `sqlhandler.cpp` / `tablesdefine.cpp`（表结构） | 未读 —— **对 `System.db` 理解有价值** |
-| `mir2packet.cpp` / `endecode.cpp`（C++ 线格式） | 未读 —— 可与 `EDCode.pas` 交叉验证 |
-| `tablesdefine.cpp` 的表定义 | 未读 |
+| LoginServer 登录服务业务链 | ✅ Round 835 全读 `netloginsvr`、`netlogingate`、`netgameserver` 与辅助通道；其 `_Oranze Library` 依赖仍逐文件待读 |
+| DataBaseServer 服务实现 | pending；仅已有 `netloginserver/netrungate` 分派与 `tablesdefine.cpp` 表字段证据，业务主体及 DB 侧便条语义仍待读 |
+| LoginServer/Common C++ 线格式 | ✅ Round 835 全读 `endecode.cpp/.h` 与 `mir2packet.cpp/.h`；DataBaseServer 副本待读核对 |
+| `DataBaseServer/Common/sqlhandler.cpp/.h`、`tablesdefine.h` | 未读；`tablesdefine.cpp` 已于 Round 828 提取并覆盖，见 §6 |
 | `//*` 标记的语义（必填？） | 无接收端可对照 |
 
 ---
@@ -321,3 +321,42 @@ GameServer → DataBaseServer(GS_BPORT=6000) → ODBC → SQL Server 2000
 | `TBL_QUEST`（3 字段）与 `QuestInfo` 的关系 | 未核 |
 | `ATOM*_MC` vs `ATOM*_MAC` 的语义差别 | 未追（疑魔攻/魔防） |
 | 这些表与 `Users.db` 的实际对应 | 需读 `Users.db` 侧（超出本 Goal） |
+
+## 7. LoginServer 业务实现（Round 835）
+
+本节仅闭合 LoginServer 的应用层与本目录 C++ 编码/包辅助文件，不代表 90 个 LoginServer 台账条目全部完成；`_Oranze Library/` 的其余通用依赖仍按台账逐文件推进。完整读档清单见 `coverage-ledger.tsv` Round 835 条目。
+
+### 7.1 进程入口、配置和连接
+
+- `LoginSvr.sln` / `LoginSvr.vcproj` 标记 VS 7.10 Win32 Debug/Release 项目配置；应用层及头文件范围见台账。本轮源码读取 26 个文件：`LoginServer/LoginServer/` 的业务单元、UI/配置/结构体，以及 `LoginServer/Common/` 的线格式和 packet builder。
+- `CMir2Wnd::Init` 创建窗口/工具栏/日志列表/状态栏，派生 `CLoginSvrWnd::OnInit` 从 `./LoginSvr.ini` 读取两个 ODBC DSN/账号/口令和三端口；缺配置时弹配置对话框，成功时自动发起服务启动。默认端口值在 UI 为 CS 3000、GS 5600、LG 5500。
+- `CLoginSvr::Startup` 依次建日志、检查主 DSN/三端口、初始化证书哈希表、启动两个 ODBC 池、从 SQL 装载 `TBL_PUBIPS`/`TBL_SERVERINFO`/`TBL_SELECTGATEIPS`、初始化 IOCP 并监听三端口；定时器分别为计数日志 30 分钟、检查服状态 5 秒、清关闭证书 1 秒。`TID_CHECKEXPIRE` 的启动行被注释，故活动定时器不调用 `CheckAccountExpire`/`CheckDupIPs`。
+- `OnAccept` 对 GameServer 与 LoginGate 用远端 IP 查询 `TBL_PUBIPS`；CheckServer 独立端口直接建立 `CCheckServer`。`OnReload` 直接再次调用 `LoadDBTables`，没有先清空三份列表；重复重载可能追加条目（源码路径事实，运行后果未实测）。已注释的 `TBL_SERVERIPS` 查询意味着 `m_listServerIP` 装载主体未活动。
+- `CDBSvrOdbcPool` 默认连接数为 CPU 核数×4；`Alloc` 在锁内线性找首个空闲连接，池满则返回空。LoginServer 维护主账号池与 PC 房间池，分别用于账号与 PC 房间数据路径。
+
+### 7.2 LoginGate：认证、计费和选服
+
+- `CLoginGate` 的用户表以 Gate 内 `szUserHandle` 为键；Gate 协议帧以 `%...$` 分隔，数据包另含 `/#`、6bit 默认消息与解码正文。`OnUserOpen` 分配 `sGateUser` 后先发 `SM_SEND_PUBLICKEY`；`OnUserData` 只派发 `CM_IDPASSWORD`、`CM_SELECTSERVER`、`CM_PROTOCOL` 三项。协议版本需 `msg.nRecog >= 20050501`。
+- `CM_IDPASSWORD` 从主账号池取 `TBL_ACCOUNT`，加载停权、失败次数、订阅/秒数、免费量与 MIR2/MIR3 分栏字段；累计失败达到 3 次或锁定时间未过返回错误。重复登录会向原 GameServer 取消准入并标记旧证书关闭。SSN 校验结果只影响已注释的响应；活动拒绝条件包括 `FLD_SECEDE`、失败/停权及 `FLD_PCHECK=3`。
+- PC 房间信息从第二 ODBC 池查 `MR3_IPTable/MR3_PCRoomStatusTable`；活动代码读取房间订阅和并发数，TBL_DUPIP/TBL_USINGIP 的详细增删处理块在此方法内被注释。成功认证回 `SM_PASSOK_SELECTSERVER`（天数/小时分字段），创建 `sCertUser`，写连接日志；未订阅的路径仍回相同 opcode、零计数。
+- `CM_SELECTSERVER` 按配置的服务器名找 `TBL_SELECTGATEIPS` 中的 Gate，选择 Gate 索引先递增再取项；容量判断仅在 `nMaxUserCount < currentCount` 时失败，等于上限的状态不会由该条件拒绝。选服后将认证信息发给所有同名 GameServer，再把 Gate IP/port 和认证号回给客户端。
+- `sCertUser` 是服务端准入记录，含 login/IP/server、认证号、计费态、开始 tick 与关闭态。关闭记录 5 秒后由 1 秒 timer 清理。`CheckAccountExpire` 主体存在但其 timer 未启用。
+
+### 7.3 LoginServer ↔ GameServer 与 CheckServer
+
+- GameServer 字节帧以 `(… )` 分隔，分派表有 7 个 `ISM_*`：用户关闭/在线数/时间卡、时间账号检查、公钥请求、Premium 与 Event 检查。`ISM_USERCOUNT` 更新当前/峰值在线数并广播总人数；30 分钟计数任务写用户数日志。
+- `ISM_CHECKTIMEACCOUNT` 读账号四类剩余秒数，归零则发送 `ISM_ACCOUNTEXPIRED`；成功关闭由 `ISM_USERCLOSED` 按 login ID 删除证书并通知取消准入。两个处理器虽解析 certification 字段，但实现按 login ID 查找，不比较该字段。
+- `ISM_PREMIUMCHECK` 查询 `TBL_M2PREMIUMUSER` 的旗标/结束日/强制日期并组回传；`ISM_EVENTCHECK` 查询 `EVENT_COMEBACK2005`，首访写首次日期，30 天内可通过，强制 Y/N 覆盖日期判定。`ISM_REQUEST_PUBLICKEY` 回当前公钥；`ISM_GAMETIMEOFTIMECARDUSER` 处理函数为空。
+- CheckServer 每 5 秒收到一个状态包，内容含 GameServer 数量、服务器名/ID/在线数及 30 秒心跳与全局 DB 错误标志推导的状态；`CCheckServer.OnRecv` 不接受应用消息。
+- `CUdpsender.SendMessages` 对三个 `sockaddr` 都调用 `sendto`，返回字符串长度而不检查每次发送结果；LoginServer 构造路径当前只显式设置前两个接收地址，第三个初始化/使用结果未运行验证。
+
+### 7.4 C++ 线格式与 UI/安全边界
+
+- C++ `TDEFAULTMESSAGE` 含 `nRecog` 与六个 `WORD` 字段；`_DEFBLOCKSIZE=22` 是编码后消息块长度。活动 `fnEncode6BitBuf` 按位置与当前公钥字节和做 XOR 后 6bit 打包；旧版编码/解码保留但不是当前 `AttachWithEncoding` 路径。公钥、saved key、工作 key 是全局变量；`OnUserOpen` 在默认键/保存键之间切换。
+- `CMir2Packet` 从 256 字节堆缓冲增长至 IOCP 上限；数值 `Attach` 用十进制字符串，`AttachWithEncoding` 用 6bit encoder。Encoder 对传入缓冲区原地改写；`fnMakeDefMessage` 只填 5 个字段而不初始化 `wEtc/wEtc2`，Gate `SendResponse` 的栈消息再编码整个 struct。两点均为源码可见边界，不代表本轮做过运行/安全测试。
+- `OnInitDB` 的 UI 命令会写 PC ODBC：删除 `TBL_USINGIP`、更新 `TBL_DUPIP` 处理标志，并将 `MR3_PCRoomStatusTable` 的使用 IP 计数清零。本轮未调用该命令，也未连接或修改任何数据库。
+- 本轮没有用 EI primary-static 证据推出账号校验/计费服务端语义，也没有读取 Zircon 完整账号认证处理器；只确认 C++ 服务源码路径。`CM_ADDNEWUSER/CM_CHANGEPASSWORD/CM_UPDATEUSER` 的接收端缺失仍按 §1 的穷举结果记录，不能从三个 LoginGate opcode 推定注册接收端。
+
+### 7.5 本轮文件覆盖范围
+
+`LoginServer/Common/`：`endecode.cpp/.h`、`mir2packet.cpp/.h` 全读；`LoginServer/LoginServer/`：`LoginSvr.sln/.vcproj`、`dbtable.h`、`dlgcfg.cpp/.h`、`loginsvrwnd.cpp/.h`、`mir2dbhandler.cpp/.h`、`mir2wnd.cpp/.h`、`netUdpsender.cpp/.h`、`netcheckserver.cpp/.h`、`netgameserver.cpp/.h`、`netlogingate.cpp/.h`、`netloginsvr.cpp/.h`、`Res/resource.h` 全读。前两份 `.cpp` 原已 `covered`；Round 835 扩为完整实现阅读。未读的 `_Oranze Library/` 依赖不在本轮标 covered。

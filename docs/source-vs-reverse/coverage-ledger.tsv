@@ -365,30 +365,30 @@ E-login	Source/LoginServer/_Oranze Library/uucp.h	27	450	pending
 E-login	Source/LoginServer/_Oranze Library/vector.h	157	2703	pending	
 E-login	Source/LoginServer/_Oranze Library/vtimage.cpp	963	21754	pending	
 E-login	Source/LoginServer/_Oranze Library/vtimage.h	148	3325	pending	
-E-login	Source/LoginServer/Common/endecode.cpp	382	11764	pending	Round 820: C++ 线格式（可与 EDCode.pas 交叉验证），未读
-E-login	Source/LoginServer/Common/endecode.h	87	2085	pending	
-E-login	Source/LoginServer/Common/mir2packet.cpp	110	2045	pending	Round 820: C++ 包编解码，未读
-E-login	Source/LoginServer/Common/mir2packet.h	41	713	pending	
-E-login	Source/LoginServer/LoginServer/LoginSvr.sln	21	905	pending	
-E-login	Source/LoginServer/LoginServer/LoginSvr.vcproj	475	12287	pending	
-E-login	Source/LoginServer/LoginServer/dbtable.h	33	336	pending	
-E-login	Source/LoginServer/LoginServer/dlgcfg.cpp	208	6210	pending	
-E-login	Source/LoginServer/LoginServer/dlgcfg.h	54	952	pending	
-E-login	Source/LoginServer/LoginServer/loginsvrwnd.cpp	565	11452	pending	
-E-login	Source/LoginServer/LoginServer/loginsvrwnd.h	57	1280	pending	
-E-login	Source/LoginServer/LoginServer/mir2dbhandler.cpp	109	1635	pending	
-E-login	Source/LoginServer/LoginServer/mir2dbhandler.h	36	563	pending	
-E-login	Source/LoginServer/LoginServer/mir2wnd.cpp	437	9876	pending	
-E-login	Source/LoginServer/LoginServer/mir2wnd.h	91	1944	pending	
-E-login	Source/LoginServer/LoginServer/netUdpsender.cpp	50	1352	pending	
-E-login	Source/LoginServer/LoginServer/netUdpsender.h	40	599	pending	
-E-login	Source/LoginServer/LoginServer/netcheckserver.cpp	97	1845	pending	
-E-login	Source/LoginServer/LoginServer/netcheckserver.h	34	597	pending	
-E-login	Source/LoginServer/LoginServer/netgameserver.cpp	833	20911	covered	Round 820: g_cmdList 7 条 ISM_* 全列
-E-login	Source/LoginServer/LoginServer/netgameserver.h	66	1488	pending	
-E-login	Source/LoginServer/LoginServer/netlogingate.cpp	1217	35818	covered	Round 802 分派表 3 条
-E-login	Source/LoginServer/LoginServer/netlogingate.h	139	2853	pending	
-E-login	Source/LoginServer/LoginServer/netloginsvr.cpp	1150	29216	pending	
-E-login	Source/LoginServer/LoginServer/netloginsvr.h	147	3339	pending	
-E-login	Source/LoginServer/LoginServer/protocol.h	42	1066	covered	Round 803 opcode 表
-E-login	Source/LoginServer/LoginServer/Res/resource.h	41	1614	pending	
+E-login	Source/LoginServer/Common/endecode.cpp	382	11764	covered	Round 835 full 1–382: active 6bit/key/position XOR path, global key switching, in-place source mutation, legacy routines inactive; DataBaseServer duplicate and Delphi behavioral comparison remain separate
+E-login	Source/LoginServer/Common/endecode.h	87	2085	covered	Round 835 full 1–87: wire structs, 22-char encoded block, key APIs, encode/decode contracts
+E-login	Source/LoginServer/Common/mir2packet.cpp	110	2056	covered	Round 835 full 1–110: heap packet growth, text/numeric/encoded attach; encoded attach delegates mutating encoder
+E-login	Source/LoginServer/Common/mir2packet.h	41	713	covered	Round 835 full 1–41: packet caps and attach API
+E-login	Source/LoginServer/LoginServer/LoginSvr.sln	21	905	covered	Round 835 full 1–21: VS solution Debug/Release Win32 mappings
+E-login	Source/LoginServer/LoginServer/LoginSvr.vcproj	475	12287	covered	Round 835 full 1–475: VS 7.10 Win32 configs, app/common source membership, Oranze library linkage
+E-login	Source/LoginServer/LoginServer/dbtable.h	33	336	covered	Round 835 full 1–33: server/public IP/select-gate row structures
+E-login	Source/LoginServer/LoginServer/dlgcfg.cpp	208	6210	covered	Round 835 full 1–208: LoginSvr.ini load/save and config dialog lifecycle
+E-login	Source/LoginServer/LoginServer/dlgcfg.h	54	952	covered	Round 835 full 1–54: ODBC credentials/ports config structure and dialog API
+E-login	Source/LoginServer/LoginServer/loginsvrwnd.cpp	565	11452	covered	Round 835 full 1–565: service UI, config/reload/timers, OnInitDB writes PC-room IP tables (not invoked)
+E-login	Source/LoginServer/LoginServer/loginsvrwnd.h	57	1280	covered	Round 835 full 1–57: Login UI state, CLoginSvr ownership, helper APIs
+E-login	Source/LoginServer/LoginServer/mir2dbhandler.cpp	109	1635	covered	Round 835 full 1–109: ODBC pool startup/cleanup/linear lock-protected allocation
+E-login	Source/LoginServer/LoginServer/mir2dbhandler.h	36	563	covered	Round 835 full 1–36: pool connection record and API
+E-login	Source/LoginServer/LoginServer/mir2wnd.cpp	437	9876	covered	Round 835 full 1–437: Win32 window/message loop, UI/timer dispatch, async log display
+E-login	Source/LoginServer/LoginServer/mir2wnd.h	91	1944	covered	Round 835 full 1–91: base window state, callbacks and service UI virtual hooks
+E-login	Source/LoginServer/LoginServer/netUdpsender.cpp	50	1352	covered	Round 835 full 1–50: datagram socket and three-recipient send routine
+E-login	Source/LoginServer/LoginServer/netUdpsender.h	40	599	covered	Round 835 full 1–40: UDP sender API and port 9999
+E-login	Source/LoginServer/LoginServer/netcheckserver.cpp	97	1845	covered	Round 835 full 1–97: status serialization from game-server counts/last tick/error flag; no inbound payloads
+E-login	Source/LoginServer/LoginServer/netcheckserver.h	34	597	covered	Round 835 full 1–34: check channel send-only interface
+E-login	Source/LoginServer/LoginServer/netgameserver.cpp	833	20911	covered	Round 820 dispatch table; Round 835 full 1–833: seven ISM handlers, counts/cert/account/premium/event paths and packet framing
+E-login	Source/LoginServer/LoginServer/netgameserver.h	66	1488	covered	Round 835 full 1–66: channel state, send/receive methods and count persistence
+E-login	Source/LoginServer/LoginServer/netlogingate.cpp	1217	35818	covered	Round 802 dispatch table; Round 835 full 1–1217: key handshake, credentials/billing, server selection, framed input validation and version gate
+E-login	Source/LoginServer/LoginServer/netlogingate.h	139	2853	covered	Round 835 full 1–139: gate user billing/session fields and login message API
+E-login	Source/LoginServer/LoginServer/netloginsvr.cpp	1150	29216	covered	Round 835 full 1–1150: startup/listeners/DB table load/timers/cert lifecycle/count logs/expiry and duplicate-IP routines
+E-login	Source/LoginServer/LoginServer/netloginsvr.h	147	3339	covered	Round 835 full 1–147: certification/server records, IOCP listeners, ODBC pools and service API
+E-login	Source/LoginServer/LoginServer/protocol.h	42	1066	covered	Round 803 opcode table
+E-login	Source/LoginServer/LoginServer/Res/resource.h	41	1614	covered	Round 835 full 1–41: Login UI/resource identifiers and aliased numeric IDs
