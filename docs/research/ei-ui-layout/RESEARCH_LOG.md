@@ -12311,3 +12311,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔primary/source 边界〕** 仅记录 Preview 项目入口及其显式源路径；未运行 Delphi build/startup、检查 MapEdit binary 或比较 EI project/unit-resolution behavior。
 
 **〔覆盖与验证〕** ledger 第 9 行登记 `MapEdit.dpr` 43 行为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 277/131137，partial 17/90886，excluded 43/60230，pending 56/33071。staged 仅有四个授权文档路径，`git diff --cached --check` 无输出；本地新增行的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均为 0 hits，完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
+
+## Round 869 — 2026-09-28：MapEdit map-size dialog and callers
+
+**〔范围与资源〕** source-reader 全读 `Source/Tools/MapEdit/MapSize.pas`（1–52，CP949），搜索其 MapEdit callers，并读取 25 行 mixed `MapSize.dfm`。DFM reader view 可见 `bkOK`/`bkCancel`、`FormShow` 及两个 SpinEdit 的 `MinValue`/`MaxValue` 属性名；`dfm_parse.py tree/list` 仅返回 3 个条目（form root、BorderStyle、EdHeight），numeric bounds 和完整控件树未恢复。
+
+**〔dialog contract〕** 每次 `Execute` 将 `MapX`/`MapY` 设为 20 并填入两个编辑框；只有 `ShowModal = mrOk` 才返回 true，接受后用 `StrToIntDef(text, 1)` 解析，取消返回 false。`FormShow` 将焦点给 `EdWidth`。SpinEdit 实际 Min/Max 数值不可见，故不推断 0 是否可输入。
+
+**〔New 与 Resize 调用差异〕** `EdMain.dfm` 文本绑定 New/Resize 至 `New1Click`/`Resize1Click`。New 先执行 `VerifyWork` 和 `SegmentMode` gate，接受后写 `MapWidth`/`MapHeight` 并调用 `NewMap`；后者只把负值 clamp 为 1，`FillChar(MArr)`、`ClearUndo`、重设 canvas 尺寸与游标，0 不会被该负值分支改写。Resize handler 没有这些 gates；接受后写维度、仅 clamp 负值、更新 canvas 大小/游标并刷新，但未调用 `NewMap`、未记录 map-data snapshot、未设置 `Edited`，也没有直接重分配/清零 `MArr`。这是源码差异，不推断实际 UI 可达输入范围或 runtime 数据效果。
+
+**〔primary/source 边界〕** 只记录 Preview MapEdit 的 dialog、DFM reader view 与静态调用关系；未运行 Delphi build/UI、undo 或 map-data runtime，也未比较 EI 行为。
+
+**〔覆盖与验证〕** ledger 第 10 行将 `MapSize.pas` 的 52 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 278/131189，partial 17/90886，excluded 43/60230，pending 55/33019。staged 仅有四个授权文档路径，`git diff --cached --check` 无输出；本地新增行的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均为 0 hits，完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
