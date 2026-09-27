@@ -12171,3 +12171,17 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔副本与 primary/source 边界〕** Source-wide 搜索还发现 `Source/Tools/MapEdit/Wil/WIL.pas`、`Source/Tools/MapEdit/o_WIL.pas` 与 `Source/Client/WIL.pas` 同名单元；本轮只全读 ImageEditor root unit，没有证明这些副本实现或编译选择相同。**Primary:** 未对 EI 的 WIL/cache/texture decoder 作并列检查。**Source:** Preview ImageEditor 基类、格式分派、静态调用者与相关子类 excerpts。**Difference/Conclusion:** 只记录作者工具的源码路径；不据此推断 EI 文件兼容、游戏渲染、运行时成功或 Zircon 行为。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 38 行将 root `WIL.pas` 的 523 行登记为 covered；`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 检查、ledger、29 个 Python 文件语法）。`ledger.py --summary`：393 文件/315324 行，covered 266/122686，partial 17/90886，excluded 43/60230，pending 67/41522。四个授权文档路径的 `git diff --check` 与 staged diff check 通过；staged additions 的 PEM private-key、AWS key、GitHub-token、credential-assignment、email ad-hoc patterns 均为 0 hits，完整 staged diff 已人工复核。该 pattern scan 是本地临时检查，不是仓库官方 scanner。未运行 Delphi/ImageEditor，也未读写 `.wil`/`.Lib`。
+
+## Round 858 — 2026-09-27：ImageEditor ZShare shared globals, shell and file-mutation helpers
+
+**〔范围〕** 经 `Tools/source-read/read_src.py` 全读 `Source/Tools/ImageEditor/ZShare.pas`（1–442，CP949），并在 ImageEditor 内搜索全局量与 helper 调用。`ImageEditor.dpr` 包含该 unit；`FrmAdd`、`FrmAlpha`、`FrmDel`、`FrmMain`、`FrmOut`、`wmM3Def`、`wmMyImage` 有 import。另只读这些调用方的相关片段，没有把它们标为全文件覆盖；未运行 Delphi、未操作 `.wil`/`.Lib` 文件。
+
+**〔共享状态〕** `g_WMImages` 是主界面当前图库引用，`g_OldWMImages`/`g_NewWMImages` 用于 WIL→Lib 转换；`g_SelectImageIndex` 初值 `-1`，选中图像时更新并同步 `g_TextureInfo`、`g_WILColorFormat`。`g_Texture[0..1]` 被主绘制/导出代码共享；`g_DefMainPalette` 由 `FrmMain.FormCreate` 从 `256RGB` 资源读入。主界面还读取 `g_WILType`、填充 `g_FileVersionInfo` 并给 `MAINFORMCAPTION` 加版本串、设置自定义混合模式序号。颜色默认值供绘制/转换使用；`FrmAdd` 的单目录/递归目录按钮分别设置互斥 `sBrowseForFolder`、`sBrowseForAllFolder`，转换过程以 `g_boWalking` 阻止重入并在 `finally` 清除。ZShare initialization 清零纹理信息并把私有 16 项颜色表填白；finalization 为空。
+
+**〔API 可达性〕** `FrmAdd.LoadFileToBmp` 先按 PNG 头选择 `LoadPNGtoBMP`，但忽略 Boolean 结果；`TColor2RGB`/`RGB16` 被 M3Def/MyImage 颜色转换调用。`DisplaceRB` 在 `FrmAlpha`/`FrmMain` 有调用，同时 `Plug/MyDirect9/MyDXBase.pas` 另有同名函数，未用 Delphi 编译确认非限定标识符绑定。ImageEditor 搜索未发现 `RGB2TColor`、`GetSysColor`、ZShare 的 `CountDiffPixels`/`CountSamePixels` 外部调用；`GetSysColor` 实际弹出 `ChooseColor`，而 `GraphicCompression.pas` 的同名像素计数函数是第三方单元自己的实现和调用。
+
+**〔静态边界〕** `LoadPNGtoBMP` 只捕捉 `LoadFromStream` 异常；`AssignTo` 或 alpha 行复制若抛出异常，会跳过末尾 `Image.Free`。`BrowseForFolder` 未初始化输出缓冲、检查 shell 返回值或释放所取 PIDL。两个实际 `SelectDirectory` 调用的 `Root` 都是空串；可选非空 Root 路径虽释放所选 PIDL/缓冲区，却未释放 root PIDL，路径转换与根目录解析状态也未检查。`DoSearchFile` 的 `IsDir` 未使用，故只枚举当前目录；即使 `FindFirst` 失败或没有匹配，函数仍设置 `Result=True`，并无条件 `FindClose`。`RemoveData`/`AppendData` 被插入/替换/删除路径调用，返回值无人检查；两者都固定设 `Result=True`、不验证打开/映射/复制结果且未完整约束 offset/size，地址经 `LongInt` 转型。前者另不检查 seek/truncate，后者按扩大的映射区间右移尾部。均为源级控制流风险，未复现。
+
+**〔primary/source 边界〕** 只记录 Preview ImageEditor 的共享变量与工具 helper；未对 EI 原版静态文件、helper、图库或游戏 UI 作并列核对。没有 Delphi 编译、运行或文件写入，不能据此推断 EI helper、client rendering 或库格式兼容行为。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 39 行将 root `ZShare.pas` 的 442 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 检查、ledger、29 个 Python 文件语法）；`ledger.py --summary`：393 文件/315324 行，covered 267/123128，partial 17/90886，excluded 43/60230，pending 66/41080。四个授权文档路径的 whitespace、staged privacy scan 与完整 diff review 另行完成；privacy scan 为本地临时 pattern check，不是仓库官方 scanner。
