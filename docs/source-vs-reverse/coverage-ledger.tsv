@@ -171,7 +171,7 @@ D-client	Source/Client/wmUtil.pas	4497	489745	partial	Round 825: 4200行查表+6
 D-client	Source/Client/Light/Light0a.pas	100	2696	covered	Round 912: Client-created A8R8G8B8 light surface and PlayScn selection; unbounded RGBA RLE runs, lock/decode failure states and no external destroy caller; Light0a.inc inaccessible through reader
 D-client	Source/Client/Light/Light0b.pas	100	2696	covered	Round 913: duplicate unbounded RGBA RLE surface builder, created at startup but not consumed by PlayScn; lock/decode failure paths, no external destroy caller, Light0b.inc inaccessible through reader
 D-client	Source/Client/Light/Light0c.pas	100	2696	covered	Round 914: active light type 1/2 RGBA surface, duplicate unbounded RLE/failure paths, no external destroy caller, Light0c.inc inaccessible through reader
-D-client	Source/Client/Light/Light0d.pas	100	2696	pending	
+D-client	Source/Client/Light/Light0d.pas	100	2696	covered	Round 915: active light type 3 RGBA surface, duplicate unbounded RLE/failure paths, no external destroy caller, Light0d.inc inaccessible through reader
 E-db	Source/DataBaseServer/Def/DynamicArray.cpp	76	1238	covered	Round 838 full 1–76: older non-template slot allocator; both scan loops test m_Elements[nIndex] instead of m_Elements[i]
 E-db	Source/DataBaseServer/Def/DynamicArray.h	158	3149	covered	Round 838 full 1–158: 5000-slot template API; GetData/DettachData accept index <= _MAX_USER_ARRAY and AttachData has no full-array return
 E-db	Source/DataBaseServer/Def/EnDecode.cpp	207	4527	covered	Round 837 full 1–207: standalone ANSI/Unicode 6bit codec; DBSvr.vcproj does not compile this file (app compiles Common/endecode.cpp)
