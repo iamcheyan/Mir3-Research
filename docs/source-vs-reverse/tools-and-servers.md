@@ -394,3 +394,10 @@ Round 835 全读 LoginServer 应用层与本目录 C++ 编码/包辅助文件；
 - `RunSock.pas` 是独立的 GameServer↔RunGate 客户端数据路径：`TMsgHeader` magic 为 `$aa55aa55`，接收端增量缓存并按 header length 拆帧；`GM_OPEN` 分配用户槽，首个 `GM_DATA` 在用户对象尚未建立时解析认证字段、调用 `FrmIDSoc.GetAdmission`，准入后 `FrontEngine.LoadPlayer`；加载完成后才把 `GM_DATA` 内 `TDefaultMessage` 送给 `UserEngine`。`svMain.pas` 的 timer 调 `RunSocket.Run`，其发送队列进行小包合并和基于 receive-check 的 gate 节流。
 - 静态注意：`RunSock.Connect` 中 `IsValidGateAddr` 调用处被注释，因此该接入函数本身没有执行地址表 allowlist 校验；发送路径按请求字节数更新计数并释放缓冲，没有检查 `SendBuf` 返回字节数。本轮未对这些静态观察作运行验证。`RunDB` 的同步等待也未在 Windows/DB server 环境执行。
 - 这条玩家记录通路与 Round 839 的资源/market/board ADO 子系统不同于同一个 socket：`RunDB`/DataBaseServer ODBC 即使映射角色记录表，也没有证明 EI `System.db`/`Users.db` 的来源或相同 schema；RunGate 传输更不涉及该映射。
+
+## 11. GameServer interserver hub and cross-server character handoff（Round 841）
+
+- `svMain` 按 `ServerIndex` 选拓扑：0 号服启动 `FrmSrvMsg` listener；非零服初始化 `FrmMsgClient` 指向配置的 `MsgServerAddress:MsgServerPort`。`InterMsgClient.Run` 在未连接且距 `start` 超过 20 秒时触发 `Active := TRUE`。服务端最多维护 10 个 peer socket；`SendInterMsg` 在 0 号服广播、其它服发给 master。timer 分支分别调用 `FrmSrvMsg.Run`/`FrmMsgClient.Run`。
+- 线路以 `(...)` 包住 `ident/encoded-server-index/encoded-body`。双方接收端累积流片段并保留未闭合尾帧；master 收到完整帧后先转发到除来源 socket 外的其它 peer，再在本服按 opcode dispatch。处理面包括跨服登录/登出、whisper、guild/castle/recall/lover、friend/tag 到 `UserMgrEngine` 的委派、资源 reload 与 market open/close；它是 RunDB 角色数据库 socket 和 RunSock 客户端 RunGate 的第三条独立通路。
+- 服务器切换的数据面另走共享文件：`TServerShiftUserInfo` 包含 `FDBRecord` 与 group/whisper/slave/status/extra-ability 等运行态字段。`UsrEngn.WriteShiftUserData` 写原始 struct 和 4-byte checksum，文件名 `$_<ServerIndex>_$_<counter>.shr`，目录根取 `Share/BaseDir`；`UserServerChange` 把目标服索引与编码文件名通过 `ISM_USERSERVERCHANGE` 送 master。目标服匹配自己的 `ServerIndex` 后读取并删除文件，按逐字节加和校验；通过后入 `WaitServerList` 并发 `ISM_CHANGESERVERRECIEVEOK`，源服据文件名置对应 `ClosePlayers` 的 `BoChangeServerOK`。等待记录超过 30 秒才清理。
+- 静态风险边界：文件 writer/reader 均未检查 `FileWrite`/`FileRead` 实际字节数；reader 的 `FileOpen` 未成功时仍沿后续 checksum loop 解引用 `psui`。逐字节加和可检出部分损坏但不是强完整性校验。均未在 Windows/多服环境运行；共享 handoff `.shr` 不是 MirDB `.db`，也不证明 `System.db`/`Users.db` 映射。

@@ -171,6 +171,7 @@
 | GameServer→DataBaseServer | `GS_BPORT = 6000` | **新增** |
 | DataBaseServer→LoginServer | `LS_CPORT = 5600` | **新增** |
 | DataBaseServer→SQL Server 2000 | ODBC | SQL Server record path; not proof that binary `System.db` is generated from or backed by this connection |
+| GameServer inter-server | `ServerIndex=0` 启动 `MsgServerPort` listener；非零 server 连接 `MsgServerAddress:MsgServerPort`。`ISM_*` 帧由主 server 转发给其它 peers；`ISM_USERSERVERCHANGE` 使用共享 `.shr` handoff file | 新增源码侧跨服路径；不建立 EI `.db` 或资源映射 |
 
 > ⚠️ 被排除的 `LoginSvr.ini` / `DBSvr.ini` 含 `ODBC_ID=sa` / `ODBC_PW=sa`
 > （SQL Server 2000 默认口令）。**禁止**复制进仓库。
@@ -189,6 +190,7 @@ Zircon 的对应关系；不改变现有结论，属**补充**。
 | GameServer ADO 子系统 | `SQLLocalDB.pas` 从 `Setup/!DBSETUP.TXT` 连接并读取 StdItems/Monster/MonsterItem/Magic；`DBSQL.pas`/`SqlEngn.pas` 处理物品市场与行会据点公告板 SQL。与 C++ DataBaseServer ODBC 路径分开，不建立 `.db` 文件映射 |
 | 角色记录网络通路 | `GameServer/RunDB.pas` 将 `FDBRecord` 与 `TUserHuman` 互转，经 `DBSocket` 发送 `DB_LOADHUMANRCD`/`DB_SAVEHUMANRCD`；`DataBaseServer/DBSvr/netgameserver.cpp` 注册到 `OnLoadHumanRcd`/`OnSaveHumanRcd`。这是玩家角色记录网络/ODBC路径，仍未证明与 EI `System.db`/`Users.db` 的文件映射 |
 | 客户端网关通路 | `GameServer/RunSock.pas` 处理 RunGate `TMsgHeader`/`GM_*` 数据、认证并把准入交给 LoginServer/FrontEngine；不是 `RunDB` 角色记录套接字，也不表示 EI 静态资源/数据库来源 |
+| 跨服角色迁移 | `UsrEngn` 把 `TServerShiftUserInfo`（含 `FDBRecord` 和运行态字段）写成共享 `.shr` 文件并附加加法校验和，`ISM_USERSERVERCHANGE` 传输编码文件名、目标服读取后回 ACK；这是临时跨服移交，不是 `System.db`/`Users.db` 的持久化 schema |
 | 差异 | 源码只读 `Mud3-Config/Envir/`（Mir2 风格 391 txt）；`Mud3-Config/Envir3/`（1729 txt + 69 `.gen`）在整个包内 grep 命中 **0 次** → **本版源码不读 Envir3** |
 | 结论 | `Envir3/` 属另一/更新构建，只能当**独立参考资料**（含 `QuestDiary/` 任务脚本树、`Mon_Def/*.gen` 刷怪定义）；DataBaseServer 的 SQL player-record schema is not a verified mapping to the EI `.db` files |
 | 处理 | 本仓库 `Tools/questdata`、dbeditor workspace 与 `Envir3/` 的对照**必须标注**「源码不读它」这一前提；`tablesdefine.cpp` 只按 legacy SQL schema 记录 |

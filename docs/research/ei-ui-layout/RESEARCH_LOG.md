@@ -11951,3 +11951,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔公开文档隐私整理〕** 提交门禁扫描指出本轮触及的既有文档含开发机绝对资源路径、内网示例地址及账号/电话样例；改用仓库约定的 `${MIR3_EI_ROOT}`/`${MIR3_MUD3_ROOT}`、明确的 `${MIR3_TEST_CLIENT_ROOT}` 文字占位符和脱敏样例，保留文件关系与研究结论。`${MIR3_TEST_CLIENT_ROOT}` 仅是文档占位符，不要求新增运行配置。
 
 **〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个 opcode 缺失穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 242/93742，partial 17/90886，excluded 43/60230，pending 91/70466。`git diff --check` 与 `privacy_scan.py --staged`（4 个指定文件）通过；没有 GameServer、RunGate、DataBaseServer 或 SQL Server 运行验证。
+
+## Round 841 — 2026-09-27：GameServer interserver hub 与跨服角色移交
+
+**〔范围〕** 用 `Tools/source-read/read_src.py show` 全读 `GameServer/InterMsgClient.pas`（1–279）与 `InterServerMsg.pas`（1–927）。另以 source-reader grep 并读取 `UsrEngn.pas` 的 server-shift lifecycle（1859–2195）和 `svMain.pas` 的 share-root、拓扑初始化及 timer 分支（600–610、1290–1300、1690–1703）；这些调用片段不登记为完整文件覆盖。
+
+**〔拓扑与 dispatch〕** `ServerIndex=0` 作为 message hub 启动 `FrmSrvMsg` listener；非零服务器把 `FrmMsgClient` 指向 `MsgServerAddress:MsgServerPort`。client/server 使用 `(...)` 文本帧，内部是 opcode、编码 server index、编码 payload；master 将完整帧转发到除来源外的其它 peer 后本地 dispatch。可见业务包含在线列表、whisper、guild/castle、召唤、friend/tag delegate、reload 和 market open/close；与 RunDB 的 character DB socket 及 RunSock 的 RunGate 是三条不同连接。
+
+**〔跨服角色移交〕** `TServerShiftUserInfo` 复用 `FDBRecord` 并携带 group、whisper、slave、状态/临时能力等运行态数据。`UsrEngn` 写 `.shr` 原始 struct + 4-byte byte-sum 到 `ShareBaseDir`，发送目标 index 与编码文件名；目标服按 `ServerIndex` 过滤、读后删除并校验，入 `WaitServerList` 后 ACK，源服按文件名标记 `ClosePlayers`，wait list 30 秒超时清理。读写返回字节数未检查；打开文件失败后仍可能对 nil `psui` 求和；未作运行复现。
+
+**〔边界与落盘〕** `README.md` D4/D5 与 `tools-and-servers.md` §11 区分 master interserver relay、共享 `.shr` 跨服移交、RunDB 持久化 SQL record 与 RunGate client socket；ledger 第 109–110 行登记两份全读文件。`FDBRecord` 被复制进移交文件只说明跨服内存快照复用，不表示该文件是 MirDB，也不建立 EI `System.db`/`Users.db` 来源映射；未启动/修改任何服务或数据库。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个 opcode 缺失穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 244/94948，partial 17/90886，excluded 43/60230，pending 89/69260。`git diff --check` 通过；未运行 Windows GameServer/多服/共享目录移交验证。
