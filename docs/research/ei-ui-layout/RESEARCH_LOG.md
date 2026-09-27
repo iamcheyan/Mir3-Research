@@ -12119,3 +12119,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔表单可达性与 primary/source〕** `FrmAlpha.pas` 只在 uses 引入 `DropGroupPas`；ImageEditor 搜索中 `TDropFileGroupBox` 与 `OnDropFile` 都只有组件单元自身命中，完整 `FrmAlpha.dfm` 无该组件或事件，FrmAlpha source 也无 drop handler。故目前没有证据表明转换对话框使用该 helper。**Primary:** 未比较 EI。**Source:** Preview `WM_DROPFILES` helper。**Difference:** helper implementation 不等于活动 ImageEditor file-drop flow；不外推 EI UI 行为。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 28 行将 `DropGroupPas.pas` 的 114 行登记 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 protocol constants、EDCODE selftest、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；`ledger.py --summary`：393 文件/315324 行，covered 262/107678，partial 17/90886，excluded 43/60230，pending 71/56530。四个授权文档路径的 `git diff --check` 通过。未运行 ImageEditor。
+
+## Round 854 — 2026-09-27：ImageEditor HUtil32 helper contracts 与调用边界
+
+**〔范围〕** 经 source-reader 全读 `Source/Tools/ImageEditor/HUtil32.pas`（1–2682，CP949），并用 source-reader 搜索 root-level ImageEditor units 的 `HUtil32` API 引用、阅读相关调用上下文。核对 `ImageEditor.dproj` 的 unit search path 与独立的 `Common/HUtil32.pas`；没有 Delphi 编译、ImageEditor 运行或 EI primary-static 对照。
+
+**〔字符串/路径调用〕** `GetValidStr3`（1065–1143）用固定 `Buf[0..$7FFF]` 扫描分隔符 token，返回剩余字符串；输入长度达到 `$7FFF-1` 或捕获异常时两个输出均清空。`FrmAdd.pas` 以空格/逗号依次拆出 X、Y、ShadowX、ShadowY、Shadow（397–401、420–424），也对 offset sidecar 首行做相同解析（576–580）；`FrmMain.pas` 先拆菜单 hint 的首段，再把方括号中的 file type 提取到 `sType`（879–882）。`ExtractFileNameOnly`（674–688）先调用 `ExtractFileName`，再按 `ExtractFileExt` 的结果用首个 `Pos` 截除扩展名；root-level 调用用于 `FrmAdd` sidecar 文件名（206、278、342、854、915）、`FrmAlpha` 输出路径/名称（306、387、390）和 `wmM3Def` 的 `.WIX` 路径（356）。
+
+**〔清零与位图〕** `SafeFillChar`（190–209）的三个 overload 直接转发 `FillChar`，没有额外的边界检查；`WIL.pas` 清零 zlib record、image info 和 texture surface array（185、223、276、405），`wmMyImage.pas` 清像素缓冲和结果 record（159、433），`FrmOut.pas` 清纹理像素缓冲（200）。`SpliteBitmap`（2303–2359）以 monochrome foreground/background masks 与 `BitBlt` 合成透明绘制；`WIL.pas` 的预览调用将透明色设为 `$0`（477、480）。
+
+**〔静态边界与未调用 helper〕** `FileSize` 成功 `FindFirst` 后返回 `SearchRec.Size`，但没有 `FindClose`（741–749）；ImageEditor 搜索未找到该 top-level helper 的外部 caller。`GetMonDay` 在 month≥10 或 day≥10 分支重设整个累积字符串，覆盖年份或年月（2533–2548）。`ReplaceChar` 与 `IsUniformStr` 均从字符串索引 0 开始遍历到 `Length-1`（1755–1784），与该 Delphi 字符串的 1-based 访问形成静态边界疑点；没有外部 caller 命中。`BoolToCStr` 函数体为空（349–352），也没有 caller 命中。top-level `FileCopy`/`FileCopyEx`、`GetFileDate` 未找到 root-level ImageEditor caller；`Common/MfdbDef.pas` 对 `FileCopy`/`FileCopyEx` 的调用属于 `Common/HUtil32.pas` copy，不能反算为 top-level unit 的可达性。源码引用 `HUtil32`，但未用 Delphi 编译验证同名 unit 的实际解析结果。
+
+**〔primary/source 对照〕** **Primary:** 本轮没有 EI UI、位图或辅助库 primary-static 比较。**Source:** Preview ImageEditor 的 HUtil32 实现及上述非注释调用点。**Difference:** utility 声明/实现与 root-level source callsite 不证明 unit 已链接或运行；`Common/HUtil32.pas` 是另一个副本。**Conclusion:** 仅记录静态实现和引用边界，不外推 EI 行为、运行时结果或 Delphi 编译器语义。
