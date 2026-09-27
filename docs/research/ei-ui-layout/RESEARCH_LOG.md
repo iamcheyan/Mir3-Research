@@ -12275,3 +12275,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔primary/source 边界〕** 仅记录 Preview MapEdit 静态源码和 mixed resource reader view；未做 Delphi build、dialog runtime、map mutation/undo runtime 或 EI 等价比较。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 6 行登记 `FScrlXY.pas` 47 行为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 274/127862，partial 17/90886，excluded 43/60230，pending 59/36346。staged 仅有四个授权文档路径，`git diff --cached --check` 无输出；本地新增行的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均为 0 hits，完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
+
+## Round 866 — 2026-09-28：MapEdit HUtil32 utility unit
+
+**〔范围与 project 路由〕** 经 source-reader 按连续范围全读 `Source/Tools/MapEdit/HUtil32.pas`（1–2682，CP949）。源码搜索发现 17 个 MapEdit-family unit 的 `uses` 子句写 `HUtil32`；但 `MapEdit.dpr` 第 19 行唯一显式 project entry 指向 `..\..\Common\HUtil32.pas`。因此这些 unit-name/import/API 引用不能证明 MapEdit project 编译的是本地副本；未做 Delphi build。
+
+**〔API 与实现边界〕** 本地副本包含字符串/分隔符与数值解析、日期/格式转换、ASCII/CP949 字符检查、IP/日期辅助、bit-status 与 feature/color pack/unpack、路径/文件复制/目录枚举、PChar/内存及 GDI bitmap 辅助。`BoolToCStr` 和仅在 implementation 中声明的 `Str_Catch` 函数体为空；`GetValidStrEx/3/4/Val` 是独立 `$7FFF` fixed-buffer parser，输入长度门槛与 exception handling 不一致；`GetFirstWord` 写入 `Str4096` 时没有 token 长度界限。`FileCopy`/`FileCopyEx` 不检查每次 `FileRead`/`FileWrite` 的返回长度。
+
+**〔调用点与归属边界〕** `EdMain` clipboard-field 路径和 `ObjSet` object-set 解析都调用 `GetValidStr3`；`FObj`/`ObjEdit` 用 `_MIN(65535, ImageCount)` 限制列数；`o_WIL`/`Wil/WIL` 在 bitmap path 调 `SpliteBitmap`；`o_WIL`、`wmM3Def`、`wmM3Zip` 用 `ExtractFileNameOnly` 形成 `.WIX`/`.Idx` sidecar 路径；WIL-family 代码调用 `SafeFillChar` 初始化 stream/record。`MapEdit.dpr` 的 explicit project path 指向 Common copy，所以上述静态引用不归属为本地 `HUtil32.pas` 的已验证 runtime callers；未比较 Common copy。
+
+**〔primary/source 边界〕** 只记录 Preview MapEdit source 静态实现与可见引用；不代表编译链接、runtime contract 或 EI/zircon 等价。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 7 行将 `HUtil32.pas` 2682 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 275/130544，partial 17/90886，excluded 43/60230，pending 58/33664。staged 仅有四个授权文档路径，`git diff --cached --check` 无输出；本地新增行的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均为 0 hits，完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
