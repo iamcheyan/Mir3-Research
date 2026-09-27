@@ -12251,3 +12251,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔primary/source 边界〕** 仅记录 Preview MapEdit 的静态源码及资源绑定，不代表 EI 地图编辑器或 map-file 格式等价，也未实测保存、渲染、撤销或 segment 工作流。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 4 行将 `EdMain.pas` 的 3283 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 272/127701，partial 17/90886，excluded 43/60230，pending 61/36507。staged 仅有四个授权文档路径，`git diff --cached --check` 无输出；本地新增行的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均为 0 hits，完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
+
+## Round 864 — 2026-09-28：MapEdit object palette and index routing
+
+**〔范围与 UI〕** 经 source-reader 全读 `Source/Tools/MapEdit/FObj.pas`（1–114，CP949），并读 30 行 mixed `FObj.dfm`、`MapEdit.dpr` 与 `EdMain` 的对象菜单/绘制调用。DPR 创建 `TFrmMain` 后创建 `TFrmObj`；主窗体先初始化 `WilArr`，对象面板 `FormCreate` 再生成库名列表。DFM reader view 能辨认 form/grid/combo 事件；`dfm_parse.py tree` 在 Reader.u8 越过输入处抛 `IndexError`，未恢复 grid geometry 或 `RowCount`。
+
+**〔选择与调用〕** `FObj.FormCreate` 默认半尺寸显示、枚举 70 个 `WilArr` 文件名并选择 0。`FormShow` 按模式设 grid cell width 为 24/48，按 `min(65535, image count)` 设列数且至少一列。ComboBox 的有效索引 0–69 设置 `WilIndex` 并重跑 FormShow；draw-cell 用 `Col + Row * ColCount` 计算图像索引、检查 image count 后按 0.5×/1×绘制。`GetCurrentIndex` 只使用 `ObjGrid.Col`，返回 `WilIndex * 65535 + Col` 或 -1；并未合入 `Row`。主窗体 `Object1Click` 显示 `FrmObj`，grid click 设 `DrawMode=mdObj`；源码搜索只找到 `EdMain.DrawObject` 调 `GetCurrentIndex`，该路径的 Alt 分支将 -1 传入 `DrawObjDr`，Ctrl 分支 XOR `$8000`。
+
+**〔库索引路由差异〕** FObj 接受 0–69 并保留相应前缀，但 `EdMain.ObjWil` 只在 `idx div 65535` 属于 0–39 时选对应数组项，超出范围会返回默认 `WilArr[0]`。所以 40–69 的 palette preview 与下游对象图像解析在静态调用链中均落到默认库；`GetCurrentIndex` 仍会编码所选的高索引。DFM 的 RowCount 数值不可见，故不推断多行 grid 的实际选择行为；未做 runtime 验证。
+
+**〔primary/source 边界〕** 只记录 Preview MapEdit 静态源码、资源 reader view 和可见调用链；未比较 EI object palette，没有 Delphi build，也未在运行 UI 中选择 40–69 项目或检查 map output。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 5 行将 `FObj.pas` 114 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 273/127815，partial 17/90886，excluded 43/60230，pending 60/36393。staged 仅有四个授权文档路径，`git diff --cached --check` 无输出；本地新增行的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均为 0 hits，完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。

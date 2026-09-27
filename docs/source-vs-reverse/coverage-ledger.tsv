@@ -2,7 +2,7 @@ area	rel_path	lines	bytes	status	note
 E-tools	Source/Tools/MapEdit/About.pas	33	503	covered	Round 861 full 1–33 (CP949); MapEdit.dpr includes/auto-creates Form1; DFM binds OK to close; active About menu is ShellAbout, custom Form1.ShowModal commented/no active display call found; no Delphi/runtime/EI comparison
 E-tools	Source/Tools/MapEdit/DoorDlg.pas	52	1114	covered	Round 862 full read (CP949); high-bit checkbox/lower-seven-bit index and raw offset, mrOk-only mutation; active mdDoor menu→map-click→UpdateDoor caller; cancel still sets Edited after call; DFM parser failed, no Delphi/runtime/EI comparison
 E-tools	Source/Tools/MapEdit/EdMain.pas	3283	105534	covered	Round 863 full read (CP949); main form/event/render/edit and undo paths traced; main map load/save + segment .sem bodies are commented and return false/no persistence; MArr is TTileInfo[] but accessed as TMapInfo; DFM parser EOF IndexError, no Delphi/runtime/EI comparison
-E-tools	Source/Tools/MapEdit/FObj.pas	114	2612	pending	
+E-tools	Source/Tools/MapEdit/FObj.pas	114	2612	covered	Round 864 full read (CP949); DFM binds grid draw/click and 70-entry dropdown; only EdMain.DrawObject calls GetCurrentIndex; indices 40–69 fall through EdMain.ObjWil to WilArr[0], row-count/runtime/EI behavior unverified
 E-tools	Source/Tools/MapEdit/FScrlXY.pas	47	761	pending	
 E-tools	Source/Tools/MapEdit/HUtil32.pas	2682	63476	pending	
 E-tools	Source/Tools/MapEdit/ImgMan.pas	550	15852	pending	
