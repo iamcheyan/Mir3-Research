@@ -12225,3 +12225,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔primary/source 边界〕** 仅记录 Preview MapEdit unit/resource 和静态调用关系；未查 EI 对应 About 窗体，也未据此判断运行时是否有其它方式显示 `Form1`。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 2 行将 `About.pas` 的 33 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 270/124366，partial 17/90886，excluded 43/60230，pending 63/39842。四个授权文档路径的 staged whitespace check 无输出；staged additions 的 PEM private-key、AWS key、GitHub-token、credential-assignment、email 临时 patterns 均为 0 hits，完整 staged diff 已复核。该 pattern scan 是本地临时检查，不是仓库官方 scanner。未运行 Delphi/MapEdit。
+
+## Round 862 — 2026-09-28：MapEdit door marker dialog and active map-click caller
+
+**〔范围〕** 经 `Tools/source-read/read_src.py` 全读 `Source/Tools/MapEdit/DoorDlg.pas`（1–52，CP949），并追读 `MapEdit.dpr`、`EdMain.pas` 的 `UpdateDoor`、`MapPaintMouseDown` 与 `DrawObject1Click`，搜索 `EdMain.dfm` 菜单绑定。DPR 纳入 `DoorDlg` 并在启动时 `Application.CreateForm(TFrmDoorDlg, FrmDoorDlg)`。MapEdit 中唯一观察到的 `UpdateEx` 调用在 `UpdateDoor`；没有 Delphi 构建或 UI 运行。
+
+**〔对话框与数据流〕** `UpdateEx` 根据 `DoorIndex` 的 `$80` 位初始化复选框，编辑框显示低七位索引和 `DoorOffset`。只有 `ShowModal = mrOk` 时，索引/offset 文本才经 `StrToIntDef(..., 0)` 解析并写回 `var` 参数；复选框选中时给解析索引 OR `$80`，offset 原样解析。取消或其它非 `mrOk` 结果返回 false，函数不修改这两个输入参数。输入没有显式上下界检查，函数也不在解析后将索引限制到七位。
+
+**〔菜单与编辑副作用〕** `EdMain.dfm` 的 `UpdateDoor1` 绑定 `DrawObject1Click`，该 handler 选择 `mdDoor`；`MapPaintMouseDown` 的 `mdDoor` 路径调用 `UpdateDoor`。后者从目标格子的 byte `DoorIndex`/`DoorOffset` 取初值，只有对话框返回 true 才分别调用 `SetMapDataEx` 写回两字段。鼠标分支在对话框调用之后无条件执行 `Edited := TRUE`；所以按静态控制流，取消不改这两个格子字段，却仍可能将编辑器标成 dirty。`SetMapDataEx` 记录旧字段供 undo 并把传入整数赋到 byte 字段；未观察到局部输入范围校验。超出 byte 范围时的具体编译/运行行为未实测，不据此断言截断或异常。
+
+**〔DFM 与 primary/source 边界〕** source-reader 对 `DoorDlg.dfm` 的视图能辨认 `CkDoor`、`EdIndex`、`EdOffset` 及 `bkOK` 按钮，但文件标记为 mixed binary/text；`dfm_parse.py tree`（含浅层模式）和 `list` 均在 Reader.u8 越过输入时抛 `IndexError`，故不声称恢复了控件几何或全部 caption。仅记录 Preview MapEdit 静态资源/调用关系；没有 EI 对照、Delphi 编译或实际确认/取消操作。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 3 行将 `DoorDlg.pas` 的 52 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 271/124418，partial 17/90886，excluded 43/60230，pending 62/39790。staged 仅含四个授权文档路径，`git diff --cached --check` 无输出；本地新增行的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均为 0 hits，完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
