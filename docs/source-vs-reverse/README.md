@@ -186,6 +186,7 @@ Zircon 的对应关系；不改变现有结论，属**补充**。
 |---|---|
 | 原版 | `System.db` = .NET BinaryFormatter. An excluded `Mud3 Preview/SQL/` dump (687 MB) exists, but this source read does not establish that it is `System.db`'s upstream |
 | 源码 | `DataBaseServer/DBSvr/tablesdefine.cpp` declares SQL Server player-record tables; GameServer→DataBaseServer→ODBC is separate from `System.db`/`Users.db` MirDB files. Server text configuration is read by name: `MapInfo.txt` `MonGen.txt` `Merchant.txt` `Npcs.txt` `GuardList.txt` `AdminList.txt` `MiniMap.txt` `StartPoint.txt` `SafePoint.txt` `MakeItem.txt` `DecoItem.txt` `DragonItem.txt` `GenMsg.txt` `MapQuest.txt` `UnbindList.txt` `StartupQuest.txt` `AttackSabukWall.txt` `Sabuk.txt` `enckey.txt`; `svMain.pas:619` sets `EnvirDir := ini.ReadString('Share','EnvirDir','.\Envir\')` |
+| GameServer ADO 子系统 | `SQLLocalDB.pas` 从 `Setup/!DBSETUP.TXT` 连接并读取 StdItems/Monster/MonsterItem/Magic；`DBSQL.pas`/`SqlEngn.pas` 处理物品市场与行会据点公告板 SQL。与 C++ DataBaseServer ODBC 路径分开，不建立 `.db` 文件映射 |
 | 差异 | 源码只读 `Mud3-Config/Envir/`（Mir2 风格 391 txt）；`Mud3-Config/Envir3/`（1729 txt + 69 `.gen`）在整个包内 grep 命中 **0 次** → **本版源码不读 Envir3** |
 | 结论 | `Envir3/` 属另一/更新构建，只能当**独立参考资料**（含 `QuestDiary/` 任务脚本树、`Mon_Def/*.gen` 刷怪定义）；DataBaseServer 的 SQL player-record schema is not a verified mapping to the EI `.db` files |
 | 处理 | 本仓库 `Tools/questdata`、dbeditor workspace 与 `Envir3/` 的对照**必须标注**「源码不读它」这一前提；`tablesdefine.cpp` 只按 legacy SQL schema 记录 |

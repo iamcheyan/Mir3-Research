@@ -11925,3 +11925,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔覆盖更新〕** `coverage-ledger.tsv` 更新 `Def/` 第 175–193 行：14 个 pending 变 covered，`Def/Protocol.h` 从 Round 820 opcode 局部备注扩为完整 1–557 阅读。Round 838 未读任何 EI primary-static 资源、未碰数据库/服务、未改 Zircon。
 
 **〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 236/88670，partial 17/90886，excluded 43/60230，pending 97/75538。`git diff --check` 对本轮三份指定文件通过；没有 Windows 构建、服务或数据库运行验证。
+
+## Round 839 — 2026-09-27：GameServer ADO 资源与 market/board 数据路径
+
+**〔范围〕** 通过 `Tools/source-read/read_src.py show` 全读 `GameServer/DBSQL.pas`（1–1050）、`SqlEngn.pas`（1–1268）、`SQLLocalDB.pas`（1–799）、`Server_JOB_ItemGen.dpr`（1–59）。另用 source-reader 定位 `LocalDB.pas` 的资源装载调用，并读取 `svMain.pas` 创建/连接 DBSQL 与 timer 调用点（420–435、1292–1308、1682–1697）；不将这些局部行读扩大登记为完整覆盖。
+
+**〔两条 ADO 子系统〕** `SQLLocalDB` 从 `.\Setup\!DBSETUP.TXT` 取 ADO 连接/表名，实际被 `LocalDB.pas` 用于 StdItems、Monster、MonsterItem、Magic 装载；保留的 `ltFILE` 路径由 `LoadFromFile` 固定返回 false。字段构造中 `TMagicMgr` 的 NeedLevel[2]/[3] 都取 `NEEDL3`，第 4 阶 train 值复用第 3 阶。`TDBSql` 使用 `SQLOLEDB.1`，连接串从 `svMain` globals 取值，负责 item-market 与 GuildAgit board SQL，而非 C++ DataBaseServer 的 `TBL_CHARACTER`/附属玩家记录表。
+
+**〔队列与 SQL 语义〕** `TSQLEngine` 的工作循环处理请求队列，`svMain.RunTimerTimer` 在 ServerReady 时调用 `ExecuteRun` 处理游戏侧响应；`ExecuteSaveCommand` 是空实现。Market 操作组合 `UM_*` stored procedures 与 `TBL_ITEMMARKET` INSERT；board 操作使用 `GABOARD_*`、`TBL_GABOARD`。源码可见 SQL 字符串拼接、market INSERT 两个列表末尾都追加逗号，以及 `ReadyToSell` 将 `RecordCount >= 0` 视为成功；未连接 SQL Server，未验证语句/存储过程结果。
+
+**〔边界与落盘〕** 在 `README.md` D5 与 `tools-and-servers.md` §9 记录 GameServer ADO 资源/sidecar 与 C++ DataBaseServer ODBC player-record 是独立路径；都没有建立与 EI `System.db`/`Users.db` 的来源映射。`coverage-ledger.tsv` 第 98、128–130 行登记 4 个全读文件；未改数据库、服务或 Zircon 源码。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个 opcode 缺失穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 240/91846，partial 17/90886，excluded 43/60230，pending 93/72362。`git diff --check` 对本轮四份指定文件通过；GameServer ADO/SQL 与服务行为没有运行验证。

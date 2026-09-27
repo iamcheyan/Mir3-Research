@@ -95,7 +95,7 @@ A/C-server	Source/GameServer/Castle.pas	1241	42317	covered	Round 829 partial tim
 A/C-server	Source/GameServer/CmdMgr.pas	629	18628	covered	Round 810: TCmdMsg/ICommand/TCmdMgr 结构与分派
 A/C-server	Source/GameServer/ConfirmDlg.pas	42	734	pending	
 A/C-server	Source/GameServer/CryptMd5.pas	497	18297	pending	
-A/C-server	Source/GameServer/DBSQL.pas	1050	33281	pending	
+A/C-server	Source/GameServer/DBSQL.pas	1050	33281	covered	Round 839 full 1–1050: ADO SQL sidecar for user market/guild board; direct/stored-procedure SQL construction, not character-record mapper
 A/C-server	Source/GameServer/DragonSystem.pas	604	18322	partial	Round 816: DecodeStrInfo状态机格式；其余实现待读
 A/C-server	Source/GameServer/EDCode.pas	464	15569	covered	Round 803 diff
 A/C-server	Source/GameServer/ElHashList.pas	325	9435	pending	
@@ -125,9 +125,9 @@ A/C-server	Source/GameServer/ObjNpc.pas	6409	255489	covered	Round 811/821: 五�
 A/C-server	Source/GameServer/Relationship.pas	471	11946	covered	Round 829 model notes; Round 834 full 1–471 plus ObjBase request/accept callers: reciprocal partner handshake, request-side capacity/eligibility, local Add boundary, date/serialization; DB/runtime locale edges explicitly open
 A/C-server	Source/GameServer/RunDB.pas	687	22148	pending	
 A/C-server	Source/GameServer/RunSock.pas	1209	41126	pending	
-A/C-server	Source/GameServer/SQLLocalDB.pas	799	31038	pending	
-A/C-server	Source/GameServer/Server_JOB_ItemGen.dpr	59	1828	pending	
-A/C-server	Source/GameServer/SqlEngn.pas	1268	41012	pending	
+A/C-server	Source/GameServer/SQLLocalDB.pas	799	31038	covered	Round 839 full 1–799: ADO resource tables from Setup/!DBSETUP.TXT; file fallback is stub; Item/Monster/MobItem/Magic field loaders
+A/C-server	Source/GameServer/Server_JOB_ItemGen.dpr	59	1828	covered	Round 839 full 1–59: GameServer project imports DBSQL/SqlEngn/SQLLocalDB and creates server/database/login forms
+A/C-server	Source/GameServer/SqlEngn.pas	1268	41012	covered	Round 839 full 1–1268: threaded market/board DB queue and timer-side response dispatch; ExecuteSaveCommand body is empty
 A/C-server	Source/GameServer/TagSystem.pas	1678	54596	covered	Round 829 partial notes superseded where corrected; Round 834 full 1–1678 plus UserMgr/UsrEngn/ObjBase callers: state transitions, DB/inter-server paths, 11-entry page bound, unread-count reload drift, delete-all-read empty branch, CM_TAG_NOTREADCOUNT route gap; DB-side semantics open
 A/C-server	Source/GameServer/UserMgr.pas	726	21672	covered	Round 802 FriendSystem 二次分派
 A/C-server	Source/GameServer/UserMgrEngn.pas	276	6926	pending	

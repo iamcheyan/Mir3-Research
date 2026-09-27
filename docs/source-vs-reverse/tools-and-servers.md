@@ -378,3 +378,11 @@ Round 835 全读 LoginServer 应用层与本目录 C++ 编码/包辅助文件；
 - `Def/DynamicArray.cpp` 是非模板旧版 slot allocator，其两个扫描循环检查固定初始 `nIndex`；相邻 `DynamicArray.h` 则是 5000 槽模板实现，`GetData`/`DettachData` 的 `<= _MAX_USER_ARRAY` 边界允许索引越界，满表的 `AttachData` 没有返回值。两份都是源码路径，不从名称推断同一实现。
 - `Def/IocpHelper` 与 `Def/ServerSockHandler` 不在 `DBSvr.vcproj` 编译列表。前者通过 `TerminateThread` 停止 accept 线程，accept 失败后仍调用 `OnAccept`；后者的 `ConnectToServer` 在 `connect` 立即成功时仍返回 `FALSE`，且头文件/实现的 `CreateIOCPWorkerThread` 签名不一致。均未在 Windows 构建或执行。
 - `CStaticArray` 返回空槽时单调增加 cursor，回绕扫描使用未经 size clamp 的 cursor 上界；`CList::InsertAt` 未更新 count，`Remove`/`Search` 未保护空 comparator，析构为空而不会清理节点。`CQueue` 只是该链表的 head/tail wrapper。registry、日期/字符串和 `CCriticalSection` 文件为独立支持函数。所有问题均是静态阅读发现；除 `DBSvr/` app 和已证实链接库来源外，不把这些文件宣称为服务运行时路径。
+
+## 9. GameServer ADO 数据子系统（Round 839）
+
+- `Server_JOB_ItemGen.dpr` 是 GameServer 项目入口并包含 `SQLLocalDB`、`DBSQL`、`SqlEngn`。`svMain.pas` 创建 `g_DBSQL`/`SqlEngine`、启动时调用 `g_DBSQL.Connect()`；`RunTimerTimer` 在服务 ready 时调用 `SqlEngine.ExecuteRun()`。这是源码调用链，不代表本轮启动过服务。
+- `SQLLocalDB.pas` 定义四类 ADO 数据 loader：StdItems、Monster、MonsterItem、Magic。`LocalDB.pas` 对这些列表调用 `Load(..., ltSQL, ...)`；连接信息文件为 `.\Setup\!DBSETUP.TXT`。虽然 API 保留 `ltFILE`，`LoadFromFile` 方法体恒返回 false。`TMonsterItemMgr` 把比较字符串拼入 `WHERE MOBNAME='...'`；`TMagicMgr` 将 `NEEDL3` 同时写入 NeedLevel[2]/[3]，训练等级固定为 3 且第 4 阶 training 值复制第 3 阶。
+- `DBSQL.pas` 的 `TDBSql` 另用 ADO `SQLOLEDB.1`，连接串由 `SqlDBPassword/SqlDBID/SqlDBDSN/SqlDBLocal` globals 组成。功能集中于物品市场（`TBL_ITEMMARKET`、`UM_*` procedures）和行会据点公告板（`TBL_GABOARD`、`GABOARD_*`），不是 C++ `tablesdefine.cpp` 的玩家角色表 mapper。它与 §8 DataBaseServer 的 C++ ODBC/character path 是两个独立源码路径。
+- `TSQLEngine` 用请求/响应 `TList` 队列在 SQL 工作循环与游戏 timer 间传递 market/board 操作；`ExecuteSaveCommand` 为空。`DBSQL` 通过字符串拼接执行 SQL，不用绑定参数；`AddSellUserMarket` 构造的 INSERT 列表和值列表各有尾逗号，`ReadyToSell` 对 `RecordCount >= 0` 即返回 success。公告板 insert/update 也拼接字符串；这些仅是源码检查，未连接执行或修改 SQL Server。
+- 资源 ADO、market/board ADO 与 DataBaseServer ODBC 均不能证明 EI `System.db`/`Users.db` 的 upstream 或一一映射；`SQLLocalDB` 的 “Local” 名称也不证明它使用本地文件数据库。
