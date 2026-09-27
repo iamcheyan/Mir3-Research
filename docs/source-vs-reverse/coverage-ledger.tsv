@@ -162,7 +162,7 @@ D-client	Source/Client/clEvent.pas	218	5444	covered	Round 907: SM_SHOWEVENT fiel
 D-client	Source/Client/cliUtil.pas	1258	42862	covered	Round 908: active draw/fade helpers, no-op legacy fog/MMX routines, uncalled color caches, startup surfaces without unload caller
 D-client	Source/Client/magiceff.pas	1621	53077	covered	Round 909: all 15 effect classes, spell/projectile factories and Actor/AxeMon/ClMain callers; corrected GetFlyXY/Shift timing, empty unused lighting stub, scroll-hide frame mismatch, nil dereference and inactive-list lifecycle gaps
 D-client	Source/Client/uWilFile.pas	582	21446	covered	Round 807 路径表与回退
-D-client	Source/Client/wmM2Def.pas	525	17922	pending	
+D-client	Source/Client/wmM2Def.pas	525	17922	covered	Round 910: WIL/WIX M2Def format selection, lazy 8-/16-bit texture conversion, 27 Client library callers, unreachable t_wmM2Def16 branch, unchecked headers and index-handle leak
 D-client	Source/Client/wmM2Zip.pas	302	9989	covered	Round 825: Mir2压缩格式全解(.WZX索引48B头/21B图头/双路径解码/Encode=5为16位/格式自动探测)
 D-client	Source/Client/wmM3Def.pas	537	16638	pending	
 D-client	Source/Client/wmM3Zip.pas	217	6608	covered	Round 807 .Zl 容器
