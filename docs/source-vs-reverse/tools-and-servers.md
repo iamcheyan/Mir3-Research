@@ -154,6 +154,7 @@ SendSocket(EncodeMessage(msg)
 | 顶层 `.pas` | **非第三方部分**（图库读写、调色板、Alpha 处理等） |
 | `Common/Grobal2.pas`（2,663 行） | 协议表第三份副本（`protocol.md` §1.1 已 diff） |
 | `Common/EDCode.pas` | 线格式（`wire-format.md` §4 已 diff） |
+| `Common/DES.pas` | 独立的 `DES` 单元，含置换/S 盒表、16 轮核心及字符串/十六进制/缓冲区包装。ImageEditor 源码未找到对此路径的显式引用；`wmMyImage.pas` 使用未限定的 `DES`，而根目录 `DES.pas` 也声明同名单元。编译器单位解析未验证；与 MapEdit.dpr 显式选择的 `Source/Common/DES.pas` 保持区分 |
 | **`Plug/`（62,337 行）** | ⚠️ **第三方组件，明确排除** |
 
 **`Plug/` 排除清单**（`coverage-ledger.tsv` 已标 `excluded`）：
