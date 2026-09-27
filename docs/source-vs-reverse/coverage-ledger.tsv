@@ -287,7 +287,7 @@ E-db	Source/DataBaseServer/Common/sqlhandler.cpp	444	11282	covered	Round 837 ful
 E-db	Source/DataBaseServer/Common/sqlhandler.h	38	954	covered	Round 837 full 1–38: SQL/table types STR/INT/DAT/DBL and fIsKey/field-size contracts
 C-common	Source/Common/DES.pas	563	16649	partial	Round 824: DecryBuffer 定位（.Lib 加密用）；实现主体待读
 C-common	Source/Common/EDCode.pas	539	17672	covered	Round 803 线格式 + Round 812 破译 WEMADE 加密（Decrypt）
-C-common	Source/Common/GList.pas	547	14813	pending	
+C-common	Source/Common/GList.pas	547	14813	covered	Round 916 full read: lock-wrapper lists, TQuickList binary/order and one-item duplicate result; grouped TQuickIDList bounds/ownership edges; no GList-defined class callers, only import is unlinked DrawHint; MudUtil TQuickList copies are distinct
 C-common	Source/Common/Grobal2 - 副本.pas	2599	96162	covered	Round 803 三表 diff
 C-common	Source/Common/Grobal2.pas	2862	105217	covered	Round 802/803/820: 474 常量 + QI_/QA_ opcode 表 + ET_ 命名空间
 C-common	Source/Common/HUtil32.pas	2214	60031	pending	
