@@ -142,7 +142,7 @@ D-client	Source/Client/CMsg.pas	110	2183	covered	Round 896: CMList.dat parsing a
 D-client	Source/Client/ClFunc.pas	1032	28948	covered	Round 897: local inventory/options, bag/trade/drop helper behavior and static stack-result/count defects; geometry and change-face caller traces
 D-client	Source/Client/ClMain.pas	9924	322121	partial	Round 817: SCREENWIDTH/HEIGHT 常量+SendWantMiniMap/PublicKey；主体待读
 D-client	Source/Client/DWinCtl.pas	7804	226540	partial	Round 806/818: 类层次+输入优先级+InRange+TDButton四态+TDGrid格子+SetImgIndex；TDWindow/TDModalWindow/TDMemo/TDEdit/TDTreeView/TDListView 待读
-D-client	Source/Client/DrawHint.pas	441	15405	pending	
+D-client	Source/Client/DrawHint.pas	441	15405	covered	Round 898: unbound TDxHintMgr parser/cache/render behavior; active DScreen hint path belongs to DrawScrn
 D-client	Source/Client/DrawScrn.pas	550	17810	covered	Round 804 场景切换
 D-client	Source/Client/FState.pas	14853	531645	partial	Round 817: TFrmDlg.Initialize 运行时布局(345项)+窗口声明+帧号；其余主体待读
 D-client	Source/Client/HerbActor.pas	993	30165	partial	Round 826: 10 类层次(TKillingHerb/TCastleDoor/TWallStructure等)；实现待读
