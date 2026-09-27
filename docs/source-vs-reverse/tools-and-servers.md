@@ -135,7 +135,7 @@ SendSocket(EncodeMessage(msg)
 | `DoorDlg.pas` | 门编辑（对应 `Envir.pas` 的 `PTDoorInfo`） |
 | `MapSize.pas` | 地图尺寸 |
 | `mpalett.pas` | Legacy background-tile-group palette/attribute marks; DPR creates it, but observed EdMain populate/show calls are commented |
-| `segunit.pas` | 段 |
+| `segunit.pas` / `segunit.dfm` | Legacy 3×3 segment-project selector; saves project metadata only because EdMain's `.sem` data load/save methods are commented; DPR auto-creates it, but no active form `Show` caller was located; mixed DFM parser cannot resolve the grid type |
 | `HUtil32.pas` | 工具库（与 `Common/HUtil32.pas` 同源） |
 | `ImgMan.pas` / `FScrlXY.pas` / `MoveObj.pas` / `About.pas` | 辅助 |
 
