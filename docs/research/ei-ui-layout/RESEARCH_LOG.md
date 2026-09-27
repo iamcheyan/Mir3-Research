@@ -12853,10 +12853,18 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 
 ## Round 920 — 2026-09-28：`Source/Common/Scanf.pas` unlinked scanf-like parser
 
-**〔full read and reachability〕** Read all 256 lines / 6,006 bytes through the authorized source reader (CP949). Source-reader searches found no project mapping, import, or active caller. `IntroScn.pas` contains one `strScanf` example only inside a comment. `Source/Common/SscanfUtil.pas` separately declares the same function names and remains its own pending unit; no equivalence with this implementation is assumed.
+**〔full read and reachability〕** Read all 256 lines / 6,006 bytes through the authorized source reader (CP949). Source-reader searches found no project mapping, import, or active caller. `IntroScn.pas` contains one `strScanf` example only inside a comment. `Source/Common/SscanfUtil.pas` was then fully read in Round 921; the authorized-reader comparison found its complete body identical except for the unit declaration.
 
 **〔format and conversion behavior〕** `numScanf` handles `%d` and `%f`, copying `LongInt`/`Extended` bytes into caller-provided pointers; `strScanf` handles `%s` into an open string array. Other directives stop the scan. Both `ScanStr` helpers ignore the requested literal character and consume one source character after whitespace skipping. `strScanf.GetString` uses the next format character as its token delimiter.
 
 **〔failure edges〕** `GetInt` and `GetFloat` evaluate `s[n]` before the length guard, so a later numeric conversion after input exhaustion can read out of bounds. `GetInt`'s sign condition rejects a leading `+`, accepts a lone `-` into `StrToInt`, and does not catch conversion exceptions; `GetFloat` accumulates unrestricted sign/dot/exponent characters before `StrToFloat`. `strScanf` loops through `SizeOf(Strs)` instead of `High(Strs)`, risking writes beyond the supplied output array, and its empty-token break is commented out.
 
 **〔verification〕** Ledger row 296 covers all 256 lines. `python3 Tools/source-read/verify_all.py` returned ALL VERIFY PASS (393 files / 315,324 lines; covered 329 / 162,084, excluded 43 / 60,230, partial 16 / 89,265, pending 5 / 3,745). Exact four-path `git diff --check` passed; added-line credential/privacy scan found 0 matches across 20 added lines. No Delphi build, runtime, or C scanf-conformance test was performed.
+
+## Round 921 — 2026-09-28：`Source/Common/SscanfUtil.pas` duplicate scanf-like parser
+
+**〔full read and copy boundary〕** Read all 256 lines / 6,011 bytes through the authorized source reader (CP949). Comparing both full reader outputs after normalizing the first unit declaration found every remaining line identical to `Source/Common/Scanf.pas` (256 lines / 6,006 bytes). The only source difference is the unit name. Source-wide searches found no project binding, import, or active caller of either unit; the `IntroScn` `strScanf` occurrence is commented.
+
+**〔shared implementation〕** This copy exports the same `numScanf` `%d`/`%f` raw-pointer conversions and `strScanf` `%s` string-array parser; it therefore has the exact literal-skipping, input-bounds, `SizeOf(Strs)` loop, and unhandled numeric-conversion edges documented in Round 920. The similarly named functions do not establish a selected project implementation because neither unit has a binding/import/callsite.
+
+**〔verification〕** Ledger row 297 covers all 256 lines. `python3 Tools/source-read/verify_all.py` returned ALL VERIFY PASS (393 files / 315,324 lines; covered 330 / 162,340, excluded 43 / 60,230, partial 16 / 89,265, pending 4 / 3,489). Exact four-path `git diff --check` passed; added-line credential/privacy scan found 0 matches across 19 added lines. No Delphi build or runtime validation was performed.

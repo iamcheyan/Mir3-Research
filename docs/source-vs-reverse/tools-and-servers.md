@@ -643,7 +643,13 @@ Round 835 全读 LoginServer 应用层与本目录 C++ 编码/包辅助文件；
 - Full read: 256 lines / 6,006 bytes (CP949). `numScanf` supports `%d`/`%f`, moving a `LongInt`/`Extended` representation into caller-provided pointers; `strScanf` supports `%s` into an output string array. Unsupported directives stop parsing; this is a small scanf-like subset, not C `scanf`.
 - Both `ScanStr` helpers ignore their character parameter: format literals skip whitespace and advance one source character without checking it matches. `strScanf.GetString` treats the next format character as a delimiter. The numeric parser's `GetInt` sign condition rejects leading `+`, accepts a lone `-` into `StrToInt`, and can let conversion exceptions escape; `GetFloat` accepts arbitrary runs of signs/dots/exponents before `StrToFloat`.
 - Bounds are not robust: `GetInt`/`GetFloat` access `s[n]` before testing `n <= Length(s)`, so another conversion after input exhaustion can read out of range. `strScanf` loops from zero through `SizeOf(Strs)` rather than `High(Strs)` and can index beyond a short output array when enough `%s` directives are present; its empty-token `break` is commented out.
-- Source-wide search found no project binding, import, or active caller. `IntroScn` contains only a commented `strScanf` example. `Source/Common/SscanfUtil.pas` is a separate pending unit with the same exported names; no implementation equivalence is inferred. No Delphi build or runtime test was performed.
+- Source-wide search found no project binding, import, or active caller. `IntroScn` contains only a commented `strScanf` example. The full-read comparison with `Source/Common/SscanfUtil.pas` in Round 921 found the other unit's complete body identical except for the unit declaration. No Delphi build or runtime test was performed.
+
+## 16aa. `Source/Common/SscanfUtil.pas` duplicate parser unit（Round 921）
+
+- Full read: 256 lines / 6,011 bytes (CP949). Comparing both complete authorized-reader outputs after normalizing the first unit-declaration line found every remaining line identical to `Source/Common/Scanf.pas` (256 lines / 6,006 bytes); the only source difference is the unit name.
+- The duplicate exposes the same `%d`/`%f` pointer conversion and `%s` open-array parsing, with the same literal-skip, conversion, and bounds defects recorded in §16z. Source-wide search found no project mapping, import, or active caller for either unit; `IntroScn` contains only a commented `strScanf` example.
+- No Delphi build, runtime, or parser conformance test was performed.
 
 ## 17. Preview ImageEditor WIL/Lib authoring UI（Round 849）
 
