@@ -12093,3 +12093,17 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔primary/source 对照〕** **Primary:** 本轮未检 EI 音频、资源或客户端 DLL。**Source:** Preview ImageEditor 的 PE byte-array、unit init/finalization 与 `DLLLoader` manual-map path。**Difference:** 查到的 project/source 引用没有连接到 BASS API caller。**Conclusion:** 仅登记为未证实可达的源码嵌入载荷；未运行原生 DLL，也不外推 EI behavior 或安全结论。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 26 行将 `DLLFile.pas` 的 4,977 行登记 covered，`DLLLoader.pas` 仍 pending。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 protocol constants、EDCODE selftest、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；`ledger.py --summary`：393 文件/315324 行，covered 260/106430，partial 17/90886，excluded 43/60230，pending 73/57778。四个授权文档路径的 `git diff --check` 通过。未运行 ImageEditor 或原生 DLL。
+
+## Round 852 — 2026-09-27：ImageEditor DLLLoader PE32 映射与失败清理
+
+**〔范围〕** 经 source-reader 分段全读 `Source/Tools/ImageEditor/DLLLoader.pas`（1–1134，CP949）；再查全 `Source` 的 `TDLLLoader` 使用、ImageEditor 的 `LoadExternalLibrary`/`FindExport`/`FindExportPerIndex`/`GetExportList`/`DLLProc`。`TDLLLoader` 只在 loader 自身与 `DLLFile.pas` 出现，导出查询 API 没有 loader 外 caller；未运行 native mapper/DLL。
+
+**〔PE32 布局与装载序列〕** 手写 packed 32-bit DOS/NT/optional/section/import/relocation/export records；`ReadImageHeaders` 检 MZ、PE signature、machine `$14C`，但没有验证 optional-header magic 或 file-declared size 是否不超过固定 record。`Load` 顺序为 header parse → reserve/commit headers → copy/commit sections → relocations → imports → protections → entrypoint PROCESS_ATTACH → export map；目标 image 本身不是经 Windows `LoadLibrary` 映射（该 API 仅用于依赖模块）。`ConvertPointer` 只在 section range 中将 RVA 转地址。
+
+**〔导入/重定位/导出语义〕** 重定位实际处理 ABSOLUTE/HIGH/LOW/HIGHLOW；HIGHADJ/MIPS case 为空，未知 type 无拒绝分支。Imports 经系统 `LoadLibrary` 与 `GetProcAddress` 解析，但两种 API 结果没有检查；section `VirtualAlloc`/`VirtualProtect` 也不检查返回值。Name export 写入 `TExportTree`，named forwarder 用 `GetProcAddress`；ordinal-forwarder path 把解析数字传给 `ConvertPointer` 当 RVA，且没有给 `ExportArray[I].FunctionPointer` 赋值。
+
+**〔失败与卸载边界〕** `ReadSections` 短读可在 `FREEMEM(SectionHeaders)` 前退出；`Load` 的任一阶段失败都不统一回滚部分映射、imports 或 arrays。`InitializeLibrary` 未确认入口点非 nil 即调用。`Unload` 释放 sections/import dependencies/image，但 `RESULT` 从 FALSE 起未变更，且不清空 `DLLProc`/`ImageBase`。`Destroy`/`Unload` 的 `@DLLProc <> nil` 是字段地址判断而非 assigned-pointer guard；若加载失败早于入口点赋值，析构会尝试 nil procedure call。均为静态控制流发现，未执行验证。
+
+**〔调用边界与 primary/source〕** 全 `Source` 中 `TDLLLoader` 只有 `DLLFile` 这一调用单元；`FindExport`、`FindExportPerIndex`、`GetExportList` 未找到外部 caller。`DLLFile` 本身没有外部 source reference，ImageEditor 项目引用表也不包含 loader/payload，故完整 mapper 实现不等于已证实的应用运行路径。**Primary:** 未比对 EI。**Source:** Preview 手写 PE32 mapper。**Difference:** source caller reachability 不成立；不外推 EI 客户端或音频行为，也不作安全评估。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 27 行将 `DLLLoader.pas` 的 1,134 行登记 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 protocol constants、EDCODE selftest、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）；`ledger.py --summary`：393 文件/315324 行，covered 261/107564，partial 17/90886，excluded 43/60230，pending 72/56644。四个授权文档路径的 `git diff --check` 通过。未执行 native mapper/DLL。
