@@ -12680,3 +12680,13 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔object lifecycle and verification boundary〕** The manager destructor frees entries and its `TList`/`TStringList`, but `ClMain` creates `fLover` and no explicit `fLover.Free` was found in the Client shutdown source. No Client build, live message, date fixture, or EI data-layout test was performed.
 
 **〔verification〕** Ledger row 157 records the full read. `python3 Tools/source-read/verify_all.py` returned ALL VERIFY PASS (393 files / 315,324 lines; covered 313 / 152,195, excluded 43 / 60,230, partial 17 / 90,886, pending 20 / 12,013). `git diff --check` passed on the four changed documentation files and the added-line credential/privacy scan found 0 matches. No Client build or live relationship-message test was performed.
+
+## Round 905 — 2026-09-28：Client `SingleInstance.pas`
+
+**〔full read and reachability〕** Read all 67 lines / 1,545 bytes of `Source/Client/SingleInstance.pas` through the authorized source-reader (CP949). `Mir3.dpr` lists the unit, but Client searches found no construction of `TSingleInstance` or call to `Initialize` outside the unit itself. This is a mapped but unreferenced helper, not evidence that the Preview application currently enforces single-instance behavior.
+
+**〔mutex semantics and failure paths〕** `Initialize` appends ` Class` to the supplied ID and calls `CreateMutex(nil, FALSE, ...)`. It checks only whether `GetLastError()` is `ERROR_ALREADY_EXISTS`; it does not verify the returned handle, so other `CreateMutex` failures return TRUE. On the already-existing branch it overwrites the returned handle with zero without closing it; the intended `FindWindowEx`/restore/bring-to-front code is commented out. Calling `Initialize` repeatedly also overwrites any prior nonzero handle.
+
+**〔ownership and verification boundary〕** New mutexes are created with `bInitialOwner=FALSE`, and no wait/acquire call exists in the unit, but `Destroy` nevertheless calls `ReleaseMutex` then `CloseHandle` and ignores their results. No Client build or mutex runtime was performed.
+
+**〔verification〕** Ledger row 158 records the full read. `python3 Tools/source-read/verify_all.py` returned ALL VERIFY PASS (393 files / 315,324 lines; covered 314 / 152,262, excluded 43 / 60,230, partial 17 / 90,886, pending 19 / 11,946). `git diff --check` passed on the four changed documentation files and the added-line credential/privacy scan found 0 matches. No Client build or mutex runtime was performed.

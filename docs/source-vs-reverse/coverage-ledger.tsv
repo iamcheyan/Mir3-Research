@@ -155,7 +155,7 @@ D-client	Source/Client/Mir3.dpr	45	1084	covered	Round 804 入口
 D-client	Source/Client/Mpeg.pas	170	4370	covered	Round 903: DirectShow wrapper callers traced; COM/play error paths and missing Video cleanup
 D-client	Source/Client/PlayScn.pas	3043	105146	covered	Round 804/818/823: 场景状态机+小地图调用点+五层Surface+光照系统(LightSizes/LightMask/AddLight/ApplyLightMap空转)；PlaySurface主体495行待读
 D-client	Source/Client/Relationship.pas	452	11667	covered	Round 904: relation manager and Client UI/message callers; date parsing, sequence helpers, stale lover count and missing manager free
-D-client	Source/Client/SingleInstance.pas	67	1545	pending	
+D-client	Source/Client/SingleInstance.pas	67	1545	covered	Round 905: DPR-mapped but unreferenced mutex helper; error/result, discarded handle and release ownership defects
 D-client	Source/Client/SoundUtil.pas	735	19504	pending	
 D-client	Source/Client/WIL.pas	749	21533	covered	Round 807 图库格式
 D-client	Source/Client/clEvent.pas	218	5444	pending	
