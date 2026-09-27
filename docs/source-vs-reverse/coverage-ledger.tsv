@@ -295,7 +295,7 @@ C-common	Source/Common/HashTable.pas	319	7049	covered	Round 918 full read: fixed
 C-common	Source/Common/MfdbDef.pas	1192	38265	covered	Round 919 full read: conditional packed FDB records; Common copy selected by Server_JOB_ItemGen/RunDB character path; raw .db/.idx TFileDB has no external caller and is not mapped to EI System.db/Users.db; index/I/O/CRUD defects
 C-common	Source/Common/Scanf.pas	256	6006	covered	Round 920/921 full reads: unlinked scanf-like parser; literals skip without matching, unchecked input/string-array bounds and numeric conversion exceptions; exact body duplicate of SscanfUtil except unit declaration; no active caller or project map
 C-common	Source/Common/SscanfUtil.pas	256	6011	covered	Round 921 full read: complete body identical to Scanf.pas except unit declaration; same parser bounds/literal/conversion defects; neither unit mapped or actively called
-C-common	Source/Common/ZLibEx.pas	726	21853	pending	
+C-common	Source/Common/ZLibEx.pas	726	21853	covered	Round 922 full read: zlib 1.0.4 stream/buffer wrappers; Z-helper allocations commented and errors swallowed; EOF/truncation, error-class, reset-position and cleanup defects; Client wmM3Zip calls DecompressBuf but Common copy resolution unverified
 C-common	Source/Common/ZLibx.pas	733	21557	pending	
 C-common	Source/Common/bass.pas	1021	52162	pending	
 C-common	Source/Common/mudutil.pas	1009	26358	pending	
