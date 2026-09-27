@@ -12287,3 +12287,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔primary/source 边界〕** 只记录 Preview MapEdit source 静态实现与可见引用；不代表编译链接、runtime contract 或 EI/zircon 等价。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 7 行将 `HUtil32.pas` 2682 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 275/130544，partial 17/90886，excluded 43/60230，pending 58/33664。staged 仅有四个授权文档路径，`git diff --cached --check` 无输出；本地新增行的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均为 0 hits，完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
+
+## Round 867 — 2026-09-28：MapEdit ImgMan image managers and caches
+
+**〔范围与可达性〕** source-reader 按连续范围读取 `Source/Tools/MapEdit/ImgMan.pas`（1–557，CP949）；reader 发现实际为 557 行，coverage ledger 原 pending 值 550 行，本轮据源计数修正。全 `Source` / `Source/Tools` 的 exact-name 文本搜索没有找到外部 `ImgMan` import 或 manager API caller，也未发现可见 form/resource binding；不能据此推定 project inclusion/runtime reachability。
+
+**〔声明的管理器〕** `TScreenImages` 校验 screen 和五个文件名后，分别加载 body/hair/weapon/magic-effect/screen-image 列表；loader 读 image-library header、逐图 header 与像素，创建 surface 并保存 x/y。body/hair/weapon 索引式为 `224 * type * 2 + sex + frame`，magic-effect 为 `24 * type + frame`；相关 getter 只检查索引小于列表长度，没有非负下界。`TLoginImages.Initialize` 只校验字段，load/free 是独立过程；`GetImage` 可见实现先出现孤立 `end;`，后续通过 `ILLogin[i]` 而非参数 `index` 取元素。
+
+**〔声明/实现与 buffer cache〕** `TScreenImages.LoadLibrary` 有实现但未列入 class declaration；`TBufferingImages` 声明 `FileName`、`MemorySize: inteter`，实现却使用 `ImageFile`、`MaxMemorySize`、未声明的 `ImgHeader`/`LoadImages`/`FreeOldMemorys`；`LoadMonImages` 声明在 `TMonsterImage` 下，但 implementation qualifier 是 `TBufferingImages`。buffer 初始化不清零 `ImageArr` 指针槽，索引表记录读完 image header 后再按像素长度 seek 得到的位置，lazy loader 随后把该偏移当 image header 起点；eviction 遍历所有槽位但没有 nil guard。buffer 与 screen manager 的 destructor 只释放列表本身，没有逐项释放已创建 surface/record。
+
+**〔monster cache 与 source 边界〕** `TMonsterImage` 声明 300 个 race slot 和 `MAXMONMEMORY` 阈值；重复 `LoadMonster` 早退时返回预置 nil，新加载超限时至多 free 一个最旧列表；`FreeMonster` 无可见 race 范围检查，`Initialize` 为空，destructor 只调 inherited。上述均为源码文本控制流与可见声明/实现关系；未做 Delphi 编译、缓存运行/资源格式验证或 EI 等价比较。
+
+**〔覆盖与验证〕** ledger 第 8 行按 source-reader 的 557 行将 `ImgMan.pas` 登记为 covered（原行数 550 已纠正）。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 276/131094，partial 17/90886，excluded 43/60230，pending 57/33114。staged 仅有四个授权文档路径，`git diff --cached --check` 无输出；本地新增行的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均为 0 hits，完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
