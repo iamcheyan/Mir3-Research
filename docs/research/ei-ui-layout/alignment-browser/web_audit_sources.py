@@ -203,6 +203,20 @@ EXTERNAL_SOURCES: dict[str, dict] = {
         "excerpt": "老版 NPC 中文名 + 地图码 + 坐标：怪物租赁商 0(352,282) · 六面神石1 0(498,463) · 六面神石4 0(379,444) · 路标栏 0(450,386)；与 Zircon NPCInfo 的 MapRegion 质心通道互为独立佐证。",
         "used_for": ["legacy-npc-coord-corrob"],
     },
+    "17173-woool-xiuluo": {
+        "url": "https://woool.17173.com/content/2005-9-8/n308_224251.html",
+        "title": "阿修罗神完全解密 · 17173 传奇世界专区 (2005-09-08)",
+        "accessed_at": ACCESSED,
+        "excerpt": "修罗神殿四条路线、阿修罗神打法；确认「修罗」为传奇系后期内容，Zircon 的 Xiuluo 系为其重命名。",
+        "used_for": ["family-search-attestation"],
+    },
+    "17173-mir3-otherworld": {
+        "url": "http://mir3.17173.com/tag/%E5%BC%82%E7%95%8C%E7%A5%9E%E8%88%B0",
+        "title": "异界神舰 · 传奇3 TAG 标签系统 (17173)",
+        "accessed_at": ACCESSED,
+        "excerpt": "35 级支线「异界神舰」；异界之门每 2 小时在沙漠随机出现，图上怪物含轻甲守卫/霸王幽灵。确认 Otherworld 系属老版 1.45 内容。",
+        "used_for": ["family-search-attestation"],
+    },
     "mir3-archive-site": {
         "url": "https://mir3.iamcheyan.com/",
         "title": "传奇三 · 资料 archive（17173 传奇3 专区镜像）",

@@ -127,7 +127,7 @@
     {
       "check": "items: direction sums to total",
       "ok": true,
-      "detail": "{'both': 812, 'mir2ei-only': 158, 'zircon-only': 432} total=1402"
+      "detail": "{'both': 813, 'mir2ei-only': 158, 'zircon-only': 431} total=1402"
     },
     {
       "check": "skills: direction sums to total",
@@ -142,7 +142,7 @@
     {
       "check": "respawns: direction sums to total",
       "ok": true,
-      "detail": "{'both': 2291, 'zircon-only': 184} total=2475"
+      "detail": "{'both': 2322, 'zircon-only': 153} total=2475"
     },
     {
       "check": "quests: direction sums to total",
@@ -306,19 +306,19 @@
   },
   "grand_total": 5408,
   "status_totals": {
-    "both-resolved-by-web-alias": 3429,
+    "both-resolved-by-web-alias": 3430,
     "conflict": 116,
     "mir2ei-only-after-web-audit": 145,
     "pending-web-evidence": 414,
-    "zircon-only-after-web-audit": 907,
+    "zircon-only-after-web-audit": 906,
     "partial": 47,
     "production-applied": 91,
     "both-resolved": 259
   },
   "direction_totals": {
-    "both": 4065,
+    "both": 4097,
     "mir2ei-only": 276,
-    "zircon-only": 1067
+    "zircon-only": 1035
   },
   "direction_before_totals": {
     "both": 800,

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-27T01:37:00.347877+00:00",
+  "generated_at": "2026-09-27T01:42:13.084920+00:00",
   "data_version": "MIR3-WEB-ENTITY-AUDIT-2026.09.26",
   "goal": "mir2ei ↔ Zircon 全量实体映射 · 网络检索闭合审计",
   "source_totals": {
@@ -75,9 +75,9 @@
     "item": {
       "total": 1402,
       "direction": {
-        "both": 812,
+        "both": 813,
         "mir2ei-only": 158,
-        "zircon-only": 432
+        "zircon-only": 431
       },
       "direction_before_audit": {
         "both": 47,
@@ -85,19 +85,19 @@
         "zircon-only": 1031
       },
       "status": {
-        "both-resolved-by-web-alias": 811,
+        "both-resolved-by-web-alias": 812,
         "mir2ei-only-after-web-audit": 99,
         "pending-web-evidence": 60,
-        "zircon-only-after-web-audit": 432
+        "zircon-only-after-web-audit": 431
       },
       "previous_status": {
-        "both-resolved-by-web-alias": 811,
+        "both-resolved-by-web-alias": 812,
         "mir2ei-only-after-web-audit": 99,
         "pending-web-evidence": 60,
-        "zircon-only-after-web-audit": 432
+        "zircon-only-after-web-audit": 431
       },
-      "review_required": 591,
-      "web_alias_closed": 811,
+      "review_required": 590,
+      "web_alias_closed": 812,
       "with_external_source": 1402
     },
     "skill": {
@@ -157,8 +157,8 @@
     "respawn": {
       "total": 2475,
       "direction": {
-        "both": 2291,
-        "zircon-only": 184
+        "both": 2322,
+        "zircon-only": 153
       },
       "direction_before_audit": {
         "zircon-only": 2058,
@@ -182,7 +182,7 @@
       },
       "review_required": 2217,
       "web_alias_closed": 1944,
-      "with_external_source": 1996
+      "with_external_source": 2033
     },
     "quest": {
       "total": 62,
@@ -221,6 +221,6 @@
     "legacy_zh_names": 1602,
     "sina_names": 386
   },
-  "external_source_count": 24,
+  "external_source_count": 26,
   "search_query_count": 22
 }

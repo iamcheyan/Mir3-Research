@@ -341,6 +341,33 @@ def archive_url(kind: str, record_id: str) -> str | None:
     return None
 
 
+# 族级检索结论：这些英文族名对应的中文内容在传奇系老版资料中有据，
+# 因此**不能**把同名 Zircon 怪物判为 Zircon 独创。
+FAMILY_EVIDENCE = {
+    "xiuluo": ("https://woool.17173.com/content/2005-9-8/n308_224251.html",
+               "修罗神殿/阿修罗神：传奇系后期内容，Zircon 的 Xiuluo 系为其重命名"),
+    "otherworld": ("http://mir3.17173.com/tag/%E5%BC%82%E7%95%8C%E7%A5%9E%E8%88%B0",
+                   "异界神舰：1.45 版沙漠随机出现的支线地图，含轻甲守卫/霸王幽灵"),
+    "guardian sword": ("https://games.sina.com.cn/z/mir3/2003-06-18/13374.shtml",
+                       "新浪 2003 老版怪物排名含「护法天」族"),
+    "guardian spell": ("https://games.sina.com.cn/z/mir3/2003-06-18/13374.shtml",
+                       "新浪 2003 老版怪物排名含「护法天」族"),
+    "guardian fire": ("https://games.sina.com.cn/z/mir3/2003-06-18/13374.shtml",
+                      "新浪 2003 老版怪物排名含「护法天」族"),
+    "guardian": ("https://games.sina.com.cn/z/mir3/2003-06-18/13374.shtml",
+                 "老版怪物排名含「护法天/护法」族"),
+    "xiuluo warrior": ("https://woool.17173.com/content/2005-9-8/n308_224251.html", "修罗族（老版内容）"),
+}
+
+
+def family_evidence(name: str):
+    low = (name or "").lower()
+    for key, val in FAMILY_EVIDENCE.items():
+        if key in low:
+            return val
+    return None
+
+
 # ---------------------------------------------------------------- official zh
 OFFICIAL_ZH = {
     "Flaming Sword": "烈火剑法", "Dragon Rise": "翔空剑法", "Blade Storm": "莲月剑法",
@@ -821,6 +848,19 @@ def audit_generic(records, kind, idx, extra_zh_attest: set[str], attest_pool: se
             local_ev.append({"kind": "quest-bridge-attempt",
                              "ref": "mission-cross-reference.json",
                              "detail": "NPC 桥接失败：攻略文与任务定义表不同构"})
+        if z.get("exists") and not extended_attested:
+            _fam = family_evidence(zname)
+            if _fam:
+                provs.add("family-search-attestation")
+                alias_chain.append(f"族级检索佐证：{_fam[1]}")
+                sources.append({"source_id": "family-search", "url": _fam[0],
+                                "title": f"族级检索佐证 · {zname}", "accessed_at": SRC.ACCESSED,
+                                "excerpt": _fam[1]})
+                excluded.append({"candidate": "老版同族内容",
+                                 "reason": _fam[1],
+                                 "evidence": _fam[0]})
+                extended_attested.append({"zh": zname, "provenance": ["family-search-attestation"],
+                                          "match": "family"})
         if mname and mname in extra_zh_attest:
             provs.add("legacy-chinese-attestation")
             extended_attested.append({"zh": mname, "provenance": ["legacy-chinese-attestation"], "match": "exact"})

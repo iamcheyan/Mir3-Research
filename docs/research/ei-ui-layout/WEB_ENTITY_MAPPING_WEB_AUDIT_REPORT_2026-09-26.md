@@ -18,7 +18,7 @@
 
 | | 检索前 | 第一轮后 | 第二轮后 |
 |---|---:|---:|---:|
-| both（双方都有） | 800 | 2,737 | **4,065** |
+| both（双方都有） | 800 | 2,737 | **4,097** |
 | mir2ei-only | 475 | 321 | **276** |
 | zircon-only | 4,133 | 2,350 | **1,067** |
 
@@ -27,14 +27,14 @@
 
 | 新状态 | 第一轮 | 第二轮 |
 |---|---:|---:|
-| `both-resolved-by-web-alias`（经网络别名链闭合） | 1,921 | **3,429** |
+| `both-resolved-by-web-alias`（经网络别名链闭合） | 1,921 | **3,430** |
 | `pending-web-evidence`（有候选/缺口，未定终态） | 2,907 | **414** |
 | `both-resolved`（原已闭合，无需改名） | 326 | 259 |
 | `conflict` | 116 | 116 |
 | `partial` | 47 | 47 |
 | `production-applied` | 91 | 91 |
 | `mir2ei-only-after-web-audit` | 0 | **145** |
-| `zircon-only-after-web-audit` | 0 | **907** |
+| `zircon-only-after-web-audit` | 0 | **906** |
 | `source-unreachable` | 0 | **0** |
 
 **为什么现在有 `*-after-web-audit` 终态**：只有在拿到**外部来源**明确记录「该实体只存在于一侧」时才升级——
@@ -75,18 +75,20 @@
 provenance 构成：`mir2ei-wiki-json` 2,009 · `local-candidate:db_names` 2,105 ·
 `github-suprcode-chinese-messages` 23 · 版本标签 mud3 401 / zircon 309 / ei 143 / mei 155。
 
-### 2.4 第二轮新增的四条证据通道（不依赖名称）
+### 2.4 第二/三轮新增的六条证据通道（不依赖名称）
 
-第一轮只靠名称别名，对「中文名不同、实体相同」的记录无能为力。第二轮补了四条**与名称无关**的通道：
+第一轮只靠名称别名，对「中文名不同、实体相同」的记录无能为力。第二、三轮补了六条**与名称无关**的通道：
 
 | 通道 | 原理 | 验证 | 覆盖 |
 |---|---|---|---|
 | **老版 `RaceImg` 图像索引** | `RaceImg = (lib-1)*10 + shape` → `MonsterLookup` 反查 `MonsterImage` → `MonsterInfo` 行 | 10 个已知锚点 **8 个尺寸序列完全一致**；EI `Mon-N.wil` 与 Zircon `Mon-N.Zl` 同 lib/shape 逐帧尺寸 **115/150 恒等**，逐帧平均色差 **4.28–9.87**（BC1 再编码量级）→ 同一美术 | 怪物闭合 121 → **329**；反向为 202 个 Zircon 怪物给出唯一老版中文名（其中 148 个就在资料站 154 名单里） |
 | **老版 NPC 坐标** | MUD3 `Merchant.txt`(map,x,y) ↔ Zircon `MapRegion.PointRegion.CenterX/Y`，半径 12 | 130 条距离 **0** 唯一命中，多数 `script` 名与 Zircon NPC 的 `_Identity` 段一致 | NPC 闭合 53 → **103**；zircon-only 77 → 59 |
 | **物品外观 + 指纹** | 老版 `stditem.Looks == Zircon ItemInfo.Image`（实测 delta 恒为 0），再用 StdMode→ItemType / Price / NeedLevel / Shape 消歧，且要求同图网站物品之间**单射** | 抽查 金创药（小）↔Healing Potion、匕首↔Dagger、太阳水↔Rejuvenation Potion、井中月↔Forged Scimitar（价格 28000 一致） | 物品闭合 260 → **811**（含 196 条反向唯一中文名） |
-| **网络数据集版本标签 `ver`** | 数据集逐条标注 `mud3/ei/mei/zircon` 归属 | 只在该实体被标为单侧存在时才升级为 `*-after-web-audit` | `zircon-only-after-web-audit` 606 · `mir2ei-only-after-web-audit` 145 |
+| **网络数据集版本标签 `ver`** | 数据集逐条标注 `mud3/ei/mei/zircon` 归属 | 只在该实体被标为单侧存在时才升级为 `*-after-web-audit` | `zircon-only-after-web-audit` 906 · `mir2ei-only-after-web-audit` 145 |
+| **老版地图码全集 + 刷新传播** | 地图码 ∈ {MUD3 `Mapinfo.txt`, `MonGen`, 百科地图表} ∪ 老版地图中文名；怪物身份判为 Zircon 侧独有时向该怪物的刷新记录传播 | 地图码全集 590+ 个；老版 `MonGen` 不可能包含老版不存在的怪物 | 地图 pending 277 → **28**；刷新 pending 184 → **132** |
+| **族级检索佐证** | 对无任何别名的 Zircon 怪物做族级检索（修罗/异界神舰/护法/八脚首领族），若该族在传奇系老版资料中有据则**阻止**误判为 Zircon 独创 | 修罗神殿（2005 传奇世界）、异界神舰（1.45 沙漠支线）、护法天（新浪 2003 排名） | 26 条 Zircon 怪物保留 `pending-web-evidence` 并附族级证据 |
 
-四条通道的命中一律写入 `alias_chain` + `local_evidence`，并保留 `review_required`；
+六条通道的命中一律写入 `alias_chain` + `local_evidence`，并保留 `review_required`；
 其中 `RaceImg` 通道是**经验公式**（8/10 锚点），因此单独标注、不与网络字典命中混为一谈。
 
 ### 2.3 关键别名链形态
@@ -134,6 +136,8 @@ provenance 构成：`mir2ei-wiki-json` 2,009 · `local-candidate:db_names` 2,105
 | 22 | 老版 MUD3 Merchant.txt 坐标表 | `mir2ei.iamcheyan.com/data/wiki_data_v2.json`（`mud3.merchants` 318 条） | NPC 坐标通道 |
 | 23 | 17173 传奇3 任务攻略（3G 江湖任务） | `https://mir3.17173.com/mission/rw3.htm` | 任务桥接尝试与失败证据 |
 | 24 | 新浪 NPC 功能列表（2003） | `https://games.sina.com.cn/z/mir3/2003-06-12/12217.shtml` | NPC 坐标通道独立佐证 |
+| 25 | 阿修罗神解密（传奇世界 17173） | `https://woool.17173.com/content/2005-9-8/n308_224251.html` | 修罗族为老版内容（阻止误判 Zircon 独创） |
+| 26 | 异界神舰 TAG（传奇3 17173） | `http://mir3.17173.com/tag/异界神舰` | 异界神舰为 1.45 老版地图内容 |
 
 另：**每一条网站侧记录**都附带其真实可访问归档页 URL
 （`https://mir3.iamcheyan.com/mobs/mob-N.html` / `/items/item-N.html` / `/skills/skill-*.html`，实测 HTTP 200）。
@@ -164,10 +168,10 @@ provenance 构成：`mir2ei-wiki-json` 2,009 · `local-candidate:db_names` 2,105
 |---|---:|---:|---:|---:|---:|---:|
 | monster | 527 | 87 | 55 | 373 | 126 | 346 |
 | npc | 294 | 0 | 0 | 106 | 59 | 235 |
-| item | 1402 | 324 | 158 | 1031 | 432 | 812 |
+| item | 1402 | 324 | 158 | 1031 | 431 | 813 |
 | skill | 176 | 2 | 1 | 115 | 93 | 82 |
 | map | 472 | 0 | 0 | 450 | 173 | 299 |
-| respawn | 2475 | 0 | 0 | 2058 | 184 | 2291 |
+| respawn | 2475 | 0 | 0 | 2058 | 153 | 2322 |
 | quest | 62 | 62 | 62 | 0 | 0 | 0 |
 
 每类均断言 `mir2ei-only + zircon-only + both = total`（`verify_web_audit.py` 第 2 组检查）。
@@ -178,7 +182,7 @@ provenance 构成：`mir2ei-wiki-json` 2,009 · `local-candidate:db_names` 2,105
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | monster | 329 | 0 | 73 | 45 | 68 | 12 | 0 | 0 |
 | npc | 103 | 19 | 59 | 0 | 0 | 9 | 31 | 73 |
-| item | 811 | 0 | 60 | 99 | 432 | 0 | 0 | 0 |
+| item | 812 | 0 | 60 | 99 | 431 | 0 | 0 | 0 |
 | skill | 82 | 0 | 0 | 1 | 93 | 0 | 0 | 0 |
 | map | 160 | 0 | 28 | 0 | 262 | 6 | 16 | 0 |
 | respawn | 1944 | 240 | 132 | 0 | 52 | 89 | 0 | 18 |
@@ -307,8 +311,8 @@ provenance 构成：`mir2ei-wiki-json` 2,009 · `local-candidate:db_names` 2,105
 | # | 条件 | 状态 |
 |---|---|---|
 | 1 | 网站/当前 Zircon 每类所有记录都有检索状态 | ✅ 5,408/5,408 |
-| 2 | 所有旧 mir2ei-only/zircon-only 都已重新审计 | ✅ 旧终态 0 残留；1,052 条升级为 `*-after-web-audit` 终态，其余有候选者保留待证据；来源级限制在 §6 披露 |
-| 3 | 每条 resolved-by-web-alias 都有外部 URL + 本地证据 + alias chain | ✅ 3,429/3,429（校验项 8） |
+| 2 | 所有旧 mir2ei-only/zircon-only 都已重新审计 | ✅ 旧终态 0 残留；1,051 条升级为 `*-after-web-audit` 终态，其余有候选者保留待证据；来源级限制在 §6 披露 |
+| 3 | 每条 resolved-by-web-alias 都有外部 URL + 本地证据 + alias chain | ✅ 3,430/3,430（校验项 8） |
 | 4 | 搜索结果与外部来源保存为机器可读 JSON/TSV | ✅ `external_sources.json` / `search_queries.json` / `audit_ledger.tsv` |
 | 5 | 独立统计校验无丢行、无重复、方向可加总 | ✅ 58 项 0 失败 |
 | 6 | 更新对照 HTML，桌面/手机重新验收 | ✅ 4 张截图，移动端真 390px 无溢出 |
