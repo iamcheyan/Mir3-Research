@@ -464,6 +464,12 @@ Round 835 全读 LoginServer 应用层与本目录 C++ 编码/包辅助文件；
 - `Server_JOB_ItemGen.dpr` maps `NoticeM.pas`; `svMain` creates/frees `NoticeMan`. `UsrEngn` calls `RefreshNoticeList` when its `timer10min` interval elapses (`10 * 60 * 1000` ms); `ObjBase`'s nearby comment says the list refreshes every five minutes. `TUserHuman.RunNotice` sends `SendLoginNotice` once before login, and `SendLoginNotice` gets the fixed `"Notice"` list and emits `SM_SENDNOTICE`.
 - `TNoticeManager` stores up to 100 named `TStringList`s below relative `.\Notice\`. Refresh reloads only paths that currently exist and never removes a cache entry for a missing file; `Valid` is initialized true but never read. A first lookup that finds a file returns true even if `LoadFromFile` raises, and records the name; an already named slot whose list is nil is not retried. No runtime/file-change test was performed.
 
+## 16b. Mir3 Client `CMsg` message table（Round 896）
+
+- `Mir3.dpr` explicitly maps `CMsg.pas` and Common `HUtil32.pas`; `ClMain` creates `TCMsg`, calls `LoadMsg` in its `boFirstTime` path, and frees it on shutdown. `ClMain`, `FState`, and `IntroScn` call `GetMsg`; `DelMsg` has no caller.
+- `LoadMsg` decrypts relative `CMList.dat`, skips blank and `;` comment lines, splits `#<id> <text>` on space/tab via `GetValidStr3`, strips the `#`, parses the ID with `StrToInt`, and appends a `TClientMsg` pointer. `GetMsg` linearly returns the first matching entry or `''`; repeated loads do not clear prior records, `DelMsg` is empty, and successful loads never free the temporary `TStringList`.
+- `LoadMsg`'s exception handler calls `TmpList.Free` although the assignment from `Decrypt` may not have completed; malformed integer IDs escape the parse loop. Source-wide searches found `Decrypt` only in `Source/Common/EDCode.pas`, but `Mir3.dpr` has no explicit `EDCode` mapping and compiler unit resolution was not verified. `LoadMsg` returns true after a successful decrypt even if no valid records were appended. No build, fixture, or client runtime test was performed.
+
 ## 17. Preview ImageEditor WIL/Lib authoring UI（Round 849）
 
 - `ImageEditor.dpr` creates `TFormMain`, then the add/delete/export/conversion dialogs. Main form `FrmMain.dfm` is textual (1–1752); `dfm_parse.py tree` rejected its `object FormMain:` prefix because the parser expects `TPF0`, so geometry and controls were read with the source-reader. The form client area is 1102×789; toolbar/status/grid surround a scrollable render panel. DFM `MyDevice` and runtime `PanelDraw` use 1920×1080, windowed rendering.
