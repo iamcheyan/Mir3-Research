@@ -12199,3 +12199,19 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔primary/source 边界〕** 只记录 Preview ImageEditor root unit，不推断 MapEdit/Client 同名副本或 EI 的行为。没有 Delphi 编译、游戏运行、WIL/WIX 实测或 EI primary-static decoder 对照。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 40 行将 root `wmM3Def.pas` 的 460 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 检查、ledger、29 个 Python 文件语法）；`ledger.py --summary`：393 文件/315324 行，covered 268/123588，partial 17/90886，excluded 43/60230，pending 65/40620。四个授权文档路径的 whitespace 检查通过；staged additions 的 PEM private-key、AWS key、GitHub-token、credential-assignment、email 临时 patterns 均为 0 hits，完整 staged diff 已复核。该 pattern scan 是本地临时检查，不是仓库官方 scanner。未运行 Delphi/ImageEditor，也未读写 WIL/WIX。
+
+## Round 860 — 2026-09-27：ImageEditor MyImage `.Lib` format, decoders and index editing
+
+**〔范围〕** 经 source-reader 全读 `Source/Tools/ImageEditor/wmMyImage.pas`（1–745，GB18030），并追 root `WIL.pas` 的 factory/stream/zlib 路径，以及 `ImageEditor.dproj`、`FrmMain`、`FrmOut`、`FrmAdd`、`FrmDel`、`FrmAlpha` 的格式调用点。root factory 将 `t_wmMyImage` 分派到此类；工程使用 DCC32，Debug/Release 均定义 `WORKFILE`。Source-wide 搜索另找到 `Source/Tools/MapEdit/Wil/wmMyImage.pas` 与 `Source/Client/wmMyImage.pas`，两份未比较。无 Delphi 编译、UI 运行、EI primary-static 对照或 `.Lib` 读写。
+
+**〔header、密码与索引〕** `Initialize` 无条件读 packed header，未核对读长；`nVer=1` 才允许检查加密 marker，`FCanEncry` 还要求非空密码及 8-byte 解密结果 `lom2com`，marker 失败只关闭该 flag。Header offset 由 `IndexOffset1/2` 高字重组；WORKFILE 写出时拆分 offset 并随机化两个低字。图像宽高写成左移 4 位加随机低 nibble、读时右移；payload 只有在 flag/password 有效且长度至少 128 bytes 时才变换前 128 bytes。索引压缩表成功解压后要求 `ImageCount*4+40` 字节，跳过 10 个前缀 dword 后复制 offsets；`OffsetSize<=0` 走 raw `ImageCount*4` 路径。写表时同样留出 10 个前缀 dword，但分配后未初始化；压缩失败转 raw offsets。空列表不会写回索引/header。
+
+**〔图像解码〕** `LoadDxImage` 是 cache override；主界面打开库设置 `ltLoadBmp`，未走观察到的 cache 模式。WORKFILE bitmap reader 支持 A4R4G4B4、A1R5G5B5、R5G6B5、A8R8G8B8；software bitmap 的 565 magenta word 63519 替换为背景色，direct-texture 路径则把它映射为 alpha 0，并将其余 565 word 扩成 ARGB。`CopyImageDataToTexture` 的 565 分支从 `FLastColorFormat` 选路，而 `LoadDxImage` 在调用前未设置该字段；该 helper 的 565 行地址按 `Texture.Width` 计算而不使用 `Access.Pitch`。多个读路径对 header/payload 不作完整长度上界校验，`ZIPDecompress` 输出为 nil 后仍传给消费者。
+
+**〔调用与写路径〕** `FrmMain.OpenWMFile` 对 `.Lib` 选择 MyImage、设置 `ltLoadBmp` 并初始化；密码赋值在主窗体只有注释。主网格选中时调用 `CopyDataToTexture`；`FrmOut` 普通导出取 `Bitmap[index]`，alpha/texture 导出取 direct-texture 路径，offset sidecar 可保存 LastColorFormat。`FrmMain`/`FrmAlpha` WIL→Lib 转换将旧图 bitmap 重打包为 RGB565 并追加 MyImage record、随后保存索引；`FrmAdd` 更新坐标或插入/替换 records，`FrmDel` 调整/删除 offsets。AddDataToFile、SaveIndexList、AppendData/RemoveData 的调用结果均未被这些写入者检查。
+
+**〔静态边界〕** `LoadIndex` 不检查 seek 结果；乘法及 raw 表 extent 未约束。`SaveIndexList` 对 seek/write 返回值不作验证，非空 list 可在写失败后仍返回 true；AddDataToFile 也只以 seek 成功决定后续状态更新。bitmap/direct-texture reader 不检查解压输出是否 nil；多处 header read 长度不检查，payload `nDataSize` 没有上界。RGB565 texture 行步长与 pitch 的差异及 cache 路径未设置 `FLastColorFormat` 均为静态代码观察，未运行复现。
+
+**〔primary/source 边界〕** 只记录 Preview ImageEditor root MyImage unit 及文本调用链；未推断 `.Lib` 与 EI 原版格式兼容，也未比较 MapEdit/Client 同名 unit。未打开、改写或实测实际 `.Lib` 文件；不据此断言运行损坏。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 41 行将 root `wmMyImage.pas` 的 745 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 检查、ledger、29 个 Python 文件语法）；`ledger.py --summary`：393 文件/315324 行，covered 269/124333，partial 17/90886，excluded 43/60230，pending 64/39875。四个授权文档路径的 staged whitespace check 无输出；staged additions 的 PEM private-key、AWS key、GitHub-token、credential-assignment、email 临时 patterns 均为 0 hits，完整 staged diff 已复核。该 pattern scan 是本地临时检查，不是仓库官方 scanner。未运行 Delphi/ImageEditor，也未读写 `.Lib`。
