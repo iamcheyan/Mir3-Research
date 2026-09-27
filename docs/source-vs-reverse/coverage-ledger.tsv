@@ -148,7 +148,7 @@ D-client	Source/Client/FState.pas	14853	531645	partial	Round 817: TFrmDlg.Initia
 D-client	Source/Client/HerbActor.pas	993	30165	partial	Round 826: 10 类层次(TKillingHerb/TCastleDoor/TWallStructure等)；实现待读
 D-client	Source/Client/IntroScn.pas	1776	55353	covered	Round 804 TSceneType
 D-client	Source/Client/Logo.pas	105	2921	covered	Round 899: RLE decoder and ClMain references traced; LogoBitemp.inc missing and Logo unit binding unresolved
-D-client	Source/Client/MShare.pas	32	775	pending	
+D-client	Source/Client/MShare.pas	32	775	covered	Round 900: interface-only image metadata; sole import is unlinked DrawHint and packed TWMImages is distinct from WIL alias
 D-client	Source/Client/MaketSystem.pas	310	7373	pending	
 D-client	Source/Client/MapUnit.pas	354	9441	pending	
 D-client	Source/Client/Mir3.dpr	45	1084	covered	Round 804 入口

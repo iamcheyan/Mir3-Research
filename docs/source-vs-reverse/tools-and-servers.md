@@ -490,6 +490,12 @@ Round 835 全读 LoginServer 应用层与本目录 C++ 编码/包辅助文件；
 - `DecodeRLE` treats each control byte as a run length `1 + (value and $7F)`; high-bit controls repeat the next four-byte pixel, while low-bit controls copy that many literal pixels. It counts output bytes and returns whether the final count equals `LogoWidth * LogoHeight * 4`, but receives no source length and does not reject a run that exceeds the remaining destination before writing.
 - `CreateLogoSurface` recreates an A8R8G8B8 `TDXImageTexture`, locks it, decodes into a temporary full-image buffer, copies rows using `Access.Pitch`, then frees the buffer and unlocks in `finally`. A failed lock leaves the allocated surface assigned; a false RLE result still leaves it allocated and uncleared. `ClMain.DeviceRender` contains source-level fade/draw branches for the surface and later sets `FBoShowLogo`; payload validity and runtime behavior remain unverified.
 
+## 16f. Unlinked Mir3 Client `MShare` metadata declarations（Round 900）
+
+- `MShare.pas` has no implementation beyond interface declarations. It defines `TImagesStatus=(isNone,isReady)`, `TWMFileType=(wtWil,wtWis,wtWiz)`, packed `TImagesInfo` (`string[32]` filename, `LongWord` record ID, `TWILColorFormat`), and packed `TWMImages` (three `LongWord` fields plus status, file-type, and `TWILType` fields).
+- The `TWMImages` here is a packed record; `Source/Client/WIL.pas` separately defines `TWMImages = TWMBaseImages`, a WIL image-library class alias. The identical identifier does not establish that the two declarations are interchangeable. The metadata enums/record types have no external consumers in the searched source.
+- Source-wide search found `DrawHint.pas` as the only `MShare` import; that unit has no Mir3 project mapping or external caller. `Mir3.dpr` does not map `MShare.pas`. The fields/comments therefore do not establish a network packet, shared-memory, file-serialization, server object layout, or EI contract. No build or runtime use was tested.
+
 ## 17. Preview ImageEditor WIL/Lib authoring UI（Round 849）
 
 - `ImageEditor.dpr` creates `TFormMain`, then the add/delete/export/conversion dialogs. Main form `FrmMain.dfm` is textual (1–1752); `dfm_parse.py tree` rejected its `object FormMain:` prefix because the parser expects `TPF0`, so geometry and controls were read with the source-reader. The form client area is 1102×789; toolbar/status/grid surround a scrollable render panel. DFM `MyDevice` and runtime `PanelDraw` use 1920×1080, windowed rendering.

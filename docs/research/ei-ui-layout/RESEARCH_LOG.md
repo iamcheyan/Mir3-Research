@@ -12624,3 +12624,11 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔caller and binding boundary〕** `ClMain` calls `CreateLogoSurface` and uses `g_LogoSurface` in `DeviceRender` fade/draw branches, but its `uses` list omits `Logo` and `Mir3.dpr` has no `Logo` entry; `Logo.pas` imports `CLMain` in its implementation. This unit binding remains unresolved and no client build or splash runtime was tested.
 
 **〔verification〕** Ledger row 150 records the full read. `python3 Tools/source-read/verify_all.py` returned ALL VERIFY PASS (393 files / 315,324 lines; covered 308 / 150,877, excluded 43 / 60,230, partial 17 / 90,886, pending 25 / 13,331). `git diff --check` passed on the four changed documentation files and the added-line credential/privacy scan found 0 matches. No Mir3 build or splash runtime test was performed.
+
+## Round 900 — 2026-09-28：Client `MShare.pas`
+
+**〔full read and reachability〕** Read all 32 lines / 775 bytes of `Source/Client/MShare.pas` through the authorized source-reader (GB18030). It contains only interface declarations and an empty implementation. Source-wide searches found no `Mir3.dpr` mapping; `DrawHint.pas` is the only import, and that unit has no project mapping or external caller. No external consumer of the metadata records/enums was found.
+
+**〔record identity and contract〕** `MShare` declares `TImagesStatus`, `TWMFileType`, packed `TImagesInfo`, and packed `TWMImages`, using `TWILColorFormat`/`TWILType` from Client `WIL.pas`. `WIL.pas` separately aliases its image-library class as `TWMImages = TWMBaseImages`; this is not the same declaration as `MShare.TWMImages`. The `dwRecord` comments and WIL-related fields do not establish packet, shared-memory, persisted-file, server-object, or EI layout. No build or runtime use was performed.
+
+**〔verification〕** Ledger row 151 records the full read. `python3 Tools/source-read/verify_all.py` returned ALL VERIFY PASS (393 files / 315,324 lines; covered 309 / 150,909, excluded 43 / 60,230, partial 17 / 90,886, pending 24 / 13,299). `git diff --check` passed on the four changed documentation files and the added-line credential/privacy scan found 0 matches. No Mir3 build or runtime use was performed.
