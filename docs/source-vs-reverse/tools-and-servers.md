@@ -371,3 +371,10 @@ Round 835 全读 LoginServer 应用层与本目录 C++ 编码/包辅助文件；
 - DataBaseServer `_Oranze Library/` 64 个文件中，63 个与 Round 836 已全读的 LoginServer 副本 SHA-256 完全一致；`prime.cpp` 全读后仅见 `sqrt` 实参显式 `double` 转换差异。`Common/endecode.cpp/.h` 与 LoginServer 版本字节一致；DataBaseServer `Common/mir2packet.cpp` 的三处 `Attach` 路径缺少 LoginServer 版本的 `MIR2PACKET_MAXSIZE` 防护。细目见 coverage ledger 与 `sql-tables.tsv`。
 - `CMsgFilter` 将 `%s` 读入固定 12 字节 token，且目标为 1024 项数组；源码未见逐 token 长度或项目数上限检查。配置对话框把 ODBC 用户/密码明文写入 `DBSvr.ini`，默认值含 `sa`。`CDBSvrOdbcPool` 默认按 CPU 数×8 建连接，分配在线性临界区内轮询；耗尽返回 null，重建失败会留下不可用 slot。
 - 以上是 C++ 服务源码和项目文件证据，不是 EI `System.db` / `Users.db` 的生成链证据，也不推出 Zircon 运行语义。本轮未执行 Win32 构建、服务启动、ODBC/SQL 查询或数据库写入；不把源码可见缺陷描述为已运行验证的故障。
+
+### 8.1 `Def/` 兼容与辅助源码（Round 838）
+
+- 本轮全读剩余 14 个 pending `Def/` 文件，并将此前只记录三个注册 opcode 的 `Def/Protocol.h` 扩展为全文件覆盖。`Def/Protocol.h` 含旧版 login/game/DB opcode 和 packed records；它不同于 app 使用的 `DBSvr/protocol.h`，常量定义不等于活动接收端，`CM_ADDNEWUSER`、`CM_CHANGEPASSWORD`、`CM_UPDATEUSER` 无接收端结论不变。
+- `Def/DynamicArray.cpp` 是非模板旧版 slot allocator，其两个扫描循环检查固定初始 `nIndex`；相邻 `DynamicArray.h` 则是 5000 槽模板实现，`GetData`/`DettachData` 的 `<= _MAX_USER_ARRAY` 边界允许索引越界，满表的 `AttachData` 没有返回值。两份都是源码路径，不从名称推断同一实现。
+- `Def/IocpHelper` 与 `Def/ServerSockHandler` 不在 `DBSvr.vcproj` 编译列表。前者通过 `TerminateThread` 停止 accept 线程，accept 失败后仍调用 `OnAccept`；后者的 `ConnectToServer` 在 `connect` 立即成功时仍返回 `FALSE`，且头文件/实现的 `CreateIOCPWorkerThread` 签名不一致。均未在 Windows 构建或执行。
+- `CStaticArray` 返回空槽时单调增加 cursor，回绕扫描使用未经 size clamp 的 cursor 上界；`CList::InsertAt` 未更新 count，`Remove`/`Search` 未保护空 comparator，析构为空而不会清理节点。`CQueue` 只是该链表的 head/tail wrapper。registry、日期/字符串和 `CCriticalSection` 文件为独立支持函数。所有问题均是静态阅读发现；除 `DBSvr/` app 和已证实链接库来源外，不把这些文件宣称为服务运行时路径。

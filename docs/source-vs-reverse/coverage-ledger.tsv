@@ -172,25 +172,25 @@ D-client	Source/Client/Light/Light0a.pas	100	2696	pending
 D-client	Source/Client/Light/Light0b.pas	100	2696	pending	
 D-client	Source/Client/Light/Light0c.pas	100	2696	pending	
 D-client	Source/Client/Light/Light0d.pas	100	2696	pending	
-E-db	Source/DataBaseServer/Def/DynamicArray.cpp	76	1238	pending	
-E-db	Source/DataBaseServer/Def/DynamicArray.h	158	3149	pending	
+E-db	Source/DataBaseServer/Def/DynamicArray.cpp	76	1238	covered	Round 838 full 1–76: older non-template slot allocator; both scan loops test m_Elements[nIndex] instead of m_Elements[i]
+E-db	Source/DataBaseServer/Def/DynamicArray.h	158	3149	covered	Round 838 full 1–158: 5000-slot template API; GetData/DettachData accept index <= _MAX_USER_ARRAY and AttachData has no full-array return
 E-db	Source/DataBaseServer/Def/EnDecode.cpp	207	4527	covered	Round 837 full 1–207: standalone ANSI/Unicode 6bit codec; DBSvr.vcproj does not compile this file (app compiles Common/endecode.cpp)
 E-db	Source/DataBaseServer/Def/EnDecode.h	71	2755	covered	Round 837 full 1–71: standalone codec declarations; distinct from active Common/endecode.h
-E-db	Source/DataBaseServer/Def/IocpHelper.cpp	77	1412	pending	
-E-db	Source/DataBaseServer/Def/IocpHelper.h	42	691	pending	
-E-db	Source/DataBaseServer/Def/Misc.cpp	182	3877	pending	
-E-db	Source/DataBaseServer/Def/Misc.h	19	507	pending	
-E-db	Source/DataBaseServer/Def/Protocol.h	557	14092	covered	Round 820: CM_ADDNEWUSER/CHANGEPASSWORD/UPDATEUSER 定义在此
-E-db	Source/DataBaseServer/Def/RegstryHandler.cpp	82	2118	pending	
-E-db	Source/DataBaseServer/Def/ServerSockHandler.cpp	284	8611	pending	
-E-db	Source/DataBaseServer/Def/ServerSockHandler.h	43	1111	pending	
-E-db	Source/DataBaseServer/Def/StaticArray.h	81	1145	pending	
+E-db	Source/DataBaseServer/Def/IocpHelper.cpp	77	1412	covered	Round 838 full 1–77: standalone accept thread; force-termination Stop and accept loop dispatches failed sockets without a break
+E-db	Source/DataBaseServer/Def/IocpHelper.h	42	691	covered	Round 838 full 1–42: CIocpObject/CIocpAcceptor declarations; support file not listed in DBSvr.vcproj
+E-db	Source/DataBaseServer/Def/Misc.cpp	182	3877	covered	Round 838 full 1–182: standalone date/time, integer-string and Win32 dialog helpers
+E-db	Source/DataBaseServer/Def/Misc.h	19	507	covered	Round 838 full 1–19: declarations for standalone Misc.cpp helpers
+E-db	Source/DataBaseServer/Def/Protocol.h	557	14092	covered	Round 838 full 1–557: complete legacy login/game/DB opcode and packed record declarations; distinct from active DBSvr/protocol.h
+E-db	Source/DataBaseServer/Def/RegstryHandler.cpp	82	2118	covered	Round 838 full 1–82: HKLM registry helpers; second RegQueryValueEx result is ignored
+E-db	Source/DataBaseServer/Def/ServerSockHandler.cpp	284	8611	covered	Round 838 full 1–284: standalone socket/IOCP helpers; ConnectToServer returns FALSE after immediate connect success; not listed in DBSvr.vcproj
+E-db	Source/DataBaseServer/Def/ServerSockHandler.h	43	1111	covered	Round 838 full 1–43: 8192-byte socket/overlapped structs and declarations; CreateIOCPWorkerThread signature differs from .cpp
+E-db	Source/DataBaseServer/Def/StaticArray.h	81	1145	covered	Round 838 full 1–81: CStaticArray cursor monotonically increments and wrapped scan uses it as an unclamped upper bound
 E-db	Source/DataBaseServer/Def/database.cpp	469	8411	covered	Round 837 full 1–469: standalone ODBC wrapper; not listed in DBSvr.vcproj, which resolves database.h from linked _Oranze Library
 E-db	Source/DataBaseServer/Def/database.h	139	2289	covered	Round 837 full 1–139: standalone CDatabase/CConnection/CRecordset API; not the linked DBSvr ODBC implementation
-E-db	Source/DataBaseServer/Def/list.h	402	6578	pending	
-E-db	Source/DataBaseServer/Def/queue.h	50	689	pending	
-E-db	Source/DataBaseServer/Def/syncobj.cpp	28	390	pending	
-E-db	Source/DataBaseServer/Def/syncobj.h	33	442	pending	
+E-db	Source/DataBaseServer/Def/list.h	402	6578	covered	Round 838 full 1–402: CList ownership/removal/search/index implementation; InsertAt omits count update, comparator calls lack null guard, destructor does not clear nodes
+E-db	Source/DataBaseServer/Def/queue.h	50	689	covered	Round 838 full 1–50: FIFO wrapper over CList tail/head operations
+E-db	Source/DataBaseServer/Def/syncobj.cpp	28	390	covered	Round 838 full 1–28: CCriticalSection Initialize/Enter/Leave/Delete wrappers
+E-db	Source/DataBaseServer/Def/syncobj.h	33	442	covered	Round 838 full 1–33: CCriticalSection/CIntLock declarations; standalone support API
 E-db	Source/DataBaseServer/_Oranze Library/astar.h	426	8521	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/astar.h; full source read Round 836
 E-db	Source/DataBaseServer/_Oranze Library/base64.cpp	131	2624	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/base64.cpp; full source read Round 836
 E-db	Source/DataBaseServer/_Oranze Library/base64.h	35	647	covered	Round 837 SHA-256 identical to LoginServer/_Oranze Library/base64.h; full source read Round 836

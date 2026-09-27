@@ -11901,3 +11901,27 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔SQL 抽取纠错〕** Round 837 全读 `tablesdefine.cpp/.h` 后发现 `extract_sql_tables.py` 对数组声明同一行的首字段执行 `continue`，漏掉 11 个活动首字段；原解析还把 `//` 注释内的字段记入结果，并将 `fIsKey` 标签误称为数据库 primary key。新增标准库回归测试先观察到首字段缺失，再修复为同一行继续解析、剥离行注释、输出 `key_flag` 列并说明它仅是生成器谓词。测试 `python3 -m unittest discover -s Tools/source-read -p 'test_extract_sql_tables.py' -v` 两项通过；重生成 `sql-tables.tsv` 得 11 组、175 个活动描述符，移除误收的 `FLD_RESERVED1`，恢复 11 个首字段。当前 README 与 `tools-and-servers.md` 已澄清 SQL player-record schema 不等于 EI `System.db`/`Users.db` 映射；`FINAL_REPORT.md` 保留为其标注日期的历史快照，不把旧数字伪装成当前抽取结果。
 
 **〔验证与安全边界〕** `python3 -m unittest discover -s Tools/source-read -p 'test_extract_sql_tables.py' -v`：2 项通过。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个 opcode 缺失穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 222/87113，partial 17/90886，excluded 43/60230，pending 111/77095。只静读源码、比较副本 SHA-256、执行测试并生成 TSV；没有 Windows 构建、服务启动、ODBC 连接、数据库读写、EI primary-static 或 Zircon 行为推断；不把源码异常称为动态复现。
+
+## Round 838 — 2026-09-27：DataBaseServer/Def 支持源码全读
+
+**〔范围〕** 通过 `Tools/source-read/read_src.py show` 全读以下 ledger 文件；除 `Def/Protocol.h`（本轮补全此前的 opcode 局部阅读）外，14 个文件由 pending 改为 covered：
+
+| 文件 | 完整范围 |
+|---|---:|
+| `Def/DynamicArray.cpp/.h` | 1–76 / 1–158 |
+| `Def/IocpHelper.cpp/.h` | 1–77 / 1–42 |
+| `Def/Misc.cpp/.h` | 1–182 / 1–19 |
+| `Def/Protocol.h` | 1–557 |
+| `Def/RegstryHandler.cpp` | 1–82 |
+| `Def/ServerSockHandler.cpp/.h` | 1–284 / 1–43 |
+| `Def/StaticArray.h` | 1–81 |
+| `Def/list.h` / `queue.h` | 1–402 / 1–50 |
+| `Def/syncobj.cpp/.h` | 1–28 / 1–33 |
+
+**〔边界与代码观察〕** `Def/Protocol.h` 是 557 行旧协议/opcode 与 packed record 声明，和 `DBSvr/protocol.h` 不同；协议定义不能证明 handler 存在，先前穷举得到的 3 个账号 opcode 无接收端结论不变。`DynamicArray.cpp` 的非模板实现与同名 `.h` 的模板版本不是可互相替代的证据：前者两段扫描都用固定 `nIndex` 查表，后者对最大下标使用 `<= 5000` 且满表路径没有返回值。未依据它们推断活动服务行为。
+
+**〔独立支持文件〕** `IocpHelper.cpp`/`ServerSockHandler.cpp` 不在 `DBSvr.vcproj` 编译列表：一个强制终止 accept thread、失败的 `accept` 仍传给 `OnAccept`；另一个 `ConnectToServer` 对立即成功的 `connect` 返回 `FALSE`，且头/实现的 `CreateIOCPWorkerThread` 签名不一致。`CStaticArray` 的 cursor 不限幅增长并被回绕扫描当作上界；`CList::InsertAt` 不增 count，`Remove`/`Search` 直接调用比较函数，析构不清节点；`CQueue` 只是其包装。`RegstryHandler.cpp` 的第二次 `RegQueryValueEx` 结果未检查。均是源码静读，没有 Win32 构建或动态复现。
+
+**〔覆盖更新〕** `coverage-ledger.tsv` 更新 `Def/` 第 175–193 行：14 个 pending 变 covered，`Def/Protocol.h` 从 Round 820 opcode 局部备注扩为完整 1–557 阅读。Round 838 未读任何 EI primary-static 资源、未碰数据库/服务、未改 Zircon。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 236/88670，partial 17/90886，excluded 43/60230，pending 97/75538。`git diff --check` 对本轮三份指定文件通过；没有 Windows 构建、服务或数据库运行验证。
