@@ -126,7 +126,7 @@ SendSocket(EncodeMessage(msg)
 | 文件 | 说明 |
 |---|---|
 | `MapEdit.dpr` | 地图编辑器主程序 |
-| `Wil/WIL.pas` | **WIL 读写**（与客户端 `WIL.pas` 同源，是 `.map` 工具链的图库层） |
+| `Wil/WIL.pas` | DPR-selected `TWMBaseImages` factory for MyImage/M3Def; EdMain initializes 70 relative `WilArr` library paths as `ltLoadBmp`, with `.wil` fallback; bitmap/draw/write APIs require `WORKFILE`, whose project build setting is unverified |
 | `glight.pas` | MapEdit's modal per-cell light-value dialog; `EdMain` routes light-brush clicks to the map `Light` field |
 | `Tile.pas` / `SmTile.pas` | 瓦片 |
 | `o_WIL.pas` | Legacy duplicate `unit WIL`/`TWMImages` component; not selected by `MapEdit.dpr` (which binds `Wil/WIL.pas`), and no `o_WIL` caller found |
