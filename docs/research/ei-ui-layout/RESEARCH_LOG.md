@@ -12215,3 +12215,13 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔primary/source 边界〕** 只记录 Preview ImageEditor root MyImage unit 及文本调用链；未推断 `.Lib` 与 EI 原版格式兼容，也未比较 MapEdit/Client 同名 unit。未打开、改写或实测实际 `.Lib` 文件；不据此断言运行损坏。
 
 **〔覆盖与验证〕** `coverage-ledger.tsv` 第 41 行将 root `wmMyImage.pas` 的 745 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个缺失 opcode 检查、ledger、29 个 Python 文件语法）；`ledger.py --summary`：393 文件/315324 行，covered 269/124333，partial 17/90886，excluded 43/60230，pending 64/39875。四个授权文档路径的 staged whitespace check 无输出；staged additions 的 PEM private-key、AWS key、GitHub-token、credential-assignment、email 临时 patterns 均为 0 hits，完整 staged diff 已复核。该 pattern scan 是本地临时检查，不是仓库官方 scanner。未运行 Delphi/ImageEditor，也未读写 `.Lib`。
+
+## Round 861 — 2026-09-27：MapEdit About dialog source and resource
+
+**〔范围〕** 经 source-reader 全读 `Source/Tools/MapEdit/About.pas`（1–33，CP949），并全读对应 `About.dfm`（1–39）及 `MapEdit.dpr`（1–43），追 `EdMain.dfm` 的菜单 binding 与 `EdMain.pas` handler。DPR 将 `about.pas` 纳入并 `Application.CreateForm(TForm1, Form1)`；MapEdit 范围搜索只找到注释中的 `form1.ShowModal`，没有 Delphi 编译或 UI 运行。
+
+**〔窗体与菜单〕** DFM 标题为“关于”，Label1 文本为“地图编辑器”、Label2 无 caption；OK 按钮绑定 `Button1Click`，handler 只有 `Close`。主窗体 DFM 将一个菜单项绑定 `N10Click`；该 handler 当前调用 `ShellAbout`，自定义 `form1.ShowModal` 行已注释。因此自定义 form 在启动时创建，但从所观察的菜单链路没有 active show caller。
+
+**〔primary/source 边界〕** 仅记录 Preview MapEdit unit/resource 和静态调用关系；未查 EI 对应 About 窗体，也未据此判断运行时是否有其它方式显示 `Form1`。
+
+**〔覆盖与验证〕** `coverage-ledger.tsv` 第 2 行将 `About.pas` 的 33 行登记为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 270/124366，partial 17/90886，excluded 43/60230，pending 63/39842。四个授权文档路径的 staged whitespace check 无输出；staged additions 的 PEM private-key、AWS key、GitHub-token、credential-assignment、email 临时 patterns 均为 0 hits，完整 staged diff 已复核。该 pattern scan 是本地临时检查，不是仓库官方 scanner。未运行 Delphi/MapEdit。
