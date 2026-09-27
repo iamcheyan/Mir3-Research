@@ -12335,3 +12335,17 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔primary/source 边界〕** 仅为 Preview 源码与 mixed DFM reader view 的静态观察；未做 Delphi build、移动/清除、重绘、undo runtime 或 EI 对比。
 
 **〔覆盖与验证〕** ledger 第 11 行登记 `MoveObj.pas` 96 行为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 279/131285，partial 17/90886，excluded 43/60230，pending 54/32923。staged 仅四个授权文档路径，`git diff --cached --check` 无输出；新增行 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均 0 hits；完整 staged diff 已复核。临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
+
+## Round 871 — 2026-09-28：MapEdit ObjEdit object-piece editor
+
+**〔范围与资源〕** source-reader 分五段全读 `Source/Tools/MapEdit/ObjEdit.pas`（1–1018，`cp949+mixed`），读取 127 行 mixed `ObjEdit.dfm`，并 exact-name 搜索 `Source/Tools` callers。DPR include/auto-create `TFrmObjEdit`。DFM 显示 paint-box、detail grid、form lifecycle/key events、modal-button properties、tile/object/mark/door/light controls 和 checkbox；`dfm_parse.py tree/list` 仅得到 15 个条目且出现 binary-property artifacts/错位嵌套，不能据此复原全布局及多数 captions。
+
+**〔模型、复制与模态返回〕** `TPieceInfo` 记录相对格坐标、背景/中层/前景图号和库索引、animation/tick/blend、light、door index/offset 与 mark bits。`SetPieceList` 清理编辑器自有 pieces/undo 后逐项复制输入；`DuplicatePieceList` 向调用方列表追加新记录副本。`Execute` 通过 `ShowModal` 展示，只有 `mrOk` 返回 true，且在接受时把 animation controls 写回全部 piece；取消不执行该批量写回。FormShow 将 `FrmTile`/`FrmSmTile` parent 到编辑器，返回时清掉 parent。
+
+**〔交互与 undo〕** `PboxMouseDown` 把鼠标坐标换算成相对格，可分别编辑 mark、background/middle tile、object image、light 和 door/core-door metadata；background tile 只在 x/y 均为偶数时添加，SmTile/Tile palette 的 caller 会设定 `CanDrawSmTitle` 与中层/背景模式。`PboxPaint` 按 checkbox 绘制各图层与 marks/light/door overlay。`CopyPiece` 保存最多 20 个逐 piece undo entry，Ctrl+Z 恢复或删除最后一次触及的 record；方向按钮调用的 `ShiftPieces` 直接移动所有相对坐标而不调用 `CopyPiece`，所以这些位移不能由该 undo path 回退。`BtnClearClick` 调用 `ClearPiece` 同时清除 pieces 和 undo。DFM 上 `Button1` 绑定的 `Button1Click` 当前主体全部注释掉。
+
+**〔调用方与追加路径〕** `ObjSet.SetGridDblClick` 在列表非 nil 时复制选中 set，仅在 Execute 返回 true 时复制结果并 `UpdateSet`；取消时外部列表不变。`FrmObjSet.Execute` 调用 `Show`，为 modeless。随后 `EdMain.MapPaintMouseUp` 请求 `SetGrid.RowCount-1`；ObjSet 将 `RowCount` 设为 `SetList.Count+1`，而 `GetSet` 只接受至 `SetList.Count-1`，所以该索引是空 append row，返回 nil。handler 将地图矩形选区写入临时列表，ObjEdit 克隆后仅释放临时 `TList` 容器；mrOk 时 `UpdateSet` 在末尾 append 返回列表，取消时不插入，不覆盖既有 set。独立菜单 `RunObjEditer1Click` 仅调用 Execute，不在该 handler 导入/导出 caller list。
+
+**〔生命周期与 primary/source 边界〕** `FormDestroy` 释放两个 list 容器但不调用 `ClearPiece` 清理仍留在其中的记录；这是静态 ownership 路径观察。只根据 Preview source/mixed DFM；未运行 Delphi build、UI、取消/undo 场景或 EI 对比。
+
+**〔覆盖与验证〕** ledger 第 12 行登记 `ObjEdit.pas` 的 1,018 行为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`ledger.py --summary`：393 文件/315324 行，covered 280/132303，partial 17/90886，excluded 43/60230，pending 53/31905。staged 仅四个授权文档路径，`git diff --cached --check` 无输出；新增行 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均 0 hits；完整 staged diff 已复核。临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
