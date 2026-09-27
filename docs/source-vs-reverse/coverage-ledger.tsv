@@ -91,7 +91,7 @@ E-tools	Source/Tools/ImageEditor/Common/ZLibEx.pas	726	21853	pending
 E-tools	Source/Tools/ImageEditor/Common/ZLibx.pas	733	21557	pending	
 E-tools	Source/Tools/ImageEditor/Common/bass.pas	1021	52162	pending	
 E-tools	Source/Tools/ImageEditor/Common/mudutil.pas	1009	26358	pending	
-A/C-server	Source/GameServer/Castle.pas	1241	42317	partial	Round 829: 常量+税率10%(2003/07/15上调)+双重封顶+攻城时序(每日20:00检查/3小时/提前10分警告)+战场±100格+布防+跨服只读；实现主体待读
+A/C-server	Source/GameServer/Castle.pas	1241	42317	covered	Round 829 partial timing notes; Round 834 full 1–1241 and callers: hour-20 check (not exact 20:00), 3h war, owner/win/finish/repair paths; actual repair threshold 1min vs stale comments; EI/Zircon boundaries in items-systems §17.2
 A/C-server	Source/GameServer/CmdMgr.pas	629	18628	covered	Round 810: TCmdMsg/ICommand/TCmdMgr 结构与分派
 A/C-server	Source/GameServer/ConfirmDlg.pas	42	734	pending	
 A/C-server	Source/GameServer/CryptMd5.pas	497	18297	pending	
@@ -100,11 +100,11 @@ A/C-server	Source/GameServer/DragonSystem.pas	604	18322	partial	Round 816: Decod
 A/C-server	Source/GameServer/EDCode.pas	464	15569	covered	Round 803 diff
 A/C-server	Source/GameServer/ElHashList.pas	325	9435	pending	
 A/C-server	Source/GameServer/Envir.pas	1540	51192	covered	Round 808/812: 世界模型+.map格式+对象注册+移动门+门+MapQuest+EnvirList
-A/C-server	Source/GameServer/Event.pas	323	7629	partial	Round 829: 地图限时事件基类 EventType/EventParam+ContinueTime+OwnCret；EventType取值表待读
+A/C-server	Source/GameServer/Event.pas	323	7629	covered	Round 829 type constants; Round 834 full 1–323: 4 derived event classes + manager, scheduler/closed lifecycle, mine-map exception, mining/Magic callsites, Zircon comparison; no EI server-semantic equivalence inferred
 A/C-server	Source/GameServer/FSrvValue.pas	93	2329	pending	
 A/C-server	Source/GameServer/FriendSystem.pas	988	32581	covered	Round 802 好友系统
 A/C-server	Source/GameServer/FrnEngn.pas	457	12405	pending	
-A/C-server	Source/GameServer/Guild.pas	3600	121469	partial	Round 827: 常量全表+TGuild数据模型+两个业务规则(行会战3小时/同盟需面对面)+延迟保存；各方法实现主体待读
+A/C-server	Source/GameServer/Guild.pas	3600	121469	covered	Round 827 partial notes superseded where corrected; Round 834 full 1–3600: save/war/rank/ally/estate/decor/SQL-board implementation and callers; active war 6h (3h stale comment), MakeAlly caller checks, immediate+deferred write; items-systems §17.1
 A/C-server	Source/GameServer/IdSrvClient.pas	549	16935	covered	Round 803 公钥协商链
 A/C-server	Source/GameServer/InterMsgClient.pas	279	8362	pending	
 A/C-server	Source/GameServer/InterServerMsg.pas	927	28797	pending	
@@ -122,13 +122,13 @@ A/C-server	Source/GameServer/ObjMon.pas	3097	101650	partial	Round 815: 类层次
 A/C-server	Source/GameServer/ObjMon2.pas	1817	52513	partial	Round 815: 类层次(17类含TStickMonster/TGuardUnit/TMineMonster)；实现待读
 A/C-server	Source/GameServer/ObjMon3.pas	3197	98170	partial	Round 815: 类层次(18类)；实现待读
 A/C-server	Source/GameServer/ObjNpc.pas	6409	255489	covered	Round 811/821: 五层任务模型/CheckQuestCondition/CheckSayingCondition/53+75 opcode/GotoQuest/TakeItemFromUser/CheckNpcSayCommand 28个$宏 + Round 833: 四级嵌套数据结构/四段式脚本/AvailableCommands自动扫@链接/脚本文件NPC名-地图名
-A/C-server	Source/GameServer/Relationship.pas	471	11946	partial	Round 829: 恋人系统 MAX_LOVERCOUNT=1+TRelationShipInfo(BYTE字段)；其余类待读
+A/C-server	Source/GameServer/Relationship.pas	471	11946	covered	Round 829 model notes; Round 834 full 1–471 plus ObjBase request/accept callers: reciprocal partner handshake, request-side capacity/eligibility, local Add boundary, date/serialization; DB/runtime locale edges explicitly open
 A/C-server	Source/GameServer/RunDB.pas	687	22148	pending	
 A/C-server	Source/GameServer/RunSock.pas	1209	41126	pending	
 A/C-server	Source/GameServer/SQLLocalDB.pas	799	31038	pending	
 A/C-server	Source/GameServer/Server_JOB_ItemGen.dpr	59	1828	pending	
 A/C-server	Source/GameServer/SqlEngn.pas	1268	41012	pending	
-A/C-server	Source/GameServer/TagSystem.pas	1678	54596	partial	Round 829: 邮件(쪽지)系统 常量30/10/20+TTagInfo四态+双持久化标记+分页握手协议；实现主体待读
+A/C-server	Source/GameServer/TagSystem.pas	1678	54596	covered	Round 829 partial notes superseded where corrected; Round 834 full 1–1678 plus UserMgr/UsrEngn/ObjBase callers: state transitions, DB/inter-server paths, 11-entry page bound, unread-count reload drift, delete-all-read empty branch, CM_TAG_NOTREADCOUNT route gap; DB-side semantics open
 A/C-server	Source/GameServer/UserMgr.pas	726	21672	covered	Round 802 FriendSystem 二次分派
 A/C-server	Source/GameServer/UserMgrEngn.pas	276	6926	pending	
 A/C-server	Source/GameServer/UserSystem.pas	153	4879	pending	

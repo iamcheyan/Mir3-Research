@@ -11799,3 +11799,31 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **落盘**：`server.md` §18（约 165 行）、`npc-script-commands.tsv`（128 行）、
 `Tools/source-read/extract_npc_script.py`。
 未改原版证据、未改代码、未碰数据库；`database_write=false` 维持。
+
+## Round 834 — 2026-09-27：Guild/Castle/Tag/Relationship/Event 五个实现主体全读与调用链核对
+
+**〔范围〕** 使用 `Tools/source-read/read_src.py` 完整读取：
+
+| 源文件 | 完整范围 | 复核状态 |
+|---|---:|---|
+| `Source/GameServer/Guild.pas` | 1–3600 | ✅ 全部实现主体 |
+| `Source/GameServer/Castle.pas` | 1–1241 | ✅ 全部实现主体 |
+| `Source/GameServer/TagSystem.pas` | 1–1678 | ✅ 全部实现主体 |
+| `Source/GameServer/Relationship.pas` | 1–471 | ✅ 全部实现主体 |
+| `Source/GameServer/Event.pas` | 1–323 | ✅ 全部实现主体 |
+
+**〔Guild〕** `TGuild`、`TGuildManager`、`TGuildAgit`、装饰/租约管理及 SQL 公告板实现全读。活动 `DeclareGuildWar` 是 6 个 1 小时单位；接口注释与注释掉的旧块写 3 小时，Round 827 将其写成 3 小时的结论在本轮更正。续期表达式用整数除法，`<=1` 实际覆盖不足 2 小时。`GuildInfoChange` 即时写 `SaveGuild`，`CheckSave` 30 秒后仍会再次保存。`MakeAllyGuild` 只添加保存，面对面/会长/许可/战争条件来自 `ObjBase.ServerGetGuildMakeAlly`；其成功方法体未置 `Result := TRUE`，当前调用方忽略返回值。War 超时由 `UsrEngn` 每 10 秒检查；据点租约和 SQL 公告板见 `items-systems.md` §17.1。
+
+**〔Castle〕** 追读 `Initialize`/读写、`Run`、申请、胜负、城主变更与结束路径。Castle 每 10 秒被调用；攻城检查发生在 20 时这一小时首次符合条件的 Run（源码只比较小时，不是固定 20:00 分钟），城堡战 3 小时。胜负扫描内城范围，开始 10 分钟后才启用；城门/墙维修有效表达式是一分钟，而注释写 10 分钟/1 小时。Round 829 对「20:00」的简写由本轮修正；细节见 §17.2。
+
+**〔TagSystem〕** 追读 per-user `TTagMgr` 的客户端/DB/跨服消息处理。请求页起止下标为 `start..start+10` 且两端包含，完整页最多 11 条；重载列表前 `RemoveAll` 不清未读数，随后 Add 累计；「删除全部已读」客户端分支为空。常规 `CM_TAG_NOTREADCOUNT` 在 `UsrEngn` 被转发，但 `TUserMgr` 的每用户 opcode allowlist 不含该项；独立处理器存在不代表此路径可达。据点便条的 `CM_TAG_ADD_DOUBLE` 是独立可达路径。DataBaseServer 侧持久化与确认语义未读，见 §17.3。
+
+**〔Relationship〕** 全读 `TRelationShipInfo`/`TRelationShipMgr` 并追 `ObjBase` 消息握手：等级≥22、异性、互相允许、正前方且双向相对、双方剩余名额；通过接受后各端建立本地记录，再请求 DB 保存。`Add` 本身不落实 `MAX_LOVERCOUNT`；日期字段默认 `yymmddhhnn`，成功 Add 可改 `Date`，不写 `ServerDate`。系统日期 locale/时区和 DB/跨服完整链仍未验证。
+
+**〔Event〕** 文件实际含 `TEvent`、4 个派生类和 `TEventManager`。管理器在主计时器调用；活动对象按 `runtick` 调度，关闭对象等 5 分钟后分批释放。采矿事件单独存在地图矿点表，不加入管理器；补矿是下一次挖掘触发。`Magic.pas` 创建圣幕/火焰事件；火事件沿合法目标检查与伤害路径。EI primary-static 证据只用于已证明的 UI/消息表面，不外推服务器时限行为；Zircon 对照限定在当前数据模型/配置事件处理器，未声称逐项等价。
+
+**〔EI 与 Zircon 对照〕** EI `guild-window-paint-evidence.json`（F348）及 Round 497/F803 证明行会窗口绘制和客户端公告消息路径，不能证明这些 Preview 服务端实现。Zircon 比较只读行会/战争、城堡/`ConquestWar`、邮件和角色伴侣模型，以及配置化事件注册；没有声称完成 Zircon 同域完整行为审计。
+
+**〔文档/覆盖〕** 更新 `items-systems.md`，逐条修正 Guild 3h、面对面规则归属、纯延迟保存、Castle 20:00、Tag 状态 2/双持久化推断、Relationship `MapInfo` 推断、Event 子类遗漏等旧表述。`coverage-ledger.tsv` 将上述 5 个文件由 `partial` 改为 `covered`，保留并标明旧轮次结论被纠正的历史。Round 834 不触碰服务、数据库、资源或 Zircon 源码。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（协议常量、EDCODE 自测、3 个缺失 opcode、销账统计、28 个 Python 文件语法）；`python3 Tools/source-read/ledger.py --summary`：393 文件/315324 行，covered 38/50043、partial 18/93108、excluded 43/60230、pending 294/111943。源码静读未运行游戏内行为；diff 检查与提交前审查在本批交付流程完成。
