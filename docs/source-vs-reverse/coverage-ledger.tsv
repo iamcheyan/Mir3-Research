@@ -12,7 +12,7 @@ E-tools	Source/Tools/MapEdit/MoveObj.pas	96	2045	covered	Round 870 full read (CP
 E-tools	Source/Tools/MapEdit/ObjEdit.pas	1018	26715	covered	Round 871 full read (CP949+mixed); modal piece-set editor clones TPieceInfo records; region append-row path can target last set after PasteSet leaves RowCount stale; shifts bypass undo; temporary/editor record cleanup gaps; visible Button1 handler commented out; DFM parser incomplete; no Delphi/runtime/EI comparison
 E-tools	Source/Tools/MapEdit/ObjSet.pas	484	12562	covered	Round 872 full read (CP949); modeless set manager and legacy/new mir.set parsing; PasteSet omits RowCount update, nil slots break ClearSet and save/load ignores indices; modal editor replacement only on OK; no Delphi/runtime/EI comparison
 E-tools	Source/Tools/MapEdit/SmTile.pas	155	4251	covered	Round 873 full read (CP949); auto 60-frame group and five-column frame modes, row-count/selectability boundaries, ObjEdit/map-paint callers; combo population commented and WilSmTileArr declaration unresolved in Source search; mixed DFM partial; no Delphi/runtime/EI comparison
-E-tools	Source/Tools/MapEdit/Tile.pas	163	4500	pending	
+E-tools	Source/Tools/MapEdit/Tile.pas	163	4500	covered	Round 874 full read (CP949); 50-frame auto-group and five-column image modes, auto/fill map callers and ObjEdit background pieces; final partial-group preview indices unchecked, individual remainder row omitted; combo population commented and WilTileArr declaration not found in Source search; mixed DFM partial; no Delphi/runtime/EI comparison
 E-tools	Source/Tools/MapEdit/glight.pas	42	761	pending	
 E-tools	Source/Tools/MapEdit/mpalett.pas	160	3972	pending	
 E-tools	Source/Tools/MapEdit/o_WIL.pas	661	19961	pending	
