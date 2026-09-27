@@ -139,7 +139,7 @@ A/C-server	Source/GameServer/svMain.pas	1880	60780	covered	Round 808 EnvirDir �
 D-client	Source/Client/Actor.pas	4743	194647	partial	Round 819: 动作帧公式+46表329项+HA全表+CurrentAction映射+Shift重复定义查明；Run/ReadyAction/THumActor实现待读
 D-client	Source/Client/AxeMon.pas	4217	150653	partial	Round 826: 35 类层次(客户端怪物渲染，与GameServer/ObjAxeMon.pas不同)；各类DrawEff/Run实现待读
 D-client	Source/Client/CMsg.pas	110	2183	covered	Round 896: CMList.dat parsing and ClMain/FState/IntroScn GetMsg lifecycle; repeated-load/cleanup/exception hazards; EDCode binding unresolved
-D-client	Source/Client/ClFunc.pas	1032	28948	pending	
+D-client	Source/Client/ClFunc.pas	1032	28948	covered	Round 897: local inventory/options, bag/trade/drop helper behavior and static stack-result/count defects; geometry and change-face caller traces
 D-client	Source/Client/ClMain.pas	9924	322121	partial	Round 817: SCREENWIDTH/HEIGHT 常量+SendWantMiniMap/PublicKey；主体待读
 D-client	Source/Client/DWinCtl.pas	7804	226540	partial	Round 806/818: 类层次+输入优先级+InRange+TDButton四态+TDGrid格子+SetImgIndex；TDWindow/TDModalWindow/TDMemo/TDEdit/TDTreeView/TDListView 待读
 D-client	Source/Client/DrawHint.pas	441	15405	pending	
