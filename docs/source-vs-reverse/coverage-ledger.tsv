@@ -290,7 +290,7 @@ C-common	Source/Common/EDCode.pas	539	17672	covered	Round 803 线格式 + Round 
 C-common	Source/Common/GList.pas	547	14813	covered	Round 916 full read: lock-wrapper lists, TQuickList binary/order and one-item duplicate result; grouped TQuickIDList bounds/ownership edges; no GList-defined class callers, only import is unlinked DrawHint; MudUtil TQuickList copies are distinct
 C-common	Source/Common/Grobal2 - 副本.pas	2599	96162	covered	Round 803 三表 diff
 C-common	Source/Common/Grobal2.pas	2862	105217	covered	Round 802/803/820: 474 常量 + QI_/QA_ opcode 表 + ET_ 命名空间
-C-common	Source/Common/HUtil32.pas	2214	60031	pending	
+C-common	Source/Common/HUtil32.pas	2214	60031	covered	Round 917 full CP949 read: shared parser/string/file/GDI/pointer/date helpers; zero-based string indexing, sign/escape/date/file-copy boundaries; Mir3/MapEdit map Common path, GameServer HUtil32 resolution unverified
 C-common	Source/Common/HashTable.pas	319	7049	pending	
 C-common	Source/Common/MfdbDef.pas	1192	38265	pending	
 C-common	Source/Common/Scanf.pas	256	6006	pending	
