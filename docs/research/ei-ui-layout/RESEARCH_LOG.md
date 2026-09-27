@@ -12389,3 +12389,15 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔selector 与 source 边界〕** `Tile.FormCreate` 的 `WilTileArr` 下拉项添加循环和初始 `ItemIndex` 均已注释；inspected `Source/Tools` 未找到 active `CBTitle` 列表初始化。`EdMain.InitWMImagesLib` 初始化 70 项 `WilArr`，基础 tiles 在索引 0–2，但可见 `EdMain.WilTile` function body 引用 `WilTileArr`；全 `Source` exact-name reader search 只找到注释 palette code 和此函数使用，未找到声明。因此不能从现有文本确认 combo 到库的映射或 build/link 结果。只记录 Preview Delphi 源码/mixed DFM 静态行为；未运行 build、palette rendering、auto/fill painting、partial-row 场景或 EI 比较。
 
 **〔覆盖与验证〕** ledger 第 15 行登记 `Tile.pas` 的 163 行为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；源码台账为 393 文件/315324 行，covered 283/133105，partial 17/90886，excluded 43/60230，pending 50/31103。staged 仅四个授权文档路径，`git diff --cached --check` 无输出；staged additions 的 PEM private-key、AWS key、GitHub-token、credential-assignment、email patterns 均 0 hits；完整 staged diff 已复核。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。
+
+## Round 875 — 2026-09-28：MapEdit light-value dialog and map caller
+
+**〔范围与资源〕** source-reader 全读 `Source/Tools/MapEdit/glight.pas`（1–42，CP949），读取 22 行 mixed `glight.dfm`、DPR 与 `EdMain` 的 light dispatch/setter/menu 上下文。DPR 将 `glight` 纳入并 auto-create `TFrmGetLight`；DFM reader view 显示 label caption `(0..4)`、一个 `bkOK` BitBtn 与 SpinEdit 的 `MinValue`/`MaxValue` property 名，但 `dfm_parse.py list` 在读取 child object 时 EOF `IndexError`，未恢复数值上下界或完整控件树。
+
+**〔dialog 与值流〕** `GetValue(oldvalue)` 先把旧值转为文本，调用 `ShowModal`，忽略 modal result，再将 `Edit1.Text` 以 `StrToIntDef(..., 0)` 解析返回；`FormShow` 聚焦 SpinEdit 并选择全部现有文本。因返回值不受接受/取消结果控制，EdMain 的调用会在 modal close 后继续读取当前文本；SpinEdit 实际范围不能从 mixed DFM reader 输出确定。
+
+**〔map-light caller〕** `SetLightEffect1` 菜单项绑定 `DrawObject1Click` 并切到 `mdLight`。`MapPaintMouseDown` 的 `mdLight` 分支在 `CopyTempBegin/CopyTempEnd` 内处理左键：无 Alt 调 `AddLight`，读取当前 Light 并以 `SetLight`/`SetMapDataEx` 写入 dialog 返回值；Alt 调 `UpdateLight`，仅当当前值大于 0 才弹窗并写回，否则 `Beep`。两个 setter 都要求 `0 <= x < MAXX-1` 且 `0 <= y < MAXY-1`；`SetMapDataEx` 在临时 undo state 存在时记录旧 Light 值。mouse handler 在两条路径返回后均设 `Edited := TRUE`，无论是否触发更新；dialog 本身没有 modal-result gate。
+
+**〔primary/source 边界〕** 仅为 Preview MapEdit 源码及 mixed DFM reader view 的静态控制流；未运行 Delphi build、dialog/键盘输入、map mutation/undo 或 EI 对照。DFM parser 对二进制资源失败，故不声称可接受数值范围或取消交互的实际控件行为。
+
+**〔覆盖与验证〕** ledger 第 16 行登记 `glight.pas` 的 42 行为 covered。`python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；ledger 为 393 文件/315324 行，covered 284/133147，partial 17/90886，excluded 43/60230，pending 49/31061。仅四个授权文档路径 staged，`git diff --cached --check` 无输出；15 条新增行的 PEM private-key、AWS access-key、GitHub-token、credential-assignment、email patterns 均为 0 hits。该临时 pattern scan 非仓库官方 scanner；未运行 Delphi/MapEdit。

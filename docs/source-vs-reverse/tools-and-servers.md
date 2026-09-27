@@ -127,7 +127,7 @@ SendSocket(EncodeMessage(msg)
 |---|---|
 | `MapEdit.dpr` | 地图编辑器主程序 |
 | `Wil/WIL.pas` | **WIL 读写**（与客户端 `WIL.pas` 同源，是 `.map` 工具链的图库层） |
-| `glight.pas` | **光照**（与 `Client/Light/Light0a-d.pas` 配套，8.1 MB `.inc` 查表被排除） |
+| `glight.pas` | MapEdit's modal per-cell light-value dialog; `EdMain` routes light-brush clicks to the map `Light` field |
 | `Tile.pas` / `SmTile.pas` | 瓦片 |
 | `o_WIL.pas` / `wmM3Def.pas` / `wmM3Zip.pas` / `wmMyImage.pas` / `wmUtil.pas` | **图库解析（与客户端同源）** |
 | `ObjEdit.pas` / `ObjSet.pas` / `FObj.pas` | 地图对象编辑 |
