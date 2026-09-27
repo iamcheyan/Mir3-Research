@@ -16,7 +16,7 @@
 | 项 | EI 3.0 原版（primary） | Preview 源码（secondary） |
 |---|---|---|
 | 载体 | `Mir3.exe` 524288 B + `mir3.dat` 532 KB + WIL/WIX | Delphi 源码 163 `.pas` + C++ 210 `.cpp/.h` |
-| 位置 | `/data/NAS/TMP/EI传奇3.0客户端/` | `reference/mir3-source/Source/` |
+| 位置 | `${MIR3_EI_ROOT}/` | `reference/mir3-source/Source/` |
 | 出处 | 2003 年商业客户端 | LOM2 社区 SVN `code.lom2.com/svn/Mir2`，时间戳 2002–2019 |
 | 版本开关 | — | `GameServer/svMain.pas`: `KOREANVERSION = TRUE`（服务端以韩版为基准） |
 | 资源容器名 | `Data/GameInter.wil` | `Data\GameInter.Lib`（失败才回退 `.wil`，`uWilFile.pas:189-191`） |
@@ -187,6 +187,8 @@ Zircon 的对应关系；不改变现有结论，属**补充**。
 | 原版 | `System.db` = .NET BinaryFormatter. An excluded `Mud3 Preview/SQL/` dump (687 MB) exists, but this source read does not establish that it is `System.db`'s upstream |
 | 源码 | `DataBaseServer/DBSvr/tablesdefine.cpp` declares SQL Server player-record tables; GameServer→DataBaseServer→ODBC is separate from `System.db`/`Users.db` MirDB files. Server text configuration is read by name: `MapInfo.txt` `MonGen.txt` `Merchant.txt` `Npcs.txt` `GuardList.txt` `AdminList.txt` `MiniMap.txt` `StartPoint.txt` `SafePoint.txt` `MakeItem.txt` `DecoItem.txt` `DragonItem.txt` `GenMsg.txt` `MapQuest.txt` `UnbindList.txt` `StartupQuest.txt` `AttackSabukWall.txt` `Sabuk.txt` `enckey.txt`; `svMain.pas:619` sets `EnvirDir := ini.ReadString('Share','EnvirDir','.\Envir\')` |
 | GameServer ADO 子系统 | `SQLLocalDB.pas` 从 `Setup/!DBSETUP.TXT` 连接并读取 StdItems/Monster/MonsterItem/Magic；`DBSQL.pas`/`SqlEngn.pas` 处理物品市场与行会据点公告板 SQL。与 C++ DataBaseServer ODBC 路径分开，不建立 `.db` 文件映射 |
+| 角色记录网络通路 | `GameServer/RunDB.pas` 将 `FDBRecord` 与 `TUserHuman` 互转，经 `DBSocket` 发送 `DB_LOADHUMANRCD`/`DB_SAVEHUMANRCD`；`DataBaseServer/DBSvr/netgameserver.cpp` 注册到 `OnLoadHumanRcd`/`OnSaveHumanRcd`。这是玩家角色记录网络/ODBC路径，仍未证明与 EI `System.db`/`Users.db` 的文件映射 |
+| 客户端网关通路 | `GameServer/RunSock.pas` 处理 RunGate `TMsgHeader`/`GM_*` 数据、认证并把准入交给 LoginServer/FrontEngine；不是 `RunDB` 角色记录套接字，也不表示 EI 静态资源/数据库来源 |
 | 差异 | 源码只读 `Mud3-Config/Envir/`（Mir2 风格 391 txt）；`Mud3-Config/Envir3/`（1729 txt + 69 `.gen`）在整个包内 grep 命中 **0 次** → **本版源码不读 Envir3** |
 | 结论 | `Envir3/` 属另一/更新构建，只能当**独立参考资料**（含 `QuestDiary/` 任务脚本树、`Mon_Def/*.gen` 刷怪定义）；DataBaseServer 的 SQL player-record schema is not a verified mapping to the EI `.db` files |
 | 处理 | 本仓库 `Tools/questdata`、dbeditor workspace 与 `Envir3/` 的对照**必须标注**「源码不读它」这一前提；`tablesdefine.cpp` 只按 legacy SQL schema 记录 |
@@ -238,7 +240,7 @@ Zircon 的对应关系；不改变现有结论，属**补充**。
 | 这 10 个 ∩ 原版已详查 37 帧 | **0（空集）** |
 
 原版基准：`gameinter-frame-metadata.json` 的 `library_count: 1103`
-（来源 `/data/NAS/TMP/EI传奇3.0客户端/Data/GameInter.wil`）。
+（来源 `${MIR3_EI_ROOT}/Data/GameInter.wil`）。
 
 **结论**：既有纪律「>1102 标 Preview 专属」**不够** ——
 **≤1102 的同样不能直接当原版帧用**，必须逐帧像素比对。

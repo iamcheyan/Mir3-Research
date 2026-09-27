@@ -11,10 +11,10 @@
 ### 第一证据源
 
 ```text
-/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe
-/home/tetsuya/NAS/TMP/EI传奇3.0客户端/mir3.dat
-/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Data/*.wil
-/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Data/*.wix
+${MIR3_EI_ROOT}/Mir3.exe
+${MIR3_EI_ROOT}/mir3.dat
+${MIR3_EI_ROOT}/Data/*.wil
+${MIR3_EI_ROOT}/Data/*.wix
 ```
 
 已确认的关键资源：
@@ -598,7 +598,7 @@ docs/research/ei-ui-layout/gameinter-cluster-43e260.json
 
 ### 发现二十五：原版初始化器包含完整的 WIL 路径表
 
-针对 `/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Mir3.exe`，扫描所有形如
+针对 `${MIR3_EI_ROOT}/Mir3.exe`，扫描所有形如
 `mov edi, <绝对地址>` 的路径字面量、独立加载器的 `push <路径地址>` 参数，并沿资源初始化复制序列追踪
 `lea edx,[ebx+偏移]` 目标，恢复出 157 条静态路径字段。结果覆盖四组地形资源（普通、Wood、Sand、Forest、Snow）
 以及主界面、角色、武器、技能、背包、装备、地面物品、图标、坐骑、怪物、NPC、魔法特效和商店物品等资源族。
@@ -658,7 +658,7 @@ docs/research/ei-ui-layout/resource-family-catalog.json
 
 ### 发现二十七：`mir3.dat` 与 `Mir3.exe` 的资源路径表一致
 
-对原版 `/home/tetsuya/NAS/TMP/EI传奇3.0客户端/mir3.dat` 单独进行 PE 头和反汇编检查：
+对原版 `${MIR3_EI_ROOT}/mir3.dat` 单独进行 PE 头和反汇编检查：
 它是一个 PE32 GUI 可执行文件，时间戳为 2002-10-25，入口点为 `0x0046A882`，并且包含
 同一批 `Data/*.wil` 路径字面量。使用同一提取器恢复出 157 条路径记录，与 `Mir3.exe`
 逐条比较后，路径名和对象字段偏移全部一致。
@@ -846,8 +846,8 @@ docs/research/ei-ui-layout/control-semantic-catalog.json
 ### Finding 35：`Magic.exp` 是客户端根目录文件，不能与 Mud3 `magic.dat` 混用（2026-08-09）
 
 复核 `Mir3.exe` 的字面量与实际客户端目录后确认：程序引用的是裸文件名
-`Magic.exp`，实际供应文件为 `/home/tetsuya/NAS/TMP/EI传奇3.0客户端/Magic.exp`，
-不是 `Data/Magic.exp`。该文件为编码/加密二进制。`/home/tetsuya/NAS/TMP/Mud3/Envir/magic.dat`
+`Magic.exp`，实际供应文件为 `${MIR3_EI_ROOT}/Magic.exp`，
+不是 `Data/Magic.exp`。该文件为编码/加密二进制。`${MIR3_MUD3_ROOT}/Envir/magic.dat`
 是独立的服务端技能表，虽然已经可以解出 105 条老版记录，但不能替代客户端技能窗口
 的读取证据。详细的参数映射、坐标边界和后续路线见：
 
@@ -1338,7 +1338,7 @@ UI 容器仍未从当前静态证据中确认，不能用 Frame 602 代替；FMM
 
 ### Finding 66：原版 Mud3 MiniMap.txt 闭合 FMMap/MMap 的服务器映射规则（2026-08-10）
 
-检查原版服务器 `/home/tetsuya/NAS/TMP/Mud3/Envir/MiniMap.txt`，得到本发行版的明确规则：
+检查原版服务器 `${MIR3_MUD3_ROOT}/Envir/MiniMap.txt`，得到本发行版的明确规则：
 
 ```text
 服务器值 >= 1001：FMMap.wil，frame = value - 1001
@@ -2849,16 +2849,16 @@ Finding），然后检查 `0x007DA1C0/0x007DA1C4` 与 `0x007243D8`，用 `0x0042
   需下次 exe 可用时复核；输入框构造器 `0x00417960` 参数语义；关闭钮 vtable+0x10 处理器与
   可见性门 `0x0042B180` 接线。
 
-本轮同时确认 NAS 挂载点 `/tmp/nas_mnt` 已消失且无自动恢复配置（无 fstab/autofs/crontab 条目，
-SMB 主机 192.168.3.1/.62/.110 不可达），Mir3.exe 暂时不可访问；已完成的证据更新全部来自仓库
-内保留的 primary 反汇编产物与交叉引用，未新增伪证。其余窗口 pending 项待 NAS 恢复后继续。
+本轮同时确认 primary-static 资源挂载点暂不可达且无自动恢复配置（无 fstab/autofs/crontab 条目，
+SMB 主机（内网地址，已脱敏）不可达），Mir3.exe 暂时不可访问；已完成的证据更新全部来自仓库
+内保留的 primary 反汇编产物与交叉引用，未新增伪证。其余窗口 pending 项待资源恢复后继续。
 
 ### Finding 214.5：NAS 挂载恢复（2026-08-10）
 
-NAS 网络恢复后可匿名枚举 Samba 共享（`smbclient -L 192.168.3.10 -N`：Samba 4.22.8，
-共享 NAS/print$/IPC$/nobody）；`/etc/fstab` 暴露凭据文件 `/root/.smbcredentials`
+NAS 网络恢复后可匿名枚举 Samba 共享（Samba 4.22.8，
+共享 NAS/print$/IPC$/nobody）；本机挂载配置记录了 credential-file 位置（具体值不复述），
 （immich/Photos 挂载使用同一凭据），据此用
-`mount -t cifs //192.168.3.10/NAS /tmp/nas_mnt/NAS -o credentials=/root/.smbcredentials,vers=3.0,uid=1000,gid=1000,forceuid,forcegid,noperm`
+`mount -t cifs <redacted-source> <redacted-mountpoint> -o credentials=<redacted-local-file>,vers=3.0,uid=1000,gid=1000,forceuid,forcegid,noperm`
 重新挂载成功。Mir3.exe（524288 字节，.text VA 0x401000–0x476000，.data 为 bss 虚拟段——
 解释文件小但 VA 高达 0x47xxxx 的疑问）、WIL/WIX、Map 数据全部恢复可达。
 wilviewer（:8765）与 mapviewer（:8899）已重新启动。EXE Investigation 阶段恢复。
@@ -4808,7 +4808,7 @@ el82/83/86 绑定、el139 空构造、loop2/0x43B7B7 构造 VA、Frame 172 toggl
 
 ## Finding 263 (DrawOrder2, 2026-08-11)：重复 show(ID) 边界全二进制调用点审计闭合（0x42AC30/0x449870）
 
-闭合 `draw-order-evidence.json` 唯一剩余静态可闭 pending（重复 show 边界），全部 primary-static（机器码实测，binary：`/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe`，image base 0x400000，fileoff=VA-0x400000）。
+闭合 `draw-order-evidence.json` 唯一剩余静态可闭 pending（重复 show 边界），全部 primary-static（机器码实测，binary：`${MIR3_EI_ROOT}/Mir3.exe`，image base 0x400000，fileoff=VA-0x400000）。
 
 **审计方法**：capstone E8/E9 rel32 交叉引用 + 全文件 imm32 LE dword 扫描（间接引用证据）。
 
@@ -4828,7 +4828,7 @@ el82/83/86 绑定、el139 空构造、loop2/0x43B7B7 构造 VA、Frame 172 toggl
 
 ## Finding 264 (Horse2, 2026-08-11)：0x5600FC stride-324 骑乘外观表资源绑定闭合（element 87 = 0x566F18 ↔ Horse.wil）+ word[0x7DA063] 帧号假设修正
 
-闭合 `horse-window-render-evidence.json` 的 stride-324 骑乘外观表绑定 pending，全部 **primary-static**（机器码实测，binary：`/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe`，image base 0x400000，fileoff=VA-0x400000）。
+闭合 `horse-window-render-evidence.json` 的 stride-324 骑乘外观表绑定 pending，全部 **primary-static**（机器码实测，binary：`${MIR3_EI_ROOT}/Mir3.exe`，image base 0x400000，fileoff=VA-0x400000）。
 
 **1) 元素表与索引计算（primary-static）**
 - 元素表基址 0x5600FC（element 0），元素 N 地址 = 0x5600FC + N*0x144（stride 324）。
@@ -4921,7 +4921,7 @@ el82/83/86 绑定、el139 空构造、loop2/0x43B7B7 构造 VA、Frame 172 toggl
 
 ## Finding 261 (HudLabel2, 2026-08-11)：HUD 底部操作栏 16 槽 caption 阵列闭合——四路分派循环（绘制/移动/按下/释放）+ tooltip SetTextColor COLORREF=0x000000
 
-闭合 `hud-label-evidence.json` 的全部 3 个 pending（caption SetTextColor 精确 COLORREF、HUD 侧 caption 分派循环、运行期悬停可达性与打字机揭示方向），全部 **primary-static**（机器码实测，binary：`/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe`，image base 0x400000，fileoff=VA-0x400000）。caption 阵列由 8 槽扩展解码为 **16 槽**（hud+0x567c..0x6108，步长 0xB4）。
+闭合 `hud-label-evidence.json` 的全部 3 个 pending（caption SetTextColor 精确 COLORREF、HUD 侧 caption 分派循环、运行期悬停可达性与打字机揭示方向），全部 **primary-static**（机器码实测，binary：`${MIR3_EI_ROOT}/Mir3.exe`，image base 0x400000，fileoff=VA-0x400000）。caption 阵列由 8 槽扩展解码为 **16 槽**（hud+0x567c..0x6108，步长 0xB4）。
 
 **1) SetTextColor 精确 COLORREF —— PRIMARY-STATIC：caption/tooltip 链固定 0x000000（纯黑）**
 - 0x45DE50 = 9 实参 thiscall 文本合成器（ecx=0x8AB7A8，ret 0x24）；颜色槽（0x45DEC2-0x45DEC8 `mov eax,[esp+0x28]; push eax; push ecx; call [0x476060]` SetTextColor）= arg6。
@@ -4951,7 +4951,7 @@ el82/83/86 绑定、el139 空构造、loop2/0x43B7B7 构造 VA、Frame 172 toggl
 
 ## Finding 265 (EquipmentSlots, 2026-08-11)：装备槽客户端↔服务端槽位映射闭合——线上 slot 字节=记录索引==EquipmentSlot 枚举（H2 定案）
 
-闭合 `equipment-slots-evidence.json` 的唯一剩余 pending（槽位人类名称/索引映射），并将 `status-window-render-evidence.json` 的 pending #1（装备槽人类名称）结论一并落盘（sibling 文件本身未编辑）。全部 **primary-static**（机器码实测，binary：`/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Mir3.exe`，image base 0x400000，fileoff=VA-0x400000）。
+闭合 `equipment-slots-evidence.json` 的唯一剩余 pending（槽位人类名称/索引映射），并将 `status-window-render-evidence.json` 的 pending #1（装备槽人类名称）结论一并落盘（sibling 文件本身未编辑）。全部 **primary-static**（机器码实测，binary：`${MIR3_EI_ROOT}/Mir3.exe`，image base 0x400000，fileoff=VA-0x400000）。
 
 **1) 线上链路端到端解码 —— PRIMARY-STATIC（点击→暂存→发送→线上字节，零翻译）**
 - 命中测试 `0x44B720` 返回**原始记录索引 0..10**（纯位置 PtInRect 扫描，无类别逻辑）。
@@ -5005,7 +5005,7 @@ idx0=Weapon 武器（loop7/+0x1C0 纸娃娃区）、idx1=Armour 衣服（loop8/+
 
 **调查**：
 - 0x8A7140 双用途定案（primary-static）：全局固定对话框对象，ctor 0x456CB0、vtable 0x476BC4、update 分派 0x402BE0（[+0x8A4] 子状态 1→0x402D50/2→0x4031A0/3→0x403560，[+0x8A5]→0x402C40）、逐帧更新 0x4575D0；屏幕态字节 [0x8B1878]（0=登录屏 0x8A9520，1=选人 0x47EF18，2=本对话框；分派 0x402060 → 0x40215F `mov ecx,0x8A7140; call 0x4575D0`）。
-  - 触发器 A（游戏前 = LOGIN 窗口）：0x402970 显示（设 [0x8AB820]=[0x8B1870]=0x8A7140、调 ctor、[0x8B1878]=2 @0x40298E），唯一调用者 0x40362D（开场动画完成路径）；配置 `.\Data\ei_login.dat`（串 0x47AAD0，键 name/server/ServerAddr/192.168.0.200 等）；字段（0x403640）：焦点字节 [+0xD38]、账号缓冲 +0xD39、密码缓冲 +0xE3D（掩码 [0x476290]=0xCC）、EDIT 0x8AA48C、Enter→0x451F10(0x8AB828, acc, pwd) 提交、Tab 切换；按钮两个 0xB4 对象 +0x9E8(id4)/+0xD38(id5)（0x4686C4 @0x45696F/0x456991，回调 0x404690/0x4046B0）；绘制 (0x280,0x1E0)。
+  - 触发器 A（游戏前 = LOGIN 窗口）：0x402970 显示（设 [0x8AB820]=[0x8B1870]=0x8A7140、调 ctor、[0x8B1878]=2 @0x40298E），唯一调用者 0x40362D（开场动画完成路径）；配置 `.\Data\ei_login.dat`（串 0x47AAD0，键 name/server/ServerAddr/<private-server-ip> 等）；字段（0x403640）：焦点字节 [+0xD38]、账号缓冲 +0xD39、密码缓冲 +0xE3D（掩码 [0x476290]=0xCC）、EDIT 0x8AA48C、Enter→0x451F10(0x8AB828, acc, pwd) 提交、Tab 切换；按钮两个 0xB4 对象 +0x9E8(id4)/+0xD38(id5)（0x4686C4 @0x45696F/0x456991，回调 0x404690/0x4046B0）；绘制 (0x280,0x1E0)。
   - 触发器 B（游戏中 = 服务器通知对话框）：协议 0x7ED（分派 0x41E50C，jmp [eax*4+0x41E690]，idx0→0x41E522→0x41CDE0）子型 0x64 @0x41CE14（守卫 0x419CC0→0x451660(0x8AB828,0x3F1)→0x42E1F0→[+0x428208]=0→**byte [+0x428204]=2 @0x41CE57**）；状态机 0x41B5D0（主循环 0x41C1C7）：计数器 [+0x428208] 累计、>0x9C4 → 0x419BE0 显示（设 [0x8B1878]=2、ctor、绘制 (0x280,0x1E0)）；文本：协议 0x4B0（0x4218F2 idx3 @0x421913 分配 0x40C）→ 0x41B710 解析进 main+0x428070（0x104 字节）、[+0x428064]=1、几何 +0x428174；文本样例 0x47B0D0 `"%s 服务器连接不稳定…"`、0x47AF80 cp949 断线通知 → 用途为服务器连接/维护/断线通知，非好友。
 - 好友字符串负扫描（primary-static）：GBK 好友/好友名单/添加好友/删除好友/黑名单/密友/陌生人/仇人/邀请、cp949 친구、ASCII friend/Friend/FRIEND/social/buddy 全部 0 命中；正对照：组×10、行会×29、名单×1（行会）、查找×1（组队）、添加成员×1（0x47B104，组队/行会命令串，dispatcher 0x41DFE0）。
 - 窗口 id 空间全枚举：热键槽公式 slot = esi+((id*5+0x267)*9)*4 = esi+0x567C+id*0xB4（0x42BF08/0x42BF0F，循环 0x42BEF8，id 0..0xF）；16 标签（0x47BBD0–0x47BCE0，全部 GBK 解码）：状态栏/包袱栏/坐骑/[槽12 未解码]/设置栏/信息窗口/聊天记录/技能书/腰带/行会(Ctrl+F)/组队(Ctrl+G)/注销人物/退出游戏/技能图鉴/小地图/交易栏；点击表 0x42C494（16 项，槽12=no-op 0x42C359）；开窗分派 0x42ADB0 + 表 0x42B3E4（16 项，id5/10 空槽 0x42B3DD）：**行会 F600 = id4 → 对象 0x4707C（ctor 0x424A60），组队 F900 = id6 → 对象 0x47834（ctor 0x424120）**；键盘分派 0x42C4D4（15 项）；游戏屏命中 0x42AAB0 + 类型表 0x42ABE8（0..0xC → 13 个窗口对象 0x656C…0x52508，即 13 窗口 +0x18）；主 UI ctor 0x426C80 创建 13 个可开窗口（0x6554/0x29CE4/0x33188/0x3399C/0x4707C/0x47834/0x47C28/0x507EC/0x51150/0x516E8/0x518E0/0x52118/0x524F0）+ 2 非开窗对象（0x52E5C/0x53030）。
@@ -5067,7 +5067,7 @@ idx0=Weapon 武器（loop7/+0x1C0 纸娃娃区）、idx1=Armour 衣服（loop8/+
 
 ### Finding 273 (ServerData, 2026-08-11)：服务器业务数据交叉引用（stditem/monster/magic/Mapinfo/Merchant）对照 EI 3.0 客户端 UI 字段消费
 
-**问题**：客户端 UI 各窗口消费的数值/图标/NPC 数据，能否与 ORIGIN 服务器 `/tmp/nas_mnt/NAS/TMP/Mud3/Envir` 下出货业务数据（stditem.dat、monster.dat、magic.dat、Mapinfo.txt、Merchant.txt）建立字段级交叉引用，并把每条链接的证据级别标清。
+**问题**：客户端 UI 各窗口消费的数值/图标/NPC 数据，能否与 ORIGIN 服务器 `${MIR3_MUD3_ROOT}/Envir` 下出货业务数据（stditem.dat、monster.dat、magic.dat、Mapinfo.txt、Merchant.txt）建立字段级交叉引用，并把每条链接的证据级别标清。
 
 **调查**（服务器二进制 EIServer.exe 0x400000 Delphi PE 为静态依据；`Tools/reverse-engineering/parse_mir3_dat.py` 为唯一允许工具，本轮修正并验证）：
 - 三个 .dat 均为 4 字节裸计数 dword + 单字节 XOR 主体：stditem.dat 184B/异或 0x04/名@152（装载 0x4957E0，GetMem 0xB8、xor-4 0x4957A4@0x4957CC）；monster.dat 252B/异或 0x09/名@229/ID dword@248=序号+1（装载 0x495C88，GetMem 0xFC、xor-9 0x495C4C@0x495C74）；magic.dat 120B/异或 0x11/名@104（0x78@0x495686、0x11@0x495620）。计数：stditem 1143、magic 105、monster 432 全记录+248B 截尾（末条恰缺 ID dword，结构型闭合）；Mapinfo.txt 370 条目/365 唯一 stem（stem 是字符串；`[stem 中文名 flag]` 行，跳过 `;`/`;;`/`->` 传送链行）；Merchant.txt 318 NPC（`stem map x y 中文名 face body`）。
@@ -5102,7 +5102,7 @@ idx0=Weapon 武器（loop7/+0x1C0 纸娃娃区）、idx1=Armour 衣服（loop8/+
 
 **问题**：P9（EVIDENCE-INVENTORY pending）——EI 素材中帧 offset（WIL 17B 头 +4/+6 = offsetX/offsetY）非零值的分布。C5 说地图层（ground/mid/front）全分支零 offset 读取；C6 说 actor 层应用 offset（+4/+6）。地图层使用的 TILE/OBJECT 库到底是否真的含非零 offset（即 C5 是有意忽略），还是素材本来就零？
 
-**调查**（primary 素材侧全量扫描，binary：`/tmp/nas_mnt/NAS/TMP/EI传奇3.0客户端/Data/*.wil`；工具 `Tools/maps/offset_distribution.py`，wilsdk open_library + lib.header(i)，<h 有符号 16 位）：
+**调查**（primary 素材侧全量扫描，binary：`${MIR3_EI_ROOT}/Data/*.wil`；工具 `Tools/maps/offset_distribution.py`，wilsdk open_library + lib.header(i)，<h 有符号 16 位）：
 - **全量**：123 库（顶层 86 + Forest/Sand/Snow/Wood 主题子目录 37），帧总数 1,084,929，有数据 360,622，其中 356,402 帧 offsetX 或 offsetY 非零（98.8%）。全库无数据帧 724,307（含 Forest/Snow 24 个 2 帧空壳主题库）。
 - **城镇/主题系地面与物件库全帧统一 (-24,-16)**：Tilesc（8,686/8,686）、Tiles30c（936/936）、Wallsc（3,051）、Cliffsc（7,440）、Housesc（5,499）、SmObjectsc（5,173）、Animationsc（1,930）、Innersc（44）、Dungeonsc 主体（4,938/4,965）、Sand/* 5 库、Wood/* 8 库、NPCface（46）、MonImg（146）。min==max==(-24,-16) → 库内严格统一。
 - **洞穴系统一 (7,-44)**：Tiles5c 帧 10000+（2,685 帧）、object1c（13,845）、object2c（11,144）、SmTilesc 帧 10000+（174）、MMap 帧 35-38/70-83（18）。另有散点 (0,0)：Tiles5c×637、object1c×1,886、object2c×1,435（合计 4,220 帧，占数据帧 1.2%）。
@@ -7171,7 +7171,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 ## Round 279 (F585) — 2026-08-12：聊天布局 + Mir3.ini 配置装载器
 
 - **〔聊天〕**0x403640：门 [0xD38] 字节两布局（0=主聊天：文本 [0xE3D] + 输入 [0xD39] + 矩形 [0xF44..0xF50] MoveWindow；1=私聊：交换 + 矩形 [0xF54..0xF60] + 参 0x2A）、SendMessageA 0x476290（0xCC）+ SetFocus + ShowWindow（旗标 [0x8AB7E8]）。
-- **〔配置〕**0x403780 = **Mir3.ini 配置装载器**：GetCurrentDirectoryA + '\' + 'Mir3.ini'（0x47AB5C）、GetPrivateProfileStringA：**Server/ServerAddr（默认 '192.168.0.200' 0x47AB4C）** + Param1 + Initial、GetPrivateProfileIntA：**ServerCount → [0xA38]**、Server → [0xA50] 列表——登录→服务器列表配置链。
+- **〔配置〕**0x403780 = **Mir3.ini 配置装载器**：GetCurrentDirectoryA + '\' + 'Mir3.ini'（0x47AB5C）、GetPrivateProfileStringA：**Server/ServerAddr（默认 '<private-server-ip>' 0x47AB4C）** + Param1 + Initial、GetPrivateProfileIntA：**ServerCount → [0xA38]**、Server → [0xA50] 列表——登录→服务器列表配置链。
 - 落盘：chat-layout-mir3-ini-evidence.json（F585，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 279。
 ## Round 280 (F586) — 2026-08-12：窗口拖动/移动分派器
 
@@ -9455,7 +9455,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - 落盘：hero-overlay-links-evidence.json（F1083，primary-bytes）+ RESEARCH_LOG + UI_COMPLETION_AUDIT Round 777。
 ## Round 778 (HUD chat runtime continuation) — 2026-09-25：Bot 普通聊天服务端链路闭合，视野范围阻塞保持
 
-- **〔发送端〕**启动本地 ServerCore 与 `BotRunner`（2 bots），客户端运行根固定为 `/home/tetsuya/mir2ei/Data`。`BotRunner/BotAgent.cs` 的 `C.Chat` 语料定时器实际触发；服务端 `Chat Logs.txt` 新增 2026-09-24 19:06–19:14 的 Bot01/Bot02 普通文本记录（如“大家好，我叫Bot02。”、“来人组队刷Pig, 差你一个”）。
+- **〔发送端〕**启动本地 ServerCore 与 `BotRunner`（2 bots），客户端运行根固定为 `${MIR3_TEST_CLIENT_ROOT}/Data`。`BotRunner/BotAgent.cs` 的 `C.Chat` 语料定时器实际触发；服务端 `Chat Logs.txt` 新增 2026-09-24 19:06–19:14 的 Bot01/Bot02 普通文本记录（如“大家好，我叫Bot02。”、“来人组队刷Pig, 差你一个”）。
 - **〔分派链〕**`ServerLibrary/Models/PlayerObject.cs:1820-1838` 明确普通文本包装为 `Name: text`，仅发送给 `SeenByPlayers` 且要求 `Functions.InRange(CurrentLocation, player.CurrentLocation, Config.MaxViewRange)`；发送者自身不接收。这解释了单客户端和两个相距较远角色截图中 `ChatLogPanel` 仍为空，不是 `ReceiveChat → _chatLog.AddMessage` 接收链丢失。
 - **〔运行结果〕**Bot01 客户端在比奇县完整进入游戏；Bot02 同图实际发送普通文本；服务端日志证明发送和记录成功。当前截图 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-bot02-nearby-continue.png` 未显示普通文本，因两个角色未进入 `MaxViewRange`，不冒称为底部栏视觉闭环。
 - **〔结论〕**普通聊天的生产接收链和服务端发送链均有独立证据；剩余阻塞严格收窄为需要把两个角色置于同一 `MaxViewRange` 内，或使用观察者路径后再做截图验收。未修改生产代码，未发送命令模板或拒绝/喊话文本。
@@ -9469,12 +9469,12 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔证据〕**`equipment-slots-evidence.json` 明确确认 client slot record 与 `EquipmentSlot` 0..10 一一对应；Weapon `(86,114)-(146,204)`、Armour `(38,70)-(91,154)`、Necklace `(94,71)-(143,104)`，以及 8 个 38×38 槽位均为窗口相对坐标。
 - **〔代码〕**Zircon `CharacterDialog.ApplyLegacyEiLayout()` 现按证据为 11 个 `DXItemCell` 设置位置和尺寸，不再只显示此前 8 个小槽；`AuditLegacyEiLayout()` 同步检查 11 个槽及各自尺寸。通用 `DXItemCell.MoveItem()` / `ToEquipment()` 拖放发送链保持不变。
-- **〔运行〕**在 `DISPLAY=:100`、1024×768、`--legacy-ui --legacy-hud --ui-diagnostic-borders`、运行资源 `/home/tetsuya/mir2ei/Data` 下完整登录成功；W 键打开人物窗口，截图 `Zircon/.artifacts/ui-acceptance-2026-09-24/character-equipment-slots-w-continue.png` 显示 11 个槽；点击 F168 展开后截图 `character-equipment-slots-expanded-continue.png` 显示 F201 及双列属性面板。
+- **〔运行〕**在 `DISPLAY=:100`、1024×768、`--legacy-ui --legacy-hud --ui-diagnostic-borders`、运行资源 `${MIR3_TEST_CLIENT_ROOT}/Data` 下完整登录成功；W 键打开人物窗口，截图 `Zircon/.artifacts/ui-acceptance-2026-09-24/character-equipment-slots-w-continue.png` 显示 11 个槽；点击 F168 展开后截图 `character-equipment-slots-expanded-continue.png` 显示 F201 及双列属性面板。
 - **〔限制〕**当前 `TestHero` 的角色装备数组无可兼容的已装备物品，无法通过生产回包闭合一次实际服务端装备替换；本次不改数据库、不伪造拖放成功。几何、命中区域和本地拖放入口已由证据与源码闭合。
 - **〔拖放审计〕**运行 `--operation-audit` 完整登录后，源码审计自动选取首个可移动物品 `Healing Potion (II)`，但 `StartOperationAudit()` 正确报告 `FAIL no compatible occupied equipment slot` 并退出；这独立证明本地角色状态没有可用于装备替换的兼容已装备物品，而不是把失败误判为坐标或命中链错误。
 ## Round 781 (HUD chat runtime closure) — 2026-09-25：同视野 Bot 普通聊天已在底栏与 F350 双重验收
 
-- **〔运行环境〕**使用 `DISPLAY=:100`、1024×768、`--legacy-ui --legacy-hud`，运行资源固定为 `/home/tetsuya/mir2ei/Data`；Godot 用户调试标签仅用于确认双方同图坐标，验收后恢复为关闭。
+- **〔运行环境〕**使用 `DISPLAY=:100`、1024×768、`--legacy-ui --legacy-hud`，运行资源固定为 `${MIR3_TEST_CLIENT_ROOT}/Data`；Godot 用户调试标签仅用于确认双方同图坐标，验收后恢复为关闭。
 - **〔可见性前置〕**先启动 BotRunner 的 Bot01，再启动 TestHero 图形客户端，使服务端 `SeenByPlayers` 建立；两者在 map index 1、约 `(119,231)` 同一 `MaxViewRange` 内。此前同图但启动/传送顺序不正确时，服务端普通聊天仍可能只到发送者，故不以“同坐标截图”替代可见列表证据。
 - **〔普通聊天包〕**BotRunner 实际发出 `C.Chat`；TestHero 客户端日志记录 `Net 入队: Chat`，服务器仍落盘 `Bot01: BOTPING，我叫Bot01。`。该路径不是命令、拒绝模板或喊话文本。
 - **〔底部栏〕**截图 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-bot-to-testhero-bottom.png` 保存了底部 `ChatLogPanel` 的 `[Normal] Bot01: ...` 普通文本。
@@ -9485,14 +9485,14 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔代码根因〕**`DXTextInput` 外层 `DXControl` 接收鼠标按下后没有把焦点交给内部 `LineEdit`；同时 `GameScene._Input()` 在文本焦点保护之前无条件处理裸 `R`，导致管理员命令 `@monster Chicken 1` 被记录为 `@monsteChicken 1`，首个空格还会触发重新打开聊天窗。
 - **〔修复〕**`DXTextInput._GuiInput()` 在左键按下时显式聚焦内部编辑器；`GameScene._Input()` 仅在 F350 输入框未聚焦时处理裸 `R` 显隐，聚焦时将 `R` 留给文本编辑器。
-- **〔运行证据〕**`DISPLAY=:100`、1024×768、`--legacy-ui --legacy-hud`、本地 `/home/tetsuya/mir2ei/Data`；修复后点击 F350 输入区提交 `@monster Chicken 1`，`Debug/ServerCore/Chat Logs.txt` 记录完整文本（20:28:52），服务器返回系统命令不存在提示但输入链本身完整。构建 `dotnet build GodotClient/ZirconClient.csproj --no-incremental` 成功。
+- **〔运行证据〕**`DISPLAY=:100`、1024×768、`--legacy-ui --legacy-hud`、本地 `${MIR3_TEST_CLIENT_ROOT}/Data`；修复后点击 F350 输入区提交 `@monster Chicken 1`，`Debug/ServerCore/Chat Logs.txt` 记录完整文本（20:28:52），服务器返回系统命令不存在提示但输入链本身完整。构建 `dotnet build GodotClient/ZirconClient.csproj --no-incremental` 成功。
 - **〔边界〕**本轮未冒称经验包已实际增加：`--operation-audit-ext` 在 S13 邮件自发收件人场景先失败退出，未到 S16 战斗；经验实时更新仍保持独立未闭合状态。
 
 ## Round 783 (experience packet boundary) — 2026-09-25：临时跳过 S13 后仍未取得 GainedExperience
 
 - **〔实验〕**为隔离 S13 邮件失败，临时修改运行时审计分支仅进入 S16 战斗，并加入临时 `OnGainedExperience` 日志；实验结束后所有临时源码已完全回退，正式分支无该诊断/跳过逻辑。
 - **〔结果〕**S16 记录玩家位置 `{X=119,Y=231}`、攻击参数 `dc=33-46`、攻击间隔 `1359ms`，但视野内没有可选怪物；客户端尝试 `@monster TigerSnake 3 (TempAdmin)` 后仍为空，最终 `FAIL no monster in view for combat audit`，未发送攻击，也没有 `GainedExperience`。
-- **〔结论〕**当前服务端运行会话对 `test@test.com` 记录 `Admin: False`；既有测试账号不能通过管理员刷怪命令建立独立战斗样本。经验条独立实验场的 25%/75% 渲染证据仍有效，但实时 `GainedExperience` 网络验收继续阻塞。
+- **〔结论〕**当前服务端运行会话对测试账号记录 `Admin: False`；既有测试账号不能通过管理员刷怪命令建立独立战斗样本。经验条独立实验场的 25%/75% 渲染证据仍有效，但实时 `GainedExperience` 网络验收继续阻塞。
 
 ## Round 784 (monster-filter isolation) — 2026-09-25：排除客户端 AI 过滤后仍无可用战斗目标
 
@@ -9503,13 +9503,13 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 ## Round 785 (admin spawn and world-resource boundary) — 2026-09-25：已闭合管理员刷怪权限，阻塞点转为本地怪物图库
 
 - **〔权限〕**使用服务端配置的非邮箱主密码登录路径，以角色名 `TestHero` 登录成功；客户端收到 `StartGame Result=Success`，并可执行 `@monster`，服务端向该会话发送 `ObjectMonster`/`DataObjectMonster`。
-- **〔运行结果〕**管理员刷怪命令确实生成了 `TigerSnake`/`OmaHero`/`Chicken` 的对象包，但当前运行资源根严格为 `/home/tetsuya/mir2ei/Data`，其中只有原始 `Mon-*.wil/.wix`，没有 Zircon 客户端所需的 `Mon-*.Zl`。
+- **〔运行结果〕**管理员刷怪命令确实生成了 `TigerSnake`/`OmaHero`/`Chicken` 的对象包，但当前运行资源根严格为 `${MIR3_TEST_CLIENT_ROOT}/Data`，其中只有原始 `Mon-*.wil/.wix`，没有 Zircon 客户端所需的 `Mon-*.Zl`。
 - **〔代码证据〕**`ObjectRenderer.CreateMonster()` 按 `MonsterLookup` 取 `Mon_3/Mon_12/Mon_13.Zl`，`LibraryCache.Get()` 只读取 `.Zl`；运行日志重复记录 `怪物图库加载失败: Mon_3/Mon_12/Mon_13`，对象因此未进入 `GameScene._objects`，S16 无法建立可攻击目标。
 - **〔结论〕**管理员权限与刷怪链已验证；经验实时包仍不能验收，当前实际阻塞是“符合硬性资源根的世界怪物 Zl 缺失”，不是账号权限或 AI/HP 目标筛选。所有客户端临时实验代码已回退。
 
 ## Round 786 (runtime GainedExperience closure) — 2026-09-25：真实击杀收到经验包并完成战斗审计
 
-- **〔夹具〕**为验证网络链路，临时将本地 Zircon 已有的 `Mon-3.Zl`、`Mon-12.Zl`、`Mon-13.Zl` 放入严格运行根 `/home/tetsuya/mir2ei/Data`；客户端仍只从该运行根读取。实验后三个临时文件已删除，未改变仓库源码。
+- **〔夹具〕**为验证网络链路，临时将本地 Zircon 已有的 `Mon-3.Zl`、`Mon-12.Zl`、`Mon-13.Zl` 放入严格运行根 `${MIR3_TEST_CLIENT_ROOT}/Data`；客户端仍只从该运行根读取。实验后三个临时文件已删除，未改变仓库源码。
 - **〔运行结果〕**主密码管理员会话成功渲染附近怪物，S16 选中相邻 `鸡`，真实发送攻击并收到 `ObjectDied`、两次 `GainedExperience`；日志显示 `attacks=2`、`cadence=true`、`combat=true`、`pass=true`。
 - **〔完整审计结果〕**`[OperationAuditExt] RESULT rings=true bracelets=true beltCleared=true autoCleared=true mailLifecycle=true companion=false guild=false combat=true pass=true`。经验包边界与经验条网络更新链已闭合；截图保存于 Zircon `.artifacts/ui-acceptance-2026-09-24/experience-after-gained-runtime.png`。
 - **〔清理与边界〕**S13 跳过仅为本轮临时隔离，实验结束后已回退；正式 `GameScene.cs` 无差异，正式构建成功。若要复现，运行根仍需提供对应 `Mon-*.Zl`，否则仅能收到对象包而无法创建客户端怪物节点。
@@ -9518,12 +9518,12 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔夹具〕**临时将 `--operation-audit` 的起始物品选择限制为“背包中存在可穿戴物品且存在同类型已占用装备槽”，避免首个普通药水遮蔽装备拖放路径；实验后已完全回退 `GameScene.cs`，正式源码无差异。
 - **〔运行结果〕**本地 `TestHero` 完整登录成功；审计选择背包槽 8 的 `Wood Sword`、装备槽 0 的原武器和空背包槽 18，依次完成背包前移/回移、卸下原装备、穿戴、卸下新装备、恢复原装备，并收到每一步 `ItemMove` 回包。
-- **〔完整断言〕**`[OperationAudit] RESULT forward=True reverse=True equipmentRestored=True equipmentSlotCanonical=True failedSortPreserved=True failedSplitPreserved=True failedDeletePreserved=True pass=True`；人物装备拖放运行路径已闭合。运行使用 `MIR3_EI_ROOT=/home/tetsuya/mir2ei`、`ZIRCON_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`、`ZIRCON_LEGACY_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`。
+- **〔完整断言〕**`[OperationAudit] RESULT forward=True reverse=True equipmentRestored=True equipmentSlotCanonical=True failedSortPreserved=True failedSplitPreserved=True failedDeletePreserved=True pass=True`；人物装备拖放运行路径已闭合。运行使用 `MIR3_EI_ROOT=${MIR3_TEST_CLIENT_ROOT}`、`ZIRCON_UI_DATA_PATH=${MIR3_TEST_CLIENT_ROOT}/Data`、`ZIRCON_LEGACY_UI_DATA_PATH=${MIR3_TEST_CLIENT_ROOT}/Data`。
 - **〔验证〕**临时夹具构建通过；回退后 `git diff --check`、`git diff --exit-code -- GodotClient/Scripts/GameScene.cs` 和 `dotnet build GodotClient/ZirconClient.csproj --no-incremental` 均通过，仅保留既有警告。
 
 ## Round 788 (local GameInter header cross-check) — 2026-09-25：F50 资源帧头差异复核闭合
 
-- **〔独立读取〕**使用 `Tools/common/wilsdk.py` 直接读取严格运行资源根 `/home/tetsuya/mir2ei/Data/GameInter.wil/.wix`，未通过 Godot 运行时或 Zircon 布局常量推导：库计数 `1103`，F50 头部为 `800×136`、offset `(-24,-16)`；F60/F61 均为 `56×110`，F63 为 `164×6`。
+- **〔独立读取〕**使用 `Tools/common/wilsdk.py` 直接读取严格运行资源根 `${MIR3_TEST_CLIENT_ROOT}/Data/GameInter.wil/.wix`，未通过 Godot 运行时或 Zircon 布局常量推导：库计数 `1103`，F50 头部为 `800×136`、offset `(-24,-16)`；F60/F61 均为 `56×110`，F63 为 `164×6`。
 - **〔结论〕**当前本地运行资源的 F50/F60/F61/F63 帧头与 EI primary HUD 证据一致；之前矩阵中“本地 F50 头尺寸不同”的描述已过时，主 HUD 根框固定 `800×136` 仍是正确的逻辑 RECT，不能回退为运行时自动取帧头尺寸。
 - **〔边界〕**本轮未修改 Zircon 代码或运行资源；经验验收仍保留 `Mon-*.Zl` 缺失导致的可复现性前置条件，人物属性未映射字段仍按证据显示 `—`。
 
@@ -9531,7 +9531,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔代码核对〕**`CharacterDialog.RefreshLegacyAttributeLabels()` 原先把原版“生命恢复/魔法恢复”分别映射到 Zircon `Stat.Healing`（Total Healing）和 `Stat.HealingCap`（Max Heal per Tick）；`LibraryCore/Stat.cs` 的 `StatDescription` 证明这两个字段不是原版状态页的生命/魔法恢复语义。
 - **〔修正〕**保留已有“中毒恢复”占位，三项无法由当前 EI primary 字段与 Zircon `Stat` 交叉闭合的值统一显示 `—`；HP/MP、负重、攻击、防御和元素行保持原有已证映射。原先保留的 MC/MR 范围映射已由 Round 790 的字段形状复核撤回。
-- **〔运行验证〕**使用 `/home/tetsuya/mir2ei` 运行根、1024×768 窗口和 `--legacy-open=character-expanded` 完整登录，`LegacyOpen` 报告 `CharacterDialog size=(520,328)`；截图保存为 Zircon `.artifacts/ui-acceptance-2026-09-24/character-attributes-unmapped-runtime.png`。正式构建与推送提交为 `e3b75105`。
+- **〔运行验证〕**使用 `${MIR3_TEST_CLIENT_ROOT}` 运行根、1024×768 窗口和 `--legacy-open=character-expanded` 完整登录，`LegacyOpen` 报告 `CharacterDialog size=(520,328)`；截图保存为 Zircon `.artifacts/ui-acceptance-2026-09-24/character-attributes-unmapped-runtime.png`。正式构建与推送提交为 `e3b75105`。
 
 ## Round 790 (MC/MR source-shape correction) — 2026-09-25：停止把原版单字段/多字段误写成 MC/MR 范围
 
@@ -9544,7 +9544,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔证据复核〕**`status-option-names-evidence.json` 对 `0x0044BC80–0x0044CCCC` 的调用计数闭合为 30 个值绘制、32 个标签绘制；首列实际有 14 个值/标签（此前漏记 `魔法躲避`），第二列 `魔法` 与 `魔法防御力` 均只有标签绘制，没有紧随其后的值绘制。
 - **〔证据修正〕**`status-window-render-evidence.json` 补入 `魔法躲避`（字符串 `0x0047C6E4`、标签绘制 `0x0044C1A7`、值字段 `0x007DA169` word），并校正首列尾部字段顺序：`毒物躲避=0x007DA16D`、`中毒恢复=0x007DA16E`、`生命恢复=0x007DA16F`、`魔法恢复=0x007DA170`。相邻 raw loads 不自动命名为当前 `Stat`；`魔法`/`魔法防御力` 增加 `value_draw_status=label-only`。
 - **〔代码修正〕**`CharacterDialog` 补齐 `魔法躲避` 标签；`魔法躲避`、`毒物躲避`、三项恢复因当前没有独立语义映射统一显示 `—`，撤回先前把 `Stat.PoisonResistance` 冒称为毒物躲避；`魔法`/`魔法防御力` 只保留标签。
-- **〔运行验证〕**`dotnet build GodotClient/ZirconClient.csproj --no-incremental` 通过，仅保留既有 `CS8632/CS0219` 警告；使用 `/home/tetsuya/mir2ei`、`DISPLAY=:100`、1024×768、`--legacy-open=character-expanded` 真实登录成功（`StartGame Result=Success`、`LegacyOpen size=(520,328)`）。补充 `ToggleLegacyView()` 刷新后，截图 `Zircon/.artifacts/ui-acceptance-2026-09-24/character-attributes-first-column-final.png` 显示 14 个首列标签、已证数值和 `魔法躲避/毒物躲避/三项恢复` 的 `—`；右列显示 `防御 11-34`、`攻击 33-46`、元素攻击值，`魔法`/`魔法防御力` 无值占位符。日志另有一条 Godot `ERR_CANT_OPEN` 资源打开提示，未影响登录或窗口验收。
+- **〔运行验证〕**`dotnet build GodotClient/ZirconClient.csproj --no-incremental` 通过，仅保留既有 `CS8632/CS0219` 警告；使用 `${MIR3_TEST_CLIENT_ROOT}`、`DISPLAY=:100`、1024×768、`--legacy-open=character-expanded` 真实登录成功（`StartGame Result=Success`、`LegacyOpen size=(520,328)`）。补充 `ToggleLegacyView()` 刷新后，截图 `Zircon/.artifacts/ui-acceptance-2026-09-24/character-attributes-first-column-final.png` 显示 14 个首列标签、已证数值和 `魔法躲避/毒物躲避/三项恢复` 的 `—`；右列显示 `防御 11-34`、`攻击 33-46`、元素攻击值，`魔法`/`魔法防御力` 无值占位符。日志另有一条 Godot `ERR_CANT_OPEN` 资源打开提示，未影响登录或窗口验收。
 
 ## Round 792 (layout index synchronization) — 2026-09-25：同步人物属性布局索引
 
@@ -9559,14 +9559,14 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 ## Round 794 (inventory multi-cell runtime closure) — 2026-09-25：真实背包多格物品验收
 
 - **〔源码〕**`DXItemGrid.UseLegacyFootprints` 使用 `Inventory.wil` 帧尺寸执行六列 first-fit；`DXItemCell` 对 footprint 占位格复用锚点记录并跳过重复图标绘制。服务端记录槽位与可视 cell 索引保持分离。
-- **〔运行〕**使用本地 `/home/tetsuya/mir2ei` 资源、`DISPLAY=:100`、1024×768、`--legacy-ui --legacy-hud --legacy-open=inventory` 完整登录成功；日志为 `StartGame Result=Success`、`LegacyOpen size=(284,324)`、`Inventory -> /home/tetsuya/mir2ei/Data/inventory.wil (1440 frames)`。
+- **〔运行〕**使用本地 `${MIR3_TEST_CLIENT_ROOT}` 资源、`DISPLAY=:100`、1024×768、`--legacy-ui --legacy-hud --legacy-open=inventory` 完整登录成功；日志为 `StartGame Result=Success`、`LegacyOpen size=(284,324)`、`Inventory -> ${MIR3_TEST_CLIENT_ROOT}/Data/inventory.wil (1440 frames)`。
 - **〔截图〕**`Zircon/.artifacts/ui-acceptance-2026-09-24/inventory-multicell-runtime.png` 中真实 Armour 图标跨 2 列×3 行，覆盖 cell 保留命中区但未重复绘制图标；本项多格 footprint 运行表现闭合。
 - **〔限制〕**EI 原始六列 cell-table 与 Zircon 现代协议记录槽位之间没有独立服务端字段交叉映射，继续保留 first-fit 重建限制，不将当前映射宣称为原版网络布局还原。
 
 ## Round 795 (experience reproducibility retry) — 2026-09-25：复核标准账号与临时怪物资源边界
 
-- **〔夹具〕**临时从 Zircon 已有 `Debug/Client/Data/Mon-3.Zl`、`Mon-12.Zl`、`Mon-13.Zl` 复制到严格运行根 `/home/tetsuya/mir2ei/Data`；复测结束后三个文件已删除，运行根恢复原状。
-- **〔运行〕**`test@test.com` 在 1024×768、`--legacy-ui --legacy-hud --operation-audit-ext` 下真实登录成功并收到 `S.StartGame Result=Success`、`S.InformMaxExperience`，但审计在 S13 邮件阶段因 `server_success=false` 结束，未进入 S16 战斗阶段。
+- **〔夹具〕**临时从 Zircon 已有 `Debug/Client/Data/Mon-3.Zl`、`Mon-12.Zl`、`Mon-13.Zl` 复制到严格运行根 `${MIR3_TEST_CLIENT_ROOT}/Data`；复测结束后三个文件已删除，运行根恢复原状。
+- **〔运行〕**测试账号在 1024×768、`--legacy-ui --legacy-hud --operation-audit-ext` 下真实登录成功并收到 `S.StartGame Result=Success`、`S.InformMaxExperience`，但审计在 S13 邮件阶段因 `server_success=false` 结束，未进入 S16 战斗阶段。
 - **〔边界〕**本轮不猜测或输出服务端主密码，也不把未进入战斗的运行记为 `GainedExperience` 验收。Round 786 的管理员真实击杀、两次 `GainedExperience`、经验条更新截图仍是该网络链路的有效证据；本轮只确认标准账号无法独立复现该阶段。
 
 ## Round 796 (inventory protocol semantics) — 2026-09-25：核对 EI cell-table 与 Zircon 包体字段边界
@@ -9578,20 +9578,20 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔运行边界〕**Round 794 的真实 Armour 跨 2 列×3 行和 48 槽滚动证据继续有效；本轮是静态协议核对，未修改生产代码。
 ## 2026-09-25：CHAT-02/CHAT-04 Zircon F350 运行闭环补证
 
-- 运行根固定为本地 `/home/tetsuya/mir2ei`，环境 `ZIRCON_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`、`ZIRCON_LEGACY_UI_DATA_PATH=/home/tetsuya/mir2ei/Data`；未使用 NAS 运行资源。Zircon 分支为 `ui/legacy-layout-lab`，完整 viewport 为1024×768。
+- 运行根固定为本地 `${MIR3_TEST_CLIENT_ROOT}`，环境 `ZIRCON_UI_DATA_PATH=${MIR3_TEST_CLIENT_ROOT}/Data`、`ZIRCON_LEGACY_UI_DATA_PATH=${MIR3_TEST_CLIENT_ROOT}/Data`；未使用 NAS 运行资源。Zircon 分支为 `ui/legacy-layout-lab`，完整 viewport 为1024×768。
 - `GameScene.ReceiveChat/OnChat → ChatLogPanel.AddMessage + LegacyChatDialog.AddMessage` 的消息链在真实客户端中显示普通 `[Normal] TestHero` 文本；22条安全普通文本形成溢出历史。底部自动锚定、上滚后新消息不抢用户位置、上/下按钮、滚轮、轨道点击和显式轨道拖动均有完整viewport截图。
 - 发现 `LegacyChatDialog.CreateSpriteButton()` 将 F350 关闭、上下滚动和六个本地模板按钮设为 `CanBePressed=false`，导致 `DXButton._GuiInput`提前吞掉点击；已改为可点击。轨道改用显式鼠标按下/移动/释放处理，避免依赖通用控件拖动状态。
 - 只验证模板按钮把字符串写入本地输入框；未提交 `@拒绝`、`!`、`!!`、`!~`、`@拒绝私聊` 或 `@拒绝行会聊天`，避免副作用。
-- 截图和机器可读运行记录：`/home/tetsuya/development/zircon/.artifacts/ui-acceptance-2026-09-24/` 与 `chat-runtime-acceptance-2026-09-24.json`。本轮只证明 Zircon 使用的本地 `GameInter.wil/.wix` 行为；该资源与研究 primary-static EI WIL/WIX 的字节身份、像素级同版关系仍未证明，不能升级为 EI 原版 parity。
+- 截图和机器可读运行记录位于 Zircon repository `.artifacts/ui-acceptance-2026-09-24/` 与 `chat-runtime-acceptance-2026-09-24.json`。本轮只证明 Zircon 使用的本地 `GameInter.wil/.wix` 行为；该资源与研究 primary-static EI WIL/WIX 的字节身份、像素级同版关系仍未证明，不能升级为 EI 原版 parity。
 ## Round 797 (chat fixed-row clipping) — 2026-09-25：补证 F350 长文本固定行裁剪
 
 - `LegacyChatDialog` 历史行改为 `DXLabel.AutoSize=true`；证据中的 EI 绘制链以 14px 固定行距和历史区裁剪为边界，因此长文本不应在单条记录内换行。
-- 使用本地 `/home/tetsuya/mir2ei`、`DISPLAY=:101`、1024×768、`--legacy-ui --legacy-hud --legacy-open=chat` 完整登录；日志确认 `StartGame Result=Success`、`LegacyOpen size=(572,388)`、`inputFocus=True`。
+- 使用本地 `${MIR3_TEST_CLIENT_ROOT}`、`DISPLAY=:101`、1024×768、`--legacy-ui --legacy-hud --legacy-open=chat` 完整登录；日志确认 `StartGame Result=Success`、`LegacyOpen size=(572,388)`、`inputFocus=True`。
 - 安全普通长文本真实回显为一条 `[Normal] TestHero` 历史记录，超出历史区右边界后水平裁剪；截图为 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-f350-long-row-focused-full.png`。
 - `dotnet build GodotClient/ZirconClient.csproj --no-incremental` 成功；仍未证明本地 `GameInter.wil/.wix` 与研究 primary-static EI 资源的字节身份或像素级同版关系。
 ## Round 798 (chat scroll-resource fallback) — 2026-09-25：阻止本地缺失帧误绘为滚动按钮
 
-- 独立读取本地 `/home/tetsuya/mir2ei/Data/GameInter.wil/.wix`：F350 画布为 `1024×512, offset=(7,-44)`，有效 alpha bbox 为 `(226,62)-(796,449)`；F380 为 `16×502` 锁链轨道；F381/F382/F383 在本地 WIX 中为空。F1070 为 `16×360`，不能凭同号猜测为 F350 按钮。
+- 独立读取本地 `${MIR3_TEST_CLIENT_ROOT}/Data/GameInter.wil/.wix`：F350 画布为 `1024×512, offset=(7,-44)`，有效 alpha bbox 为 `(226,62)-(796,449)`；F380 为 `16×502` 锁链轨道；F381/F382/F383 在本地 WIX 中为空。F1070 为 `16×360`，不能凭同号猜测为 F350 按钮。
 - 原实现把 F380（整条 502px 轨道）作为 F380/F381 上按钮普通帧，导致本地运行时悬停/点击可见错误的整条蓝色覆盖。`LegacyChatDialog` 现在检测按钮帧对，缺失时禁用错误精灵，只保留证据约束的 `19×14` 命中区，并输出 `[LegacyChat] scroll button frames ... unavailable`。
 - 当前构建后的真实运行日志确认：本地 GameInter 1103 帧加载、F381/F382/F383 缺失降级日志、`StartGame Result=Success`、`LegacyOpen size=(572,388)`、`inputFocus=True`。完整 1024×768 截图覆盖初始、40 条历史溢出、上下边界、轨道拖动、滚轮、新消息锚点、HUD MailButton、Enter/Space 入口。
 - 本地 `Mir3.exe` 为 `524288` 字节；`0x414060`、`0x414700`、`0x414846`、`0x4179B0` 字节探针落在研究审计的同一聊天 VA 家族，但研究目标 NAS 文件不可访问，仍不把本地 EXE/WIL/WIX 宣称为目标资源的字节同一。
@@ -9601,7 +9601,7 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 - **〔根因〕**`GameScene.ReceiveChat/OnChat` 已同时写入 `ChatLogPanel` 和 `LegacyChatDialog`；此前主 HUD 空白的直接原因是 legacy `_chatLog` 仍使用现代 `400×150` 几何并锚到 F50 上方，而不是 F50 内 `(224,27,354×74)` 聊天槽。legacy `OnChat` 还会对服务端已包装的 `p.Text` 重复添加发送者/类型前缀。
 - **〔代码修复〕**主 HUD `_chatLog` 固定 `354×74`、`ClipContents=true`、相对 `_mainPanel+(224,27)`；`ChatTextBox` 固定 `354×16`、相对 `_mainPanel+(223,105)`。legacy 路径直接使用服务端聊天文本；消息仍由同一 `ReceiveChat` 事件分别送 HUD/F350。
 - **〔输入根因〕**`GameScene._Input` 的 legacy `R` 快捷键只排除了 F350 输入焦点，没有排除主 HUD `ChatTextBox`。主 HUD 输入含 `R` 时会误开 F350，后续字符进入错误窗口。新增 `ChatTextBox.InputHasFocus` 并在 R 分支同时保护两个聊天输入控件；无焦点时 R 仍打开/关闭 F350。
-- **〔真实运行〕**使用 `/home/tetsuya/mir2ei`、`DISPLAY=:100`、完整 `1024×768` viewport 和 `login_game.sh all legacy`；日志确认 `StartGame Result=Success`、`LegacyHud PASS`、`[LegacyChat] receive type=Normal`、`[ChatInput] focus/submit`。安全普通文本、含 `R` 文本、89 字长文本均提交成功，HUD 消息持续存在，提交后输入清空，未再由 R 误开 F350。
+- **〔真实运行〕**使用 `${MIR3_TEST_CLIENT_ROOT}`、`DISPLAY=:100`、完整 `1024×768` viewport 和 `login_game.sh all legacy`；日志确认 `StartGame Result=Success`、`LegacyHud PASS`、`[LegacyChat] receive type=Normal`、`[ChatInput] focus/submit`。安全普通文本、含 `R` 文本、89 字长文本均提交成功，HUD 消息持续存在，提交后输入清空，未再由 R 误开 F350。
 - **〔入口验证〕**鼠标点击 `MainPanel.MailButton` 命中 `LegacyOpen requested=chat`，F350 打开；关闭后 HUD 消息仍保留。F350 与 HUD 共享接收消息链但不共享根框/裁剪/输入状态。
 - **〔截图〕**`Zircon/.artifacts/ui-acceptance-2026-09-24/chat-hud-fixed-baseline.png`、`chat-hud-fixed-focus.png`、`chat-hud-r-input-fixed.png`、`chat-hud-r-message-final.png`、`chat-hud-long-input-fixed.png`、`chat-hud-long-message-fixed.png`、`chat-hud-right-button-open-f350.png`、`chat-hud-f350-closed-final.png`。
 - **〔构建〕**`dotnet build GodotClient/ZirconClient.csproj --no-incremental` 通过，仅保留既有 `CS8632/CS0219` 警告。运行日志中的 ALSA `ERR_CANT_OPEN` 属于 Xvfb dummy audio，不影响登录或 HUD。
@@ -9611,13 +9611,13 @@ cross-ref：F330（0x4561B0 假说 REFUTED + 0x47671C vtable + 0x42264E spawn �
 
 - **〔视觉根因〕**`ChatLogPanel` 的 legacy 行继承了通用消息背景色：System/Announcement 的配置背景为白色，导致 F50 聊天槽内出现逐条白色矩形；主 HUD 原版槽的底色和边框来自 `GameInter.wil F50`，消息行本身不应再绘制消息底。
 - **〔代码修复〕**legacy `_chatLog` 行固定使用 8px 字体、14px 行高、关闭 outline/阴影；legacy 行 `BackColour=Transparent`，普通聊天维持现有 `LocalTextForeColour=White`，HUD 文本保持不透明，避免用降低整块控件透明度掩盖可读性。
-- **〔运行证据〕**使用本地 `/home/tetsuya/mir2ei`、完整 1024×768 viewport、`login_game.sh all legacy` 重启客户端；日志再次确认 `StartGame 成功`。普通文本 `HUD_STYLE_FINAL` 提交后主 HUD 显示发送者一次且输入清空；截图为 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-hud-style-final.png`。对比 `chat-hud-visual-baseline-clean.png`，最终行字形/亮度恢复为可读白色，且不再显示逐条白底。
+- **〔运行证据〕**使用本地 `${MIR3_TEST_CLIENT_ROOT}`、完整 1024×768 viewport、`login_game.sh all legacy` 重启客户端；日志再次确认 `StartGame 成功`。普通文本 `HUD_STYLE_FINAL` 提交后主 HUD 显示发送者一次且输入清空；截图为 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-hud-style-final.png`。对比 `chat-hud-visual-baseline-clean.png`，最终行字形/亮度恢复为可读白色，且不再显示逐条白底。
 - **〔证据边界〕**当前公开 EI 静态 JSON 已闭合主 HUD 根 RECT、F50 聊天槽、裁剪和层级，但未提供主 HUD 文本颜色字节；白色普通聊天色的选择标注为 Zircon 原有配置 + 运行视觉证据，不升级为 `primary-static`。
  
 ## Round 801 (current-state HUD audit) — 2026-09-25：终局现态重新构建与真实登录复核
 
 - **〔现态构建〕**在 `ui/legacy-layout-lab` 当前 HEAD 重新执行 `dotnet build GodotClient/ZirconClient.csproj --no-incremental`，构建通过；仅有既有 `CS8632`、`CS0219` 警告，无聊天相关错误。
-- **〔真实登录〕**使用 `/home/tetsuya/mir2ei`、完整 `1024×768`、`login_game.sh all legacy`；当前运行日志再次确认 `StartGame 成功`、`[LegacyHud] PASS`、HUD `(800,136)`、输入 `(354,16)`、聊天 `(354,74)`。
+- **〔真实登录〕**使用 `${MIR3_TEST_CLIENT_ROOT}`、完整 `1024×768`、`login_game.sh all legacy`；当前运行日志再次确认 `StartGame 成功`、`[LegacyHud] PASS`、HUD `(800,136)`、输入 `(354,16)`、聊天 `(354,74)`。
 - **〔消息与输入〕**重新聚焦后提交 `FINAL_AUDIT_R` 和 `FINAL_TWO` 两条普通消息；日志显示两次 `[ChatInput] focus/submit`，`[LegacyChat] hudMessages` 从 3 增长到 5，第二条为 `type=Normal`，证明输入清空后可再次聚焦提交，消息不会被下一帧清空。
 - **〔F350入口〕**当前运行点击 F102/F103 位置 `(830,664)` 打开 F350，日志为 `LegacyOpen requested=chat`、`size=(572,388)`；点击关闭控件 `(770,560)` 返回，完整视口截图保留 HUD 消息。证据归档于 `Zircon/.artifacts/ui-acceptance-2026-09-24/chat-hud-final-audit-*.png` 与 `chat-hud-final-audit.log`。
 - **〔工作树与远端〕**Zircon 当前分支和远端 SHA 在终局审计后保持一致；Research 分支仅有既有 `Tools/wsgateway/wsgateway.log` 未跟踪，未修改。 
@@ -9809,7 +9809,7 @@ stNewChr, stLoading, stLoginNotice, stPlayGame)`（`IntroScn.pas:19`）。
 | 这 10 个 ∩ 原版已详查 37 帧 | **0（空集）** |
 
 原版基准：`gameinter-frame-metadata.json` 的 `library_count: 1103`
-（有效索引 0..1102，来源 `/data/NAS/TMP/EI传奇3.0客户端/Data/GameInter.wil`）。
+（有效索引 0..1102，来源 `${MIR3_EI_ROOT}/Data/GameInter.wil`）。
 
 **结论（加强既有纪律）**：两套 `GameInter` 是**不同构建**，帧号语义**无法互推** ——
 即使数值落在共同范围（那 10 个），也没有一个与原版已详查帧重合，
@@ -10937,7 +10937,7 @@ VERIFY PASS（接收端确实缺失）
 `LoginId[10]`/`Password[10]`/`UserName[20]`/`SSNo[14]`（身份证，样例
 `721109-1476110`）/`Phone[14]`/`Quiz[20]`/`Answer[12]`/`EMail[40]`。
 `TUserEntryAddInfo`（`:722-`）5 字段：`Quiz2[20]`/`Answer2[12]`/
-`Birthday[10]`（样例 `1972/11/09`）/`MobilePhone[13]`（样例 `017-6227-1234`）/`Memo1[20]`。
+`Birthday[10]`（样例 `YYYY/MM/DD`）/`MobilePhone[13]`（样例 `<redacted-phone>`）/`Memo1[20]`。
 `SendChgPw`（`:4232-4238`）是**字符串形式**：`id #9 passwd #9 newpasswd`。
 ⚠️ `TUserEntryInfo` 里 `UserName`/`SSNo`/`Quiz`/`Answer` 带 `//*` 标记，
 `LoginId`/`Password`/`Phone`/`EMail` 不带 —— **疑似「必填」标记，未验证**
@@ -11937,3 +11937,17 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔边界与落盘〕** 在 `README.md` D5 与 `tools-and-servers.md` §9 记录 GameServer ADO 资源/sidecar 与 C++ DataBaseServer ODBC player-record 是独立路径；都没有建立与 EI `System.db`/`Users.db` 的来源映射。`coverage-ledger.tsv` 第 98、128–130 行登记 4 个全读文件；未改数据库、服务或 Zircon 源码。
 
 **〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个 opcode 缺失穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 240/91846，partial 17/90886，excluded 43/60230，pending 93/72362。`git diff --check` 对本轮四份指定文件通过；GameServer ADO/SQL 与服务行为没有运行验证。
+
+## Round 840 — 2026-09-27：GameServer 角色 DB socket 与 RunGate 通路
+
+**〔范围〕** 用 `Tools/source-read/read_src.py show` 全读 `GameServer/RunDB.pas`（1–687）与 `RunSock.pas`（1–1209）；source-reader grep `LoadHumanCharacter`/`SaveHumanCharacter`/`FDBLoadHuman`/`FDBMakeHumRcd`/`RunSocket.Run`，再读取 `FrnEngn.pas` 的普通登录/变更金币/保存队列调用段和 `UsrEngn.pas` 的记录编解码调用段。另以 source-reader 确认 DataBaseServer `DBSvr/netgameserver.cpp` 把 `DB_LOADHUMANRCD`/`DB_SAVEHUMANRCD` 映射到角色 load/save handlers；调用段不登记成完整覆盖。
+
+**〔角色记录网络层〕** `RunDB` 将 `FDBRecord` 四个 blocks 映射为运行时 `TUserHuman` 状态。普通角色打开/保存经 `FrnEngn` 进入 `LoadHumanCharacter`/`SaveHumanCharacter`；保存前由 `UsrEngn` 调 `FDBMakeHumRcd`，读入由 `FDBLoadHuman`。wire request 经 `FrmMain.DBSocket` 使用认证号、encoded payload 和校验尾；等待端按 `!` 切帧、验证 derived cert/长度并检查响应 opcode/recog，超时分别约 5s/2s。此处是 GameServer↔DataBaseServer socket 链，但它与 EI 两个 MirDB 文件不是同一份证据。
+
+**〔RunGate 通路〕** `RunSock` 的 `$aa55aa55` `TMsgHeader`、增量接收缓冲、`GM_OPEN` 用户槽创建、`GM_DATA` 认证，以及 `FrmIDSoc.GetAdmission`→`FrontEngine.LoadPlayer` 是独立客户端 gate 路径；用户对象就绪后才转发游戏 `TDefaultMessage`。timer 在 `ServerReady` 时驱动 `RunSocket.Run` 发送队列。`Connect` 内 `IsValidGateAddr` 检查处被注释，`SendBuf` 返回长度也未检查；均为静态观察，无 Windows/socket 运行验证。
+
+**〔边界与落盘〕** `README.md` D5 与 `tools-and-servers.md` §10 新增网络角色记录链和 RunGate 的独立分类；ledger 第 126–127 行将两文件登记为全读。C++ ODBC schema 与 GameServer record wire protocol 的衔接不建立 `System.db`/`Users.db` upstream 或一一映射；本轮未连接服务、SQL server、改数据库或 Zircon。
+
+**〔公开文档隐私整理〕** 提交门禁扫描指出本轮触及的既有文档含开发机绝对资源路径、内网示例地址及账号/电话样例；改用仓库约定的 `${MIR3_EI_ROOT}`/`${MIR3_MUD3_ROOT}`、明确的 `${MIR3_TEST_CLIENT_ROOT}` 文字占位符和脱敏样例，保留文件关系与研究结论。`${MIR3_TEST_CLIENT_ROOT}` 仅是文档占位符，不要求新增运行配置。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS（474 协议常量、EDCODE 自测、3 个 opcode 缺失穷举、台账统计、29 个 Python 文件语法）。台账为 393 文件/315324 行：covered 242/93742，partial 17/90886，excluded 43/60230，pending 91/70466。`git diff --check` 与 `privacy_scan.py --staged`（4 个指定文件）通过；没有 GameServer、RunGate、DataBaseServer 或 SQL Server 运行验证。

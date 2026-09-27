@@ -123,8 +123,8 @@ A/C-server	Source/GameServer/ObjMon2.pas	1817	52513	partial	Round 815: 类层次
 A/C-server	Source/GameServer/ObjMon3.pas	3197	98170	partial	Round 815: 类层次(18类)；实现待读
 A/C-server	Source/GameServer/ObjNpc.pas	6409	255489	covered	Round 811/821: 五层任务模型/CheckQuestCondition/CheckSayingCondition/53+75 opcode/GotoQuest/TakeItemFromUser/CheckNpcSayCommand 28个$宏 + Round 833: 四级嵌套数据结构/四段式脚本/AvailableCommands自动扫@链接/脚本文件NPC名-地图名
 A/C-server	Source/GameServer/Relationship.pas	471	11946	covered	Round 829 model notes; Round 834 full 1–471 plus ObjBase request/accept callers: reciprocal partner handshake, request-side capacity/eligibility, local Add boundary, date/serialization; DB/runtime locale edges explicitly open
-A/C-server	Source/GameServer/RunDB.pas	687	22148	pending	
-A/C-server	Source/GameServer/RunSock.pas	1209	41126	pending	
+A/C-server	Source/GameServer/RunDB.pas	687	22148	covered	Round 840 full 1–687: FDBRecord↔TUserHuman mapping, DB_LOAD/SAVEHUMANRCD over DBSocket, certified wait/reply path; DataBaseServer handler join verified
+A/C-server	Source/GameServer/RunSock.pas	1209	41126	covered	Round 840 full 1–1209: GameServer RunGate admission/message framing, buffering and send pacing; gate path distinct from DB socket
 A/C-server	Source/GameServer/SQLLocalDB.pas	799	31038	covered	Round 839 full 1–799: ADO resource tables from Setup/!DBSETUP.TXT; file fallback is stub; Item/Monster/MobItem/Magic field loaders
 A/C-server	Source/GameServer/Server_JOB_ItemGen.dpr	59	1828	covered	Round 839 full 1–59: GameServer project imports DBSQL/SqlEngn/SQLLocalDB and creates server/database/login forms
 A/C-server	Source/GameServer/SqlEngn.pas	1268	41012	covered	Round 839 full 1–1268: threaded market/board DB queue and timer-side response dispatch; ExecuteSaveCommand body is empty

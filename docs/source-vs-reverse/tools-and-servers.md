@@ -106,8 +106,8 @@ SendSocket(EncodeMessage(msg)
 |---|---|---|
 | `Quiz2` | `string[20]` | 第二个密保问题（`//*`） |
 | `Answer2` | `string[12]` | 第二个答案（`//*`） |
-| `Birthday` | `string[10]` | 生日（样例 `1972/11/09`） |
-| `MobilePhone` | `string[13]` | 手机（样例 `017-6227-1234`） |
+| `Birthday` | `string[10]` | 生日（样例 `YYYY/MM/DD`） |
+| `MobilePhone` | `string[13]` | 手机（样例 `<redacted-phone>`） |
 | `Memo1` | `string[20]` | 备注（`//*`） |
 
 **`SendChgPw`**（`ClMain.pas:4232-4238`）：**字符串形式**，`\t` 分隔
@@ -386,3 +386,11 @@ Round 835 全读 LoginServer 应用层与本目录 C++ 编码/包辅助文件；
 - `DBSQL.pas` 的 `TDBSql` 另用 ADO `SQLOLEDB.1`，连接串由 `SqlDBPassword/SqlDBID/SqlDBDSN/SqlDBLocal` globals 组成。功能集中于物品市场（`TBL_ITEMMARKET`、`UM_*` procedures）和行会据点公告板（`TBL_GABOARD`、`GABOARD_*`），不是 C++ `tablesdefine.cpp` 的玩家角色表 mapper。它与 §8 DataBaseServer 的 C++ ODBC/character path 是两个独立源码路径。
 - `TSQLEngine` 用请求/响应 `TList` 队列在 SQL 工作循环与游戏 timer 间传递 market/board 操作；`ExecuteSaveCommand` 为空。`DBSQL` 通过字符串拼接执行 SQL，不用绑定参数；`AddSellUserMarket` 构造的 INSERT 列表和值列表各有尾逗号，`ReadyToSell` 对 `RecordCount >= 0` 即返回 success。公告板 insert/update 也拼接字符串；这些仅是源码检查，未连接执行或修改 SQL Server。
 - 资源 ADO、market/board ADO 与 DataBaseServer ODBC 均不能证明 EI `System.db`/`Users.db` 的 upstream 或一一映射；`SQLLocalDB` 的 “Local” 名称也不证明它使用本地文件数据库。
+
+## 10. GameServer character-record DB socket and RunGate transport（Round 840）
+
+- `RunDB.pas` 是 GameServer 与 DB server 通信的层：`FDBLoadHuman`/`FDBMakeHumRcd` 在 `FDBRecord` 的 `DBHuman`、`DBBagItem`、`DBUseMagic`、`DBSaveItem` blocks 与运行时 `TUserHuman` 之间逐项搬运人物属性、装备/背包、技能和仓库物品。`FrnEngn.OpenUserCharactor` 调 `LoadHumanCharacter`；保存队列在 `FrnEngn.ProcessReadyPlayers` 调 `SaveHumanCharacter`；`UsrEngn` 使用转换函数准备保存记录、读入普通登录记录或 server-shift 记录。
+- GameServer 以 `DB_LOADHUMANRCD`/`DB_SAVEHUMANRCD` 请求经 `FrmMain.DBSocket` 发送，`RunDBWaitMsg` 从共享接收缓存取到 `!` 完整帧后检查 certification 衍生校验尾及长度，再按 opcode/recog 解释结果；加载成功还检查返回角色名并解码 `FDBRecord`。`DataBaseServer/DBSvr/netgameserver.cpp` 将这两个 opcode 注册到 `CGameServer::OnLoadHumanRcd`/`OnSaveHumanRcd`，因此源码可闭合 GameServer↔DataBaseServer 的角色记录协议链。请求组包是字符串拼接与编码 buffer，并非 MirDB 序列化格式。
+- `RunSock.pas` 是独立的 GameServer↔RunGate 客户端数据路径：`TMsgHeader` magic 为 `$aa55aa55`，接收端增量缓存并按 header length 拆帧；`GM_OPEN` 分配用户槽，首个 `GM_DATA` 在用户对象尚未建立时解析认证字段、调用 `FrmIDSoc.GetAdmission`，准入后 `FrontEngine.LoadPlayer`；加载完成后才把 `GM_DATA` 内 `TDefaultMessage` 送给 `UserEngine`。`svMain.pas` 的 timer 调 `RunSocket.Run`，其发送队列进行小包合并和基于 receive-check 的 gate 节流。
+- 静态注意：`RunSock.Connect` 中 `IsValidGateAddr` 调用处被注释，因此该接入函数本身没有执行地址表 allowlist 校验；发送路径按请求字节数更新计数并释放缓冲，没有检查 `SendBuf` 返回字节数。本轮未对这些静态观察作运行验证。`RunDB` 的同步等待也未在 Windows/DB server 环境执行。
+- 这条玩家记录通路与 Round 839 的资源/market/board ADO 子系统不同于同一个 socket：`RunDB`/DataBaseServer ODBC 即使映射角色记录表，也没有证明 EI `System.db`/`Users.db` 的来源或相同 schema；RunGate 传输更不涉及该映射。
