@@ -17,9 +17,7 @@ cd Tools/webclient
 
 浏览器打开 <http://127.0.0.1:8822/>（手机经 tailscale 用 `http://100.76.219.104:8822/`）。
 
-资源产品在 `/home/tetsuya/development/zircon/Debug/Client/WebData/`（2.2G，可随时重建，
-构建方式见 `Tools/webres/` 与该目录下 README.md；磁盘预算红线 3G，serve.py 超 30s
-磁盘守卫返回 507）。
+资源产品默认在 `~/mir2ei-webdata/`（独立同步目录，约 2.2G，可随时重建；`MIR3_WEBDATA_ROOT` 可覆盖）。旧路径 `/home/tetsuya/development/zircon/Debug/Client/WebData/` 保留为兼容软链接。构建方式见 `Tools/webres/`；磁盘预算红线 3G，serve.py 超 30s 磁盘守卫返回 507。
 
 ## 九大模块清单（对应 goal 文档 M1-M8 + 验收）
 

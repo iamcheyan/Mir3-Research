@@ -18,11 +18,17 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 
-# 资源根目录: 默认 zircon 客户端 WebData，可用 WEBRES_ROOT 覆盖
+# Resource root: prefer the independently managed home-directory dataset;
+# keep WEBRES_ROOT as the highest-priority override and fall back to the
+# legacy client-tree location for older installs.
+_default_root = Path.home() / "mir2ei-webdata"
+_legacy_root = Path("/home/tetsuya/development/zircon/Debug/Client/WebData")
+if not _default_root.is_dir() and _legacy_root.exists():
+    _default_root = _legacy_root
 ROOT = Path(os.environ.get(
     "WEBRES_ROOT",
-    "/home/tetsuya/development/zircon/Debug/Client/WebData",
-))
+    os.environ.get("MIR3_WEBDATA_ROOT", str(_default_root)),
+)).expanduser()
 
 app = FastAPI(title="webres", docs_url=None, redoc_url=None)
 

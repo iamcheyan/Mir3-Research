@@ -29,7 +29,7 @@ sys.path.insert(0, str(_MIR3 / "Tools" / "maps"))
 
 import webres  # noqa: E402
 
-ROOT = webres.WEB                     # Debug/Client/WebData
+ROOT = webres.WEB                     # ~/mir2ei-webdata (override supported)
 STATIC = Path(__file__).resolve().parent
 GODOT_UI = Path("/home/tetsuya/development/zircon/GodotClient/UI")
 DISK_BUDGET = webres.DISK_BUDGET      # 3G

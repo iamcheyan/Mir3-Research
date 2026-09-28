@@ -21,7 +21,7 @@
 ```bash
 PY=/home/tetsuya/mir3-venv/bin/python
 DATA=/home/tetsuya/development/zircon/Debug/Client/Data
-WEB=/home/tetsuya/development/zircon/Debug/Client/WebData
+WEB=$HOME/mir2ei-webdata       # 独立于原生客户端资源，可用 MIR3_WEBDATA_ROOT 覆盖
 
 # 1) 全量转 Interface.Zl (含 q90 有损对照统计)
 $PY decode_zl_webp.py $DATA/Interface.Zl --out $WEB/interface --lossy-check

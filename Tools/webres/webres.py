@@ -7,7 +7,7 @@
     sprites  批量预渲染精灵帧 (人物纸娃娃/怪物/技能特效/图标)
     estimate 抽样估算全量体积/耗时并写报告
 
-所有产物只写 Debug/Client/WebData (可随时重建), 素材包 (.Zl/.map) 只读。
+所有产物写入独立目录 `~/mir2ei-webdata`（`MIR3_WEBDATA_ROOT` 可覆盖），原生客户端资源只读。素材包 (.Zl/.map) 只读。
 渲染管线直接 import Tools/maps/mapviewer.py (同仓库复用)。
 """
 from __future__ import annotations
@@ -32,7 +32,17 @@ import zlsdk  # noqa: E402
 from PIL import Image  # noqa: E402  (maps/sprites 渲染管线需要; 服务端 import webres 时可用)
 
 CLIENT = Path("/home/tetsuya/development/zircon/Debug/Client")
-WEB = CLIENT / "WebData"
+# WebP assets are maintained separately from the native client. Override on
+# hosts with a nonstandard layout; fall back to the legacy in-client directory
+# for older installs during migration.
+_legacy_web = CLIENT / "WebData"
+_web_override = os.environ.get("MIR3_WEBDATA_ROOT")
+if _web_override:
+    WEB = Path(_web_override).expanduser()
+else:
+    WEB = Path.home() / "mir2ei-webdata"
+    if not WEB.is_dir() and _legacy_web.exists():
+        WEB = _legacy_web
 DATA_DIR = CLIENT / "Data"
 MAPS_DIR = CLIENT / "Map"
 WORKSPACE = _TOOLS / "dbeditor" / "workspace"
