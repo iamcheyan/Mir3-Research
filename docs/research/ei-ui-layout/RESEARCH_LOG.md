@@ -13078,3 +13078,18 @@ staged paths 仅为本轮授权的三个文档。
 
 **〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`python3 Tools/source-read/ledger.py --summary`：393 文件 / 315,324 行，covered 334 / 165,829，partial 16 / 89,265，excluded 43 / 60,230，pending 0；三个目标文档的 `git diff --check` 通过。
 提交前 global privacy scanner 对三个 staged 文档及 commit message 均返回退出码 0；staged paths 仅为本轮授权的三个文档。
+
+## Round 930 — 2026-09-28：`ObjBase.pas` 动态消息分派与延迟战斗处理
+
+**〔范围与调用链〕** 经授权 source reader 完整读取 `TCreature.RunMsg:14174-14352`，以及 `TAnimal.RunMsg:17218-17241`、`TMonster.RunMsg:370-380`、`TGoldenImugi.RunMsg:2609-2619`。追读 Magic 延迟魔法/治疗/中毒调用 `:1000-1029/1173-1195/1213-1288`，物品中毒 `ObjBase.pas:10895-10920` 和队列调用 `TCreature.Run:14408-14417`。未运行 Delphi/GameServer。
+
+**〔伤害与治疗〕** `RM_DELAYMAGIC` 用目标指针、中心坐标和方形范围处理延迟魔法；龙类 8 格方框内先获 1–3 点龙经验，魔抗伤害门后对动物及以上强度加成 20%，中心范围门后才发 `RM_MAGSTRUCK`。所读 Magic 1/5 调用在排队前做目标/反魔检查并延迟 600ms。`RM_MAGSTRUCK(_MINE)` 重算魔法伤害、叠发送者 `PlusFinalDamage`；普通 magic 可给低于上限的非 RushMode 动物及以上目标加 800–1799ms 移动延迟。非人类接收带 hitter 指针的 `RM_STRUCK`，人类不走此额外消息分支。治疗消息把 `lParam1` 积入最多 300 的 `IncHealing`，按 5 点片段恢复；所读治疗调用先检查友方与未满 HP，再延迟 800ms。
+
+**〔中毒与覆写〕** `RM_MAKEPOISON` 的基类 handler 只在 `IsProperTarget` 分支中选中目标/做一条归属设置，后续玩家互击与召唤主人 PK/hitter 更新及 `MakePoison` 不在该门控内部，nil hitter 也会直接中毒。所读暗烟术和物品中毒生产者各自先做目标/资源/随机门控；不把 handler 门控结构外推为可利用的未授权施毒。`TAnimal.RunMsg` 的 `RM_STRUCK` 分支需要 `Sender=self` 与非零 hitter 指针，设 LastHiter、调用 `Struck`、打断 Holy Seize，并可能给主人记 PK hitter；该分支不 inherited。`TMonster.RunMsg` 直接转基类；`TGoldenImugi` 先清 `DontAttack` 再转基类。
+
+**〔失败边界〕** `TCreature.Run` 对 `while GetMsg` 整体套一层 try/except；单个 `RunMsg` 抛异常会中断本次余下消息循环、记 `Run 0`，外层 `Run` 的后续独立阶段仍在循环之后。`RunMsg` 中其它控制消息已静态列出；其他子类覆写和全部消息生产者没有逐一读取。
+
+**〔未闭合〕** EI 原版对应的延迟魔法、伤害、治疗和毒伤消息语义未核实 `primary-static`；`ObjMon2/3`、NPC/Guard 等派生消息覆写与部分魔法生产者未追完，未做运行期验证。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`python3 Tools/source-read/ledger.py --summary`：393 文件 / 315,324 行，covered 334 / 165,829，partial 16 / 89,265，excluded 43 / 60,230，pending 0；三个目标文档的 `git diff --check` 通过。
+提交前 global privacy scanner 对三个 staged 文档及 commit message 均返回退出码 0；staged paths 仅为本轮授权的三个文档。

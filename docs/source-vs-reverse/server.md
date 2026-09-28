@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -687,6 +687,7 @@ DC 为 `(1,-2)`，之后 DC/SC 为 30–39 `(2,2)/(0,2)`、40–49 `(3,6)/(1,3)`
 | 地面拾取归属 | 未闭合 | Preview 写 `Ownership`/`Droper` 并由遍历超时清理；拾取判定本轮未追全 | `ItemObject.CanPickUpItem` 按 `Account` 与配置给予本人/队伍/行会/其他人的拾取门限（2/5/10 分钟）；模型与 Preview 指针字段不等价 |
 | 死亡主路径与击杀归因 | 未闭合 | `TCreature.Run` 在 HP=0 时检查复活能力后调用 `Die`；`ExpHiter`/`LastHiter` 分别影响经验和击杀归因 | Zircon `PlayerObject.Die` 与 `MonsterObject.Die` 分流；没有直接行为等价证据 |
 | 实体周期状态与中毒 | 本轮未核实 EI `primary-static` 定时规则 | `TCreature.Run` `:14394-14940` 覆盖恢复、状态到期、hitter 清理与毒伤；`UsrEngn` `:3012-3175` 调度怪物/NPC/商人 | — |
+| 动态消息与延迟魔法 | 本轮未核实 EI `primary-static` 消息语义 | `TCreature.RunMsg` `:14174-14352` 路由魔法伤害、治疗与毒；selected `Magic.pas` callers 先做友方/目标检查；派生 `RunMsg` 改写部分事件 | — |
 
 装备等级/职业转换仍保持 `primary-static` 原版证据缺口、Preview `secondary-source` 的边界。
 Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读死亡掉落、地面物品归属
@@ -708,6 +709,7 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 | 派生怪物 `Die` 覆写 | 搜索发现 `ObjMon`/`ObjMon2`/`ObjMon3` 的 `inherited Die` 调用；本轮未逐一读覆写体 |
 | EI 原版死亡/红名处罚/复活规则 | 未找到可证明 Preview 对应服务端行为的 `primary-static` 证据 |
 | `TCreature.Run` 的派生类有效行为 | 本轮完整读基类与 `TAnimal.Run` 的 inherited 路径；`ObjMon`/`ObjNpc` 等动态覆写未逐类审查，也没有运行验证 |
+| `TCreature.RunMsg` 的全部生产者与派生覆写 | 本轮覆盖基类、`TAnimal`、`TMonster`、`TGoldenImugi` 和选定 Magic/ObjBase 调用；其他怪物/NPC 覆写与全量生产者未逐一审查，也无运行验证 |
 
 ### 10.9 死亡、经验归属与 PK 合法性（Round 928；`:4898-5486`）
 
@@ -792,6 +794,26 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 #### 10.10.3 调度器边界
 
 `UsrEngn.ProcessMonsters`、`ProcessMerchants`、`ProcessNpcs` 以 `GetCurrentTime - RunTime > RunNextTick` 门控，更新 `RunTime` 后按 `SearchRate` 调 `SearchViewRange`，再通过动态 `cret.Run` 分派。怪物列表另受 `MonLimitTime` 时间片限制，以 `MonCur`/`MonSubCur` 续跑；处理器异常会从出生点列表删除该对象（对应 `Free` 仍为注释），幽灵怪物 5 分钟后删除并释放。商人/NPC 使用 `NpcLimitTime` 和各自游标；它们的异常由整个处理器的外层捕获。`TAnimal.Run` 显式先调用基类，但其他怪物/NPC 覆写未逐一核实，不能把基类 tick 直接等同所有派生体行为。
+
+### 10.11 动态消息分派与延迟战斗处理（Round 930；`ObjBase.pas:14174-14352`）
+
+`TCreature.RunMsg` 是 `dynamic`（声明 `:681`），由 `TCreature.Run` 的队列循环调用。该循环的 `try/except` 包在整个 `while GetMsg` 外，而非逐消息捕获：一个 handler 异常会终止本次剩余队列处理，记录 `Run 0`；`Run` 后续独立阶段仍可继续。
+
+#### 10.11.1 延迟魔法与伤害
+
+`RM_DELAYMAGIC` 从 `wParam` 取魔法强度，从 `lParam1` 拆出中心坐标、`lParam2` 取范围、`lParam3` 取目标指针。龙/龙身目标在施法者与目标的 X/Y 各差不超过 8 时，先收到 1–3 点 `RM_DRAGON_EXP`；随后先计算目标魔抗伤害是否大于 0，再对 `RaceServer>=RC_ANIMAL` 将强度乘 1.2，最后要求目标与存储中心的两个轴差均不超过范围才投递 `RM_MAGSTRUCK`。所读 Magic 1/5 路径在排队前已有 `MagCanHitTarget`、`IsProperTarget`、抗魔随机和命中坐标门控，延迟为 600ms。
+
+`RM_MAGSTRUCK` 与 `RM_MAGSTRUCK_MINE` 共用处理：从发送者取 `PlusFinalDamage`；普通 `RM_MAGSTRUCK` 对非 RushMode、等级低于上限门且 `RaceServer>=RC_ANIMAL` 的受击者增加 800–1799ms `WalkTime`。伤害再由 `GetMagStruckDamage(nil, lParam1)` 计算；为正时选中发送者、调用 `StruckDamage`、更新血魔和发送 `RM_STRUCK_MAG`。非人类另降低动物肉质并收到带击中者指针的 `RM_STRUCK`；该分支不给人类投递这条额外消息。
+
+#### 10.11.2 治疗与中毒消息
+
+`RM_MAGHEALING` 把 `lParam1` 累加到 `IncHealing`，上限 300，并设 `PerHealing=5`；实际 HP 由 `TCreature.Run` 的分段恢复队列处理。所读恢复术检查 `IsProperFriend` 且目标未满 HP 后才排队，延迟 800ms；范围治疗扫描 1 格内对象并逐个做友方检查。
+
+`RM_MAKEPOISON` 从 `lParam2` 取 hitter；非空时先用 `IsProperTarget` 门控选中目标及一条等级小于 60 的归属更新，但之后的人类互击/召唤主人归属分支与最终 `MakePoison` 位于该门控之外；空 hitter 也直接调用 `MakePoison`。所读 Magic 暗烟术在发送前已有 `IsProperTarget`、毒袋耐久、成功率与抗毒门控，并对玩家互击/召唤主人另记 PK/hitter；`StruckDamage` 的物品中毒路径也位于 `IsProperTarget(targ)` 分支内。因此此处只记录基类消息处理的门控边界，不据此断言可由未授权调用触发。
+
+#### 10.11.3 派生分派与其他消息
+
+`TAnimal.RunMsg` 对 `RM_STRUCK` 只在 `msg.Sender=self` 且 `lParam3<>0` 时记录 hitter、调用 `Struck`、打断 Holy Seize；若有主人且击中者为非主人的人类，则给主人 `AddPkHiter`。该 case 不调用 inherited，其他消息才进入基类。`TMonster.RunMsg` 直接 inherited；`TGoldenImugi.RunMsg` 收到中毒消息时先清 `DontAttack` 再 inherited。基类还路由 `RM_REFMESSAGE`、透明/随机移动、开放生命、引用计数、龙经验和诅咒等消息；其他类覆写尚未逐一核对。
 
 ---
 
