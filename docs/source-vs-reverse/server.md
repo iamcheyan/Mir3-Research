@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -685,6 +685,7 @@ DC 为 `(1,-2)`，之后 DC/SC 为 30–39 `(2,2)/(0,2)`、40–49 `(3,6)/(1,3)`
 | 怪物/尸体袋掉落 | 未闭合 | `ScatterBagItems` 对现有背包按版本、PK 与实体类型处理；地面对象带归属/掉落者指针 | `MonsterObject.Die → YieldReward → Drop` 按 `DropInfo`、owner/account、`NeedHarvest` 生成当前版战利品；不是同一实现 |
 | 玩家死亡掉落 | 未闭合 | `DropUseItems` 掉装备；`ScatterBagItems` 独立处理背包，任务/地图门控不同 | `PlayerObject.Die` 受安全区/Fight 与 `Stats[DeathDrops]` 门控；`DeathDrop` 按可掉标记随机处理背包、宠物背包及一件装备 |
 | 地面拾取归属 | 未闭合 | Preview 写 `Ownership`/`Droper` 并由遍历超时清理；拾取判定本轮未追全 | `ItemObject.CanPickUpItem` 按 `Account` 与配置给予本人/队伍/行会/其他人的拾取门限（2/5/10 分钟）；模型与 Preview 指针字段不等价 |
+| 死亡主路径与击杀归因 | 未闭合 | `TCreature.Run` 在 HP=0 时检查复活能力后调用 `Die`；`ExpHiter`/`LastHiter` 分别影响经验和击杀归因 | Zircon `PlayerObject.Die` 与 `MonsterObject.Die` 分流；没有直接行为等价证据 |
 
 装备等级/职业转换仍保持 `primary-static` 原版证据缺口、Preview `secondary-source` 的边界。
 Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读死亡掉落、地面物品归属
@@ -702,6 +703,62 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 | Preview `Ownership`/`Droper` 的拾取请求资格判定 | 本轮核对了字段写入与扫描清理，未追完拾取命令分支 |
 | `RC_ANIMAL`/`RC_USERHUMAN`/`OS_*` 常量值 | 未查定义（疑在 `M2Share.pas`） |
 | `TAnimal`/`TUserHuman` 的其余实现段 | Round 831 仅覆盖选定实现；本轮补读屠宰调用路径，不构成完整方法覆盖 |
+| 红名死亡且 `LastHiter=nil` 时的 fame 分支 | `ENABLE_FAME_SYSTEM` 下 `LastHiter.IncFamePoint` 无局部 nil 守卫；异常由 `Die 2` 捕获；可达性未运行验证 |
+| 派生怪物 `Die` 覆写 | 搜索发现 `ObjMon`/`ObjMon2`/`ObjMon3` 的 `inherited Die` 调用；本轮未逐一读覆写体 |
+| EI 原版死亡/红名处罚/复活规则 | 未找到可证明 Preview 对应服务端行为的 `primary-static` 证据 |
+
+### 10.9 死亡、经验归属与 PK 合法性（Round 928；`:4898-5486`）
+
+#### 10.9.1 运行入口与死亡状态
+
+`TCreature.Run`（`:14394-14493`）先排空消息队列并调用 `RunMsg`，再处理恢复和死亡：
+`NeverDie` 每轮把 HP/MP 置满；存活实体 HP 归零时，若有复活能力且距上次复活超过
+60 秒，则损耗复活戒指、恢复满 HP 并发状态消息；仍为 0 才调用 `Die`。已死亡实体
+超过 3 分钟调用 `MakeGhost(5)`。`TCreature.Die` 另有两道早退：非红名玩家在安全区把
+`Abil.HP`/`WAbil.HP` 设为 1；`NeverDie` 实体直接返回。其余实体才置 `Death`、更新时间、
+清除旧 PK hitter 列表；有 `Master` 时清空 `ExpHiter`/`LastHiter`。生日特权设置
+`DontBagItemDrop` 与 `DontUseItemDrop`。
+
+死亡体分为三个各自 `try/except` 的阶段：经验/地图任务（`Die 1`）、PK 处罚（`Die 2`）、
+掉落/战场记分/日志/`RM_DEATH`（`Die 3`）。单阶段异常被记录后，控制流继续到下一阶段；
+该阶段剩余语句则不会继续执行。`Alive`（`:5362-5374`）把 HP 最低补到 1、清 `Death`、
+发送复活效果与 `RM_ALIVE`，但 `RecalcAbilitys` 调用留在注释中，只发送光照变更。
+
+#### 10.9.2 经验与地图任务
+
+怪物死亡且有 `LastHiter` 时，首选 `ExpHiter`：玩家直接获得按怪物等级/战斗经验计算的
+经验；若首攻者是召唤实体且有 `Master`，召唤物获得 `GainSlaveExp`、主人获得经验。
+没有 `ExpHiter` 时，才回退给玩家 `LastHiter`。`BoVentureServer` 下跳过经验入账。
+地图任务仅在 `ExpHiter` 分支处理：本人或队长的同组成员必须存活、同一 `PEnvir`，
+并与经验归属者在 X/Y 两轴各不超过 12；任务 NPC 对队长/组员分别传 `bogroupcall`。
+只剩 `LastHiter` 的回退经验分支没有同样的地图任务调用。
+
+#### 10.9.3 击杀归属与善恶判定
+
+`SetLastHiter`（`:5376-5394`）总是更新最后击中者及时间；若 hitter 有主人，
+`LastHiterRace` 记主人种族。`ExpHiter` 仅在原值为 nil 时初始化，同一 hitter 后续命中
+只刷新 `ExpHitTime`。受击伤害路径 `StruckDamage`、玩家 `RM_STRUCK`/中毒消息、
+`Magic` 的中毒/石化路径和 `TAnimal.RunMsg(RM_STRUCK)` 都能更新这两个归属或 PK 标记。
+
+当前 `AddPkHiter` 不再维护旧的逐人 `PKHiterList`（列表逻辑在注释中）：双方
+`PKLevel<2`、不在四类战斗地图且攻击者尚未非法时，给攻击者设置 `BoIllegalAttack`、
+`TCreature.Run` 每 5 秒仅对 `RaceServer=RC_USERHUMAN` 的实体调用 `CheckTimeOutPkHiterList`；
+60 秒清除并恢复名字颜色。`IsGoodKilling(target)` 的有效实现只返回
+`target.BoIllegalAttack`，注释里的 PKHiterList 搜索已停用。因此死亡时的正当防卫判断
+依赖被杀目标当前非法攻击标志，而不是历史列表。
+
+`Die` 仅在非冒险服且不处于四种 Fight 区时计算普通 PK 处罚；受害者必须是
+`PKLevel<2` 玩家并有击杀者才进入 `boBadKill`。台湾事件用户对普通玩家击杀有例外；
+召唤物攻击会改用其人类主人。行会战关系或城战范围会把该次死亡视为战斗击杀；
+否则 `IsGoodKilling(self)` 决定合法防卫。非法击杀可扣双方 fame、给击杀者加 100 PK
+点、通知恋人并降低幸运；另有武器解锁/诅咒随机分支。击杀红名玩家另走 fame 转移分支。
+
+**静态边界**：红名受害者进入 `PKLevel>=2` fame 分支时，代码直接调用
+`LastHiter.IncFamePoint(100)`，该行无 nil 检查；若 `LastHiter=nil` 且
+`ENABLE_FAME_SYSTEM` 为真，异常会被 `Die 2` 捕获并中止该 PK 阶段余下处理。源码可证
+该空指针路径的守卫缺失，但本轮没有运行验证其可达性。`CmdOneKillMob` 另可对前方
+`RaceServer>=RC_ANIMAL` 目标直接调用动态 `Die`；多个怪物类也覆写 `Die` 并调用 inherited，
+这些覆写体不在本轮范围。
 
 ---
 

@@ -13017,3 +13017,49 @@ covered 334 / 165,829，partial 16 / 89,265，excluded 43 / 60,230，pending 0�
 三个目标文档的 `git diff --check` 通过。未运行 Delphi/GameServer 或游戏内场景。
 提交前 global privacy scanner 对三个 staged 文档与 commit message 均返回退出码 0；
 staged paths 仅为本轮授权的三个文档。
+
+## Round 928 — 2026-09-28：`ObjBase.pas` 死亡、经验归属与 PK 合法性
+
+**〔范围与调用链〕** 经授权 source reader 完整读取 `TCreature.Die:4898-5360`、
+`Alive:5362-5374`、`SetLastHiter:5376-5394`、`AddPkHiter:5397-5431`、
+`CheckTimeOutPkHiterList:5433-5459`、`ClearPkHiterList:5461-5468`、
+`IsGoodKilling:5470-5486`；选读 `TCreature.Run:14394-14493/14728-14734`，
+`StruckDamage` hitter path `:6481-6543`、消息/毒/动物/魔法调用
+`:14278-14320`、`:17218-17239`、`:25604-25615`、`Magic.pas:211-239/805-822/1260-1290`，
+以及直接 kill command `:20291-20299`。本轮无 Delphi/GameServer 运行。
+
+**〔死亡入口〕** `Run` 先排空 `RunMsg` 队列；`NeverDie` 每轮补满 HP/MP。活体 HP=0 时先尝试
+复活戒指（60 秒冷却，耐久扣减，恢复满 HP），仍为 0 才调用 `Die`；尸体超过 3 分钟
+`MakeGhost(5)`。`Die` 对安全区内且 `PKLevel<2` 的玩家恢复 `Abil.HP`/`WAbil.HP=1`
+并早退；`NeverDie` 也早退。正常死亡设置死亡标志/时间、清 PK 列表、重置恢复累积值；
+`Master<>nil` 时清除击杀归属；生日特权设置两种掉落抑制旗标。
+
+**〔阶段与经验/任务〕** `Die` 的经验/地图任务、PK 处罚、掉落/日志各在独立
+`try/except`，分别输出 `Die 1/2/3`；某阶段异常会跳过该阶段余下逻辑，但后续阶段仍继续。
+怪物死亡先按 `ExpHiter` 给经验；若其为有主召唤物则同时给召唤物 slave exp 与主人经验。
+只有 `ExpHiter=nil` 才退回玩家 `LastHiter`。冒险服不入经验；地图任务只从 ExpHiter
+分支调用，组员须存活、同环境且 X/Y 各在 12 格内。LastHiter-only fallback 没有地图任务分支。
+
+**〔hitter 与 PK〕** `SetLastHiter` 记录最后一击，`ExpHiter` 只在 nil 时确定并在同一 hitter
+后续命中时刷新时间。受击 `StruckDamage`、`RM_STRUCK`、`RM_MAKEPOISON`、动物被击消息、
+魔法中毒/石化/亡灵转化等路径为来源。当前 `AddPkHiter` 用 `BoIllegalAttack` 标记先行
+非法攻击；双方 `PKLevel<2`、不在 Fight 区、攻击者未已有非法标记时生效。`TCreature.Run` 每 5 秒仅对
+`RaceServer=RC_USERHUMAN` 的实体巡检；标记超过 60 秒后清除并恢复名字颜色。
+`IsGoodKilling` 只读取受害者 `BoIllegalAttack`，`PKHiterList` 搜索全部在注释中。
+
+**〔处罚与风险〕** 普通 PK 处罚只在非冒险服、非四种 Fight 区、低 PK 玩家受击且有 hitter
+的门内计算；台湾事件、行会战、城战及 victim 的非法攻击状态有豁免/正当防卫分支。
+当红名受害者走 fame 转移分支时，源码直接对 `LastHiter` 调 `IncFamePoint` 而无 nil 检查；
+`Die 2` 外层会捕获异常，但真实可达性未运行验证。`Alive` 只复位死亡状态并发复活/光照消息，
+`RecalcAbilitys` 留在注释中。`CmdOneKillMob` 和派生怪物 `Die` 覆写属于未读完整的边界。
+
+**〔未闭合〕** EI 原版死亡、经验归属、PK 惩罚和复活机制仍缺 `primary-static` 证据；
+没读完 `ObjMon`/`ObjMon2`/`ObjMon3` 派生覆写、`TAnimal`/`TUserHuman` 其余实现，
+也没有运行 Delphi 或验证无 hitter fame 边界。`ObjBase.pas` 继续标 `partial`。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；
+`python3 Tools/source-read/ledger.py --summary`：393 文件 / 315,324 行，
+covered 334 / 165,829，partial 16 / 89,265，excluded 43 / 60,230，pending 0；
+三个目标文档的 `git diff --check` 通过。未运行 Delphi/GameServer 或游戏内场景。
+提交前 global privacy scanner 对三个 staged 文档及 commit message 均返回退出码 0；
+staged paths 仅为本轮授权的三个文档。
