@@ -12962,3 +12962,58 @@ Banjjak server helper，再按 `StdMode` 将改写字段合并到 `TAddAbility`�
 `python3 Tools/source-read/ledger.py --summary`：393 文件 / 315,324 行，
 covered 334 / 165,829，partial 16 / 89,265，excluded 43 / 60,230，pending 0；三个授权文档的 staged global privacy scan 与 `git diff --cached --check` 均通过。
 未运行 Delphi/GameServer、未碰数据库；无 EI 服务端运行时对照。
+
+## Round 927 — 2026-09-28：`ObjBase.pas` 屠宰、死亡背包/装备与地面掉落
+
+**〔范围与调用链〕** 使用授权 `Tools/source-read/read_src.py` 读取
+`Source/GameServer/ObjBase.pas:4416-4896`、`:12635-12933`，并选读死亡掉落条件
+`:5164-5227`、登出事件物品 `:26272-26310`、有效 `ServerGetButch` `:26873-26908`；
+`:26839-26871` 是注释掉的旧屠宰实现。`ObjBase.pas` 的 GameServer 项目映射已由 Round 926
+核实。本轮只读代码与文档，没有运行 Preview GameServer 或改动数据库。
+
+**〔屠宰与肉类〕** 活跃屠宰路径要求死亡、未成骨、`BoAnimal` 且目标在前方两格；
+每刀把 `BodyLeathery` 减 5–20、`MeatQuality` 减 100–300 并钳零。韧性归零后，
+符合 `RC_ANIMAL <= RaceServer < RC_MONSTER` 的对象转骨架并把肉质写到
+`StdMode=40` 肉类 `Dura`；随后尝试将尸体 `ItemList` 全部转入玩家，`Dura=0` 的计数
+物先设为 1，正数计数先尝试堆叠，不能添加时停止。单项地面掉落肉类还会在
+`DropItemDown` 中把 `Dura` 减 2,000、钳零。
+
+**〔背包掉落〕** `ScatterBagItems` 有一次性抑制门；默认非玩家全掉、玩家 `PKLevel>=2`
+全掉，低红名玩家常规概率为 1/3，菲律宾分支为 1/6。装饰物与玩家 `UniqueItem & $04`
+排除；台湾事件用户只掉 `TAIWANEVENTITEM`。计数物复制部分并仅在落地成功后扣原堆；
+非玩家 `StdMode=43` 矿石在落地前刷新 `Dura := GetPurity`。圣诞硬编码块全在注释中。
+
+**〔装备、金币与事件物品〕** 玩家装备按每槽 1/30 掷骰，`PKLevel>=3` 为 1/15；
+低于 3 的武器再加一层 50% 跳过门。`IDC_NEVERLOSE` 排除；`IDC_DIEANDBREAK` 和指定
+活动饰品只按怪物击杀门处理。fame 保护可能同时设置背包掉落抑制。`Die` 的外层战斗区、
+动物、法定地图条件及玩家侧 `Fight2Zone`/`NoDropItem`/`Fight4Zone` 门共同决定调用；
+任务怪击杀会跳过装备和背包掉落。金币一次最多 17×2,000，失败返还当前堆；登出事件物品
+只在断线/登出且非换服时掉落，落地时不带 ownership。
+
+**〔地面对象与归属〕** `GetDropPosition` 搜索可放格，满时回退到少于 8 个物品的最少
+堆叠格，否则用中心格。`DropItemDown`/`DropGoldDown` 写入 map item、掉落者与时间；
+`ANTI_MUKJA_DELAY` 为 120,000 ms，视野/行会遍历在超时后清除两个归属字段，鬼魂引用
+可提前清除。源码注释称 `itemownership` 是怪物掉落可拾取者；本轮未追完 Preview 拾取
+请求的资格判断。`DropItemDown` 的计数物品公式在 `Dura=1` 时传 `Random(0)`；只记录
+静态边界，不断言 Delphi 运行结果。
+
+**〔Zircon 对照〕** 直接选读 `PlayerObject.Die:16294-16509`/`DeathDrop:16511-16670`、
+手动 `ItemDrop:8476-8566`，以及 `ItemObject.CanPickUpItem:53-80`。当前版死亡掉落受
+`Stats[DeathDrops]` 控制，按可掉标记与随机门处理背包、宠物背包和至多一件装备；
+手动丢弃另验证 `CanDrop`、锁定/婚姻旗标及生成成功后再扣库存。`ItemObject.Account`
+提供本人/队伍/行会/其他人的拾取等待时间；其实现不是 Preview 的实体指针字段。
+`MonsterObject.Die:2659-2666` 调用 `YieldReward`，后续 `Drop` 按 `DropInfo` 与 owner
+account 生成 `MonsterDrop`，并分支处理 harvest/宠物自动拾取。实现代际与模型不同，
+不以相似术语推断行为等价。
+
+**〔未闭合〕** 未找到 EI 原版服务端掉落/拾取的 `primary-static` 证据；没有 Delphi、
+Preview GameServer 或实际游戏运行验证。`Random(0)` 边界、Preview 拾取权限消费点、
+其余 `TAnimal`/`TUserHuman` 方法和 ObjBase 其余大段实现仍未闭合，coverage ledger
+继续将 `ObjBase.pas` 标为 `partial`。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；
+`python3 Tools/source-read/ledger.py --summary`：393 文件 / 315,324 行，
+covered 334 / 165,829，partial 16 / 89,265，excluded 43 / 60,230，pending 0；
+三个目标文档的 `git diff --check` 通过。未运行 Delphi/GameServer 或游戏内场景。
+提交前 global privacy scanner 对三个 staged 文档与 commit message 均返回退出码 0；
+staged paths 仅为本轮授权的三个文档。

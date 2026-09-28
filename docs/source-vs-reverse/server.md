@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -500,19 +500,75 @@ then begin
 **`SendRefMsg`**（`:3363`）是视野系统的出口 —— `SearchViewRange` 建立的
 `VisibleActors` 列表在这里被用来分发消息。
 
-### 10.5 掉落族（`:4432-4760`）
+### 10.5 掉落、尸体与归属（Round 927；`:4416-4896`, `:12679-12933`）
 
-| 方法 | 行 | 语义 |
+| 方法 | 位置 | 实现 |
 |---|---|---|
-| `TakeCretBagItems(target)` | `:4432` | 从对方尸体取全部物品 |
-| `ScatterBagItems(itemownership)` | `:4509` | 散落背包物品 |
-| `DropEventItems` | `:4688` | 掉落事件物品（注释：**加载时不存在、后加进来的才掉**） |
-| `ScatterGolds(itemownership)` | `:4727` | 散落金币 |
-| `DropUseItems(itemownership; DieFromMob)` | `:4760` | 按**耐久度**掉落（`DieFromMob` 区分是否被怪杀死） |
+| `ApplyMeatQuality` | `:4416` | 把尸体 `MeatQuality` 写入 `StdMode=40` 肉类的 `Dura` |
+| `TakeCretBagItems(target)` | `:4432` | 屠宰完成后转移目标 `ItemList`；计数物品先尝试叠加 |
+| `ScatterBagItems(itemownership)` | `:4509` | 按实体类型、PK 等级、版本和事件标记散落背包 |
+| `DropEventItems` | `:4688` | 仅掉落 `TAIWANEVENTITEM`；实际调用在断线/登出且非换服路径 |
+| `ScatterGolds(itemownership)` | `:4727` | 每次最多生成 17 堆、每堆至多 2,000 金币 |
+| `DropUseItems(itemownership, DieFromMob)` | `:4760` | 玩家死亡时处理装备栏掉落、事件饰品和 `IDC_DIEANDBREAK` |
+| `GetDropPosition` / `DropItemDown` / `DropGoldDown` | `:12679` / `:12756` / `:12882` | 选择落点、创建地面对象并写归属/掉落时间 |
 
-**`itemownership`** 参数贯穿全部掉落函数 —— 即**掉落物归属**（防抢怪），
-与 §10.2 的 `pmapitem.Ownership`/`Droper` + `ANTI_MUKJA_DELAY` 配套
-（「먹자 보호」= 防抢食保护）。
+#### 10.5.1 屠宰与尸体物品转移
+
+活跃 `ServerGetButch` 为 `:26873-26908`；此前 `:26839-26871` 是被注释掉的旧版。
+对前方两格内已死亡、未成骨且 `BoAnimal` 的目标，每次屠宰随机减少
+`BodyLeathery` 5–20、`MeatQuality` 100–300（下限 0）。当 `BodyLeathery <= 0`，
+特定 `RC_ANIMAL <= RaceServer < RC_MONSTER` 的动物变骨架并调用 `ApplyMeatQuality`；
+随后调用 `TakeCretBagItems`，无可取物时提示，尸体韧性重置为 50，并刷新 `DeathTime`。
+`ApplyMeatQuality` 只对 `StdMode=40` 写 `Dura := MeatQuality`。
+
+`TakeCretBagItems` 从目标列表首项反复处理：计数物品且 `Dura>0` 时先以
+`UserCounterItemAdd` 合并，成功后删除尸体列表项；`Dura=0` 会先改成 1；未合并的物品
+走 `AddItem`，失败即停止，成功后从尸体列表移除。它不是一般死亡掉落，而是本轮追到的
+屠宰转移路径。
+
+#### 10.5.2 背包与装备掉落
+
+`ScatterBagItems` 先消费并清除一次性 `DontBagItemDrop`。玩家落点搜索宽度为 2，
+非玩家为 3；非玩家默认全掉，玩家在 `PKLevel >= 2` 时全掉，否则常规分支按区域
+以 `Random(3)=0` 或 Philippines `Random(6)=0` 掷骰。台湾事件用户走单独分支，只尝试
+`TAIWANEVENTITEM`。装饰袋不掉，玩家 `UniqueItem & $04` 物品不掉。堆叠物品复制一部分
+再落地，只有 `DropItemDown` 成功才扣原堆数量；普通非堆叠物品落地成功后才从列表删除。
+非玩家的 `StdMode=43` 矿石先写入 `GetPurity`。玩家侧用 `RM_DELITEMS` 同步被移除项。
+圣诞硬编码掉落位于整段注释中，不执行。
+
+`DropUseItems` 的 `DontUseItemDrop` 是独立的一次性退出门。对启用 fame system 的玩家，
+高 fame grade 有 50% 全部装备保护；较低 grade 用源码公式
+`((_MAX(0, FameGrade-10) div 3)+1)*10`（百分比）判定，触发时还设置
+`DontBagItemDrop`，让后续背包掉落也被跳过。韩版/菲律宾版特定巧克力、糖果、幸运勺等
+饰品只在被怪物击杀时消失；`IDC_DIEANDBREAK` 装备同样只在 `DieFromMob` 时清除。
+其余装备逐槽按 `PKLevel >= 3 ? Random(15) : Random(30)` 掷骰；低于 PK 3 的武器再过
+一次 50% 跳过门。玩家 `IDC_NEVERLOSE` 物品排除；地面创建成功才清空装备槽并发送删除表。
+
+`Die` 中掉落总路径受非 `FightZone`、非 `Fight3Zone`、非动物、非 `LawFull` 外门限制。
+玩家路径另受 `Fight2Zone`/`NoDropItem` 限制；`Fight4Zone` 且击杀者是玩家时跳过本分支。
+怪物击杀且非任务怪时调用 `DropUseItems(nil, TRUE)`；无击杀者调用 `DropUseItems(nil, FALSE)`；
+玩家击杀不调用装备掉落，但仍可能走 `ScatterBagItems`。任务怪击杀同时抑制背包掉落。
+非玩家尸体的背包/金币掉落还要求无 `Master` 且非 `BoNoItem`，金币另要求
+`RaceServer >= RC_ANIMAL`。
+
+#### 10.5.3 事件物品、金币与地面对象
+
+`DropEventItems` 在连接关闭且 `not BoChangeServer` 时调用（`:26272-26289`），发生在
+`KillAllSlaves` 之后；反向遍历玩家背包，只对事件物品调用 `DropItemDown`，归属参数为
+`nil`、掉落者为自己，成功后删除背包项并发 `RM_DELITEMS`。
+`ScatterGolds` 消费一次性 `DontBagGoldDrop`；否则以最多 17 次循环、每堆最多 2,000
+扣减金币，落地失败会返还当前堆并停止，最后调用 `GoldChanged`。超过 34,000 的余额
+不会由单次循环全部散出。
+
+`GetDropPosition` 按半径从近到远扫描可放置格，遇空格即选；找不到空格时，优先用已有
+物品数少于 8 的最少堆叠格，否则回退到中心坐标。`DropItemDown` 对 `StdMode=40` 肉类
+先把 `Dura` 减 2,000 并钳到 0；创建 `TMapItem` 时记录 `Ownership`、`Droptime`、
+`Droper`，装饰物则把 `Ownership` 改为 `droper`。只有 `AddToMap` 返回新对象自身才算
+成功。`DropGoldDown` 也记录归属与时间，固定用宽度 3 找位置；金币扣减由调用者负责。
+`ANTI_MUKJA_DELAY = 2*60*1000`；`SearchViewRange` 和 `Guild` 的物品遍历在超过
+120,000 ms 后清除 `Ownership`/`Droper`，更早遇到鬼魂实体时也会分别清理引用。
+源码注释把 `itemownership` 描述为怪物掉落的可拾取者；本轮确认了字段写入/清理，没有
+追到拾取请求端的完整资格判定，故不把这些字段单独等同于完整拾取策略。
 
 ### 10.6 物品等级/职业转换（Round 926；`:1802-2722`）
 
@@ -622,13 +678,17 @@ DC 为 `(1,-2)`，之后 DC/SC 为 30–39 `(2,2)/(0,2)`、40–49 `(3,6)/(1,3)`
 | 视野半径 | 未闭合 | `ViewRange` 字段 + 边界钳制 | — |
 | 残影超时 | 未闭合 | **10 分钟**（`:3667`） | — |
 | 掉落物超时 | 未闭合 | **1 小时**（`:3715`） | — |
-| 防抢食保护 | 未闭合 | `ANTI_MUKJA_DELAY` + `Ownership`/`Droper` | — |
+| 防抢食归属 | 未闭合 | `Ownership`/`Droper` 写入；`ANTI_MUKJA_DELAY=120,000ms` 扫描清理；拾取资格判定未闭合 | — |
 | 跨服移动字段集 | 未闭合 | 7 个字段（`:4184-4194`） | — |
 | 怪物互不可见优化 | 未闭合 | `RaceServer < RC_ANIMAL` 门（`:3694`） | — |
 | 物品职业/等级转换 | 本轮未找到能证明服务端数值公式的 EI `primary-static` 证据 | `ObjBase.pas:1802-2721` 客户端副本改写；`:9321-10262` 服务器能力副本改写 | `PlayerObject.RefreshStats`（`:2214-2517`）累加 `ItemInfo.Stats`、`UserItem.Stats` 与 socket stats；SetInfoStat 另按 class/level 门控，属于数据驱动模型，未证明与 Preview 公式等价 |
+| 怪物/尸体袋掉落 | 未闭合 | `ScatterBagItems` 对现有背包按版本、PK 与实体类型处理；地面对象带归属/掉落者指针 | `MonsterObject.Die → YieldReward → Drop` 按 `DropInfo`、owner/account、`NeedHarvest` 生成当前版战利品；不是同一实现 |
+| 玩家死亡掉落 | 未闭合 | `DropUseItems` 掉装备；`ScatterBagItems` 独立处理背包，任务/地图门控不同 | `PlayerObject.Die` 受安全区/Fight 与 `Stats[DeathDrops]` 门控；`DeathDrop` 按可掉标记随机处理背包、宠物背包及一件装备 |
+| 地面拾取归属 | 未闭合 | Preview 写 `Ownership`/`Droper` 并由遍历超时清理；拾取判定本轮未追全 | `ItemObject.CanPickUpItem` 按 `Account` 与配置给予本人/队伍/行会/其他人的拾取门限（2/5/10 分钟）；模型与 Preview 指针字段不等价 |
 
-原版项保持 `primary-static` 边界；本轮源码结论仍为 `secondary-source`。Zircon 精读只覆盖
-上述 stats refresh 范围，且本次限定搜索的 Zircon `ServerLibrary/LibraryCore` 中未找到 Preview helper 的同名函数；不据此声称所有 Zircon 装备逻辑均已穷尽或与 Preview 同版。
+装备等级/职业转换仍保持 `primary-static` 原版证据缺口、Preview `secondary-source` 的边界。
+Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读死亡掉落、地面物品归属
+和怪物奖励路径，不据局部实现声称完整跨版本等价。
 
 ### 10.8 未验证项
 
@@ -637,10 +697,11 @@ DC 为 `(1,-2)`，之后 DC/SC 为 30–39 `(2,2)/(0,2)`、40–49 `(3,6)/(1,3)`
 | EI 原版对应的等级/职业服务端公式 | 客户端 EXE 静态证据不能代替服务器实现；本轮未找到对应 primary-static 证据 |
 | 物品索引 692–701、706–708 的 EI DB 名称/基础属性 | 只读了转换源码，未解析权威 ItemInfo 数据行 |
 | `ChangeItemWithLevel` 等级改写是否影响服务器最终数值能力 | helper 直接调用只落在客户端物品副本；无运行期证据，不判断是否为缺失或设计边界 |
-| `TakeCretBagItems`/`ScatterBagItems` 等掉落族实现 | 只读了签名与注释 |
+| EI 原版掉落规则/掉落保护 | 未找到能证明本轮 Preview 服务端细节的 `primary-static` 证据；Zircon 对照不代替 EI 证据 |
+| `ScatterBagItems` 堆叠数为 1 时的 `Random(0)` 边界 | 静态上参数可达；Delphi `Random(0)` 运行语义与实际掉落未执行验证 |
+| Preview `Ownership`/`Droper` 的拾取请求资格判定 | 本轮核对了字段写入与扫描清理，未追完拾取命令分支 |
 | `RC_ANIMAL`/`RC_USERHUMAN`/`OS_*` 常量值 | 未查定义（疑在 `M2Share.pas`） |
-| `ANTI_MUKJA_DELAY` 具体值 | 未查 |
-| `TAnimal`/`TUserHuman` 的其余实现段 | Round 831 只覆盖选定实现；完整方法覆盖仍待推进 |
+| `TAnimal`/`TUserHuman` 的其余实现段 | Round 831 仅覆盖选定实现；本轮补读屠宰调用路径，不构成完整方法覆盖 |
 
 ---
 
