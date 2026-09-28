@@ -211,10 +211,10 @@ end;
 的独立解析器验证：
 
 ```python
->>> m = MR.indep_parse('/home/tetsuya/mir2ei/Map/0.map')
+>>> m = MR.indep_parse('Map/0.map')
 >>> m.w, m.h, m.n, m.n_records
 (800, 800, 640000, 640000)          # 完整
->>> m = MR.indep_parse('/home/tetsuya/mir2ei/Map/0_002.map')
+>>> m = MR.indep_parse('Map/0_002.map')
 >>> m.w, m.h, m.n, m.n_records
 (20, 20, 400, 371)                  # 截断，缺 29 格
 ```
@@ -354,7 +354,7 @@ python3 Tools/source-read/read_src.py show Source/GameServer/Envir.pas --start 3
 python3 -c "
 import sys; sys.path.insert(0,'Tools/maps')
 import map_roundtrip as MR
-for p in ('/home/tetsuya/mir2ei/Map/0.map','/home/tetsuya/mir2ei/Map/0_002.map'):
+for p in ('Map/0.map','Map/0_002.map'):
     m = MR.indep_parse(p)
     print(p.split('/')[-1], m.w, m.h, m.n, m.n_records)
 "
@@ -362,7 +362,7 @@ for p in ('/home/tetsuya/mir2ei/Map/0.map','/home/tetsuya/mir2ei/Map/0_002.map')
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -514,20 +514,109 @@ then begin
 与 §10.2 的 `pmapitem.Ownership`/`Droper` + `ANTI_MUKJA_DELAY` 配套
 （「먹자 보호」= 防抢食保护）。
 
-### 10.6 物品等级/职业转换（`:1802-2722`）—— 一大块业务逻辑
+### 10.6 物品等级/职业转换（Round 926；`:1802-2722`）
 
-| 方法 | 行范围 | 语义 |
+| 方法 | 位置 | 职责 |
 |---|---|---|
-| `ChangeItemWithLevel(citem, lv)` | `:1802-2019` | 按等级换装（**217 行**） |
-| `ChangeItemByJob(citem, lv)` | `:2020-2269` | 按职业换装（**250 行**） |
-| `BanjjakChangeItemByJob(citem, lv)` | `:2270-2722` | 「半自动」职业换装（**453 行**） |
+| `ChangeItemWithLevel(citem, lv)` | `:1802-2017` | 按翼装外形/武器物品索引改写待发 `TClientItem.S` |
+| `ChangeItemByJob(citem, lv)` | `:2020-2268` | 普通龙装备、守护石/奖牌、PBKing 衣服的职业字段改写 |
+| `BanjjakChangeItemByJob(citem, lv)` | `:2270-2721` | “반짝 이벤트 3차”翼装/武器的职业与等级改写 |
+| `ApplyItemParameters(uitem, aabil)` | `:9321-9545` | 先合成升级后物品副本，再把字段并入服务器能力值 |
+| `ApplyItemParametersByJob` / `BanjjakApplyItemParametersByJob` | `:9549-10262` | 与客户端改写并行的服务器职业参数路径 |
 
-`BanjjakChangeItemByJob` 是**本文件最长的单个函数之一**（453 行）——
-「반짝」（Banjjak）疑为某种装备转换机制。**未细读，标注 pending。**
+#### 10.6.1 `ChangeItemWithLevel`：名称索引与等级档
+
+入口先以 `UserEngine.GetStdItemIndex(citem.S.Name)` 得到 `ItemIndex`。翼装分支要求
+`Shape = DRESS_SHAPE_WING`（9）且 `StdMode` 为男/女衣服；物品索引 700/701 用独立档，
+其他翼装走通用档。两档在 `lv < 30` 均不加下列属性；700/701 的源码门是 `lv >= 20`，
+但 20–29 仍只保留基础值。
+
+| 翼装档 | 等级 | DC | MC / SC | AC | MAC |
+|---|---:|---|---|---|---|
+| 索引 700/701 | 30–39 | `+MakeWord(0,1)` | 各 `+MakeWord(0,2)` | `+MakeWord(2,4)` | `+MakeWord(1,3)` |
+| 索引 700/701 | ≥40 | `+MakeWord(0,2)` | 各 `+MakeWord(0,4)` | `+MakeWord(5,7)` | `+MakeWord(2,4)` |
+| 其他翼装 | 30–39 | `+MakeWord(0,1)` | 各 `+MakeWord(0,2)` | `+MakeWord(2,3)` | `+MakeWord(0,2)` |
+| 其他翼装 | 40–49 | `+MakeWord(0,3)` | 各 `+MakeWord(0,4)` | `+MakeWord(5,5)` | `+MakeWord(1,2)` |
+| 其他翼装 | ≥50 | `+MakeWord(0,5)` | 各 `+MakeWord(0,6)` | `+MakeWord(9,7)` | `+MakeWord(2,4)` |
+
+武器分支要求 `StdMode` 5/6，并只处理名称索引 692、693、694、697、698、699；**695/696
+没有相应分支**。这些活动分支在 `PKLevel >= 2` 时都向 `MAC` 加 `MakeWord(10,0)`；
+等级 30–39、≥40 时分别改写重量与攻击字段。693/698 另在 `<30` 时分别增加
+`SpecialPwr` 1/2；源码注释将其标为“反짝”装备。实际 DB 行名与基础值未在本轮解析，
+因此不把索引推断成具体 EI 装备名。
+
+#### 10.6.2 `ChangeItemByJob`：龙装备与其他职业专属字段
+
+`Job` 分支注释映射为 0=战士、1=술사、2=道士。识别条件使用物品 `StdMode/Shape`：
+龙戒（22/198）、龙手镯（26/199）、龙项链（19/200）、龙衣（10/11 与 10）、
+龙头盔（15/201）、龙武器（5/6 与 37）；此外还有 `StdMode=53` 的棒棒糖/奖牌，
+以及 `StdMode=10/11, Shape=11` 的 PBKing 衣服。
+
+每个职业分支会清零非本职业的 DC/MC/SC 字段，并对龙武器等改写 DC、AC、MAC；
+例如战士龙武器增加 DC 并清零 MC/SC，道士分支增加 DC、清零 MC，并调整 AC 低字节。
+龙手镯/龙衣/PBKing 衣服还改写 AC/MAC、准确/敏捷或 HpAdd/MpAdd。**此函数体不读取
+形参 `lv`**；等级变化不由 `ChangeItemByJob` 实施。服务器对应的
+`ApplyItemParametersByJob` 在 `:9549-9803` 对升级后的 `TStdItem` 副本按同一
+`Job` 与 `StdMode/Shape` 分支改写；两处源码注释明确要求数值保持一致，但没有自动
+一致性校验。
+
+#### 10.6.3 `BanjjakChangeItemByJob`：活动代码与等级/职业档
+
+函数内两段 `{ ... }` 注释屏蔽旧戒指/手镯/项链/头盔及守护石/奖牌/PBKing 分支；
+当前可执行的职业转换仅覆盖龙衣外形（`StdMode` 10/11、`Shape=10`）与龙武器外形
+（`StdMode` 5/6、`Shape=37`）。调用方按 `TUserItem.Index` 706/707/708 选择
+`Banjjak...` helper，helper 本身再按 `StdMode/Shape` 过滤。
+
+龙衣三个职业都在 `lv < 50` 时清除 `EFFTYPE_HP_MP_ADD`（值 5）的两个效果槽及其
+rate/value；职业决定保留 DC、MC、SC 中的一类，另两类清零。`lv < 30` 保持基础攻击；
+30–39、40–49、≥50 时，职业主攻字段依次增加：
+
+| Job | 主攻字段 | 30–39 | 40–49 | ≥50 |
+|---:|---|---|---|---|
+| 0 | DC | `MakeWord(0,1)` | `MakeWord(1,2)` | `MakeWord(1,3)` |
+| 1 | MC | `MakeWord(0,2)` | `MakeWord(1,4)` | `MakeWord(1,6)` |
+| 2 | SC | `MakeWord(0,2)` | `MakeWord(1,4)` | `MakeWord(1,6)` |
+
+龙衣的 AC/MAC 档对三个职业相同：30–39 加 `MakeWord(2,3)`/`MakeWord(1,3)`；
+40–49 加 `MakeWord(5,6)`/`MakeWord(2,4)`；≥50 加 `MakeWord(8,9)`/`MakeWord(2,7)`。
+
+龙武器同样按 `Job` 清零/保留主攻字段，`PKLevel >= 2` 时先给 MAC 加
+`MakeWord(10,0)`。战士 DC 档为 `<30: MakeWord(-1,11)`、30–39 `(0,17)`、
+40–49 `(1,24)`、≥50 `(2,32)`；술사在 `<30` 不加 DC/MC，之后按 30–39
+DC/MC `(1,1)/(1,2)`、40–49 `(2,2)/(1,4)`、≥50 `(3,4)/(2,7)`；道士在 `<30`
+DC 为 `(1,-2)`，之后 DC/SC 为 30–39 `(2,2)/(0,2)`、40–49 `(3,6)/(1,3)`、
+≥50 `(4,12)/(2,6)`。其中括号均为 `MakeWord(低字节增量, 高字节增量)`，原始
+`-1/-2` 运算按源码记录；字节转换后的边界结果未运行验证。
+三职业的 AC/MAC 附加调整另有边界：战士/道士始终将 AC 低字节减 2；술사始终将 MAC 高字节减 12（低于等于 12 时置 0），而战士/道士只在 `lv < 50` 时做该 MAC 调整；술사也只在 `lv < 50` 时另将 AC 低字节减 2。
+
+`BanjjakApplyItemParametersByJob`（`:9805-10262`）复制同一活动衣服/武器规则到服务器
+能力值计算；其注释同样要求与 `BanjjakChangeItemByJob` 一致。重复实现形成维护约束，
+但本轮未构建 Delphi 程序或运行数值夹具。
+
+#### 10.6.4 调用链与服务器/客户端边界
+
+- `RecalcAbilitys` 的装备循环 `:8173-8204` 遍历 `UseItems[0..U_CHARM]`。耐久为 0
+  的物品只累计重量并跳过 `ApplyItemParameters`；其他物品先调用
+  `ApplyItemParameters` 与 `ApplyItemParametersEx`。前者在 `:9321-9545` 复制
+  `TStdItem`、调用 `ItemMan.GetUpgradeStdItem`，按索引 706–708 选 Banjjak helper，
+  其余选普通职业 helper，随后按 `StdMode` 将属性累计进 `TAddAbility`。
+- `SendUseItems` 与 `ServerQueryUserState` 都在组装客户端 `TClientItem` 副本后，
+  仅在衣服槽先调用 `ChangeItemWithLevel`，随后按索引分派职业转换；前者发
+  `SM_SENDUSEITEMS`，后者把 `TUserStateInfo` 发为 `SM_SENDUSERSTATE`。
+  `SendUpdateItem`/`SendUpdateItemByJob` 分派普通或 Banjjak 职业转换；
+  `SendUpdateItemWithLevel` 只调用等级 helper。
+- `ServerGetTakeOnItem` 在 `:26550-26573` 先 `RecalcAbilitys`、发送能力更新，
+  再按翼装形状/武器索引发送改写物品。`SendUpdateItemByJob(ui, lv)` 的 Banjjak
+  分支传 `Abil.Level`，普通分支传 `lv`；普通 `ChangeItemByJob` 不读取该形参。
+
+源码内 `ChangeItemWithLevel` 的直接调用均在客户端物品副本构造/发送路径；上述
+`RecalcAbilitys` 循环走 `ApplyItemParameters`，没有调用此等级 helper。因此本轮只确认
+等级档会出现在服务器发送的 `TClientItem.S` 中，**不据此断言它也进入服务器数值能力**；
+这一区分的游戏内实际效果仍未验证。
 
 ### 10.7 与原版 / Zircon 的对照
 
-| 项 | 原版反编译 | 源码 | Zircon |
+| 项 | 原版反编译 | Preview 源码 | Zircon |
 |---|---|---|---|
 | 视野搜索 | `SearchViewRange`（有调用点证据） | `:3567-3890` 完整实现 | `ServerLibrary/Envir/` 有对应 |
 | 视野半径 | 未闭合 | `ViewRange` 字段 + 边界钳制 | — |
@@ -536,19 +625,22 @@ then begin
 | 防抢食保护 | 未闭合 | `ANTI_MUKJA_DELAY` + `Ownership`/`Droper` | — |
 | 跨服移动字段集 | 未闭合 | 7 个字段（`:4184-4194`） | — |
 | 怪物互不可见优化 | 未闭合 | `RaceServer < RC_ANIMAL` 门（`:3694`） | — |
+| 物品职业/等级转换 | 本轮未找到能证明服务端数值公式的 EI `primary-static` 证据 | `ObjBase.pas:1802-2721` 客户端副本改写；`:9321-10262` 服务器能力副本改写 | `PlayerObject.RefreshStats`（`:2214-2517`）累加 `ItemInfo.Stats`、`UserItem.Stats` 与 socket stats；SetInfoStat 另按 class/level 门控，属于数据驱动模型，未证明与 Preview 公式等价 |
 
-**分级**：以上源码结论均 `secondary-source`；原版无对应证据的标 `source-only`。
+原版项保持 `primary-static` 边界；本轮源码结论仍为 `secondary-source`。Zircon 精读只覆盖
+上述 stats refresh 范围，且本次限定搜索的 Zircon `ServerLibrary/LibraryCore` 中未找到 Preview helper 的同名函数；不据此声称所有 Zircon 装备逻辑均已穷尽或与 Preview 同版。
 
 ### 10.8 未验证项
 
 | 项 | 原因 |
 |---|---|
-| `BanjjakChangeItemByJob`（453 行） | 未细读 |
-| `ChangeItemWithLevel`/`ChangeItemByJob`（467 行合计） | 只读了签名与规模 |
+| EI 原版对应的等级/职业服务端公式 | 客户端 EXE 静态证据不能代替服务器实现；本轮未找到对应 primary-static 证据 |
+| 物品索引 692–701、706–708 的 EI DB 名称/基础属性 | 只读了转换源码，未解析权威 ItemInfo 数据行 |
+| `ChangeItemWithLevel` 等级改写是否影响服务器最终数值能力 | helper 直接调用只落在客户端物品副本；无运行期证据，不判断是否为缺失或设计边界 |
 | `TakeCretBagItems`/`ScatterBagItems` 等掉落族实现 | 只读了签名与注释 |
 | `RC_ANIMAL`/`RC_USERHUMAN`/`OS_*` 常量值 | 未查定义（疑在 `M2Share.pas`） |
 | `ANTI_MUKJA_DELAY` 具体值 | 未查 |
-| `TAnimal`/`TUserHuman` 的实现段（`TCreature` 之后） | 未读 —— 见 §11 |
+| `TAnimal`/`TUserHuman` 的其余实现段 | Round 831 只覆盖选定实现；完整方法覆盖仍待推进 |
 
 ---
 

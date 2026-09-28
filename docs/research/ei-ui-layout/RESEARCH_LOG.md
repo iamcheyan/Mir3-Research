@@ -12908,3 +12908,57 @@ GetFameName(FameGrade)` → **称号是名字的一部分**（注释「명성호
 **〔unreached utilities and side effects〕** `LoadAbusiveList` runs during startup and via the `ReadAbuseInformation` command, but no external `ChangeAbusiveText` call or direct `AbusiveList` consumer was found; loaded words therefore do not establish a live text-scrubbing path. `SafeLoadFromFile` has no external caller, sets global `FileMode := 0` without restoring it, and calls `CloseFile` after `Reset` even when the open failed. `GetDistanceHour` approximates calendar years/months as 360/30 days and ignores minutes/seconds; no external caller was found. The Source/Common helpers were not behaviorally compared with the separate ImageEditor copy.
 
 **〔verification〕** Ledger row 301 covers all 1,009 lines. `python3 Tools/source-read/verify_all.py` returned ALL VERIFY PASS (393 files / 315,324 lines; covered 334 / 165,829, excluded 43 / 60,230, partial 16 / 89,265, pending 0 / 0). Exact four-path `git diff --check` passed; added-line credential/privacy scan found 0 matches across 22 added lines. No Delphi build, GameServer runtime, malformed-list fixture, or EI comparison was performed.
+
+## Round 926 — 2026-09-28：`ObjBase.pas` item level/job transformation and ability paths
+
+**〔范围与项目边界〕** 通过 `Tools/source-read/read_src.py` 完整读取
+`Source/GameServer/ObjBase.pas:1802-2722`（`ChangeItemWithLevel`、
+`ChangeItemByJob`、`BanjjakChangeItemByJob`），并读取服务器能力路径
+`:9321-10262`、`RecalcAbilitys` 装备循环 `:8173-8204` 与客户端发送/着装调用邻域
+`:22670-23000`、`:26550-26573`、`:28585-28613`。`Server_JOB_ItemGen.dpr:7-10`
+将 `ObjBase.pas` 纳入 GameServer 项目。来源为 CP949+混合注释；本轮未改代码。
+
+**〔按等级变换〕** `ChangeItemWithLevel` 用 `citem.S.Name` 查询 `ItemIndex`。
+`DRESS_SHAPE_WING=9` 的男/女衣服走翼装规则：索引 700/701 在 30–39、≥40 两档加 DC、
+MC/SC、AC、MAC；其他翼装另有 30–39、40–49、≥50 三档。武器 `StdMode=5/6` 的活动
+索引为 692/693/694/697/698/699，695/696 无分支；PKLevel≥2 时给 MAC 加
+`MakeWord(10,0)`，等级档改重量和攻击字段。693/698 在 30 级以下另加 `SpecialPwr`
+1/2。未读具体 ItemInfo 数据行，不把编号等同为已确认的 EI 装备名。
+
+**〔职业与 Banjjak 路径〕** 普通职业变换按 `Job` 0/1/2 与 `StdMode/Shape` 识别龙戒、
+手镯、项链、衣服、头盔、武器、守护石/奖牌和 PBKing 衣服；方法体不读取 `lv`。
+“반짝 이벤트 3차” helper 的注释块屏蔽旧装备分支，当前活动衣服/武器只走龙衣
+（10/11、shape 10）与龙武器（5/6、shape 37）。706/707/708 由调用方路由。
+衣服对三职业保留各自 DC/MC/SC 主攻字段，30/40/50 级分档；低于 50 时移除两个
+`EFFTYPE_HP_MP_ADD` 效果槽。武器按职业和等级改写 DC/MC/SC、AC/MAC，并在
+PKLevel≥2 时加 MAC。服务端 `ApplyItemParametersByJob` 和
+`BanjjakApplyItemParametersByJob` 对 `TStdItem` 副本重复对应逻辑；源码注释要求与
+客户端 `Change...` 值相等，但没有自动一致性检查。
+
+**〔能力计算与发包边界〕** `RecalcAbilitys` 遍历 `UseItems[0..U_CHARM]`；耐久为 0
+时只累计重量并跳过属性应用，其余调用 `ApplyItemParameters` / `ApplyItemParametersEx`。
+`ApplyItemParameters` 复制标准物品、叠加 `GetUpgradeStdItem`，按 706–708 选
+Banjjak server helper，再按 `StdMode` 将改写字段合并到 `TAddAbility`。相对地，
+`SendUseItems`、`ServerQueryUserState` 与 `SendUpdateItem*` 在客户端 `TClientItem`
+副本上执行转换并发送协议数据。穿戴路径先重算能力，再发送对应客户端物品。
+`ChangeItemWithLevel` 的直接引用都位于客户端副本构造/发送；`RecalcAbilitys` 使用
+`ApplyItemParameters` 且不调用该 helper。因此只证明等级公式进入已发送 item struct，
+不证明其进入服务器数值能力；该效果保留为运行期未验证。`SendUpdateItemByJob(ui,lv)`
+的 Banjjak 分支传 `Abil.Level`，普通分支传 `lv`；普通转换函数本身未使用 `lv`。
+
+**〔EI / Zircon 对照〕** 本轮未发现可证明 EI 服务端数值公式的 `primary-static`
+证据，不拿客户端 EXE 静态分析替代服务端实现。Zircon
+`PlayerObject.RefreshStats:2214-2517` 的选读范围直接把装备 `ItemInfo.Stats`、
+`UserItem.Stats`、socket stats 加入 Stats；SetInfoStat 另按 class/level 门控。
+限定搜索的 `ServerLibrary/LibraryCore` 未发现 Preview helpers 的同名函数；这是数据
+模型与硬编码 helper 的实现边界差异，不代表完整 Zircon 逻辑等价或穷尽。
+
+**〔未闭合与文档〕** EI 中 692–701、706–708 的 ItemInfo 名称/基础行值、服务端原版
+公式、等级转换是否影响实战能力、Delphi/游戏运行结果均未验证。`server.md` §10.6–10.8
+更新实现、调用链与证据边界；`coverage-ledger.tsv` 第 119 行记录所读范围，ObjBase
+保持 `partial`；提交前全局 privacy scan 命中 `server.md` 中的三处历史绝对地图路径样例/本机标识，已改为相对 `Map/...` 样例；本轮仅改这两份文档与本 RESEARCH_LOG。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；
+`python3 Tools/source-read/ledger.py --summary`：393 文件 / 315,324 行，
+covered 334 / 165,829，partial 16 / 89,265，excluded 43 / 60,230，pending 0；三个授权文档的 staged global privacy scan 与 `git diff --cached --check` 均通过。
+未运行 Delphi/GameServer、未碰数据库；无 EI 服务端运行时对照。
