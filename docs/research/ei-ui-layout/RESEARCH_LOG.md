@@ -13063,3 +13063,18 @@ covered 334 / 165,829，partial 16 / 89,265，excluded 43 / 60,230，pending 0�
 三个目标文档的 `git diff --check` 通过。未运行 Delphi/GameServer 或游戏内场景。
 提交前 global privacy scanner 对三个 staged 文档及 commit message 均返回退出码 0；
 staged paths 仅为本轮授权的三个文档。
+
+## Round 929 — 2026-09-28：`ObjBase.pas` 实体周期状态与调度
+
+**〔范围与调用链〕** 经授权 source reader 完整读取 `TCreature.Run:14394-14940`；查 `Run` dynamic 声明 `:683`、`TAnimal.Run:17243-17246`，并读 `UsrEngn.ProcessMonsters/ProcessMerchants/ProcessNpcs:3012-3175` 的分派与时间片。未读取其他派生 `Run` 覆写；未运行 Delphi/GameServer。
+
+**〔恢复与归属〕** 基类按 `ticksec` 差累计 HP/MP 恢复 tick；普通装备使用 20ms 单位，特定活动服装用 13ms；HP/MP 达门限后分别按最大值和 `HealthRecover`/`SpellRecover` 加成，另有 `IncHealth`/`IncSpell`/`IncHealing` 分段队列。负 `HealthTick` 超过门限时只在 HP>1 扣 1。`TargetCret` 在 30 秒、死亡/消失或任一轴相距超过 15 格时清空；`LastHiter` 为非人类 30 秒、人类 60 秒，且死亡/消失时清空；`ExpHiter` 为 6 秒、死亡、善狂或消失。毒伤分支的 `LastHiter := nil` 旧语句已注释。
+
+**〔状态与从属〕** `StatusArr` 只递减 `0<value<60000` 的项目；到期清除若干防御/隐身/泡泡标志并按需重算能力。`ExtraAbil` 到期清值、清旗标并重算。毒伤每 2.5 秒执行，停止 HP/MP 恢复 tick；无 hitter 但 `LastHiterRace=RC_USERHUMAN` 的人类传 `minimum=1`，源码注释说明此路防止毒伤杀死角色。主人死亡/消失会延迟把召唤体 HP 置 0；换服等待可延长到 15 秒。10 秒检查主人忠诚期限，超期从 `SlaveList` 移除并降 HP/改名；12 小时召唤寿命到期置 HP=0/`BoDisapear`。
+
+**〔周期与调度〕** 基类包括人类 1 秒灯油、5 秒 PK 标记超时检查、10 秒主人/从属检查、30 秒组队/交易引用清理和地图校验、2 分钟 PK 点衰减、1 小时在线/计时账号检查。`UsrEngn` 对怪物、商人、NPC 以 `RunNextTick` 门控并动态调用 `cret.Run`；怪物处理按 `MonLimitTime` 和 `MonCur`/`MonSubCur` 游标续跑，幽灵 5 分钟后释放。怪物单体异常会从出生点列表删除但没有显式 `Free`；商人/NPC 由整轮外层捕获异常。`TAnimal.Run` 先 `inherited Run`；其他派生覆写尚未逐个核实，不能把基类行为外推到所有实体。
+
+**〔未闭合〕** 未找到 EI 原版复活、恢复、毒伤和周期计时的 `primary-static` 对照；`ObjMon`/`ObjNpc` 等动态覆写及完整玩家调度链仍未闭合。`ObjBase.pas` 保持 `partial`；本轮没有运行期行为验证。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`python3 Tools/source-read/ledger.py --summary`：393 文件 / 315,324 行，covered 334 / 165,829，partial 16 / 89,265，excluded 43 / 60,230，pending 0；三个目标文档的 `git diff --check` 通过。
+提交前 global privacy scanner 对三个 staged 文档及 commit message 均返回退出码 0；staged paths 仅为本轮授权的三个文档。

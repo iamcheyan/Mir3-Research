@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -686,6 +686,7 @@ DC 为 `(1,-2)`，之后 DC/SC 为 30–39 `(2,2)/(0,2)`、40–49 `(3,6)/(1,3)`
 | 玩家死亡掉落 | 未闭合 | `DropUseItems` 掉装备；`ScatterBagItems` 独立处理背包，任务/地图门控不同 | `PlayerObject.Die` 受安全区/Fight 与 `Stats[DeathDrops]` 门控；`DeathDrop` 按可掉标记随机处理背包、宠物背包及一件装备 |
 | 地面拾取归属 | 未闭合 | Preview 写 `Ownership`/`Droper` 并由遍历超时清理；拾取判定本轮未追全 | `ItemObject.CanPickUpItem` 按 `Account` 与配置给予本人/队伍/行会/其他人的拾取门限（2/5/10 分钟）；模型与 Preview 指针字段不等价 |
 | 死亡主路径与击杀归因 | 未闭合 | `TCreature.Run` 在 HP=0 时检查复活能力后调用 `Die`；`ExpHiter`/`LastHiter` 分别影响经验和击杀归因 | Zircon `PlayerObject.Die` 与 `MonsterObject.Die` 分流；没有直接行为等价证据 |
+| 实体周期状态与中毒 | 本轮未核实 EI `primary-static` 定时规则 | `TCreature.Run` `:14394-14940` 覆盖恢复、状态到期、hitter 清理与毒伤；`UsrEngn` `:3012-3175` 调度怪物/NPC/商人 | — |
 
 装备等级/职业转换仍保持 `primary-static` 原版证据缺口、Preview `secondary-source` 的边界。
 Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读死亡掉落、地面物品归属
@@ -706,6 +707,7 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 | 红名死亡且 `LastHiter=nil` 时的 fame 分支 | `ENABLE_FAME_SYSTEM` 下 `LastHiter.IncFamePoint` 无局部 nil 守卫；异常由 `Die 2` 捕获；可达性未运行验证 |
 | 派生怪物 `Die` 覆写 | 搜索发现 `ObjMon`/`ObjMon2`/`ObjMon3` 的 `inherited Die` 调用；本轮未逐一读覆写体 |
 | EI 原版死亡/红名处罚/复活规则 | 未找到可证明 Preview 对应服务端行为的 `primary-static` 证据 |
+| `TCreature.Run` 的派生类有效行为 | 本轮完整读基类与 `TAnimal.Run` 的 inherited 路径；`ObjMon`/`ObjNpc` 等动态覆写未逐类审查，也没有运行验证 |
 
 ### 10.9 死亡、经验归属与 PK 合法性（Round 928；`:4898-5486`）
 
@@ -759,6 +761,37 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 该空指针路径的守卫缺失，但本轮没有运行验证其可达性。`CmdOneKillMob` 另可对前方
 `RaceServer>=RC_ANIMAL` 目标直接调用动态 `Die`；多个怪物类也覆写 `Die` 并调用 inherited，
 这些覆写体不在本轮范围。
+
+### 10.10 实体周期状态与调度（Round 929；`ObjBase.pas:14394-14940`、`UsrEngn.pas:3012-3175`）
+
+`TCreature.Run` 声明为 `dynamic`（`:683`），以下是基类路径，不代表每个派生实体最终执行完全相同的 tick。已读 `TAnimal.Run` 只调用 `inherited Run`（`:17243-17246`）。入口先排空消息队列并逐条调用 `RunMsg`；恢复、引用清理、计时器、状态到期和毒伤分处独立 `try/except`，分别记 `Run 0` 至 `Run 6`。某阶段异常会跳过该阶段剩余语句，但外层后续阶段仍可执行。
+
+#### 10.10.1 恢复与引用清理
+
+存活实体按 `ticksec` 的 `GetTickCount` 差累计 `HealthTick`/`SpellTick`：普通装备按 20ms 单位（注释 50 次/秒），指定活动服装按 13ms 单位（注释 75 次/秒）。达到门限后，HP 每次恢复 `MaxHP div 75 + 1` 再按 `HealthRecover` 加成，MP 恢复 `MaxMP div 18 + 1` 再按 `SpellRecover` 加成；另有 `IncHealth`/`IncSpell`/`IncHealing` 的分段恢复队列。若 `HealthTick < -HEALTHFILLTICK` 且 HP 大于 1，则每轮扣 1 HP。死亡实体不走自然恢复。
+
+目标与击杀归属有不同失效期限：`TargetCret` 在焦点超过 30 秒、目标死亡/消失或任一坐标轴相差超过 15 格时清空；`LastHiter` 对非玩家 30 秒、玩家 60 秒过期，且死亡/消失时清空；`ExpHiter` 超过 6 秒、死亡、`BoGoodCrazyMode` 或消失时清空。毒伤分支内原本清 `LastHiter` 的语句已注释，因此该分支本身不重置击杀归属。
+
+`Master` 死亡/消失后，召唤体在 1 秒后把 HP 置 0；主人是正在换服的人类时等待 15 秒。每 10 秒检查主人忠诚期限，过期时从主人 `SlaveList` 移除、清空 `Master`、HP 降为十分之一并改名；非零 `SlaveLifeTime` 超过 12 小时则置 HP=0 并设 `BoDisapear`。同一周期也清理死亡/消失的从属对象；30 秒周期清理失效队长、组员和交易对象并调用 `VerifyMapTime`。
+
+#### 10.10.2 状态、毒伤与周期计时
+
+`StatusArr` 只对 `0 < value < 60000` 的状态按每秒递减；到期时按状态清除防御/魔防提升、隐身或魔法泡泡等标志，必要时调用 `RecalcAbilitys` 并发送 `RM_ABILITY`。`ExtraAbil` 到期会清值和标志、触发重算；防御类状态及多数额外能力有 10 秒到期提示。
+
+每 2.5 秒处理中毒：动物的 `MeatQuality` 另减 1000；其余按 `1 + PoisonLevel` 调 `DamageHealth`，随后清零 HP/MP 恢复累积并发状态更新。仅当实体为人类、`LastHiter=nil` 且 `LastHiterRace=RC_USERHUMAN` 时传 `minimum=1`（源码注释为避免该路径毒死角色）；其他情况传 0。
+
+| 周期门限 | 基类动作 |
+|---|---|
+| 1 秒 | 人类 `UseLamp`；状态数组另按秒扣减 |
+| 5 秒 | 仅人类调用 `CheckTimeOutPkHiterList`；非法攻击标记满 60 秒后清除 |
+| 10 秒 | 检查主人忠诚期限与 12 小时召唤寿命 |
+| 30 秒 | 清理组队/交易引用并验证当前地图时间 |
+| 2 分钟 | `PlayerKillingPoint>0` 时调用 `DecPkPoint(1)` |
+| 1 小时 | 人类发送计时账号检查（测试服外、指定 `AvailableMode` 且 `FExpireCount=0`），并显示已在线小时数；旧注释中的 4 小时倍数已禁用 |
+
+#### 10.10.3 调度器边界
+
+`UsrEngn.ProcessMonsters`、`ProcessMerchants`、`ProcessNpcs` 以 `GetCurrentTime - RunTime > RunNextTick` 门控，更新 `RunTime` 后按 `SearchRate` 调 `SearchViewRange`，再通过动态 `cret.Run` 分派。怪物列表另受 `MonLimitTime` 时间片限制，以 `MonCur`/`MonSubCur` 续跑；处理器异常会从出生点列表删除该对象（对应 `Free` 仍为注释），幽灵怪物 5 分钟后删除并释放。商人/NPC 使用 `NpcLimitTime` 和各自游标；它们的异常由整个处理器的外层捕获。`TAnimal.Run` 显式先调用基类，但其他怪物/NPC 覆写未逐一核实，不能把基类 tick 直接等同所有派生体行为。
 
 ---
 
