@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1364,6 +1364,40 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 
 **未验证**：`MagicMan.IsSwordSkill`/`SpellNow`/`GetDefMagic`/`IsProperFriend` 实现未逐一读；
 概率公式的实际命中率未运行验证；无运行期验证。
+
+### 10.22 友方判定、名声、矿石纯度与额外能力（Round 955；`ObjBase.pas:15152-15392/17126-17196`）
+
+#### 10.22.1 `IsProperFriend`（`:15152-15214`）
+
+**与 `IsProperTarget` 相对**，用于治疗/增益的友方判定：
+- 自己 `RaceServer >= RC_ANIMAL`（生物）：目标也是生物 → 友方；**目标有 `Master`（召唤物）则拒绝**
+  （注释「소환몹은 힐,등이 안된다」= 召唤物不能被治疗）。
+- 自己非生物（NPC）：`RC_USERHUMAN` 时按 `HumAttackMode` 的 `IsFriend`（`HAM_ALL/PEACE` 全部、
+  `HAM_GROUP` 自己+组员、`HAM_GUILD` 自己+同会+盟会、`HAM_PKATTACK` 同红白名）判定；
+  目标有 `Master` 时改判主人；非人类 NPC 一律友方。
+
+#### 10.22.2 目标与名声（`:15216-15392`）
+
+- `SelectTarget`/`LoseTarget`：设 `TargetCret` + `TargetFocusTime` / 置 nil。
+- **`GetPurity`（`:15227`）—— 矿石纯度**：人类且**武器 Dura=0** → `1000+Random(5000)`；
+  否则 `3000+Random(13000)`，**1/20 概率再 +`Random(10000)`**；体验模式上限 10000；
+  怪物掉落 → `3000+Random(11000)` + 1/20 加值。
+- **名声 `IncFamePoint(point, onlyFameCur)`（`:15262`）**：`point` 钳 10000；溢出检查；
+  上限 **4000 万**；`FameCur += point`；若 `FameCur > FameBase` 则 `onlyFameCur` 时把 `FameCur` 压回 `FameBase`
+  （**只涨当前值**），否则 `FameBase := FameCur`；发 `RM_CHANGEFAMEPOINT`（带称号）。
+- `DecFamePoint`（先扣 `FameBase`，`FameCur` 不超过 `FameBase`）/`ZeroFamePoint`/`UseCurrentFamePoint`。
+- **`DecWeaponBadLuck`（`:15374`）**：武器 `Desc[4] - Desc[3] > 0`（有诅咒）时 `Desc[4] -= 1`，
+  重算能力 + 提示「무기의 저주가 감소되었습니다.」。
+
+#### 10.22.3 `EnhanceExtraAbility(kind, amount, min, sec)`（`:17126-17196`）
+
+- `ExtraAbil[kind] := _MIN(255, amount)` —— ⚠️ **是覆盖而非取最大值**（注释 `//수정(sonmg 2006/02/14)`
+  表明从 `_MAX(旧值, amount)` 改成了直接覆盖）。
+- `ExtraAbilTimes[kind] := _MAX(旧值, now + min*60000 + sec*1000)`（**时间取较大值**）。
+- 人类按 `kind` 输出提示（DCUP/MCUP/SCUP/HITSPEEDUP/HPUP/MPUP），未知类型用通用文案。
+
+**未验证**：`GetFameName`/`IsMember`/`IsAllyGuild` 实现未逐一读；名声上限/称号表未解析；
+`ExtraAbil` 的 `EABIL_*` 常量值与消费点（`RecalcAbilitys`）已部分读；无运行期验证。
 
 ---
 

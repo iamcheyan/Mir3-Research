@@ -13456,3 +13456,18 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** `MagicMan.SpellNow`/`IsSwordSkill`/`GetDefMagic` 未逐一读；概率公式实战命中率未验证；ObjBase 其余大段（负重/金币/能力重算 `7182-7982`、`GetGiftFromBox/Egg/OldBox`+fame `15152-17202`、`TUserHuman` 命令 `Cmd*` 与 `ServerGet*` 商店/市场 `26333-31768`、`TAnimal`/`TUserHuman` 构造初始化）仍未逐行读。**ObjBase.pas 保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 955 — 2026-09-29：`ObjBase.pas` 友方/名声/纯度/额外能力
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:15152-15392`、`17126-17196`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔`IsProperFriend`〕** 生物对生物为友方，**目标有 `Master`（召唤物）则拒绝**（召唤物不能被治疗）；NPC 一律友方；人类按 `HumAttackMode`（`HAM_ALL/PEACE/GROUP/GUILD/PKATTACK`）的 `IsFriend` 判定，目标有主人时改判主人。
+
+**〔名声/纯度〕** `GetPurity`：武器 Dura=0 → `1000+Random(5000)`，否则 `3000+Random(13000)` + 1/20 再加 `Random(10000)`，体验模式上限 10000。`IncFamePoint`：point 钳 10000、上限 **4000 万**、`onlyFameCur` 只涨当前值否则同步 `FameBase`；发 `RM_CHANGEFAMEPOINT`。`DecFamePoint`/`ZeroFamePoint`/`UseCurrentFamePoint`。`DecWeaponBadLuck`：有诅咒时 `Desc[4]-1` + 重算。
+
+**〔额外能力〕** `EnhanceExtraAbility(kind, amount, min, sec)`：`ExtraAbil[kind] := _MIN(255, amount)` —— ⚠️ **覆盖而非取最大值**（`//수정(sonmg 2006/02/14)`）；时间取 `_MAX`；人类按 kind 输出提示。
+
+**〔未闭合〕** `GetFameName`/`IsMember`/`IsAllyGuild` 未逐一读；名声称号表未解析；ObjBase 其余大段（负重/金币/能力重算 `7182-7982`、`RecalcAbilitys` 尾段 `8620-9320`、`GetGiftFromBox/Egg/OldBox` `15396-17126`、`TUserHuman` 构造/`Cmd*` 命令与 `ServerGet*` 商店/市场 `17430-31768`）仍未逐行读。**ObjBase.pas 保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
