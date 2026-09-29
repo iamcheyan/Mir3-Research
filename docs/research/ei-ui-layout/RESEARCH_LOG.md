@@ -13290,3 +13290,20 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** 约 120 个 `Send*` 与若干 `ClientGet*` 辅助函数只索引未逐行读；未找到 EI 原版客户端主窗体/消息分派的 `primary-static` 对照；无运行期验证。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 945 — 2026-09-29：`Client/FState.pas` 主链全实现（对话框层）
+
+**〔范围〕** 读取 `Source/Client/FState.pas`（cp949+mixed，14,853 行 / 433 方法）主链：`FormCreate/FormDestroy`、`HideAllControls/RestoreHideControls`、`Initialize`、`Open*`、`CancelItemMoving`/`DropMovingItem`、`DMessageDlg`/`OnlyMessageDlg`、`SafeCloseDlg`、`DBottomMouseDown`。未运行 Delphi/客户端。
+
+**〔生命周期〕** `FormCreate` 建 6 个原生 VCL 编辑控件（`EdDlgEdit`/`EdCountEdit`/`ItemSearchEdit`/`Memo`/`edCharID`/`memoMail`）与大量容器；`Initialize` 先 `g_DWinMan.ClearAll` 再注册全屏 `DBackground` 与 40 个窗口（Round 817 的 345 项布局）。
+
+**〔模态框架构〕** `DMessageDlg` 是**主线程阻塞循环**：`DMsgDlg.ShowModal` 后 `while TRUE` + `Application.ProcessMessages`（重入消息泵），**每 5 次调 `FrmMain.MsgProg` 保网络心跳**；`DialogSize 0/1/2` 选 `g_WGameInter` 帧 1248/1240/1250（Ok 帧 1241/1251）；`BoMsgDlgTimeCheck` 超时 `mrNo`；`RunDice` 驱动掷骰/猜拳动画。`OnlyMessageDlg` 是简化版。
+
+**〔物品拖拽〕** `CancelItemMoving` 按 `MovingItem.Index` 归位（-99 背包 / -20..-30 交易 / -(n+1) 且 n∈0..12 → `UseItems[n]` / 0..MAXBAGITEM 背包）；`DropMovingItem` 重叠弹数量框、`UniqueItem and $04`（丢即消失）二次确认、`StdMode=9` 直丢。
+
+**〔HUD〕** `DBottomMouseDown` 点聊天行解析玩家名自动填 `/名字 ` 到 `EdChat`（点击回私聊）；`SafeCloseDlg` 一次关制造/市场/庄园/公告板/装饰 5 类对话框。
+
+**〔未闭合〕** 433 方法中 DFriend/DMail/DGuild/DGABoard/DJangwon/DMarket/DDeal/DStorage/DMaster 等对话框组只索引未逐行读；未找到 EI 原版客户端对话框的 `primary-static` 对照；无运行期验证。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

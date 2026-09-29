@@ -258,7 +258,75 @@ WeaSurface（`Weather<>0`）/ MagSurface** 五层，再 `DeviceRender`。末尾�
 
 ---
 
-## 6. 待办
+## 6. `FState.pas` 对话框层实现（Round 945，14,853 行 / 433 方法）
+
+`TFrmDlg` 是客户端的**对话框与 HUD 行为层**（背包/状态/技能/聊天/行会/市场/交易/师徒/好友/便签…），
+被 `ClMain` 的 `DecodeMessagePacket` 大量调用。
+
+### 6.1 生命周期
+
+- **`FormCreate`（`:1231-1338`）**：初始化大量 `TList`/`TStringList`（`DlgTemp`/`MDlgPoints`/`MenuList`/
+  `JangwonList`/`GABoardList`/`GADecorationList`/`GuildStrs(2)`/`GuildNotice`/`GABoard_Notice`/
+  `GuildMembers`/`GuildChats`），**动态创建原生 VCL 控件**并挂在 `FrmMain` 下：
+  `EdDlgEdit`（对话框输入，MaxLength 30）、`EdCountEdit`（数量）、`ItemSearchEdit`、
+  `Memo`、`edCharID`（好友 ID，14）、`memoMail`（邮件正文，80）。分页状态
+  （`FriendPage`/`MailPage`/`BlockPage`…）与 `ServerSelect*`/`MiniMapBlink*` 初始化。
+- **`FormDestroy`（`:1340-1355`）**：释放上述容器（**注意：未释放动态创建的 VCL 控件**）。
+- **`HideAllControls`/`RestoreHideControls`（`:1357-1382`）**：模态对话框弹出时**隐藏所有可见
+  `TEdit`**（`EdDlgEdit` 除外），关闭后恢复 —— 防止原生编辑框盖住 DX 画面。
+- **`Initialize`（`:1384-2936`）**：`g_DWinMan.ClearAll` → 注册全屏 `DBackground` → 逐个设置
+  40 个窗口的运行时几何与事件（Round 817 已提取 345 项布局，见 `client-runtime-layout.tsv`）。
+
+### 6.2 模态对话框：`DMessageDlg`（`:3195-3399`）—— **主线程阻塞循环**
+
+`DMessageDlg(msgstr, DlgButtons)` 是客户端**最核心的模态框**：
+
+1. 按 `DialogSize` 选背景帧：**0→`g_WGameInter.Images[1248]`（小）、1→`1240`（宽大）、
+   2→`1250`（长）**，并居中；`DMsgDlgOk` 帧 `1241`/`1251`。
+2. 按 `DlgButtons` 从右往左摆 `DMsgDlgCancel/No/Yes/Ok`（间距 110）。
+3. `HideAllControls` + `DMsgDlg.ShowModal`（注册进 `ModalDWindowList`）。
+4. **进入 `while TRUE` 阻塞循环**：`Application.ProcessMessages`（**重入消息泵**），
+   每 5 次调 `FrmMain.MsgProg`（**保持网络心跳**）；`BoMsgDlgTimeCheck` 超时自动 `mrNo`；
+   `RunDice>0` 时 `DoRunDice` 播掷骰动画。
+5. 结束 `RestoreHideControls`、取 `DlgEditText`、复位 `DialogSize/RunDice/BoDrawDice`。
+
+> ⚠️ **架构要点**：这是**在主线程里用重入 `ProcessMessages` 实现同步模态** ——
+> 解释了大量逻辑「等用户确认」时网络仍不断（靠 `MsgProg`）。`OnlyMessageDlg`（`:3401`）
+> 是它的简化版（无超时/骰子）。
+
+**掷骰/猜拳**（`DiceType` 1/2、`RunDice`、`DiceArr[]`）：`SM_PLAYDICE`/`SM_PLAYROCK` 设
+`DiceArr[i].DiceResult`，`DoRunDice` 按 100/250 ms 翻帧动画后停在结果。
+
+### 6.3 窗口开关与物品拖拽
+
+- `OpenMyStatus`/`OpenUserState`/`OpenItemBag`/`OpenMyMagic`（`:2937-2968`）：切换
+  `DStateWin`/`DUserState1`/`DItemBag`/`DMagicWnd` 的 `Visible`；`OpenItemBag` 开时 `ArrangeItemBag`。
+- `ViewBottomBox`（`:2971`）：`DBottom`+`DChat` 一起显隐。
+- **`CancelItemMoving`（`:2979-3012`）**：按 `MovingItem.Index` 归位 ——
+  `-99` 回背包、`-20..-30` 回交易栏、`-(n+1)` 且 `n∈[0..12]` 回**装备槽 `UseItems[n]`**、
+  `0..MAXBAGITEM-1` 回背包（占用则 `AddItemBag`）。
+- **`DropMovingItem`（`:3016-3106`）**：重叠物品弹**数量输入框**（`DCountMsgDlg`，
+  `mrAbort` 触发 `EdDlgEdit`）；**唯一且带 `UniqueItem and $04` 的物品**（丢弃即消失）
+  二次确认；`StdMode=9` 直接丢；`AddDropItem` + 清空。
+- **`DBottomMouseDown`（`:3149-3190`）**：点在聊天行（X∈[208,582]、Y∈[SCREENHEIGHT-130, +108]）
+  → 解析该行玩家名（`ExtractUserName`）**自动填 `/名字 `** 到 `PlayScene.EdChat`（**点击回私聊**）。
+
+### 6.4 对话框集合（433 方法）
+
+按前缀成组（本轮**索引 + 抽样读**，未逐行读全部）：
+`DItemBag*`（背包/装备格）、`DStateWin*`/`DSW*`/`DSt*`（状态窗/技能栏）、
+`DMagicWnd*`（技能窗）、`DFriendDlg*`/`DMailDlg*`/`DBlockListDlg*`（好友/邮件/黑名单）、
+`DGuild*`/`DGABoard*`/`DJangwon*`/`DGADecorate*`（行会/公告板/庄园/装饰）、
+`DItemMarket*`/`DSellDlg*`/`DMakeItem*`（市场/出售/制造）、`DDeal*`（交易）、
+`DStorage*`（仓库）、`DMasterDlg*`/`DLover*`（师徒/恋人）、`DMsgDlg*`（消息框）、
+`DSelServer*`/`DLogin*`/`Dcc*`（选服/登录/建角）、`DAdjustAbility*`（加点）。
+
+**`SafeCloseDlg`（`:13926-13934`）**：一次性关闭制造/市场/庄园/公告板/装饰 5 类对话框
+（`ClMain` 在换图/传送前调用）。
+
+---
+
+## 7. 待办
 
 | 项 | 说明 |
 |---|---|
@@ -269,12 +337,12 @@ WeaSurface（`Weather<>0`）/ MagSurface** 五层，再 `DeviceRender`。末尾�
 | `PlayScn.pas` 的主循环与实体渲染 | ⚠️ 部分（`client-internals.md` §4 结构+调用点，主循环 pending） |
 | `magiceff.pas` 魔法特效 | ⚠️ 见 `client-rendering.md §8.4`（基类已读，其余类部分） |
 | `ClMain.pas`（9924 行）主窗体 | ✅ **主链已读**（Round 944，§5；约 120 个 `Send*` 与 150 个 `SM_*` 分支已索引） |
-| `FState.pas`（14853 行） | ⚠️ 部分（窗口声明+帧号+**运行时布局 345 项**已读；其余主体 pending） |
+| `FState.pas`（14853 行） | ⚠️ **主链已读**（Round 945，§6；433 方法中对话框组只索引未逐行） |
 | 那 10 个共同范围内的帧号是否同图 | 需逐帧像素比对（需原版 WIL + Preview 版 WIL） |
 
 ---
 
-## 7. 复核方式
+## 8. 复核方式
 
 ```bash
 # 窗口清单重生成（含帧号范围与越界统计）
