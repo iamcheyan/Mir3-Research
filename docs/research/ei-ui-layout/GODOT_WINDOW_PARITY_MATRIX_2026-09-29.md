@@ -24,20 +24,20 @@
 
 本机资源身份：`/home/tetsuya/mir2ei/LegacyEI/Data/GameInter.wil` 与
 `Data/GameInter.wil`（ZL）**帧号空间一致（1103 帧）**，但 `Interface1c` 等
-库存在 WIL/ZL 帧内容差异（见 §6 冲突 C-3）。目标 EI EXE/WIL 身份仍未最终闭合
+库存在 WIL/ZL 帧内容差异（见 §8 冲突 C-3）。目标 EI EXE/WIL 身份仍未最终闭合
 （研究 NAS 路径当前不可读），因此**资源像素级结论保留版本门禁**。
 
 ## 1. 结论摘要
 
 - **13 个 EI 主窗口 + HUD + 确认框 + 小地图**逐项对照完毕。
 - **已修复 1 个窗口（行会 id4）的 2 处确认差异**（8 个动作控件缺失 + 成员列表几何），
-  并顺带修复 legacy 背景帧被覆写导致窗口背景消失的缺陷（§4）。
+  并顺带修复 legacy 背景帧被覆写导致窗口背景消失的缺陷（§8）。
 - **发现并纠正 1 处研究文档错误**：技能书 id14 的窗口尺寸
   （`window_layout.json` / `window-initialization-evidence.json` 记 296×332，
-  实为 **452×380**），Godot 侧原本就是对的（§6 C-1）。
-- 其余 12 个窗口在**几何、帧号、控件位置、格子数量/尺寸**上与 primary-static 证据一致（§3）。
+  实为 **452×380**），Godot 侧原本就是对的（§8 C-1）。
+- 其余 12 个窗口在**几何、帧号、控件位置、格子数量/尺寸**上与 primary-static 证据一致（§2）。
 - 仍未闭合：背包逐物品图标映射（数据身份阻塞）、交易/背包关闭热区语义、
-  行会解散业务、技能图鉴 flag、以及若干 `candidate` 语义（§7）。
+  行会解散业务、技能图鉴 flag、以及若干 `candidate` 语义（§9）。
 
 ## 2. 主对照矩阵（窗口级）
 
@@ -47,29 +47,29 @@
 
 | # | 窗口 | 原版证据（文件:键/行） | 原版帧/尺寸 | Godot 实现 | Godot 实测 | 判定 |
 |---|---|---|---|---|---|---|
-| 0 | 背包 | `window_layout.json:11`；`inventory-window-render-evidence.json` | F250 284×324；可视 6×6@36px 起点(25,41)；46 条记录 | `InventoryDialog.cs:219` `ApplyLegacyEiLayout` | `size=(284,324) grid=(6,6)@(25,41)` | **MATCH**（格子几何）/ §7 I-1（记录模型） |
+| 0 | 背包 | `window_layout.json:11`；`inventory-window-render-evidence.json` | F250 284×324；可视 6×6@36px 起点(25,41)；46 条记录 | `InventoryDialog.cs:219` `ApplyLegacyEiLayout` | `size=(284,324) grid=(6,6)@(25,41)` | **MATCH**（格子几何）/ §9 I-1（记录模型） |
 | 1 | 人物状态 | `window_layout.json:12`；`status-window-render-evidence.json`；`equipment-slots-evidence.json` | F200 244×328；8 个 38×38 装备格 + 3 非方格区（11 记录）；切换键 (176,264,36,36)；关闭 (212,298) | `CharacterDialog.cs:339` | `size=(244,328) toggle=(176,264)/(36,36) visibleSlots=11` | **MATCH** |
 | 2 | 商店/仓库 | `window_layout.json:13`；`store-state-graph.json::states[2]` | F1000 300×304 @(0,184)；state2 网格 4×3 步距 38；购买键 (127,267,48,20) F1012；行距 46 | `NPCGoodsPanel.cs:136`、`StorageDialog.cs:262` | `goods screen=(0,184) size=(300,304) rowHeight=46 buy=(127,267)`；`storage grid=(4,25)@(21,42) step=38 firstCell=(22,43)` 可见 3 行 | **MATCH** |
-| 3 | 交易 | `window_layout.json:14`；`trade-window-render-evidence.json::geometry` | F1050 484×330；每侧 5×6@36 stride36；accept (185,332) F1061/1062；cancel (225,332) F1064/1065；close (532,350) | `TradeDialog.cs:115` | `size=(484,330) userGrid=(5,6)@(20,47) playerGrid=(5,6)@(252,47) close=(532,350) accept=(185,332)#1061` | **MATCH** / §7 T-1（close 语义） |
-| 4 | 行会 | `window_layout.json:15`；`social-window-render-evidence.json::windows[1]`；`guild-window-paint-evidence.json` | F600 596×446 @(102,22)；成员 1 列 x=win+35 y=win+60 行距=字高+5 上限 18；9 控件 paint 位置 | `GuildDialog.cs:95` | `size=(596,446) bg=(-214,-33) actions=8 rows=18/18 first=(35,60) step=21` | **本轮修复**（§4） |
+| 3 | 交易 | `window_layout.json:14`；`trade-window-render-evidence.json::geometry` | F1050 484×330；每侧 5×6@36 stride36；accept (185,332) F1061/1062；cancel (225,332) F1064/1065；close (532,350) | `TradeDialog.cs:115` | `size=(484,330) userGrid=(5,6)@(20,47) playerGrid=(5,6)@(252,47) close=(532,350) accept=(185,332)#1061` | **MATCH** / §9 T-1（close 语义） |
+| 4 | 行会 | `window_layout.json:15`；`social-window-render-evidence.json::windows[1]`；`guild-window-paint-evidence.json` | F600 596×446 @(102,22)；成员 1 列 x=win+35 y=win+60 行距=字高+5 上限 18；9 控件 paint 位置 | `GuildDialog.cs:95` | `size=(596,446) bg=(-214,-33) actions=8 rows=18/18 first=(35,60) step=21` | **本轮修复**（§6） |
 | 6 | 组队 | `window_layout.json:17`；`social-window-render-evidence.json::windows[0]` | F900 256×244；成员 2 列 x=+45/+145 行距 20；5 控件 (226,214)/(17,197)/(80,197)/(159,197)/(9,52) | `GroupDialog.cs:114` | `size=(256,244) remove=(80,197) allow=(166,40) invite=(17,197) close=(226,214)` | **MATCH** |
 | 8 | 聊天弹窗 | `window_layout.json:19`；`chat-window-render-evidence.json` | F350 572×388；历史 clip (35,28,485,266) 文本(40,29) 行距14 19 行；输入 (25,311,499,15)；6 频道键 36×34 x=25+40k y=332；关闭 (532,350) | `LegacyChatDialog.cs:39` | 代码常量 `VisibleRows=19 LineStep=14`；`_historyClip=(35,28,485,266)`；按钮 `25+40i,332`；`_input=(25,311,499,15)` | **MATCH** |
 | 9 | NPC 对话 | `window_layout.json:22`；`npc-window-render-evidence.json` | F1100 552×176；正文原点 (150,40)；关闭 (7,141,28,26)；上箭头 (290,145,12,8)；下箭头 (306,136,12,8) | `NPCDialog.cs:108` | `size=(552,176) text=(150,40) close=(7,141) up=(290,145) down=(306,136)` | **MATCH** |
-| 11 | 任务 | `window_layout.json:20`；`quest-window-render-evidence.json` | F700 340×440；列表 19 行 stride 0x104；控件 (290,59)/(290,89) | `QuestDialog.cs:103` | `size=(340,440) scroll=(290,59)/(28,58) close=(304,404)` | **MATCH**（§7 Q-1 详情面板证据缺口） |
+| 11 | 任务 | `window_layout.json:20`；`quest-window-render-evidence.json` | F700 340×440；列表 19 行 stride 0x104；控件 (290,59)/(290,89) | `QuestDialog.cs:103` | `size=(340,440) scroll=(290,59)/(28,58) close=(304,404)` | **MATCH**（§9 Q-1 详情面板证据缺口） |
 | 12 | 设置 | `window_layout.json:21`；`system-window-render-evidence.json` | F750 248×264；8 toggle（(148,43/116/190/217) 32×22 与 +37 的 40×22）；2 滑条 (34,96)/(34,170)；关闭 (218,238) | `ConfigDialog.cs:141` | `size=(248,264) legacyHitRects=8 paintedIndicators=4 volumeSliders=2` | **MATCH** |
 | 13 | 坐骑 | `window_layout.json`；`horse-window-render-evidence.json` | F850 296×332；4 动作 (28,244)/(74,244)/(133,244)/(192,244)；关闭 (252,293) | `HorseDialog.cs`（构造期几何） | `size=(296,332) buttons=(28,244),(74,244),(133,244),(192,244)` | **MATCH** |
-| 14 | 技能书 | `window_layout.json`（本轮修正） | F400 **452×380** @(348,0)；8 分类页签 x=win+1..5 y=win+21+35k；F410/411 (61,303)；F412/413 (366,303)；F440/441 (399,340)；右页文本 (winX+235,winY+30) 行距 15 | `MagicDialog.cs:151` | `size=(452,380) background=F400 categories=8 nav=True rows=6` | **MATCH**（§6 C-1 文档纠错） |
+| 14 | 技能书 | `window_layout.json`（本轮修正） | F400 **452×380** @(348,0)；8 分类页签 x=win+1..5 y=win+21+35k；F410/411 (61,303)；F412/413 (366,303)；F440/441 (399,340)；右页文本 (winX+235,winY+30) 行距 15 | `MagicDialog.cs:151` | `size=(452,380) background=F400 categories=8 nav=True rows=6` | **MATCH**（§8 C-1 文档纠错） |
 | 15 | 公告 | `window_layout.json:23`；`notice-prompt-window-evidence.json` | F602 584×252 @(107,110)；关闭 (548,16)；动作 (496,27,40×20) F606/607；文本 (23,94) | `NoticeDialog.cs`（构造期几何） | `size=(584,252) frame=602@(-220,-2) close=(548,16) action=(496,27) text=(23,94)` | **MATCH** |
 | — | 确认框 | `confirmation-prompt-evidence.json` | F950 360×190 居中 (220,151)；YES (51,125,44×20)/OK (147,125,64×20)/NO (244,125,44×20) | `ConfirmDialog.cs` legacy 分支 / `LogoutConfirmDialog` | `size=(360,190) loc=(220,151) YES(150)@(51,125) NO(153)@(244,125)` | **MATCH** |
 | — | 小地图 | `minimap.json::minimap_widget_0x48512C` | D3D rect {672,0,800,128} | `MiniMapDialog.cs:70` + `GameScene.cs:5231` | `size=(128,128) loc=(672,0) panel=(128,128)` | **MATCH** |
-| — | 主 HUD | `hud-label-evidence.json::caption_ctor_table`；`hud-caption-action-tail-evidence.json` | F50 800×136 @(0,465)；16 caption 帧/坐标/文案/动作全表 | `MainPanel.cs:132-159`、`MainPanel.cs:268` | `panel=50/(800,136) buttons=True legacyStats=True`；16 键位与 EI 表逐项一致 | **MATCH** / §7 H-1（cap2 语义） |
+| — | 主 HUD | `hud-label-evidence.json::caption_ctor_table`；`hud-caption-action-tail-evidence.json` | F50 800×136 @(0,465)；16 caption 帧/坐标/文案/动作全表 | `MainPanel.cs:132-159`、`MainPanel.cs:268` | `panel=50/(800,136) buttons=True legacyStats=True`；16 键位与 EI 表逐项一致 | **MATCH** / §9 H-1（cap2 语义） |
 
 ## 3. 容器/格子清单（原版权威值 vs Godot）
 
 | 容器 | 原版列×行 | 格子/步距 | 起点（窗口相对） | 可见范围 | Godot | 判定 |
 |---|---|---|---|---|---|---|
 | 背包（可视） | 6×6 = 36 | 36×36 stride 36 | (25,41) | 6 行 | 同 | MATCH |
-| 背包（记录容量） | 46 条（stride 0xC2C）；占位表 6×100 WORD | — | — | 滚动字段 this+0x58（F280 gauge，比例尺度 94） | 现代 48 项数组 + footprint first-fit 动态行 | §7 I-1 |
+| 背包（记录容量） | 46 条（stride 0xC2C）；占位表 6×100 WORD | — | — | 滚动字段 this+0x58（F280 gauge，比例尺度 94） | 现代 48 项数组 + footprint first-fit 动态行 | §9 I-1 |
 | 人物装备 | 8 个 38×38 | 38 | (27,264)(177,70)(27,186)(175,186)(27,227)(175,227)(64,264)(103,264) | 全可见 | 同（11 记录） | MATCH |
 | 交易每侧 | 5×6 = 30 | 36 stride 36 | 左 (21,48)、右 (253,48) | 6 行 | 同 | MATCH |
 | 仓库（state2） | 4×3 = 12/页 | 38 stride 38 | 列 22/60/98/136 行 43/81/119 | 3 行 | 同（分页 divisor 12） | MATCH |
@@ -84,7 +84,55 @@
 | 腰带 | 6 格 | 步距 37.5 | (3,2) | 1 行 | 同（`LegacyEiBeltSlots=6`） | MATCH |
 | 小地图 | 128×128 | — | 屏幕 (672,0) | — | 同 | MATCH |
 
-## 4. 本轮已修复
+## 4. EI 窗口 id 空间 vs Godot（含原版没有的现代扩展窗口）
+
+EI 主 UI 的窗口 id 空间是 **0..15**，由 `0x0042B3E4` 跳转表 + `0x0042C4D4`
+子窗点击表 + `0x0042C494` caption 动作表三处共同定义
+（`window-visibility-dispatch-evidence.json`、`window-paint-dispatch-identity.json`）：
+
+| id | 原版窗口 | Godot legacy 对应 |
+|---|---|---|
+| 0 | 背包 F250 | `InventoryDialog` |
+| 1 | 人物状态 F200 | `CharacterDialog` |
+| 2 | 商店/仓库 F1000/1001 | `NPCGoodsPanel` + `StorageDialog` |
+| 3 | 交易 F1050 | `TradeDialog` |
+| 4 | 行会 F600 | `GuildDialog` |
+| 5 | **空槽**（no-op） | — |
+| 6 | 组队 F900 | `GroupDialog` |
+| 7 | 第二状态窗 F200 @(560,0) | `_statusPreviewDialog`（`CharacterDialog` 复用） |
+| 8 | 聊天弹窗 F350 | `LegacyChatDialog` |
+| 9 | NPC 对话 F1100/1101/1102 | `NPCDialog` |
+| 10 | **空槽**（no-op） | — |
+| 11 | 任务 F700 | `QuestDialog` |
+| 12 | 设置 F750 | `ConfigDialog` |
+| 13 | 坐骑 F850 | `HorseDialog` |
+| 14 | 技能书 F400 | `MagicDialog` |
+| 15 | 公告 F602（render-only，无 hit 槽） | `NoticeDialog` |
+
+**原版没有、Godot 才有的窗口**（邮件/拍卖/商城/伙伴/排行/寻宝/自动喝药/大图/
+合并/坐骑驯服/钓鱼/地下城查找/称号/里程碑等）**没有 EI 对照物**，因此**不要求**
+套用 EI 几何——它们是 Zircon 的现代扩展。判定为 `N/A`（非差异），
+但仍需遵守现代 Zircon `Client/` 的布局（见 §7）。Preview 源码侧同样有一批
+原版没有的窗口（`DFriendDlg`/`DMailDlg`/`DItemMarketDlg`…，见
+`../../source-vs-reverse/README.md` D3），同样不作 EI 几何依据。
+
+## 5. 交互行为对照
+
+| 行为 | 原版证据 | Godot 实现/自检 | 判定 |
+|---|---|---|---|
+| 窗口显隐/Z 序 | `0x42AC30` show（追加链表尾）/`0x42AC50` hide（摘链）；绘制按链表头→尾（`draw-order-evidence.json`） | `WindowManager.Open/Close` + `OpenWindows` 列表 + `RefreshZOrder` | **MATCH**（模型等价） |
+| 窗口提升 | `0x42B6A0`（拖拽起始）：先 `0x42B820` 清 `+0x34` 活动槽 → hide → show 追加尾 | `WindowManager.BringToFront` | **MATCH** |
+| 「关全部」误读澄清 | `0x42B820` 只重置 `+0x34` 活动槽，**不动** `+0x30` 可见门、不摘链表节点 → 窗口**不互斥** | Godot 同样允许并存 | **MATCH**（原 `draw-order` 文字「关全部」为宽松表述，已按 `window-visibility-dispatch-evidence.json` 澄清） |
+| HUD caption 悬停 | `caption-tooltip-0x96ffff-evidence.json`：常态不画（`+0x20=-1`）、悬停只画文字（淡黄底 0x96FFFF + 黑框） | `MainPanel` 按钮 `TooltipText` + DXControl 提示 | **MATCH**（`--legacy-tooltip-selftest` PASS：背包/商店/裁切三组） |
+| 物品格悬停提示 | `bag-tooltip-verification-evidence.json` | `GameScene` 场景级 `_hoverItem` | `LIKELY_DIFFERENCE`（触发点/样式，见 `LEGACY_EI_UI_AUDIT_2026-09-23.md` ITEMTIP-01） |
+| 目标框/悬停名牌 | `target-box-evidence.json`（名牌框 `0x40B850`、悬停 3000ms `0x40BB00`、HP 条 `0x40A8A0`） | `GameScene` 目标框/名牌 | 未逐项复核 → `UNVERIFIED` |
+| 关闭框/键盘链 | `confirmation-prompt-evidence.json`（F950 三按钮 + 键盘/激活链） | `LogoutConfirmDialog` | **MATCH**（`--legacy-keychain-selftest` PASS：Tab 循环/回绕/跳过 disabled、帧表 150/153/156 与 44×20/44×20/64×20 匹配） |
+| 分页/滚动 | 行会 `this+0x9C` 行偏移 + 18 行上限；仓库 divisor 12；背包 `this+0x58` + F280 gauge；聊天 ±19 行 | 各窗口 `DXVScrollBar`/`ScrollValue` | 行会本轮改为行偏移（§6.1）；仓库/背包/聊天 **MATCH**；背包 F280 见 §9 I-2 |
+| 拖放 | 交易/背包/仓库 `GridType` 链接模型（`bag-list-fill-chain-evidence.json`） | `DXItemCell`/`DXItemGrid` `LinkedSourceGrid` | **MATCH**（`UIItemGridAudit`/`UIBeltLinkAudit` PASS） |
+| 键盘入口 | `hotkey-label-handler-consistency.json`（Q/W/E/R/S/D/N/G/Z…） | `KeyBindManager` + `GameScene.HandleKeyBind` | **MATCH**（legacy 键位表见 `LEGACY_EI_UI_AUDIT_2026-09-23.md`） |
+| 角色属性文本 | `status-window-render-evidence.json`；`status-attribute-colors-evidence.json` | `CharacterDialog` 14 行 (255,67+15i)/(331,67+15i) | **MATCH**（`--legacy-character-selftest` PASS：14 项全部匹配） |
+
+## 6. 本轮已修复
 
 ### 4.1 行会 id4：8 个动作控件缺失 + 成员列表几何（commit `b8c26340`）
 
@@ -118,23 +166,29 @@ GameInter 261/262…（现代页签背景帧）。legacy 只有一张 F600，覆
 **未闭合**：行会解散（原版走掌门守卫 + 对话框 601 双确认；Zircon 无 disband 包，
 当前只弹说明框、不发请求）。
 
-### 4.2 `--ui-audit` 的 HUD 断言过期（测试卫生）
+### 6.2 `--ui-audit` 的 HUD 断言过期（测试卫生，commit `10cb0511`）
 
 `UITestScene.AuditHud` 断言的是**已废弃的新版横向九键排布**
 （CharacterButton (650,23)/(689,23)/(728,23)/(923,23)/(972,16)）。
 HUD 切到 EI 基准后（`MainPanel.cs:132-159` 使用 `hud-label-evidence.json`
-的 ctor 表坐标），该断言必然 FAIL。已改为 EI 坐标并说明依据。
+的 ctor 表坐标），该断言必然 FAIL（修复前实测
+`[UIHudAudit] FAIL panel=(800,136) character=(648,70) click=True`，
+且 `--zircon-ui` 下同样 FAIL，证明与 legacy 开关无关、是断言本身过期）。
+已改为 EI 坐标：CharacterButton cap13 (648,70)、InventoryButton cap14 (648,32)、
+SpellButton cap8 (703,16)、MenuButton cap11 (703,85)、CashShopButton cap15 (665,16)。
 
-## 5. 与 Zircon `Client/`（移植来源）的对照
+**验证**：`[UIHudAudit] PASS panel=(800, 136) buttons=16 click=hit`。
+
+## 7. 与 Zircon `Client/`（移植来源）的对照
 
 | 项 | `Client/`（C#） | `GodotClient` 现代路径 | 判定 |
 |---|---|---|---|
 | 背包 | `InventoryDialog.cs:200` `GridSize=(6,8)` @(20,39) padding 1 | `InventoryDialog.cs:91` 同 | MATCH |
 | 物品格 | `DXItemCell.CellWidth/Height=36` | `DXItemCell.cs:20-21` 36 | MATCH |
 | 物品格图库 | `StoreItem` | 同 | MATCH |
-| legacy 图库 | — | `Inventory.wil`（`UseLegacyFootprints`） | §7 I-1 |
+| legacy 图库 | — | `Inventory.wil`（`UseLegacyFootprints`） | §9 I-1 |
 
-## 6. 冲突与修正记录
+## 8. 冲突与修正记录
 
 | # | 主题 | 旧值 | 修正值 | 依据 |
 |---|---|---|---|---|
@@ -145,7 +199,7 @@ HUD 切到 EI 基准后（`MainPanel.cs:132-159` 使用 `hud-label-evidence.json
 | C-5 | 背包占位表基址 | this+0x2C4 | bag+0x324 | `bag-list-fill-chain-evidence.json`（EI-293）。 |
 | C-6 | 背包 mode3 文案 | [木柴] | **[储存]** | 全二进制无「木柴」。 |
 
-## 7. 未修复 / 未验证 / 阻塞
+## 9. 未修复 / 未验证 / 阻塞
 
 | # | 项 | 状态 | 证据与原因 |
 |---|---|---|---|
@@ -161,7 +215,7 @@ HUD 切到 EI 基准后（`MainPanel.cs:132-159` 使用 `hud-label-evidence.json
 | — | 目标 EI EXE/WIL/WIX 版本身份 | `BLOCKED`（环境） | 研究 NAS 路径当前不可读；所有像素级结论保留版本门禁。 |
 | — | 原版客户端运行 A/B | `UNVERIFIED` | 原版为 Windows-only，本机无法运行（见 `../../ORIGINAL_GODOT_PARITY_AUDIT.md` P-002）。 |
 
-## 8. 验证方法（可复现）
+## 10. 验证方法（可复现）
 
 ```bash
 # 构建
@@ -182,9 +236,15 @@ godot-mono --path GodotClient --scene Scenes/LegacyHudLayoutLab.tscn -- --legacy
 - `Zircon/.artifacts/godot-ui-parity-2026-09-29/legacy-audit-2026-09-29.log`
 - `Zircon/.artifacts/godot-ui-parity-2026-09-29/legacy-guild.png`
 
-## 9. 提交记录
+## 11. 提交记录
 
-| 仓库 | commit | 内容 |
-|---|---|---|
-| Zircon | `b8c26340` | fix(ei行会)：按原版 F600 恢复 8 个动作控件与成员列表几何 + legacy 背景帧修复 |
-| Mir3-Research | 见本文件所在提交 | 本矩阵 + C-1/C-2 文档纠错 + RESEARCH_LOG 记录 |
+| 仓库 | 分支 | commit | 内容 |
+|---|---|---|---|
+| Zircon | `master` | `b8c26340` | fix(ei行会)：按原版 F600 恢复 8 个动作控件与成员列表几何 + legacy 背景帧修复 |
+| Zircon | `master` | `10cb0511` | test(ui审计)：UIHudAudit 改用 EI HUD 坐标，恢复回归有效性 |
+| Mir3-Research | `ei-ui-audit-2026-09-24` | `b29f8645` | 本矩阵 + C-1 文档纠错（C-2 为证据文件 1px 偏差，已在 §8 记录） |
+| Mir3-Research | `ei-ui-audit-2026-09-24` | `effa3171`（随源码精读 Round 958 入库） | RESEARCH_LOG Round UI-1 |
+
+远端核对（`git ls-remote`）：
+- `iamcheyan/Zircon` `refs/heads/master` = `10cb0511945ccda24f562ed161810d71685d1409`
+- `iamcheyan/Mir3-Research` `refs/heads/ei-ui-audit-2026-09-24` = `b29f864553a52aea46e8e348738c3394769a71f2`
