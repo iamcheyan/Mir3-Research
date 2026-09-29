@@ -182,6 +182,7 @@ EI 主 UI 的窗口 id 空间是 **0..15**，由 `0x0042B3E4` 跳转表 + `0x004
 | F / Ctrl+F | 行会 | **本轮补**：legacy 覆盖层加 `Key.F`→OpenGuildDialog（commit `7e2a2340`）；此前落到 `Key.F`=BlockListWindow | **已修复** |
 | B / Ctrl+B | 技能图鉴 | 仍为 `KeyBindManager` `Key.B`=MapBigWindow | **未修复**（= §9 B-5，原版语义是 toggle 技能图标网格） |
 | 角色属性文本 | `status-window-render-evidence.json`；`status-attribute-colors-evidence.json` | `CharacterDialog` 14 行 (255,67+15i)/(331,67+15i) | **MATCH**（`--legacy-character-selftest` PASS：14 项全部匹配） |
+| 鼠标交互全量（左/右/中键、双击、拖拽、滚轮、锁定） | 旧版 `Client/`（`MapControl.cs`/`DXItemCell.cs`/各 Dialog）+ EI 证据 | Godot 对应实现 | **69 条逐项 ✅**（见本仓库 [`MOUSE_INTERACTION_CATALOG.md`](../../MOUSE_INTERACTION_CATALOG.md) 2026-08-08 版：世界地图 17 条、物品格与窗口控件 22 条、对话框与全局 30 条；含右键（2.9 按控件语义路由、1.2 右键跑步、1.3 右键转身、1.11 右键取消目标、2.9 物品格右键、3.23 大图右键传送）、双击（2.8/2.22/3.14/3.24/3.25）、拖拽（2.19 窗口拖动、2.20 边缘缩放、2.21 滚动条、3.6 交易拖物）、滚轮（2.13/3.4））。**注**：该目录口径是「Godot vs `Client/`」，本矩阵口径是「Godot vs EI 原版」；EI 侧另无独立右键菜单（`LEGACY_CLICK_ACTION_CATALOG.md`：右键按控件语义） | MATCH（按 Client/ 口径）；EI 交叉见 `LEGACY_CLICK_ACTION_CATALOG.md` |
 
 ## 6. 本轮已修复
 
