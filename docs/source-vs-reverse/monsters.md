@@ -258,13 +258,14 @@ end;
 
 | 项 | 原因 |
 |---|---|
-| 71 个类的**各自构造函数**（属性初始化） | 只读了基类与主要分支 |
-| `TATMonster.Run` 的完整实现 | 只读了注释 |
-| `ObjMon3.pas`（18 类） | 未逐个读 |
-| `MakeClone`（怪物克隆/召唤） | 未读 |
-| `RecalcAbilitys`（属性重算） | 未读 |
+| ~~`ObjMon.pas` 32 类构造与实现~~ | **已闭合**（Round 935，§11） |
+| ~~`TATMonster.Run` 的完整实现~~ | **已闭合**（Round 935，§11.2） |
+| ~~`MakeClone`（怪物克隆/召唤）~~ | **已闭合**（Round 935，§11.1） |
+| ~~`RecalcAbilitys`（属性重算）~~ | **已闭合**（Round 935，§11.1） |
 | ~~`TSuperGuard`（`ObjGuard.pas`，继承 `TNormNpc`）~~ | **已闭合**（Round 933，§10.2） |
-| `TSoccerBall` / `TMineMonster`（特殊玩法怪） | 未读 |
+| ~~`ObjMon2.pas`（17 类）~~ | **已闭合**（Round 936，§12） |
+| ~~`ObjMon3.pas`（18 类）~~ | **已闭合**（Round 937，§13） |
+| ~~`TSoccerBall` / `TMineMonster`（特殊玩法怪）~~ | **已闭合**（Round 936，§12.5 / §12.1） |
 | 怪物与 `MonGen.txt` 的 `MonName` 匹配机制 | 未读（`MonName` → 类实例化的分派点） |
 | `Monster.dat` 的二进制表解析 | 未读 |
 
@@ -457,3 +458,254 @@ BreakHolySeize;
 
 未验证：`GetHitStruckDamage`/`GetNextHitTime`/`CanFly` 的具体实现与运行期数值；
 `ChainShot` 状态在目标切换时是否复位（源码未见复位点）；Zircon 对应实现未比对。
+
+---
+
+## 11. `ObjMon.pas` 实现精读（Round 935，3,097 行 / 32 类）
+
+### 11.1 `TMonster` 基类实现（`:12-682`）
+
+- **`Create`（`:321-332`）**：`ViewRange:=5`、`RunNextTick:=250`、
+  `SearchRate:=3000+Random(2000)`、`RaceServer:=RC_MONSTER`；`DupMode/RunDone:=FALSE`。
+- **`MakeClone(mname, src)`（`:339-368`）**：在 `src` 坐标 `AddCreatureSysop` 造一只，
+  复制 `Master`/`MasterRoyaltyTime`/`SlaveMakeLevel`/`SlaveExpLevel`，`RecalcAbilitys`+`ChangeNameColor`，
+  加入 `Master.SlaveList`，再**整块复制** `WAbil`/`StatusArr`/`StatusValue`/`TargetCret`/
+  `TargetFocusTime`/`LastHiter`/`LastHitTime`/`Dir`。→ **「召唤克隆」的通用实现**（神兽变身用它）。
+- **`Think`（`:382-408`）**：每 3 s 检查一次；`PEnvir.GetDupCount(CX,CY)>=2`（**格子上重叠≥2**）→
+  `DupMode`；`not IsProperTarget(TargetCret)` → 清目标。`DupMode and not BoDontMove` 时
+  `WalkTo(Random(8))` 一步，走开则 `DupMode:=FALSE`。→ **防止怪物叠在同一格的「挤开」逻辑**。
+- **`AttackTarget`（`:410-433`）**：目标存活 + `IsProperTarget` + `TargetInAttackRange`，
+  过 `GetCurrentTime-HitTime > GetNextHitTime` 门 → `Attack` + `BreakHolySeize`；
+  不在范围则 `SetTargetXY` 追或 `LoseTarget`。
+- **`Run`（`:435-549`）**：门 `not HideMode and not BoStoneMode and IsMoveAble`。
+  `Think` 为真则先 `inherited Run` 退出。`WalkCurStep/WalkStep/WalkWaitTime` 实现**走走停停**。
+  非逃跑模式：攻击成功时若 `Master<>nil` 且 `ForceMoveToMaster` → 瞬移到主人身后；
+  否则跟主人（`GetBackPosition(Master)`，超过 20 格/换图/强制 → `SpaceMove`）；
+  `BoHasMission` 时走向 `Mission_X/Y`；`TargetX<>-1` → `GotoTargetXY`，否则
+  `TargetCret=nil 且 (RefObjCount>0 or HideMode)` → `Wondering`。
+  ⚠️ **静态缺陷**（`:492`）：`if (abs(TargetX-bx) > 1) or (abs(TargetY-bx) > 1)` ——
+  **Y 分量误用了 `bx`**（应为 `by`），导致「跟随主人」的位移判定在 Y 轴恒等于 X 轴差值。
+- **`RecalcAbilitys`（`:551-682`）**：`AddAbil` 清零；`WAbil:=Abil` 但保留 HP/MP；重量清零；
+  `AntiPoison/PoisonRecover/HealthRecover/SpellRecover/Luck/HitSpeed:=0`，**`AntiMagic:=1`**
+  （注释「기본 10% => 2%」自相矛盾）；清一批 `BoAbil*`；按 `BoFixedHideMode+STATE_TRANSPARENT`
+  重算隐身；`RecalcHitSpeed`；把 `AddAbil` 的 SPEED/HIT/抗性/幸运叠加；`MaxHP/MaxMP:=Abil+AddAbil`；
+  `AC/MAC/DC/MC/SC := MakeWord(低+低, 高+高)`；
+  `STATE_DEFENCEUP/MAGDEFENCEUP` 用**新公式** `_MIN(255, 高字节 + Level div 7 + StatusValue[])`
+  （旧公式注释保留）；`ExtraAbil[DCUP/MCUP/SCUP/HITSPEEDUP/HPUP/MPUP]` 叠加；
+  `RaceServer>=RC_ANIMAL` → `ApplySlaveLevelAbilitys`。
+
+### 11.2 按类实现一览（32 类）
+
+| 类 | 行 | 机制要点 |
+|---|---|---|
+| `TChickenDeer` | `:687-736` | **纯逃跑**：扫描可见目标 → `BoRunAwayMode`；6 格内朝反方向跑 |
+| `TATMonster` | `:740-763` | 远程攻击基类，`SearchRate:=1500+Random(1500)`；每 8 s（无目标 1 s）`MonsterNormalAttack` |
+| `TSlowATMonster`/`TScorpion` | `:768-783` | `TScorpion` 置 `BoAnimal`（可屠宰出蝎尾） |
+| `TSpitSpider` | `:790-872` | `BoUsePoison`；`SpitAttack` 用 **`SpitMap[dir]` 5×5 方向模板**逐格判定；命中门 `Random(cret.SpeedPoint)<AccuracyPoint`；走**魔法防御** `GetMagStruckDamage`；毒 `POISON_DECHEALTH 30`（1/`20+AntiPoison`）；`AttackTarget` 用 `TargetInSpitRange` |
+| `THighRiskSpider`/`TBigPoisionSpider` | `:881-898` | 前者不动物不毒；后者动物+毒 |
+| `TGasAttackMonster` | `:906-981` | `GasAttack` 打**正前方一格** `GetFrontCret`；`RC_TOXICGHOST`→`POISON_DECHEALTH`，否则 `POISON_STONE 5`（**麻痹**） |
+| `TCowMonster`/`TMagCowMonster` | `:988-1060` | 后者 `MagicAttack` 命中门是 **`cret.AntiMagic <= Random(50)`**（魔法回避），非 SpeedPoint |
+| `TCowKingMonster` | `:1067-1144` | `RushMode`；每 30 s 若 `SiegeLockCount>=5`（被 5 人围）**瞬移脱围**；`CrazyCount:=7-HP/(MaxHP/7)`，≥2 进 8 s `CrazyReadyMode`（`NextHitTime:=10000`）再 8 s `CrazyKingMode`（`NextHitTime:=500`/`NextWalkTime:=400`）；`Attack` 是 `HitHit2(target, pwr div 2, pwr div 2, TRUE)` |
+| `TLightingZombi` | `:1150-1216` | `LightingAttack` 发 `RM_LIGHTING` + `MagPassThroughMagic`（**穿透直线 9 格**）；4 格内后撤、6 格内攻击 |
+| `TDigOutZombi` | `:1223-1282` | `HideMode`；`ComeOut` 建 **`ET_DIGOUTZOMBI` 事件（5 min）** 后现身（`server.md §10.3` 的「洞」机制）；3 格内有目标才出土 |
+| `TZilKinZombi` | `:1289-1329` | **复活僵尸**：`LifeCount` 1/3 概率 1+Random(3)；`Die` 后 (4+Random(20))s 复活，`MaxHP/=2`、`FightExp/=2`、满血 |
+| `TWhiteSkeleton` | `:1336-1375` | 召唤物；`ResetSkeleton` 用 `SlaveMakeLevel` 缩短出手/走间隔（`3000-Level*600`） |
+| `TScultureMonster` | `:1381-1452` | **石像怪**：初始 `BoStoneMode`/`STATE_STONE_MODE`/不可动；目标进 `MeltArea=2` → `MeltStoneAll`（连同 7 格内同类一起解石） |
+| `TScultureKingMonster` | `:1459-1582` | `DangerLevel=5`；`MeltStone` 建 **`ET_SCULPEICE` 事件**；`CallFollower` 造 6+Random(6) 只 `__ZumaMonster1..4`（上限 30）；HP 每跌 1/5 触发一次召唤（5 次），满血重置 |
+| `TGasMothMonster` | `:1588-1628` | 用 **`MonsterDetecterAttack`（可看破隐身）**；毒气 1/3 概率破隐身（`STATE_TRANSPARENT:=1`） |
+| `TGasDungMonster` | `:1634-1638` | 同上模板（麻痹毒） |
+| `TElfMonster` / `TElfWarriorMonster` | `:1644-1793` | **神兽两形态互变**：无目标/主人无目标时 `MakeClone(__ShinSu1/__ShinSu)` 变身，`Master:=nil`+`KickException`；死后 2 s `MakeGhost`（无尸体）；变身后 800 ms 延迟、60 s 才能再变 |
+| `TCriticalMonster` | `:1800-1820` | 每击 `criticalpoint++`；`>5 或 Random(10)=0` → 暴击 `pwr := Round(pwr*(Abil.MaxMP/10))`，走 `RM_LIGHTING`（`HitHitEx2`） |
+| `TDoubleCriticalMonster` | `:1827-1888` | 同上，但暴击是 **`SpitMap` 5×5 范围**（`DoubleCriticalAttack`） |
+| `TSkeletonSoldier` | `:1891-1950` | 5×5 范围物理攻击（`HitHit2`），`TargetInSpitRange` 判定 |
+| `TSkeletonKingMonster` | `:1952-2069` | `ChainShotCount=6`；`CallFollower` 造 4+Random(4) 只（韩版「해골무장/궁수/병졸」，非韩版 BoneCaptain/Archer/Spearman，上限 20）；`RangeAttack` = **飞斧式**（`CanFly`+`RM_FLYAXE`+延迟 `600+max(|dx|,|dy|)*50`）；7 格内近战/连射、8–11 格追击 |
+| `TBanyaGuardMonster` | `:2072-2156` | `BoCallFollower:=FALSE`；`RangeAttack` 闪电直线 + **目标格范围伤害**（800 ms）；近战需 `Random(3)<>0` |
+| `TDeadCowKingMonster` | `:2159-2277` | 「사우천왕」：`Attack` 打**自身 3×3**（200 ms）；`RangeAttack` 打**目标 5×5**（800 ms） |
+| `TStoneMonster` | `:2280-2352` | 「마계석」`StickMode`；每 5 s 给 3 格内**非玩家/非召唤**怪上 buff：`RC_PBMSTONE1`→`EABIL_DCUP=15`（15.1 s），否则 `STATE_DEFENCEUP/MAGDEFENCEUP=8`；`RecalcAbilitys` |
+| `TPBKingMonster` | `:2355-2580` | 「파황마신」：`Run` 在贴图边（`CX<50 / CX>W-70 / CY<40 / CY>H-70`）**瞬移回内圈**防被引到角落杀；`Attack` 5×5 魔法伤害 + 1/10 石化毒 + **按方向推人**（`Random(20)<4+(60-Level)` → `CharPushed(dir,3+Random(3))`）；`RangeAttack` = 父类 + **视野内所有玩家/召唤掉 1/4 HP**（`DamageHealth`）；`AttackTarget` 12 格内、1/3 随机换目标 |
+| `TGoldenImugi` | `:2583-2995` | 「황금이무기/부룡금사」**双子 Boss**（详见 §11.3） |
+| `TPhisicalFarAttackMonster` | `:2998-3094` | 物理远程；`RangeAttack` 伤害可**按目标等级缩放**（`MultiplyTargetLevelMin/Max`）；5 格内打、≤2 格 1/3 后撤、>5 格 1/2 靠近 |
+
+### 11.3 `TGoldenImugi` 双子 Boss 机制（`:2583-2995`）
+
+- **孪生维持**：每 3 s 全图扫描 `RC_GOLDENIMUGI`。`>2` 只 → 多余 `MakeGhost(8)`；
+  `=2` 且相距 ≥10 → **`WarpTime` 较旧的一只瞬移到另一只旁**；≤2 格 → 1/3 概率分开。
+  `=1` 只且 `TwinGenDelay<=0` → `AddCreatureSysop(__GoldenImugi)` **复活伴侣**（HP=2/3 Max，
+  特效 `NE_SN_RELIVE`）；复活期间广播 `RM_CRY`。
+- **休眠/苏醒**：`DontAttack` 初始 TRUE；被 `Struck` 或收到 `RM_MAKEPOISON` → FALSE。
+  `AttackState`/`InitialState` 切换 `BoDontMove` 与 `RM_TURN`/`RM_DIGDOWN` 动画。
+- **白蛇联动**：统计名为 `__WhiteSnake` 的存活怪，`HealthRecover := snakecount*2`（**回血随白蛇数**）；
+  HP≤50% 一次性召唤 2 条白蛇；HP≤10% 一次性 `MagDefenceUp(60,20)`+`MagMagDefenceUp(60,20)`、
+  `LoseTarget`、`RandomSpaceMoveInRange(0,30,80)` 随机传送（`FinalWarp`）。
+- **攻击三态**：近战 `SpitMap` 5×5；`RangeAttack` 单格范围魔法（`RM_LIGHTING_1`，800 ms）；
+  `RangeAttack2` 全视野玩家/召唤 `MakePoison(POISON_DAMAGEARMOR,60,5)` + `NE_POISONFOG`。
+  目标锁定有 4–7 s 记忆（`OldTargetCret`/`TargetTime`），8 s 后随机换目标。
+- **死亡掉落**：`Die` 时若只剩自己（`imugicount=1`）→ `BoNoItem:=FALSE`（**最后一只才掉物品**）。
+
+### 11.4 与 EI / Zircon 对照与未验证项
+
+| 项 | 原版反编译 | 源码 | 结论 |
+|---|---|---|---|
+| 石像解石/召唤 | 未闭合 | `ET_SCULPEICE`/`ET_DIGOUTZOMBI` 事件 | `source-only` |
+| 双子 Boss 孪生维持 | 未闭合 | `WarpTime` 比较 + 复活 | `source-only` |
+| 远程怪风筝 | 未闭合 | 见 `ObjAxeMon`/`TPhisicalFarAttackMonster` | `source-only` |
+
+未验证：`SpitMap`/`TargetInSpitRange`/`TargetInAttackRange`/`GetBackPosition`/`CharPushed`/
+`MagPassThroughMagic`/`AddCreatureSysop` 的具体实现（在 `ObjBase.pas`/`Envir.pas`）；
+`__ZumaMonster*`/`__GoldenImugi`/`__WhiteSnake`/`__ShinSu*` 的常量值与 `MonGen.txt` 的
+`MonName`→类映射（工厂在 `UsrEngn.AddCreature`，本轮未逐行核对）；无 Delphi/运行期验证。
+
+---
+
+## 12. `ObjMon2.pas` 实现精读（Round 936，1,817 行 / 17 类）
+
+> 种族常量（`Grobal2.pas`）：`RC_KILLINGHERB=85`（식인초）、`RC_MINE=141`（지뢰）、
+> `RC_STICKBLOCK=153`（호혼석）、`RC_ARCHERGUARD=112`、`RC_ARCHERPOLICE=20`、`RC_PBMSTONE1=138`。
+
+### 12.1 「潜地」族：`TStickMonster` / `TMineMonster`（`:14-429`）
+
+- `TStickMonster`（`TAnimal` 派生）：`HideMode+StickMode`、`DigupRange/DigdownRange=4`。
+  `CheckComeOut` 玩家进入 `DigupRange` → `ComeOut`（`RM_DIGUP`）；目标超出 `DigdownRange` → `ComeDown`
+  （`RM_DIGDOWN`，并**手动 `Dispose` 掉 `VisibleActors` 里每个 `PTVisibleActor` 再 `Clear`**）。
+- `TMineMonster`（地雷，`RC_MINE`）：`AttackTarget` **直接把 `WAbil.HP:=0`** ——
+  踩到即自爆（与 `TExplosionSpider` 同类效果，但无范围伤害代码，靠 `Die` 结算）。
+
+### 12.2 巢穴/召唤族
+
+| 类 | 行 | 机制 |
+|---|---|---|
+| `TBeeQueen`（비막원충/蜂巢） | `:435-508` | `StickMode`；`MakeChildBee` 发延迟 `RM_ZEN_BEE`（500 ms）→ `AddCreatureSysop(__Bee)` 并 `SelectTarget(TargetCret)`；上限 15；每轮清理死亡子体 |
+| `TSpiderHouseMonster`（거미집/蜘蛛巢） | `:754-834` | 同上，产 `__Spider`，**位置固定在 `CY+1`** 且 `CanWalk` 才生 |
+| `TCentipedeKingMonster`（지네왕/촉룡신） | `:515-630` | 潜地 10 s 后才出土；`ComeOut` **回满 HP**；`AttackTarget` 对 `ViewRange` 内**所有**目标发 `RM_DELAYMAGIC`（range 2），1/4 概率附带 `POISON_DECHEALTH 60` 或 `POISON_STONE 5`；出土 3 s 后才攻击、10 s 无目标再入地 |
+| `TBigHeartMonster`（적월마/심장怪） | `:636-691` | `ViewRange=16`；对视野内**所有**目标发 `RM_DELAYMAGIC`（range 1）+ `NE_HEARTPALP` 特效（原「脚印事件」已注释） |
+
+### 12.3 特殊耐久/掉落
+
+- `TBamTreeMonster`（밤나무）：`Run` 每轮把 `WAbil.HP` 拉满；**只有 `StruckCount >= DeathStruckCount`
+  才置 HP=0** —— `DeathStruckCount` 在首次 `Run` 时捕获为 `WAbil.MaxHP`，
+  即**「砍够 MaxHP 次才倒」的计数式血条**（伤害数值无关）。
+- `TMonsterBox`（몬스터박스）：`Die` 后 1/10 概率 `AddCreatureSysop('사슴')`（鹿）。
+- `TExplosionSpider`（자폭거미）：目标进范围即 `DoSelfExplosion`（HP=0 + 3×3 内
+  `GetHitStruckDamage(pwr/2)+GetMagStruckDamage(pwr/2)`）；或**出生 60 s 后自爆**。
+
+### 12.4 守卫 / 城门 / 城墙（`:103-1390`）
+
+- `TGuardUnit.Struck`（`:917-924`）：被打时给 `hiter` 打上 **`BoCrimeforCastle`+时间**
+  （城堡犯罪标记，`IsProperTarget` 见 `server.md §10.12`；源码注释「2 分钟」但写「5분」）。
+- `TArcherGuard`（궁수경비，`RC_ARCHERGUARD`）：`Castle:=nil`、`OriginDir:=-1`；
+  `ShotArrow` = 飞斧式（`GetHitStruckDamage`、`ExpHiter:=nil`、延迟 `600+max(|dx|,|dy|)*50`）；
+  `Run` 选曼哈顿最近合法目标，无目标时 `Turn(OriginDir)` 复位朝向。
+- `TArcherMaster`（궁수호위병，`TATMonster`）：`ShotArrow` 伤害**按目标等级缩放**
+  （`MultiplyTargetLevelMin/Max`）；`Run` 贴脸 1/3 后撤、>5 格 1/2 靠近。
+- `TArcherPolice`（궁수경찰，`RC_ARCHERPOLICE`）：注释「평화모드로 공격이 안되게」。
+- `TCastleDoor`（성문）：`BoOpenState`；`Dir` 由 `3 - Round(HP/MaxHP*3)` 得到 **0/1/2 三档破损外观**；
+  `ActiveDoorWall` 用 `PEnvir.GetMarkMovement` **标记 10 个格子的可通行性**（开门时留 3 格不可走=门框）；
+  `OpenDoor`/`CloseDoor` 切 `BoStoneMode`（不可被攻击）与 `HoldPlace`（占位）；
+  `Die` → `ActiveDoorWall(dsBroken)`；`Run` 死亡时不断刷 `DeathTime`（**尸体不消失**）、`HealthTick:=0`（**不回血**）。
+- `TWallStructure`（성벽）：同理，但用 `BoBlockPos` 记录是否已标记阻挡；`Dir` 0..4 五档。
+
+### 12.5 玩法怪
+
+- `TSoccerBall`（축구공，`:1396-1456`）：`NeverDie`；`Struck` 把球沿**攻击者朝向**踢出，
+  `GoPower += 4+Random(4)` 封顶 20；`Run` 撞墙按**固定镜像表**反弹
+  （`0↔4,1↔7,2↔6,3↔5`），到点停。
+- `TStickBlockMonster`（호혼석/魂石，`:1461-1814`）—— **最复杂的小怪**：
+  - `CallFollower` 在目标周围 3×3 生成 8 只：**正交位 = 自己的 `UserName`**、
+    **对角位 = `'11'`（透明不可见）**；子体 `BoCallFollower:=FALSE`、`Caller:=self`。
+  - `RunMsg`：主怪被玩家 `RM_STRUCK` 时，若**没有任何子体先被打**（`FirstStruck`）→
+    **主怪立即 `Die`**（「必须先打小的才打大的」机制）；子体被打则**回满 HP** 并把主怪切攻击态。
+  - `Run`：出土 10 s 后瞬移到目标旁再召唤；目标消失 15 s 后再 10 s → 主怪自杀。
+  - `Die`：连同子体一起死，子体 `LastHiter/ExpHiter:=nil`、`BoNoitem:=TRUE`（**不掉物品**）。
+
+### 12.6 与 EI / Zircon 对照与未验证项
+
+| 项 | 原版反编译 | 源码 | 结论 |
+|---|---|---|---|
+| 城门 HP→外观三档 | 未闭合 | `3 - Round(HP/MaxHP*3)` | `source-only` |
+| 计数式树怪 | 未闭合 | `StruckCount >= MaxHP` | `source-only` |
+| 魂石「先小后大」 | 未闭合 | `RunMsg` 主怪秒死 | `source-only` |
+
+未验证：`RC_ARCHERMON`/`RC_ARCHERGUARD`/`RC_ARCHERPOLICE` 在 `MonGen.txt` 的实际用法、
+`__Bee`/`__Spider`/`'11'` 的常量值与客户端外观、`GetMarkMovement` 的通行位图语义、
+`TGuardUnit.IsProperTarget` 的完整分支（见 `server.md §10.12`）；无 Delphi/运行期验证。
+
+---
+
+## 13. `ObjMon3.pas` 实现精读（Round 937，3,197 行 / 18 类）
+
+> 本文件是**后期扩展怪物/Boss 集**（大量 `sonmg` 注释与 `2003–2005` 时间戳），
+> 含神兽/狐狸系列、龙系列、多个地图 Boss。
+
+### 13.1 召唤物：`TAngelMon`（천녀/月령）与 `TCloneMon`（분신/分身）
+
+- `TAngelMon`（`:278-438`，`RC_ANGEL`）：`BeforeRecalcAbility` 按 `SlaveMakeLevel`
+  设 `MaxHP 150/200/300/450`、AC、MC；`RangeAttackTo` 是**魔法**（`GetMagStruckDamage`，
+  对 `LA_UNDEAD` ×1.5）；`AttackTarget` 要求 `Master<>nil` 且 `TargetCret<>Master`，
+  且恒置 `BoLoseTargetMoment:=TRUE`（打完立刻放弃目标，**支援型**）。
+- `TCloneMon`（`:445-673`，`RC_CLONE`）：玩家分身。`AfterRecalcAbility` 把
+  `WAbil.MaxHP/HP` 复制主人、`AC/MAC` 取主人 `×2/3`。`Run` 的关键机制：
+  - `Master.SpellTick := 0`（**主人不回蓝**）、`Self.WAbil.HP := Master.WAbil.HP`（**同步血量**）；
+  - 每 `MPSpendTickTime = 600×30` 抽主人 MP：
+    `plus := MaxMP div 18 + 1`；`finalplus := -((1+SlaveMakeLevel div 2)*64) + plus + (plus*SpellRecover div 10)`，
+    正负分别钳制后写回主人 MP；主人 MP<200 → 分身消失。
+  - 死亡 1.5 s 后 `MakeGhost(8)`（无尸体）。
+
+### 13.2 龙系列（화룡/파천마룡）
+
+| 类 | 行 | 机制 |
+|---|---|---|
+| `TDragon`（화룡/파천마룡，`RC_FIREDRAGON`） | `:676-916` | `ResetLevel` 按 **42 格 `bodypos` 阵列**（近似菱形龙身）生成 42 个 `'00'` 身体怪；`RangeAttack` 按方向发 `RM_DRAGON_FIRE1/2/3`，伤害 `random(HIBYTE(DC))+LOBYTE(DC)+random(LOBYTE(MC))` ×`random(2)+1`，打**目标 5×5**，延迟 `600+max(|dx|,|dy|)*70`；`AttackAll`（1/5 概率）发 `RM_LIGHTING` 打 **21×21**、伤害 ×`random(5)+1`；`AttackTarget` 打完即 `LoseTarget`；`Struck` 在 8 格内给 `RM_DRAGON_EXP`（1–3，见 `items-systems.md §7`） |
+| `TDragonBody`（용몸，`RC_DRAGONBODY`） | `:919-976` | `ViewRange=0`、不可动、`AttackTarget` 恒 false；只作为**龙身部位**，被打同样给 `RM_DRAGON_EXP` |
+| `TDragonStatue`（용석상，`RC_DRAGONSTATUE`） | `:979-1095` | 固定炮台；`RangeAttack` 打目标 5×5 魔法 |
+
+### 13.3 后期远程怪（`sonmg` 加）
+
+| 类 | 行 | 机制 |
+|---|---|---|
+| `TEyeProg`（안구충） | `:1098-1170` | `RangeAttack` **把直线上的玩家「吸过来」**（`rushDir=(Dir+4) mod 8`、`rushDist=min(|dx|,|dy|)`、`CharRushRush`）+ `POISON_DECHEALTH`；命中门 `Random(40) > AntiMagic*5 + HIBYTE(AC) div 2`；5 格内近战 |
+| `TStoneSpider`（석거미） | `:1173-1274` | `RangeAttack` **闪电直线 13 步**（`RM_MAGSTRUCK` 延迟 600）；近战 1/3 概率附加 `POISON_DECHEALTH` |
+| `TGhostTiger`（귀호/鬼虎） | `:1277-1466` | **隐身虎**：每 9–12 s 切换 `STATE_TRANSPARENT`（60000）；冰系 `POISON_SLOW`（时长 `dam div 10`）；`Master.BoSlaveRelax` 或无目标时进入「坐/站」循环（`RM_DIGDOWN`/`RM_TURN` 切 `BoDontMove`） |
+| `TJumaThunder`（주마뇌） | `:1470-1574` | `TScultureMonster` 派生、`MeltArea=5`；`RangeAttack` 红色闪电打目标 3×3 |
+
+### 13.4 狐狸系列（비월여우，2005 扩展）
+
+- `TFoxWarrior`（비월여우 전사）：5×5 `SpitMap` 物理；20% 概率 `CriticalMode`（伤害 ×2）；
+  `HP < MaxHP/4` → `CrazyKingMode` **60 s 内攻速/移速翻倍**（`oldhittime*2 div 5`、`oldwalktime div 2`）。
+- `TFoxWizard`（술사）：近战/`RangeAttack`（直线+范围魔法）；**被打时 30% 概率瞬移**（`RandomSpaceMoveInRange(2,4,4)`，`NE_FOX_MOVEHIDE/SHOW`）。
+- `TFoxTaoist`（도사）：`RangeAttack` = **`MagMakeCurseArea` 诅咒**（半径 2、60 s、pwr 70、技能 3）；
+  `RangeAttack2` = 直线+范围魔法；**HP≤50% 一次性召唤 4 只狐狸**（`비월흑호`×2 / `비월적호`×2，
+  非韩版 `BlackFoxFolks`/`RedFoxFolks`）。
+- `TFoxPillar`（호혼기석）：`NeverDie`、固定；`FindTarget` 只选玩家（已锁定后 1/2 概率换目标）；
+  `RangeAttack` **把 12 格内目标全部拉过来**（`NE_SIDESTONE_PULL`）；`Attack` 打自身 5×5 魔法。
+- `TFoxBead`（비월천주）：**按 HP 分 5 段变身**（`BodyState 1..5`，DC/AC/MAC 递增 10%~80%，发 `RM_FOXSTATE`）；
+  `AttackTarget` 随机选招：10% **召唤**（把 30 格内远处玩家拉到身边）、40% **초필살**、
+  40% 中心攻击、否则远程；`RangeAttack` 目标 5×5、`RangeAttack2` 全视野诅咒+麻痹+双重魔法；
+  `Attack` 自身 7×7 **三连击**（300/600/900 ms）；
+  ⚠️ **`Die` 会把全地图所有怪 `NeverDie:=FALSE` 且 `HP:=0`**（**全图清场**，最终 Boss 收尾）。
+
+### 13.5 `TPushedMon`（호기연）与 `TBossTurtle`（거북왕/현무）
+
+- `TPushedMon`（`:2230-2358`）：`AttackWide∈{1,3}` 决定攻击范围；**`DeathCount`=5 或 7**
+  （`Initialize`），`Run` 中 `PushedCount >= DeathCount` 才 `Die`；`Struck`/`RunMsg` 恒把
+  `WAbil.HP` 拉满 —— 即**「被推动/推击 N 次才死」的计数怪**（`PushedCount` 的递增点不在本文件，
+  疑在 `ObjBase`/`CharPushed` 侧，**未验证**）。
+- `TBossTurtle`（`:2874-3194`，`ViewRange=17`）：**按血量加权随机选招** ——
+  HP≥50%：28% 全体 / 40% 物理A / 30% 物理B / 2% 治疗；HP<50%：43% / 30% / 20% / 7%。
+  全体 = 目标 **15×15**（`GetCreatureInRange(targ,7)`）；物理A = 自身 **5×5**；
+  物理B = 目标 **3×3**（`GetCreatureInRange(targ,1)`）；治疗 = `IncHealthSpell(1000,0)`。
+  伤害统一 `GetAttackPower(DC) + Random(LOBYTE(MC))` 后 ×2。**召唤**：每损失 10% HP
+  （`RecallStep` 9→0）发 `RM_LIGHTING_3` 并在上下各 3 格召唤 `갑석귀수`/`갑철귀수` 共 6 只
+  （`NE_KINGTURTLE_MOBSHOW`）。
+
+### 13.6 与 EI / Zircon 对照与未验证项
+
+| 项 | 原版反编译 | 源码 | 结论 |
+|---|---|---|---|
+| 分身抽主人 MP | 未闭合 | `finalplus` 公式 | `source-only` |
+| 龙身 42 格阵列 | 未闭合 | `bodypos[42]` | `source-only` |
+| Boss 加权选招 | 未闭合 | `Random(10000)` 分档 | `source-only` |
+| 全图清场 | 未闭合 | `TFoxBead.Die` | `source-only` |
+
+未验证：`PushedCount` 的递增点、`MagMakeCurseArea`/`CharRushRush`/`IncHealthSpell`/
+`RandomSpaceMoveInRange`/`BodyState`（`RM_FOXSTATE`）的完整实现与客户端表现；
+`'00'`/`갑석귀수` 等 `MonGen` 名称映射；无 Delphi/运行期验证。

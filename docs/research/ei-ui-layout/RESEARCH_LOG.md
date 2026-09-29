@@ -13152,3 +13152,36 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** 未找到 EI 原版升级概率/`Desc` 槽位语义的 `primary-static` 对照；`GetUpgrade2` 的分段概率公式与旧版注释差异、`RealAttackSpeed` 到实际攻击延迟的消费点均未验证。属静态阅读。
 
 **〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`git diff --check` 通过。未运行 Delphi/GameServer。
+
+
+## Round 935 — 2026-09-29：`ObjMon.pas` 全实现（32 类）
+
+**〔范围〕** 完整读取 `ObjMon.pas:1-3097`（CP949）。未运行 Delphi/GameServer。
+
+**〔基类〕** `TMonster`（`TAnimal` 派生）：`Create`(ViewRange5/RunNextTick250/SearchRate3000+Random2000)、`MakeClone` 整块复制 WAbil/状态/目标、`Think`（3 s 重叠挤开）、`AttackTarget`、`Run`（走走停停 + 跟随主人 + `ForceMoveToMaster` 瞬移）、`RecalcAbilitys`（AddAbil 叠加、DEFENCEUP 新公式、ExtraAbil、ApplySlaveLevelAbilitys）。**静态缺陷**：`Run:492` 跟随主人的 Y 分量误用 `bx`。
+
+**〔32 类机制〕** 详见 `monsters.md §11`。要点：`TSpitSpider` 用 `SpitMap` 5×5 方向模板 + 魔法防御 + 中毒；`TCowKingMonster` 被 5 人围则瞬移脱围 + 8 s 预备 + 8 s 暴走；`TDigOutZombi` 建 `ET_DIGOUTZOMBI`（洞）；`TZilKinZombi` 复活且减半；`TScultureMonster/King` 石像解石 + `ET_SCULPEICE` + 5 次召唤；`TElfMonster`/`TElfWarriorMonster` 神兽两形态互变；`TCriticalMonster`/`TDoubleCriticalMonster` 暴击 = `MaxMP/10`；`TSkeletonKingMonster` 飞斧连射 + 召唤；`TPBKingMonster` 边角瞬移 + 按方向推人 + 视野内掉 1/4 HP；`TGoldenImugi` 双子 Boss（孪生维持/复活/白蛇回血/三态攻击/最后一只才掉落）；`TPhisicalFarAttackMonster` 按目标等级缩放远程。
+
+**〔未闭合〕** 未找到 EI 原版对应机制的 `primary-static` 证据；`SpitMap`/`CharPushed`/`AddCreatureSysop` 等底层实现与 `MonGen.txt` 名称映射未追；无运行期验证。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+## Round 936 — 2026-09-29：`ObjMon2.pas` 全实现（17 类）
+
+**〔范围〕** 完整读取 `ObjMon2.pas:1-1817`（CP949）。未运行 Delphi/GameServer。
+
+**〔机制〕** 详见 `monsters.md §12`。潜地族 `TStickMonster`/`TMineMonster`；巢穴族 `TBeeQueen`/`TSpiderHouseMonster`（`RM_ZEN_BEE` 产 `__Bee`/`__Spider`）；`TCentipedeKingMonster`（出土回满血）、`TBigHeartMonster`（群体延迟魔法）；`TBamTreeMonster` 计数式血条（`StruckCount>=MaxHP`）；`TExplosionSpider` 自爆；`TGuardUnit.Struck` 打城堡犯罪标记；`TArcherGuard`/`TArcherMaster`/`TArcherPolice`；`TCastleDoor`（HP→Dir 三档 + `ActiveDoorWall` 标记 10 格通行）、`TWallStructure`；`TSoccerBall`（踢球 + 固定镜像反弹）；`TStickBlockMonster`（호혼석：3×3 生成 8 子体，主怪被打若无子体先中则秒死，`Die` 连坐子体且不掉物品）。
+
+**〔未闭合〕** EI 原版对应证据缺失；`GetMarkMovement` 通行位图、`__Bee`/`__Spider`/`'11'` 常量与外观未验证；`TGuardUnit.IsProperTarget` 见 `server.md §10.12`。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+## Round 937 — 2026-09-29：`ObjMon3.pas` 全实现（18 类）
+
+**〔范围〕** 完整读取 `ObjMon3.pas:1-3197`（CP949）。未运行 Delphi/GameServer。
+
+**〔机制〕** 详见 `monsters.md §13`。召唤 `TAngelMon`/`TCloneMon`（同步主人血量、每 30 s 按公式抽主人 MP、MP<200 消失）；龙族 `TDragon`（42 格 `bodypos` 龙身 + `RM_DRAGON_FIRE1/2/3` + 5×5/21×21 两档）、`TDragonBody`、`TDragonStatue`；后期远程 `TEyeProg`（吸人）、`TStoneSpider`（13 步闪电）、`TGhostTiger`（隐身虎 + 减速 + 坐站循环）、`TJumaThunder`；狐狸系列 `TFoxWarrior`/`TFoxWizard`/`TFoxTaoist`/`TFoxPillar`/`TFoxBead`（HP 5 段变身、Die 全图清场）；`TPushedMon`（DeathCount 5/7 计数死）、`TBossTurtle`（HP 加权选招 + 每 10% 血召唤 6 只）。
+
+**〔未闭合〕** EI 原版对应证据缺失；`PushedCount` 递增点、`MagMakeCurseArea`/`CharRushRush`/`IncHealthSpell`/`RM_FOXSTATE` 的完整实现未追；无运行期验证。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
