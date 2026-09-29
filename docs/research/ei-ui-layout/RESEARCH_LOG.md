@@ -13755,3 +13755,24 @@ HUD cap2「技能图鉴」flag 消费者；任务详情面板 `detail_geometry` 
 **〔未闭合〕** ObjBase 剩余未逐行读：`29230-29590`（关系删除族）、`29819-29922`（SumCountItem）、`30120-30451`（GaBoardDel/DecoItemBuy/ExecuteGuildAgitTrade）、`30785-31401`（寄售买/卖/取消内部）、`18060-18543`、`2020-2955`/`10262-10694` 局部。**保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 970 — 2026-09-29：`ObjBase.pas` 收尾（基础方法/战斗辅助/剩余 ServerGet），**全函数范围读毕**
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas` 剩余区段：`18060-18540`、`2723-2982`、`10265-10693`、`18543-18908`、`23101-23184`、`24584-24623`、`29231-29589`、`29820-29921`、`30139-30361`、`30785-31398`。未运行 Delphi/GameServer。
+
+**〔发包/移动〕** `SendSocket` 包体 `[4B 长度][TMsgHeader][TDefaultMessage?][body]`，`Code=$aa55aa55`/`Ident=GM_DATA`，**body 无 pmsg 时长度取负**；`WalkXY/RunXY/HitXY/SpellXY` 均带**限速检测**（`WalkTimeOverCount>4`/`Sum>6`，`Hit` 间隔 `<900−HitSpeed*60`，`SpellTimeOverCount≥2`），`SpeedHackTimerOverCount>8 → EmergencyClose`。
+
+**〔挖矿〕** `DigUpMine`：`ET_MINE/2/3` 且 `MineCount>0`；`Random(4)=0` 成功挖石堆，**`Random(12)=0` 才出矿石**；`DoDamageWeapon(5+Random(15))`；矿 10 分钟 `Refill`。三张矿石表见 §10.39.2。
+
+**〔攻击〕** `HitXY`：`CM_HEAVYHIT` + 武器 `Shape=19`（镐）+ 前方挡 → 挖矿发 `=DIG`；力劈技能 `AttackSkillCount` 归零重置为 `7−等级`，命中发 `+PWR`。
+
+**〔施法〕** `SpellXY`：石化/眩晕/冰冻禁施；剑法 delay 0、魔法 `DelayTime+800`；御剑/半月/狂风互斥切换 `+LNG/+WID/+CRS`；炎火/双龙耗 MP；武太步 3s CD。
+
+**〔装备/能力〕** `ApplyItemParametersEx`（鞋 52 加手/穿负重、腰带 54 加背包负重）；`MakeWeaponUnlock`（武器诅咒）；`TrainSkill`（事件×2/×3）；`GetMyAbility`（`Abil+AddAbil`）；`GetMyLight`（50 级内功 1、取装备最大 `Light`、台湾用户恒 4）；`GetUserName`（主人/分身/文派城名）；任务标记位图 `Get/SetQuestMark/OpenIndex/FinIndex`；`GetAttackPower`（幸运满攻/不运最小）。
+
+**〔其余〕** 关系删除族（双方扣 `COMPENSATORY_PAYMENT` + 减速 + HP/MP 减半 + `RM_LM_DBDELETE`）、`ServerGetSumCountItem`、庄园留言板 Del/DelAll/Edit、`CmdBuyDecoItem`（名声 +价×0.1%）、`ExecuteGuildAgitTrade`（双方文派主，买家 +500/卖家 −200 名声）、寄售 Sell/Buy/Cancel/GetPay（手续费 `MARKET_COMMISION/1000`）、`SendLogon`/`SendAreaState`（`AREA_FIGHT/SAFE/FREEPK`）、`GuildSecession`（文派战中禁退，`DecFamePoint(200)`）。
+
+**〔结论〕** `ObjBase.pas` 全部函数范围已逐段读毕，**coverage-ledger 状态 `partial` → `covered`**。未读的仅剩跨文件 helper（`SqlEngine`/`GuildAgit*Man`/`UserEngine`/`MagicMan` 等）与全部 `*` 常量值。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`ledger.py --summary` 应无 partial；`git diff --check` 通过。

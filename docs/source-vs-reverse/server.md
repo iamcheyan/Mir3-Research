@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962 / 963 / 964 / 965 / 966 / 967 / 968 / 969）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962 / 963 / 964 / 965 / 966 / 967 / 968 / 969 / 970）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -2034,6 +2034,111 @@ AC/MAC 只增 hi 字节，HP/MP/Hit/Speed 直接加；余数留 `CurBonusAbil`�
 - `CmdGuildAgitSale`/`SaleCancel`（`ForSaleFlag/ForSaleMoney`，成交后不可取消；日志 `'39'` 장판매_ / `'40'` 장취소_）、`CmdGuildAgitBuy`（**10 条/页** `RM_GUILDAGITLIST`）、`CmdTryGuildAgitTrade`（`RM_GUILDAGITDEALTRY`）、`CmdGuildAgitExpulsionMyself`（**非本庄园/过期/无派者强制送回 `HomeMap`**）、`CmdGuildAgitDonate`/`ViewDonation`/`GetGuildAgitDonation`/`DecGuildAgitDonation`（**`GUILDAGITMAXGOLD` 封顶**；日志 `'46'` 기부_）、`CmdGetGuildAgitFileVersion`。
 
 **未验证**：`GuildMan`/`GuildAgitMan`/`UserEngine.*` 实现未读；`GUILDAGITREGFEE`/`GUILDAGITEXTENDFEE`/`GUILDAGITMAXGOLD`/`MINAGITMEMBER`/`COMPENSATORY_PAYMENT_ONEWAY`/`AvailableGold` 等值未查；无运行期验证。
+
+### 10.39 基础方法补全（Round 970；`ObjBase.pas:18060-18540, 2723-2955, 10265-10693`）
+
+#### 10.39.1 发包与移动（`:18061-18278`）
+
+- `SendSocket`：**包体格式** = `[4B 长度][TMsgHeader][TDefaultMessage?][body]`；`header.Code=$aa55aa55`，`SNumber=Userhandle`，`Ident=GM_DATA`；
+ `pmsg=nil` 且 `body<>''` 时 **`header.Length` 取负值**表示「简单消息」；发送走 `RunSocket.SendUserSocket`，`HumanLock` 加锁。
+- `SendDefMessage`：`MakeDefaultMsg` + `SendSocket`（有串则 `EncodeString`）。
+- `GuildRankChanged`：设职级 + `RM_CHANGEGUILDNAME`。
+- `TurnXY`/`WalkXY`/`RunXY`：转向/走/跑；**限速（speed-hack）检测**——`GetTickCount-LatestWalkTime < 600` 时 `WalkTimeOverCount/Sum` 累加，
+ `>4/6` 则 `SpeedHackTimerOverCount++`，`>8` → `EmergencyClose`（踢线）；`g_SpeedHackCheck` 可调；`BoViewHackCode` 打日志 `[11002-Walk/Run]`。
+ 走 `Dec(HealthTick,10)`，跑 `Dec(HealthTick,60)/Dec(SpellTick,10)/Dec(PerHealth)/Dec(PerSpell)`；跑时若在攻城区（`BoInFreePKArea`）**不可重叠**；
+ 跑动会解除固定隐身（`STATE_TRANSPARENT:=1`）。
+
+#### 10.39.2 挖矿掉落（`:18280-18540`）
+
+`GetPurity` 决定矿石纯度。三张表（背包未满 `MAXBAGITEM`）：
+
+| 函数 | Random | 金 | 银 | 铁 | 黑铁 | 铜 | 白金 | 软玉 | 红玉 | 紫晶 |
+|---|---:|---|---|---|---|---|---|---|---|---|
+| `GetRandomMineral` | 120 | 1-2 | 3-20 | 21-45 | 46-56 | else | — | — | — | — |
+| `GetRandomGems` | 120 | — | — | — | — | — | 1-2 | 3-20 | 21-45 | else |
+| `GetRandomMineral3` | 240 | 1-6 | 7-30 | 31-66 | 67-91 | 92-131 | 132-137 | 138-161 | 162-197 | else |
+
+（`__GoldStone`/`__SilverStone`/`__SteelStone`/`__BlackStone`/`__CopperStone`/`__Gem1..4Stone`）
+
+#### 10.39.3 绑定/邀请函/装饰品（`:2723-2982`）
+
+- `CheckUnbindItem`：名在 `UnbindItemList` 中则可捆。
+- `DeleteItemFromBag`：计数物品减 1（归零则删），非计数直接删。
+- `FindItemToBindFromBag`：按 `UnbindItemList` 找够 `count` 个 → 返回物品索引并把要删的加入 `dellist`。
+- `GuildAgitInvitationItemSet`：**邀请函绑定**——记录 `Dura=庄园号`、`DuraMax=年`、`Desc[0..2]=月/日/时`；非运营者须在**本庄园**。
+- `GuildAgitDecoItemSet`：`Dura=装饰品号`。
+- `GuildAgitInvitationTimeOutCheck`：创建时刻 +1 天为截止。
+- `DecRefObjCount`：引用计数递减（实现体被注释）。
+
+#### 10.39.4 装备/能力/任务标记（`:10265-10693`）
+
+- `ApplyItemParametersEx`：**鞋（52）**按 `EffType1/2` 加 `MaxHandWeight`/`MaxWearWeight`（封顶 255）；**腰带（54）**加 `MaxWeight`（封顶 65000）。
+- `MakeWeaponUnlock`：**武器诅咒**——`Desc[3]`（幸运）>0 则 -1，否则 `Desc[4]`（不运）<10 则 +1，提示「저주가 걸렸습니다」。
+- `TrainSkill`：`ComeBack2005` 事件 ×2、`BoFastTraining` ×3 加成修练值。
+- `GetMyAbility`：`Abil + AddAbil` 合并（AC/MAC/DC/MC/SC 逐字节 min 255）。
+- `GetMyLight`：50 级内功特效（`BoHighLevelEffect` + `EFFECTIVE_HIGHLEVEL`）给基础亮度 1；遍历 `U_DRESS..U_CHARM` 取最大 `StdItem.Light`；**台湾活动用户恒为 4**。
+- `GetUserName`：非玩家加 `(主人名)` 或分身影射主人名；玩家名附台湾活动名/文派与沙巴克城名。
+- `GetHungryState`：`HungryState div 1000`，上限 4。
+- **任务标记位图**：`Get/SetQuestMark`（`QuestStates`，`MAXQUESTBYTE`）、`Get/SetQuestOpenIndexMark`（`QuestIndexOpenStates`）、`Get/SetQuestFinIndexMark`（`QuestIndexFinStates`），均 `$80 shr (idx mod 8)` 位操作。
+- `CmdMonClear`：整图怪物 `BoNoItem:=TRUE; HP:=0`。
+- `DoDamageWeapon`：武器耐久按 `wdam` 递减，每变化 1（`Dura/1000`）发 `RM_DURACHANGE`，归零提示「다 닳았습니다」（删除逻辑已注释）。
+- `GetAttackPower`：`Luck>0` 时 `Random(10-min(9,Luck))=0` 取 `damage+ranval`（满攻）；`Luck<0` 时 `Random(10+...)=0` 取最小 `damage`。
+
+### 10.40 剩余 `ServerGet*` 处理族补全（Round 970；`ObjBase.pas:29231-29589, 29820-29921, 30139-30361, 30785-31398`）
+
+- **关系删除**：`ServerGetRelationDelete`（恋人须面对面 + 互为恋人 + `COMPENSATORY_PAYMENT` → `SM_LM_DELETE_REQ`）、
+ `...DeleteRequestOk`（**双方各扣 `COMPENSATORY_PAYMENT` + `POISON_SLOW` + HP/MP 减半**，日志 `'47'` 해제:2）、
+ `...DeleteRequestFail`、`RelationShipDeleteOther`（`fLover.Delete` + `SM_LM_DELETE`/`SM_LM_RESULT` + `RM_LM_DBDELETE`）、
+ `ServerSetRelationDBWantList/Add/Edit/Delete`（转 `stDbServer`，`DB_LM_*`）、`GetCharMapInfo`、
+ `ServerGetRelationDBGetList`（解析 `名:状态:消息:日期:等级:性别/` → `fLover.Add`；恋人上线互相提示 + 生日/回归消息）。
+- **计数物品合并**：`ServerGetSumCountItem`（同名合并；超 `MAX_OVERLAPITEM` 中止，超 `MAX_OVERFLOW` 转 `UserCounterItemAdd`，`RM_COUNTERITEMCHANGE`）。
+- **庄园留言板**：`ServerGetGaBoardDel`（删）、`DelAll`（**仅文派主 + 须在本庄园**，`RequestGuildAgitBoardDelAll`）、`Edit`（改）、`NoticeCheck`（`RM_GABOARD_NOTICE_OK/FAIL`）；**正文禁单引号**。
+- **装饰品**：`ServerGetDecoItemBuy`/`CmdBuyDecoItem`（**仅本庄园成员**；`NAME_OF_DECOITEM`；价格 `DEFAULT_DECOITEM_PRICE` 兜底；**名声 +价格×0.1%**；日志 `'9'` 구입_）、`SendDecoItemList`（`RM_DECOITEM_LIST`，名/号/价/类）。
+- **庄园交易**：`ExecuteGuildAgitTrade`（**双方文派主 + 均非已有庄园 + 出售方未逾期 + 在售 + 成员 > `MINAGITMEMBER`**；`GuildAgitTradeOk`；**买家 +500 名声 / 卖家 -200**；`GUILDAGIT_SALEWAIT_DAYUNIT` 天后过户）。
+- **寄售内部**：`RequireGetPayUserMarket`（须本人 + 索引存在 + `Gold+价 <= AvailableGold` → `RequestGetPayUserMarket`）、
+ `GetMarketData`（`PTSearchSellItem` → `FUserMarket`）、`SendUserMarketList`（`MAKET_ITEMCOUNT_PER_PAGE` 分页 → `RM_MARKET_LIST`，首包 `bFirstSend=1`）、
+ `SellUserMarket`（`FlagReadyToSellCheck` → 删物 + `DecGold(MARKET_CHARGE_MONEY)` + `CheckToDB`；日志 `'32'` 위맞_）、
+ `ReadyToSellUserMarket`（`SellCount < MARKET_MAX_SELL_COUNT`）、`BuyUserMarket`（`AddToBagItem` + `DecGold(价)` + `CheckToDB`；日志 `'33'` 위구입_）、
+ `CancelUserMarket`（`'34'` 위취_）、`GetPayUserMarket`（**`IncGold(价) - DecGold(价*MARKET_COMMISION/1000)` 手续费**；日志 `'35'` 위돈찾_）。
+- **留言板列表**：`CmdReloadGaBoardList`/`CmdGaBoardList`（**非本庄园文派不可看，`UD_ADMIN` 例外**；`GABOARD_NOTICE_LINE` 校验；`RM_GABOARD_LIST`）、`CmdGaBoardDelAll`。
+
+**未验证**：`SqlEngine`/`FUserMarket`/`GuildAgit*Man`/`UserEngine.*` 实现未读；`MARKET_*`/`GUILDAGIT*`/`COMPENSATORY_PAYMENT*`/`MAXQUESTBYTE`/`GABOARD_NOTICE_LINE` 等常量值未查；无运行期验证。
+
+### 10.41 战斗辅助 / 退派 / 登录包（Round 970；`ObjBase.pas:18543-18908, 23101-23184, 24584-24623`）
+
+#### 10.41.1 挖矿 / 攻击 / 施法（`:18543-18908`）
+
+- `DigUpMine(x,y)`：目标格须 `ET_MINE/ET_MINE2/ET_MINE3` 且 `MineCount>0` → 递减；`Random(4)=0` 挖成功（生成/增大 `ET_PILESTONES` 石堆，5 分钟），
+ **`Random(12)=0` 才出矿石**（`ET_MINE→GetRandomMineral`，`ET_MINE2→GetRandomGems`，否则 `GetRandomMineral3`）；`DoDamageWeapon(5+Random(15))`；`RM_HEAVYHIT`；矿耗尽 10 分钟后 `Refill`。
+- `HitXY(hitid, x, y, dir)`：**限速检测**——间隔 < `900 − HitSpeed*60` 则累加，`>4/6` → `EmergencyClose`；
+ 只能在自身坐标攻击；若为 `CM_HEAVYHIT` + 有武器 + 前方被挡 + **武器 `Shape=19`（镐）** → 走 `DigUpMine` 并发 `=DIG`；
+ 否则按 hitid 分派 `HM_HIT/HEAVYHIT/BIGHIT/POWERHIT/LONGHIT/WIDEHIT/FIREHIT/CROSSHIT/TWINHIT`；
+ **力劈（PowerHit）技能**：`AttackSkillCount--`，归零后重置为 `7 − 技能等级`，`AttackSkillPointCount=Random(...)`，命中点发 `+PWR`；
+ 消耗 `HealthTick-30/SpellTick-100/PerHealth-2/PerSpell-2`。
+- `GetMagic(mid)`：按 `MagicId` 找魔法。
+- `SpellXY(magid, tx, ty, targcret)`：**石化/眩晕/冰冻中禁止施法**；间隔检测（`SpellTimeOverCount<2`）；
+ `SpellTick-=450`；剑法 `LatestSpellDelay=0`，魔法 `= DelayTime + 800`；
+ - `SWD_LONGHIT` 御剑 → 切 `+LNG/+ULNG`；`SWD_WIDEHIT` 半月 → 切 `+WID/+UWID`（互斥 `+UCRS`）；`SWD_CROSSHIT` 狂风 → `+CRS/+UCRS`；
+ - `SWD_FIREHIT` 炎火 → 耗 MP 发 `+FIR`；`SWD_RUSHRUSH` 武太步 → 3s CD，`CharRushRush` 并按等级 `TrainSkill`；`SWD_TWINHIT` 双龙 → 发 `+TWN`；
+ - `SKILL_MAXDEFENCE` → `RM_POWERUP`；否则 `DoSpell`，失败 `RM_MAGICFIRE_FAIL`；
+ - 超频（非剑法）→ `EmergencyClose`（日志 `[11001-Mag]`）。
+- `SitdownXY`：`RM_SITDOWN`。
+
+#### 10.41.2 退派 / 测试任务日志（`:23101-23184`）
+
+- `GuildSecession`：非文派主（`GuildRank>1`）可退；**文派战中禁止退派**；退派 `DecFamePoint(200)`，日志 `'50'` 문탈_，`ChangeNameColor`。
+- `CmdSendTestQuestDiary(unitnum)`：`0` 列全部任务（开始/准备 + 完成/进行）；否则按单元列 `PTQDDinfo`（`title` + `SList`）与 `GetQuestMark`。
+
+#### 10.41.3 登录 / 区域状态（`:24584-24623`）
+
+- `ReadySave`：`Abil.HP := WAbil.HP` + `BrokeDeal`。
+- `SendLogon`：`SM_LOGON`（`self/CX/CY/Word(Dir,Light)`）+ `TMessageBodyWL`（`Feature`/`CharStatus`，`AllowGroup` 时 `lTag1` 置 1）。
+- `SendAreaState`：`SM_AREASTATE`——`FightZone|Fight2Zone → AREA_FIGHT`，`LawFull → AREA_SAFE`，`BoInFreePKArea → AREA_FREEPK`。
+- `DoStartupQuestNow`：`StartupQuestNpc.UserCall(self)`。
+
+**未验证**：`TPileStones`/`TStoneMineEvent`/`MagicMan`/`CharRushRush`/`DoSpell` 实现未读；`EFFECTIVE_HIGHLEVEL`/`AREA_*`/`SKILL_MAXDEFENCE`/`SWD_*` 常量值未查；无运行期验证。
+
+**至此 `ObjBase.pas` 全部函数范围已逐段读毕**（Round 810/926-970）。
 
 ---
 
