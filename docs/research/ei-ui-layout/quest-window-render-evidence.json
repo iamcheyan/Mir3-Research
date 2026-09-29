@@ -35,12 +35,56 @@
   "verdict": "Quest window render decoded (primary-bytes): 0x447470 text list with 0x104 stride, 19-line cap, 0x45E0C0 measure 200px gate, selected/normal colors 0x1919C8/0x19197D, row = line*3+0x12. Sim quest list wired and browser-verified.",
   "evidence_level": "primary-bytes",
   "evidence_level_note": "All offsets, colors and gates read directly from MIR3.EXE bytes; sim quest content is demo (server-pushed at runtime).",
-  "cross_refs": ["F338: quest id11 paint 0x447470", "F331: 0x104 stride skill list", "Round 32: F338 quest identity"],
+  "cross_refs": [
+    "F338: quest id11 paint 0x447470",
+    "F331: 0x104 stride skill list",
+    "Round 32: F338 quest identity"
+  ],
   "tool": "capstone via disasm_capstone.PeImage; puppeteer browser",
   "reproduce": "img.disasm(0x447470, 0x400); open sim; press D; observe quest window colors/rows",
   "notes": [
     "quest line width gate 0xC8=200px (0x44754D cmp edx,0xC8) - longer lines wrap",
     "selection colors: [ebp+0x204]==0 -> 0x19197D else 0x1919C8; [ebp+0x210] flag gates",
     "row stride = line*3 (0x447618 lea eax,[ecx+ecx*2+0x12]) = 12px per line + 0x12 base"
-  ]
+  ],
+  "detail_geometry": {
+    "panel_frame": 705,
+    "panel_library": "Data/GameInter.wil",
+    "panel_size": [
+      204,
+      76
+    ],
+    "panel_position_window_relative": [
+      65,
+      294
+    ],
+    "panel_position_expression": "x = window.x+0x41 (0x00447E39 add edx,0x41); y = window.y+0x126 (0x00447E32 add ecx,0x126)",
+    "panel_draw_call": "0x00447E02 push 0x2C1 -> 0x466130 SelectFrame -> 0x45FD50(0x8AB7A8, x, y, frame_w, frame_h, 0xFFFF, 0xFFFF)",
+    "text_origin_window_relative": [
+      80,
+      310
+    ],
+    "text_origin_expression": "x = window.x+0x50 (0x00447F0C add ecx,0x50); y = window.y+0x136 + row*15 (0x00447F02 lea eax,[ecx+edx+0x136], ecx = row*15 from 0x00447EFC/0x00447EFF)",
+    "text_line_pitch": 15,
+    "text_row_cap": 3,
+    "text_color": "0x7D0000 (0x00447EF7 / 0x00447F51 / 0x00447F70)",
+    "text_draw_call": "0x0045DD70(0x8AB7A8, 0, x, y, 0x7D0000, 0, line, 0)",
+    "evidence_level": "primary-static",
+    "note": "Recovered 2026-09-29 by re-disassembling 0x00447D58-0x00447F90; earlier the value existed only as prose in UI_COVERAGE_MATRIX.md, and GodotClient/Controls/QuestDialog.cs referenced a non-existent `detail_geometry` key. Panel size cross-checked against GameInter F705 header = 204x76."
+  },
+  "list_row_geometry": {
+    "x_window_relative": 65,
+    "x_expression": "window.x+0x41 (0x0044761F add ecx,0x41)",
+    "y_window_relative_base": 90,
+    "y_expression": "window.y+0x5A+15*line: 0x00447618 lea eax,[ecx+ecx*2+0x12] (=line*3+0x12), 0x00447622 lea eax,[eax+eax*4] (=x5) -> (line*3+0x12)*5 = line*15+90, 0x00447625 add eax,edx (window.y)",
+    "line_pitch": 15,
+    "visible_line_cap": 19,
+    "cap_expression": "cmp ecx,0x13 (0x004475DE)",
+    "selected_color": "0x1919C8 (+0x51 variant 0x191A19) via 0x004475F7 and al,0x51 / add eax,0x1919C8",
+    "normal_color": "0x19197D (+0xCE variant 0x191A4B) via 0x00447604 and al,0xCE / add eax,0x19197D",
+    "color_format": "0x00BBGGRR (same convention as skill window 0x0A320A dark green / 0x96C8FA light blue): 0x1919C8 = RGB(200,25,25), 0x19197D = RGB(125,25,25)",
+    "text_draw_call": "0x0045DD70(0x8AB7A8, 0, x, y, color, 0, line, 0) at 0x00447630",
+    "evidence_level": "primary-static",
+    "correction": "2026-09-29: the earlier prose note 'row = line*3+0x12' (also in the title/verdict) omitted the following `lea eax,[eax+eax*4]` (x5). The rendered row pitch is 15px, y base = win.y+90, not 3px. GodotClient/Controls/QuestDialog.cs legacy mode still renders the MODERN grouped list (x=8/18/28, gold/white) inside the F700 frame -> recorded as CONFIRMED_DIFFERENCE (see GODOT_WINDOW_PARITY_MATRIX_2026-09-29.md)."
+  }
 }

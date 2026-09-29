@@ -31,11 +31,13 @@
 
 - **13 个 EI 主窗口 + HUD + 确认框 + 小地图**逐项对照完毕。
 - **已修复 1 个窗口（行会 id4）的 2 处确认差异**（8 个动作控件缺失 + 成员列表几何），
-  并顺带修复 legacy 背景帧被覆写导致窗口背景消失的缺陷（§8）。
+  并顺带修复 legacy 背景帧被覆写导致窗口背景消失的缺陷（§6）；
+  另修复任务详情正文颜色（§6.3）与 `--ui-audit` 的过期 HUD 断言（§6.2）。
 - **发现并纠正 1 处研究文档错误**：技能书 id14 的窗口尺寸
   （`window_layout.json` / `window-initialization-evidence.json` 记 296×332，
   实为 **452×380**），Godot 侧原本就是对的（§8 C-1）。
 - 其余 12 个窗口在**几何、帧号、控件位置、格子数量/尺寸**上与 primary-static 证据一致（§2）。
+- **新发现 1 处确认差异**：任务列表行几何/配色（§9 Q-2）。
 - 仍未闭合：背包逐物品图标映射（数据身份阻塞）、交易/背包关闭热区语义、
   行会解散业务、技能图鉴 flag、以及若干 `candidate` 语义（§9）。
 
@@ -55,7 +57,7 @@
 | 6 | 组队 | `window_layout.json:17`；`social-window-render-evidence.json::windows[0]` | F900 256×244；成员 2 列 x=+45/+145 行距 20；5 控件 (226,214)/(17,197)/(80,197)/(159,197)/(9,52) | `GroupDialog.cs:114` | `size=(256,244) remove=(80,197) allow=(166,40) invite=(17,197) close=(226,214)` | **MATCH** |
 | 8 | 聊天弹窗 | `window_layout.json:19`；`chat-window-render-evidence.json` | F350 572×388；历史 clip (35,28,485,266) 文本(40,29) 行距14 19 行；输入 (25,311,499,15)；6 频道键 36×34 x=25+40k y=332；关闭 (532,350) | `LegacyChatDialog.cs:39` | 代码常量 `VisibleRows=19 LineStep=14`；`_historyClip=(35,28,485,266)`；按钮 `25+40i,332`；`_input=(25,311,499,15)` | **MATCH** |
 | 9 | NPC 对话 | `window_layout.json:22`；`npc-window-render-evidence.json` | F1100 552×176；正文原点 (150,40)；关闭 (7,141,28,26)；上箭头 (290,145,12,8)；下箭头 (306,136,12,8) | `NPCDialog.cs:108` | `size=(552,176) text=(150,40) close=(7,141) up=(290,145) down=(306,136)` | **MATCH** |
-| 11 | 任务 | `window_layout.json:20`；`quest-window-render-evidence.json` | F700 340×440；列表 19 行 stride 0x104；控件 (290,59)/(290,89) | `QuestDialog.cs:103` | `size=(340,440) scroll=(290,59)/(28,58) close=(304,404)` | **MATCH**（§9 Q-1 详情面板证据缺口） |
+| 11 | 任务 | `window_layout.json:20`；`quest-window-render-evidence.json` | F700 340×440；详情 F705 @(65,294) 204×76 正文 (80,310)/15px/3 行；列表行 (65, 90+15·line) 上限 19；控件 (290,59)/(290,89) | `QuestDialog.cs:103` | `size=(340,440) scroll=(290,59)/(28,58) close=(304,404)` | **MATCH**（窗口/详情/控件）；列表行几何 §9 Q-2 `CONFIRMED_DIFFERENCE` |
 | 12 | 设置 | `window_layout.json:21`；`system-window-render-evidence.json` | F750 248×264；8 toggle（(148,43/116/190/217) 32×22 与 +37 的 40×22）；2 滑条 (34,96)/(34,170)；关闭 (218,238) | `ConfigDialog.cs:141` | `size=(248,264) legacyHitRects=8 paintedIndicators=4 volumeSliders=2` | **MATCH** |
 | 13 | 坐骑 | `window_layout.json`；`horse-window-render-evidence.json` | F850 296×332；4 动作 (28,244)/(74,244)/(133,244)/(192,244)；关闭 (252,293) | `HorseDialog.cs`（构造期几何） | `size=(296,332) buttons=(28,244),(74,244),(133,244),(192,244)` | **MATCH** |
 | 14 | 技能书 | `window_layout.json`（本轮修正） | F400 **452×380** @(348,0)；8 分类页签 x=win+1..5 y=win+21+35k；F410/411 (61,303)；F412/413 (366,303)；F440/441 (399,340)；右页文本 (winX+235,winY+30) 行距 15 | `MagicDialog.cs:151` | `size=(452,380) background=F400 categories=8 nav=True rows=6` | **MATCH**（§8 C-1 文档纠错） |
@@ -179,6 +181,17 @@ SpellButton cap8 (703,16)、MenuButton cap11 (703,85)、CashShopButton cap15 (66
 
 **验证**：`[UIHudAudit] PASS panel=(800, 136) buttons=16 click=hit`。
 
+### 6.3 任务详情正文颜色（commit `2855e0ac`）
+
+原版任务详情正文用 `0x7D0000` 绘制（`0x00447EF7` / `0x00447F51` / `0x00447F70`
+三处 `push 0x7D0000`），按本引擎既有 `0x00BBGGRR` 约定（技能书 `0x0A320A`=暗绿、
+`0x96C8FA`=浅蓝）即 **RGB(0,0,125) 深蓝**；Godot legacy 用的是 `Colors.White`。
+已改为深蓝。
+
+同时补齐了此前缺失的证据键：`quest-window-render-evidence.json` 新增
+`detail_geometry`（primary-static：F705 @(65,294) 204×76、正文 (80,310)、行距 15、
+3 行、色 0x7D0000）与 `list_row_geometry`（见 §9 Q-2）。
+
 ## 7. 与 Zircon `Client/`（移植来源）的对照
 
 | 项 | `Client/`（C#） | `GodotClient` 现代路径 | 判定 |
@@ -209,7 +222,8 @@ SpellButton cap8 (703,16)、MenuButton cap11 (703,85)、CashShopButton cap15 (66
 | I-3 | 背包 F161/162 / F264/265 / F267/268 语义 | `CONFIRMED_DIFFERENCE`（未修） | `inventory-mode-tabs-evidence.json`：三者为装饰性子控件，单击只播音，模式由服务端消息写；Godot 把 F161/162 绑成关闭、F264/265 无业务、F267/268 缺失。同上属产品行为取舍。 |
 | H-1 | HUD cap2「技能图鉴」动作 | `candidate`（未修） | EI cap2 点击只翻转 `[esi+0x6208]` 布尔 flag（消费者未闭合）；Godot 映射为打开技能书（与 cap8 重复）。语义未证，不擅自改。 |
 | G-1 | 行会解散业务 | `BLOCKED`（协议） | 原版掌门守卫 + 对话框 601 双确认；Zircon 无 disband 客户端包。 |
-| Q-1 | 任务详情面板几何 | `LIKELY_DIFFERENCE`（证据缺口） | `QuestDialog.cs` 注释引用 `quest-window-render-evidence.json::detail_geometry`，但该 key **不存在**（全文无 `detail_geometry`）；几何只在 `UI_COVERAGE_MATRIX.md` 的文字里（F705 204×76 @(65,294)）。 |
+| Q-1 | 任务详情面板几何 | **已闭合（证据补齐）** | 2026-09-29 反汇编 `0x00447D58-0x00447F90` 恢复 primary-static 几何并写入 `quest-window-render-evidence.json::detail_geometry`：F705 @(win.x+0x41, win.y+0x126)=(65,294)，面板 204×76；正文 (win.x+0x50, win.y+0x136+15·row)=(80,310+15·row)，行距 15、3 行、色 0x7D0000。Godot `QuestDialog.RefreshLegacyDetail` 与该值一致（颜色差异见 §6.3）。 |
+| Q-2 | 任务列表行几何与配色 | `CONFIRMED_DIFFERENCE`（未修） | 原版列表行 **x=win.x+0x41=65、y=win.y+0x5A+15·line=90+15·line、行距 15、可见 19 行**，色 `0x1919C8`/`0x19197D`（`0x00447618` `lea eax,[ecx+ecx*2+0x12]` + `0x00447622` `lea eax,[eax+eax*4]` = ×5；`0x0044761F` `add ecx,0x41`；`0x004475DE` `cmp ecx,0x13`）。**旧证据文字「row = line×3+0x12」漏了 ×5**，已在 `list_row_geometry` 更正。Godot legacy 仍渲染现代分组列表（x=8/18/28、金色/白色、分组标题/描述），与 F700 背景不匹配。 |
 | S-1 | 技能书根尺寸与页签 | 已澄清 | 见 C-1；Godot 452×380 与 8 页签坐标全部匹配。 |
 | N-1 | NPC `mode=1 && overflow=1` 的 14px 行距分支 | `candidate` | 需 token/layout state；当前统一 21px。 |
 | — | 目标 EI EXE/WIL/WIX 版本身份 | `BLOCKED`（环境） | 研究 NAS 路径当前不可读；所有像素级结论保留版本门禁。 |
@@ -242,9 +256,10 @@ godot-mono --path GodotClient --scene Scenes/LegacyHudLayoutLab.tscn -- --legacy
 |---|---|---|---|
 | Zircon | `master` | `b8c26340` | fix(ei行会)：按原版 F600 恢复 8 个动作控件与成员列表几何 + legacy 背景帧修复 |
 | Zircon | `master` | `10cb0511` | test(ui审计)：UIHudAudit 改用 EI HUD 坐标，恢复回归有效性 |
+| Zircon | `master` | `2855e0ac` | fix(ei任务)：详情正文改用原版 0x7D0000 深蓝 |
 | Mir3-Research | `ei-ui-audit-2026-09-24` | `b29f8645` | 本矩阵 + C-1 文档纠错（C-2 为证据文件 1px 偏差，已在 §8 记录） |
 | Mir3-Research | `ei-ui-audit-2026-09-24` | `effa3171`（随源码精读 Round 958 入库） | RESEARCH_LOG Round UI-1 |
 
 远端核对（`git ls-remote`）：
-- `iamcheyan/Zircon` `refs/heads/master` = `10cb0511945ccda24f562ed161810d71685d1409`
+- `iamcheyan/Zircon` `refs/heads/master` = `2855e0acbcadaec230168b1f25c90d1ed41a8612`
 - `iamcheyan/Mir3-Research` `refs/heads/ei-ui-audit-2026-09-24` = `b29f864553a52aea46e8e348738c3394769a71f2`
