@@ -13486,3 +13486,16 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** 常量值未查、颜色码业务名未核实；ObjBase 其余大段（`RecalcLevelAbilitys`/`RecalcHitSpeed`/`ItemDamageRevivalRing` `7613-7982`、`RecalcAbilitys` 尾段 `8620-9320`、`GetGiftFromBox/Egg/OldBox` `15396-17126`、`TUserHuman` 构造/`Cmd*`/`ServerGet*` `17430-31768`）仍未逐行读。**ObjBase.pas 保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 957 — 2026-09-29：`ObjBase.pas` 玩家登录初始化/下线
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:17610-18059`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔Initialize〕** 登录清洗：删名字失效物品、`Dura=0` 的堆叠物品（背包+仓库）、重复 `MakeIndex`、台湾事件物品（新登录删/换服留）；装备槽非法退回背包；1 级巨额金币告警。`FrmIDSoc.SendPremiumCheck/SendEventCheck` 跨服查资格。人群 `GetUserMassCount>=80` → `RandomSpaceMoveInRange(0,15,30)`。首次连接发蜡烛/药/木剑/平民衣。版本与三个 `ClientCheckSumValue` 校验不符则 `EmergencyClose`（`BoClientTest` 豁免）。体验模式 `AvailableGold=500000` 且超 `EXPERIENCELEVEL` 断线。行会 `MemberLogin`+行会战提示+庄园逾期+`ISM_GUILDMSG`；`CmdGuildAgitExpulsionMyself`+`SendDecoItemList`；`+LNG` 解锁远程；`NoReconnect` 图 `RandomSpaceMove(BackMap)`；恢复 `PrevServerSlaves`；`RM_DOSTARTUPQUEST`/时间账号检查/未读便签/师徒数据。
+
+**〔Finalize/WriteConLog〕** 下线 `Disappear(5)`、清固定隐身/Taiwan 状态、退组（队长则解散）、行会 `MemberLogout`、写连接日志（仅付费/测试服记在线秒）。
+
+**〔未闭合〕** `IsTakeOnAvailable`/`GetMyDegree`/`CheckHomePos`/`MemberLogin`/`FrmIDSoc.*` 未逐一读；常量值未查；ObjBase 其余大段（`RecalcLevelAbilitys`/`RecalcHitSpeed` `7613-7982`、`RecalcAbilitys` 尾段 `8620-9320`、`GetGiftFromBox/Egg/OldBox` `15396-17126`、`TUserHuman` 全部 `Cmd*` 命令 `18915-24626`、`ServerGet*` 商店/市场 `26333-31768`）仍未逐行读。**ObjBase.pas 保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

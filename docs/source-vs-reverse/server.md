@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1435,6 +1435,53 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 
 **未验证**：`StartPoints`/`SafePoints`/`AvailableGold`/`EXORBITANT_GOLD`/`BODYLUCKUNIT` 常量值未查；
 颜色码的客户端业务名未核实；无运行期验证。
+
+### 10.24 `TUserHuman.Initialize` / `Finalize`（Round 957；`ObjBase.pas:17610-18059`）—— 玩家上下线
+
+#### 10.24.1 `Initialize`（`:17610-17996`）—— 登录初始化
+
+1. **反作弊/异常检查**：`FirstGold := Gold`；**1 级却持巨额金币**写 `MainOutMessage`+`AddUserConAlarmLog`；
+   测试服补 `TestLevel/TestGold`；`BoServiceMode` 调整 `ApprovalMode`。
+2. **物品清洗**（逐项 `Dispose`+`Delete`）：
+   - 名字已不存在的物品（`GetStdItemName = ''`）；
+   - `OverlapItem>=1` 且 `Dura=0` 的堆叠物品（背包 + 仓库）；
+   - **重复 `MakeIndex`** 的物品；
+   - 台湾事件物品：**新登录**直接删除，**换服登录**保留并置 `BoTaiwanEventUser`+`STATE_BLUECHAR`+`RM_CHANGELIGHT`；
+   - 装备槽非法（`IsTakeOnAvailable` 为假）→ 退回背包。
+3. 状态时间复位；`CharStatus := GetCharStatus`。
+4. `FrmIDSoc.SendPremiumCheck`/`SendEventCheck`（**付费/活动资格跨服查询**）；`RM_LOGON`。
+5. **人群密度**：`Abil.Level <= EXPERIENCELEVEL` 且 `GetUserMassCount >= 80` → `RandomSpaceMoveInRange(0,15,30)`；
+   `MustRandomMove`（行会比武场幸存）→ `RandomSpaceMove`。
+6. `UserDegree := GetMyDegree`；`CheckHomePos`（红名回红名点）。
+7. **首次连接**发放蜡烛/基础药/木剑/平民衣（按性别）。
+8. `RecalcLevelAbilitys`+`RecalcAbilitys`；`MaxExp := GetNextLevelExp`；`FreeGulityCount=0` 时清 PK 点；
+   金币上限 `BAGGOLD*2`。
+9. **版本/校验和验证**（非换服）：`ClientVersion < VERSION_NUMBER` 或 `ClientVersion <> LoginClientVersion`
+   或三个 `ClientCheckSumValue` 都不符 → 提示 + `EmergencyClose`（`BoClientTest` 豁免）。
+10. 攻击模式提示、测试服人数限制、**体验模式**（`AvailableGold := 500000`、超 `EXPERIENCELEVEL` 断线）、
+    冒险服提示。
+11. `Bright := MirDayTime`；发 `RM_ABILITY`/`RM_SUBABILITY`/`RM_DAYCHANGING`/`RM_SENDUSEITEMS`/`RM_SENDMYMAGIC`。
+12. **行会**：`GuildMan.GetGuildFromMemberName` → `MemberLogin`（取 Rank）、行会战提示、
+   庄园逾期提示、行会消息 + `ISM_GUILDMSG` 跨服。
+13. `CmdGuildAgitExpulsionMyself`（无庄园却在庄园图则强制移出）；`SendDecoItemList`。
+14. `PLongHitSkill` 存在则发 `+LNG`（**解锁远程攻击**）。
+15. `NoReconnect` 图 → `RandomSpaceMove(BackMap)`。
+16. **恢复换服前召唤物**（`PrevServerSlaves` → `RmMakeSlaveProc`）。
+17. `RM_DOSTARTUPQUEST`；定量账号 `FrmIDSoc.SendCheckTimeAccount`；未读便签 `RM_TAG_ALARM`；
+    师徒数据 `RM_LM_DBWANTLIST`。
+
+#### 10.24.2 `Finalize`（`:17998-18035`）—— 下线
+
+`ReadyRun` 时 `Disappear(5)`；固定隐身/Taiwan 状态清除；**退组**（自己是队长则解散）；
+行会 `MemberLogout`；`WriteConLog`。
+
+#### 10.24.3 `WriteConLog`（`:18037-18059`）
+
+只有**付费（ApprovalMode=2）或测试服**记录在线秒数；`AddConLog` 写
+`地址/账号/角色/在线秒/登录时间/登出时间/AvailableMode`。旧的按时长计费上报已注释。
+
+**未验证**：`IsTakeOnAvailable`/`GetMyDegree`/`CheckHomePos`/`MemberLogin`/`GuildMan`/`FrmIDSoc.*`
+实现未逐一读；`EXPERIENCELEVEL`/`TestLevel`/`TestGold`/`VERSION_NUMBER` 常量值未查；无运行期验证。
 
 ---
 
