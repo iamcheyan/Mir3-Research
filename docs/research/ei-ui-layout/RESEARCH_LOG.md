@@ -13307,3 +13307,22 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** 433 方法中 DFriend/DMail/DGuild/DGABoard/DJangwon/DMarket/DDeal/DStorage/DMaster 等对话框组只索引未逐行读；未找到 EI 原版客户端对话框的 `primary-static` 对照；无运行期验证。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 946 — 2026-09-29：`ObjBase.pas` 构造/可视列表/套装属性
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:1422-1800`、`3034-3238`、`3241-3566`、`7982-9299`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔构造/销毁〕** `TCreature.Create` 初始化约 200 字段：默认 `RaceServer=RC_ANIMAL`/`ViewRange=5`/`HomeMap='0'`；`Abil` 初值 Level1、DC=MakeWord(1,4)、HP/MP=15、MaxExp=50、MaxWeight=100；创建 15 个容器；**`UseItems` 13 槽**；`RunNextTick=250`/`NextHitTime=3000`/`NextWalkTime=1400`。`Destroy` 按 `RM_DELITEMS`（TStringList）/`RM_MAKE_SLAVE`（PTSlaveInfo）释放附加内存，整段 `try..except`。
+
+**〔小工具〕** `GetNextHitTime`/`GetNextWalkTime` 在 `POISON_SLOW>0` 时 **+50%**；`IsMoveAble` = 非 Ghost/非 Death 且 STONE/ICE/STUN/DONTMOVE 全 0；`SetBoInFreePKArea` 变化置 `AreaStateOrNameChanged`。
+
+**〔消息队列〕** `SendFastMsg`(Insert 0 插队)/`SendMsg`/`SendDelayMsg`(deliverytime)/`UpdateMsg`/`UpdateDelayMsg`/`UpdateDelayMsgCheckParam1`/`GetMsg`（跳过未到期），全用 `csObjMsgLock`，`BoGhost` 不入队。
+
+**〔可视与广播〕** `GetMapCreatures`（方框）/`GetObliqueMapCreatures`（菱形裁剪，仅对角方向）；`UpdateVisibleGay/Items/Events` 的 `check` 1/2 标记，新怪 `Inc(RefObjCount)`；`SendRefMsg` 每 500 ms 重建 25×25 目标缓存并清理 5 分钟残影，人类全发、非人类仅 `RM_STRUCK/RM_HEAR/RM_DEATH`。
+
+**〔套装系统〕** `RecalcAbilitys`（`:7982-9299`）遍历 13 装备槽（`Dura=0` 只算重量），按 `StdItem.Shape` 累积几十种套装标志，再按组合给加成：천지합일/적난/밀화/세륜/녹취/도부/오현/초혼/파쇄/환마석/영령옥/뼈다귀/벌레/백금/연옥/홍옥(+강화版)/용 세트/반짝이/수정갑옷；特殊戒指按 Shape 置透明/瞬移/石化/复活/火球/治疗/愤怒/魔法盾/超强标志；武器 `SpecialPwr` 负值映射 UndeadPower。
+
+**〔未闭合〕** 所有 `*_SHAPE` 常量值与 EI `StdItem` 数据行未解析；`AntiMagic:=1` 百分比语义未核实；ObjBase 其余大段（`_Attack`/`HitHit`、`PickUp`/`EatItem`、`TUserHuman` 命令与商店/市场处理器、fame/gift boxes）仍未逐行读。**ObjBase.pas 保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

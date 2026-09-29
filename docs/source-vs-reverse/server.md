@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -836,6 +836,90 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 `TGuardUnit.IsProperTarget`（`ObjMon2.pas:926-991`）不调用 inherited，直接覆盖基类规则。有关联 `Castle` 时，允许 LastHiter；`BoCrimeforCastle` 的代码窗为 2 分钟（源码注释写 5 分钟），过期清标记；目标本身有关联城堡时清其标记并拒绝。城堡被攻时放开候选，之后仍拒绝 NPC/和平 NPC、自身、同城堡目标，并按主人行会/盟会关系过滤。`TGuardUnit.Struck` 在有城堡时给 hitter 设 `BoCrimeforCastle` 及时间。
 
 无 `Castle` 时，候选仅由“曾被该守卫击中”“正在攻击弓箭守卫”或 `PKLevel>=2` 放行，随后仍拒绝 Sysop、Stone 与自身；此分支没有基类的安全区、`HideMode` 或玩家攻击模式门控。`TArcherGuard.Create` 将 `Castle` 置 nil；`Run` 遍历 `VisibleActors`，按距离选择通过覆写谓词的目标并调用 `ShotArrow`。覆盖体无 nil 守卫，但所读调用点先解引用候选并检查死亡状态；nil 是否可进入该列表未验证。未运行守卫/城战场景，不能把静态规则推为实战可达行为。
+
+### 10.13 构造/销毁、可视列表与套装属性（Round 946；`ObjBase.pas:1422-1800/3241-3566/7982-9299`）
+
+#### 10.13.1 `TCreature.Create`（`:1422-1695`）—— 实体字段总初始化
+
+一次性初始化 **约 200 个字段**。关键默认值：
+- `RaceServer := RC_ANIMAL`（默认是动物，人类/怪物由工厂覆盖）、`ViewRange := 5`、
+  `HomeMap := '0'`、`Dir := DR_DOWN`、`HoldPlace := TRUE`；
+- `Abil` 初值：`Level=1`、`AC/MAC=0`、`DC=MakeWord(1,4)`、`MC=SC=MakeWord(1,2)`、
+  `HP=MP=MaxHP=MaxMP=15`、`MaxExp=50`、`MaxWeight=100`；
+- 命中/闪避 `AccuracyPoint := DEFHIT`、`SpeedPoint := DEFSPEED`；`LifeAttrib := LA_CREATURE`；
+- 时间片：`RunNextTick=250`、`SearchRate=2000+Random(2000)`、`NextWalkTime=1400`、
+  `NextHitTime=3000`；`RunTime := GetCurrentTime + Random(1500)`；
+- **创建 15 个容器**：`MsgList`/`MsgTargetList`/`PKHiterList`/`VisibleActors`/`VisibleItems`/
+  `VisibleEvents`/`ItemList`/`DealList`/`MagicList`/`SaveItems`/`GroupMembers`/
+  `WhisperBlockList`/`SlaveList` 等；
+- **`UseItems` 为 13 槽**（`FillChar(UseItems, sizeof(TUserItem)*13)`，注释 `9->13` 记录扩容）；
+- `MeltArea := 2`；`QuestStates`/`QuestIndexOpenStates`/`QuestIndexFinStates` 清零。
+
+#### 10.13.2 `TCreature.Destroy`（`:1697-1763`）—— 按消息类型释放附加内存
+
+遍历 `MsgList` 逐条释放：`RM_DELITEMS` 的 `lparam1`（`TStringList`）、
+`RM_MAKE_SLAVE` 的 `lparam1`（`PTSlaveInfo`）、`descptr`，再 `Dispose` 消息本身；
+随后释放 `PKHiterList` 的 `PTPkHiterInfo`、`VisibleActors` 的 `PTVisibleActor`、
+`VisibleItems`、`ItemList`/`DealList`/`MagicList`/`SaveItems` 的指针、以及各 `TStringList`/`TList`。
+**整段包在 `try..except` 里**，异常只打 `[Exception] TCreature.Destroy <name>`。
+
+#### 10.13.3 小工具（`:1765-1800`）
+
+- `SetBoInFreePKArea`：值变化时置 `AreaStateOrNameChanged`（触发区域状态重发）。
+- `GetNextHitTime`/`GetNextWalkTime`：`StatusArr[POISON_SLOW] > 0` 时**额外 +50%**
+  （`NextHitTime + NextHitTime div 2`）—— 即减速状态直接放大出手/走路的间隔。
+- `IsMoveAble`：`not BoGhost and not Death` 且 `POISON_STONE/ICE/STUN/DONTMOVE` 全为 0。
+
+#### 10.13.4 区域取物与可视列表（`:3241-3566`）
+
+- `GetMapCreatures(penv, x, y, area, rlist)`：按 `(x±area, y±area)` 方框遍历 `ObjList`，
+  收集 `Shape=OS_MOVINGOBJECT` 且非 `BoGhost` 的实体。
+- `GetObliqueMapCreatures(..., dir, ...)`：只对**对角方向** 1/3/5/7 生效，
+  用 `abs((x-i)∓(y-j)) <= area` 做菱形裁剪；其它方向直接返回。
+- `UpdateVisibleGay`：可见列表里已有则 `check:=1`（更新），否则 `check:=2`（新增）并
+  **`Inc(cret.RefObjCount)`**（玩家除外、死亡除外）。
+- `UpdateVisibleItems`/`UpdateVisibleEvents`：同构的 `check` 标记机制。
+
+#### 10.13.5 `RecalcAbilitys`（`:7982-9299`）—— **套装系统核心**
+
+先重置 `AddAbil`、把 `WAbil := Abil`（保留 HP/MP）、清零 `Weight/WearWeight/HandWeight`、
+`AntiPoison/PoisonRecover/HealthRecover/SpellRecover/Luck/HitSpeed := 0`、**`AntiMagic := 1`**
+（注释「기본 10% => 2%」），清一批 `BoAbil*` 与 `ManaToHealthPoint`/`SuckupEnemyHealth*`。
+
+然后**遍历 13 个装备槽**（`for i:=0 to U_CHARM`）：
+- `UseItems[i].Dura = 0` 时**只算重量不算属性**（`continue`）；
+- `ApplyItemParameters(UseItems[i], AddAbil)` + `ApplyItemParametersEx(UseItems[i], WAbil)`；
+- 按 `pstd.Shape` 累积**几十种套装标志**（每件装备只标记自己属于哪套）；
+- 武器/左右手戒指：`SpecialPwr` 负值映射到 `AddAbil.UndeadPower`
+  （`-1..-50` 加 `-pstd.SpecialPwr`，`-51..-100` 加 `pstd.SpecialPwr+50`）。
+
+最后**按套装组合给加成**（本文件最密集的一段），主要套装：
+
+| 套装 | 组成 | 加成 |
+|---|---|---|
+| 천지합일 | 천(戒指)+지(项链)+합(手镯)+일(头盔) 4 件 | `BoCGHIEnable := TRUE` |
+| 적난（마력→체력） | 项链+手镯+戒指 | `ManaToHealthPoint + 50` |
+| 밀화（吸血） | 项链+手镯+戒指 | `AddAbil.HIT + 2` |
+| 세륜/녹취/도부 | 手镯+戒指 | HP+50 / MP+50 / HP+30&MP+30 |
+| 오현 | 项链+手镯+戒指 | `HP += MaxHP*30%`、`AC += 2/2` |
+| 초혼 | 武器+项链+戒指+头盔+手镯 5 件 | `HitSpeed+4`、`DC+2/5`、置 `BoOldVersionUser_Italy` |
+| 파쇄/환마석/영령옥 | 项链+手镯+戒指 | 各给 DC/AC/MAC/UndeadPower/SC 加成 |
+| 뼈다귀/벌레/백금/연옥/홍옥 + 강화版 | 3–5 件 | 各给 AC/DC/MC/SC/MAC/抗性/负重加成 |
+| 용 세트 | 10 件（戒指×2/手镯×2/项链/衣/头盔/武器/靴/腰带） | 全套加成 |
+| 반짝이 이벤트 | 武器 692–694、697–699；衣服 700/701 | 特殊标记 |
+| 수정갑옷 | `DRESS_SHAPE_CRYSTAL` 衣服 | `crystal_dress` |
+
+- 特殊戒指用 `Shape` 判定并置能力标志：透明（`STATE_TRANSPARENT=60000`+`BoHumHideMode`）、
+  瞬移、石化、复活、火球、治疗、愤怒能量、魔法盾、超强力量。
+- 项链/手镯/戒指的 `ManaToHealth`/`SuckHealth` 用 `pstd.AniCount` 累积。
+- 复魂石（`StdMode=53`+`SHAPE_OF_LUCKYLADLE`）使 `AddAbil.Luck + 1`。
+
+> ⚠️ **做数值/工具时的硬约束**：套装判定依赖 **`StdItem.Shape` 常量**（`PSET_RING_SHAPE`
+> 等，定义在别处）；同一 `Shape` 在不同装备位上含义不同；**`RecalcAbilitys` 每换装/状态变化都会全量重算**，
+> 不做增量。`RaceServer=RC_USERHUMAN` 才走套装分支（怪物不享受套装）。
+
+**未验证**：所有 `*_SHAPE` 常量值与其对应的 EI `StdItem` 数据行未解析；
+`AntiMagic := 1` 的百分比语义（注释自相矛盾）未核实；套装加成顺序/叠加关系未运行验证。
 
 ---
 
