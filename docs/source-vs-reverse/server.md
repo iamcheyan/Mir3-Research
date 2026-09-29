@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1270,6 +1270,53 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 
 **未验证**：`MoveToMovingObject`/`CanSafeWalk`/`GetNextPosition`/`GetAllCreature` 实现未逐一读；
 `CharDrawingRush` 注释掉的推人分支是否为有意禁用未核实；`MAXKINGLEVEL` 值未查；无运行期验证。
+
+### 10.20 经验、等级与召唤物成长（Round 953；`ObjBase.pas:6763-7179`）
+
+#### 10.20.1 经验计算与分配（`:6763-6854`）
+
+- **`CalcGetExp(targlevel, targhp)`（`:6763`）**：`self.Level < targlevel+10` 时全额 `targhp`；
+  否则按 `targhp - Round((targhp/15) * (self.Level-(targlevel+10)))` **递减**（**越级打怪经验惩罚**），
+  下限 1。
+- **`GainExp(exp)`（`:6781`）—— 组队经验分配**：`bonus[0..GROUPMAX]` 数组
+  （1/2/3…11 人 → 1.2/1.3/…/2.2，注释给出完整表）；统计**存活 + 同环境 + 12 格内**的组员数与等级和；
+  `dexp := Round(exp*bonus[n])`；每名符合条件组员得 `Round(dexp/sumlv * 自己等级)`（**不超过 exp**）；
+  队长生日额外 +10%；无有效组队则 `WinExp(exp)`。
+- `GainSlaveExp`（`:6826`）：分身/天使不吸收；`SlaveExp += exp`；`NextExp = 100 + Level*15 + slaveupexp[SlaveExpLevel]`
+  （`slaveupexp = (0,0,50,100,200,300,600)`）；升级上限 `SlaveMakeLevel*2+1`，升级后 `RecalcAbilitys`+`ChangeNameColor`。
+
+#### 10.20.2 召唤物等级加成 `ApplySlaveLevelAbilitys`（`:6857-6932`）
+
+按种族/名字分派：
+- 백골/신수（`RC_WHITESKELETON`/`RC_ELFMON`/`RC_ELFWARRIORMON`）：
+  `WAbil.DC` 高字节 `+= Round(3*(0.3+SlaveExpLevel*0.1)*SlaveExpLevel)`；`MaxHP` 按 `Abil.MaxHP*(0.3+…)*level` 放大。
+- **호위병**（护卫）：`DC += 2*SlaveExpLevel`、`MaxHP = _MIN(Abil.MaxHP+240*SlaveExpLevel, 3000)`、**`MAC := 0`**（驯服怪怕魔法）。
+- **궁수호위병**（弓箭护卫）：`DC += 8*SlaveExpLevel`、`MaxHP = _MIN(Abil.MaxHP+60*SlaveExpLevel, chp)`。
+- 其它驯服怪：`DC += 2*SlaveExpLevel`、`MaxHP = _MIN(Abil.MaxHP+60*SlaveExpLevel, chp)`。
+- 统一 `AccuracyPoint := 15`（**召唤/驯服物命中固定 15**）。
+
+#### 10.20.3 `WinExp(exp)`（`:6935-7121`）—— 经验入账与升级
+
+1. `exp` 先钳到 **60000**；`ExpRate := 300`（测试服）否则 100；`InstantExpDoubleTime` 有效时 **×2**。
+2. 按 `ExpRate` 分档累加 `Abil.Exp`（100/120/130/150/200 各有公式），`exptotal` 钳到 **65000**。
+3. **PAIN 系列（苦痛）装备**（项链/左右手镯/左右戒指/护身石，`Shape=PAIN_SERIES_SHAPE`）：
+   把 `exptotal/2` 累积到 `ItemExpPoint`；达 `MAXITEMEXPPOINT=200000` 时对应 `UseItems[i].Desc[10] += 1`
+   （**鉴定进度**）并 `SendUpdateItem`；同时**玩家实得经验减半**；只作用于一件。
+4. `RM_WINEXP` 通知客户端；`ENABLE_FAME_SYSTEM` 时按 `exptotal*1%` 加 fame（18 级封顶）。
+5. `AddBodyLuck(exp*0.002)`；`Abil.Exp >= MaxExp` → 扣减、`Level++`、`HasLevelUp`、
+   `AddBodyLuck(100)`、写日志码 `12`（렙업/升级）、`IncHealthSpell(2000,2000)`（**升级回满**）。
+
+#### 10.20.4 `HasLevelUp` / `GetNextLevelExp` / `ChangeLevel`（`:7123-7179`）
+
+- `HasLevelUp(prevlevel)`：`MaxExp := GetNextLevelExp(Level)`；`RecalcLevelAbilitys`；
+  `{$IFDEF FOR_ABIL_POINT}` 下按 `GetBonusPoint(Job, Level)` 加 `BonusPoint` 并发 `RM_ADJUST_BONUS`
+  （等级跳变时整表重算）；`RecalcAbilitys`；`RM_LOOPNORMALEFFECT(NE_LEVELUP)` + `RM_LEVELUP`；
+  **体验模式（`ApprovalMode=1`）超过 `EXPERIENCELEVEL` 则强制断线**。
+- `GetNextLevelExp(lv)`：查 `NEEDEXPS[lv]` 常量表（1..MAXLEVEL），否则 `$7FFFFFFF`。
+- `ChangeLevel`：只接受 `1..40`。
+
+**未验证**：`NEEDEXPS`/`GROUPMAX`/`MAXLEVEL`/`EXPERIENCELEVEL`/`PAIN_SERIES_SHAPE` 常量值未查；
+`GetBonusPoint`/`GetLevelBonusSum`/`RecalcLevelAbilitys` 实现未逐一读；无运行期验证。
 
 ---
 

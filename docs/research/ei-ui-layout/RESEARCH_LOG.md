@@ -13422,3 +13422,20 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** `MoveToMovingObject`/`CanSafeWalk`/`GetAllCreature` 未逐一读；`CharDrawingRush` 注释分支意图未核实；ObjBase 其余大段（经验/等级/金币/负重/能力重算主体、`HitHit` 之外的魔法/防御区 `13700-17202`、`TUserHuman` 命令 `Cmd*` 与 `ServerGet*` 商店/市场 `26333-31768`、fame/gift boxes）仍未逐行读。**ObjBase.pas 保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 953 — 2026-09-29：`ObjBase.pas` 经验/等级/召唤物成长
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:6763-7179`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔经验〕** `CalcGetExp`：等级高于目标 +10 后按 `(targhp/15)*(gap-10)` 递减（**越级惩罚**）。`GainExp` 组队分配：`bonus[2..11]` = 1.3..2.2；统计**存活+同环境+12 格内**成员数与等级和；每人得 `dexp/sumlv*level`（≤exp）；队长生日 +10%。`GainSlaveExp`：分身/天使不吸收，`NextExp = 100+Level*15+slaveupexp[SlaveExpLevel]`，上限 `SlaveMakeLevel*2+1`。
+
+**〔召唤物成长〕** `ApplySlaveLevelAbilitys`：백골/신수 DC 高字节按 `3*(0.3+level*0.1)*level` 放大；护卫/弓箭护卫/驯服怪 `DC += 2|8*level`、`MaxHP` 按 `240|60*level` 加、**驯服怪 `MAC:=0`**；统一 `AccuracyPoint:=15`。
+
+**〔`WinExp`〕** exp 钳 60000、`exptotal` 钳 65000；测试服 `ExpRate=300`、`InstantExpDoubleTime` ×2；**PAIN 系列装备**把半数经验累积到 `ItemExpPoint`，达 200000 时 `Desc[10]+1`（鉴定进度）；`ENABLE_FAME_SYSTEM` 按 1% 加 fame；`AddBodyLuck`；升级扣 `MaxExp`、`Level++`、`HasLevelUp`、日志码 `12`、`IncHealthSpell(2000,2000)`。
+
+**〔升级〕** `HasLevelUp`：`MaxExp:=GetNextLevelExp(Level)`（`NEEDEXPS` 表）→ `RecalcLevelAbilitys` → `FOR_ABIL_POINT` 下加 `BonusPoint`+`RM_ADJUST_BONUS` → `RecalcAbilitys` → `RM_LOOPNORMALEFFECT(NE_LEVELUP)`+`RM_LEVELUP`；**体验模式超 `EXPERIENCELEVEL` 强制断线**。`ChangeLevel` 限 1..40。
+
+**〔未闭合〕** `NEEDEXPS`/`GROUPMAX`/`MAXLEVEL`/`PAIN_SERIES_SHAPE` 常量值未查；`GetBonusPoint`/`RecalcLevelAbilitys` 未逐一读；ObjBase 其余大段（负重/金币/能力重算尾段 `7182-7982`、魔法/防御区 `13700-14174`、`TUserHuman` 命令 `Cmd*` 与 `ServerGet*` 商店/市场 `26333-31768`、fame/gift boxes `15396-17202`）仍未逐行读。**ObjBase.pas 保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
