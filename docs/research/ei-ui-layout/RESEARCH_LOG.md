@@ -13732,3 +13732,26 @@ HUD cap2「技能图鉴」flag 消费者；任务详情面板 `detail_geometry` 
 **〔未闭合〕** `SqlEngine.*`/`FUserMarket`/`GuildAgit*` 实现未读；常量值未查。ObjBase 剩余未逐行读区段：`Cmd*` 19197-20375 / 21987-22663 / 29230-29590 / 29819-29922 / 30120-30451 / 30785-31401。**保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 969 — 2026-09-29：`ObjBase.pas` Cmd* 命令实现
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:19197-22658`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔金钱〕** `CmdDeleteUserGold`/`CmdAddUserGold`（跨服 `FrontEngine.ChangeUserInfos`；日志 `'13'`/`'14'`）。
+
+**〔传送〕** `CmdFreeSpaceMove`/`CmdCharSpaceMove`/`CmdCharMove`/`CmdLoverCharSpaceMove`（恋人 `NoRecall` 区禁）/`CmdRecallMan`（跨服 `ISM_RECALL`）/`CmdRecallMap`（同图随机 10 人）/`GuildMasterRecallMan`（仅本派 + `BoEnableAgitRecall`）。
+
+**〔属性〕** `CmdRefineWeapon`（`dc+mc+sc<=10`）、`CmdManLevelChange`/`ExpChange`（日志 `'17'`/`'18'`）、`CmdEraseItem`（`'6'`）、`CmdAdjustFamePoint`/`CmdGetFameName`。
+
+**〔文派〕** `GuildDeclareWar`（仅文派主 + 仅主服，日志 `'49'`）、`CmdCreateGuild`（**+1000 名声**）、`CmdDeleteGuild`、`CmdStart/EndGuildMatch`（仅 `Fight3Zone`，得分高 16 位/死亡低 16 位）、`CmdAnnounceGuildMembersMatchPoint`。
+
+**〔城堡〕** `CmdChangeUserCastleOwner`（日志 `'27'`，`ISM_CHANGECASTLEOWNER`）、`CmdOpenCloseUserCastleMainDoor`（仅城主文派，开关体为空）。
+
+**〔管理〕** `CmdReloadNpc`（all/同屏 9 格）、`CmdAddShutUpList` 等（`ISM_CHATPROHIBITION`）、`CmdSetCryWide`（`[50,100]`）、`CmdSendKingMonsterInfos`（全图 ≥60 级非树石）、`CmdViewAllCharacterList`、`GetLevelInfoString`。
+
+**〔庄园〕** `CmdGuildAgitRegistration`（成员 > `MINAGITMEMBER`、`GUILDAGITREGFEE`、**+1000 名声**，日志 `'37'`）、`ExtendTime`（`GUILDAGITEXTENDFEE`、**+100 名声**，`'38'`）、`Sale`/`SaleCancel`（`'39'`/`'40'`）、`Buy`（10/页 `RM_GUILDAGITLIST`）、`Recall`（**3 分钟 CD**）、`Donate`（**`GUILDAGITMAXGOLD` 封顶**，`'46'`）、`ExpulsionMyself`（非本庄园/过期强制送回 `HomeMap`）。
+
+**〔未闭合〕** ObjBase 剩余未逐行读：`29230-29590`（关系删除族）、`29819-29922`（SumCountItem）、`30120-30451`（GaBoardDel/DecoItemBuy/ExecuteGuildAgitTrade）、`30785-31401`（寄售买/卖/取消内部）、`18060-18543`、`2020-2955`/`10262-10694` 局部。**保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

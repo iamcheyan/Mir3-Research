@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962 / 963 / 964 / 965 / 966 / 967 / 968）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962 / 963 / 964 / 965 / 966 / 967 / 968 / 969）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -2006,6 +2006,34 @@ AC/MAC 只增 hi 字节，HP/MP/Hit/Speed 直接加；余数留 `CurBonusAbil`�
 
 **未验证**：`SqlEngine.*`/`FUserMarket`/`GuildAgitBoardMan`/`GuildAgitMan` 实现未读；
 `MARKET_ALLOW_LEVEL`/`MARKET_CHARGE_MONEY`/`MARKET_MAX_TRUST_MONEY`/`EXPERIENCELEVEL` 等值未查；无运行期验证。
+
+### 10.38 `TUserHuman.Cmd*` 命令实现（Round 969；`ObjBase.pas:19197-22658`）
+
+> 命令名与调用点见 §11 GM 命令表与 §10.31.2 分派；本节记实现细节。
+
+**金钱**：`CmdDeleteUserGold`/`CmdAddUserGold`（`DecGold/IncGold`，封顶 `AvailableGold`；跨服 `FrontEngine.ChangeUserInfos`；日志 `'13'` 돈삭_ / `'14'` 돈추_）、`RCmdUserChangeGoldOk`（跨服回执，按符号选 13/14）。
+
+**传送**：`CmdFreeSpaceMove`（`CanWalk` 校验后 `SpaceMove`）、`CmdCharSpaceMove`/`CmdCharMove`（`RandomSpaceMove`）、`CmdLoverCharSpaceMove`（**恋人 `NoRecall` 区不可去**，跨服 `ISM_REQUEST_LOVERRECALL`）、`CmdRecallMan`（`GetFrontPosition`+`GetRecallPosition`，跨服 `ISM_RECALL`）、`CmdRecallMap`（**同图随机 10 人**）、`GuildMasterRecallMan`（**仅本派成员** + `BoEnableAgitRecall` 拒绝位，跨服 `ISM_GUILDMEMBER_RECALL`）。
+
+**状态/属性**：`CmdRefineWeapon`（`dc+mc+sc<=10`，写武器 `Desc[0..2],[5]`）、`CmdManLevelChange`/`CmdManExpChange`（日志 `'17'` 타레_ / `'18'` 타경_）、`CmdEraseItem`（日志 `'6'` 운삭_）、`CmdEraseMagic`/`CmdThisManEraseMagic`、`CmdStealth`（`bStealth`）、`CmdRushAttack`（`CharRushRush(Dir,3,true)`）、`CmdAdjustFamePoint`（`FameCur/FameBase`，`RM_CHANGEFAMEPOINT`）、`CmdGetFameName`。
+
+**文派**：`GuildDeclareWar`（**仅文派主 + 仅主服 `ServerIndex=0`**，双向 `DeclareGuildWar`，日志 `'49'` 문전_）、`CmdCreateGuild`（仅主服，**创始人 `IncFamePoint(1000)`**）、`CmdDeleteGuild`、`CmdReloadGuild`/`All`/`Agit`、`CmdGetGuildMatchPoint`、`CmdStartGuildMatch`/`CmdEndGuildMatch`/`CmdAnnounceGuildMembersMatchPoint`（**仅 `PEnvir.Fight3Zone`**，排除运营者模式，`MatchPoint` 高 16 位=得分、低 16 位=死亡数）。
+
+**城堡**：`CmdChangeUserCastleOwner`（日志 `'27'` 사북_，`ISM_CHANGECASTLEOWNER`）、`CmdOpenCloseUserCastleMainDoor`（**仅城主文派**，门开关体为空）。
+
+**管理**：`CmdReloadNpc`（`all` 全量 / 否则同屏 9 格）、`CmdAddShutUpList`/`CmdDelShutUpList`/`CmdSendShutUpList`（分钟制，`ISM_CHATPROHIBITION`）、`CmdTestTimeDebug`、`CmdSetCryWide`（`[50,100]` 否则 50）、`CmdOneKillMob`、`CmdAgitDecoMonCount`/`Here`、`CmdKickUser`（`UserRequestClose`）、`CmdTingUser`/`CmdTingRangeUser`（送回 `HomeMap`）、`CmdReconnection`（`RM_RECONNECT`）、`CmdViewAllCharacterList`、`GetLevelInfoString`（全能力串，含 Fame/UndeadPower/HitSpeed）、`CmdSendUserLevelInfos`/`MonsterLevelInfos`/`KingMonsterInfos`（**全图扫描，等级 ≥60 且非树/石类**）。
+
+**聊天日志**：`CmdAddChatLogList`/`CmdDelChatLogList`/`CmdSendChatLogList`（`ChatLogList` + `SaveChatLogFiles` + `ISM_RELOADCHATLOG`）。
+
+**庄园（장원）**：
+- `CmdGuildAgitRegistration`（仅主服；**成员 > `MINAGITMEMBER`**；`Gold >= GUILDAGITREGFEE`；**`IncFamePoint(1000)`**；日志 `'37'` 장대여_）。
+- `CmdGuildAgitAutoMove`/`FreeMove`（传送到 `GuildAgitMapName[0]+编号` 入口）。
+- `CmdGuildAgitDelete`（返还）、`CmdGuildAgitExtendTime`（`GUILDAGITEXTENDFEE`，**`IncFamePoint(100)`**，日志 `'38'` 장연장_）。
+- `CmdGuildAgitRemainTime`（1899-12-31 基准算剩余天数，负值为逾期）。
+- `CmdGuildAgitRecall`（全派/个人，**3 分钟 CD `CGHIUseTime`**）。
+- `CmdGuildAgitSale`/`SaleCancel`（`ForSaleFlag/ForSaleMoney`，成交后不可取消；日志 `'39'` 장판매_ / `'40'` 장취소_）、`CmdGuildAgitBuy`（**10 条/页** `RM_GUILDAGITLIST`）、`CmdTryGuildAgitTrade`（`RM_GUILDAGITDEALTRY`）、`CmdGuildAgitExpulsionMyself`（**非本庄园/过期/无派者强制送回 `HomeMap`**）、`CmdGuildAgitDonate`/`ViewDonation`/`GetGuildAgitDonation`/`DecGuildAgitDonation`（**`GUILDAGITMAXGOLD` 封顶**；日志 `'46'` 기부_）、`CmdGetGuildAgitFileVersion`。
+
+**未验证**：`GuildMan`/`GuildAgitMan`/`UserEngine.*` 实现未读；`GUILDAGITREGFEE`/`GUILDAGITEXTENDFEE`/`GUILDAGITMAXGOLD`/`MINAGITMEMBER`/`COMPENSATORY_PAYMENT_ONEWAY`/`AvailableGold` 等值未查；无运行期验证。
 
 ---
 
