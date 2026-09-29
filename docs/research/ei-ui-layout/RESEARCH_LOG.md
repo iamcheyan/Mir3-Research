@@ -13640,3 +13640,25 @@ HUD cap2「技能图鉴」flag 消费者；任务详情面板 `detail_geometry` 
 **〔未闭合〕** `GetUpgradeStdItem`/`ChangeItemByJob` 等实现未读；槽位编号/位值未核实。ObjBase 其余大段（庄园/行会 `Cmd*`、`Say`、`ServerGet*`）仍未逐行读。**保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 964 — 2026-09-29：`ObjBase.pas` 聊天与 `@` 命令分派
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:22979-24586`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔Whisper 族〕** `Whisper`/`LoverWhisper` 检查对方 `bStealth`（隐身则谎称找不到）、`ReadyRun`、`BoHearWhisper`/`IsBlockWhisper`；跨服走 `ISM_WHISPER`/`ISM_LM_WHISPER`；运营者/监察者模式改发 `RM_GMWHISPER`/`ISM_GMWHISPER`。`BlockWhisper` 是开关式（再输一次解封）。
+
+**〔`Say` 管理员提升〕** `@비밀번호` → `GET_A_PASSWD` → UD_ADMIN；`gsa` → 按版本硬编码口令 → UD_SUPERADMIN（韩测试 `wemade09`、韩正式 `wjstjfofa1fm@#`、中/英 `Le&end0f#ir`、台 `TGL&S0ftW0rld`、菲 `PL2g&OfMir2`）。**明文口令泄露风险**。
+
+**〔`@` 命令四级分派〕** 所有人（耳语/外喊/交易/文派开关、内功 50 级特效、攻击方式五态、瞬移戒指/探查项链 10s CD、天地合一群体召唤 3min CD、恋人相见 100 天+情侣戒 20min CD、生日广播）；
+`UD_OBSERVER`（`@!`/`@$`/`@#` 三级公告）；`UD_SYSOP`（移动/隐身/查人/封禁/聊天日志/无敌/等级/城堡金/召唤/文派战）；
+`UD_ADMIN`（造怪/抽奖统计/名声/PK/发型/任务标记 setflag-setopen-setunit/重连/停服口令/测速）；
+`UD_SUPERADMIN`（Make/Gold/武器제련/Reload*/Market 开关/物品事件/文派与城主/一键清怪）。
+
+**〔普通聊天〕** NoChat 地图禁言；**防刷屏**（3s 内重复 ≥2 次禁言 1 分钟）与**高速聊天**（2s 内 ≥5 次禁言 30 秒）；`/` 私聊、`!!` 组队、`!~` 文派、`!` 外喊（≥8 级，文派主免 CD）、`♡` 恋人。
+
+**〔ThinkEtc/ReadySave〕** 昼夜变化发 `RM_DAYCHANGING`；存档前 `Abil.HP := WAbil.HP`。
+
+**〔未闭合〕** ObjBase 其余大段（`Cmd*` 19197-20375/21987-22663、`ServerGet*` 26685-31768）仍未逐行读。**保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

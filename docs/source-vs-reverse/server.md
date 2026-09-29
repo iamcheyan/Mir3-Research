@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962 / 963）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962 / 963 / 964）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1754,6 +1754,68 @@ GM/脚本造物：
 
 **未验证**：`GetUpgradeStdItem`/`ChangeItemByJob`/`BanjjakChangeItemByJob`/`ChangeItemWithLevel` 实现未读；
 `U_CHARM`/`U_DRESS` 槽位编号、`IDC_UNIDENTIFIED` 位值未逐一核实；无运行期验证。
+
+### 10.31 `TUserHuman.Say` 聊天与 `@` 命令分派（Round 964；`ObjBase.pas:23190-24574`）
+
+#### 10.31.1 管理员密码提升（`:23199-23258`）
+
+- `BoReadyAdminPassword` 状态下输入 `GET_A_PASSWD` → `UserDegree := UD_ADMIN`。
+- `BoReadySuperAdminPassword` → 按版本分支比对**硬编码口令**（`KOREANVERSION` 测试服 `wemade09`、韩正式 `wjstjfofa1fm@#`；
+ `CHINAVERSION`/`ENGLISHVERSION` = `Le&end0f#ir`；`TAIWANVERSION` = `TGL&S0ftW0rld`；`PHILIPPINEVERSION` = `PL2g&OfMir2`）→ `UD_SUPERADMIN`。
+ > **安全注意**：口令明文写死在源码，且韩正式服口令与源码库同源泄露。
+
+#### 10.31.2 `@` 命令分派（`:23278-24445`）
+
+`saystr[1]='@'` → 以 `[' ', ',', ':']` 切出 `cmd` 与 `param1..param7`，按 `UserDegree` 分四级：
+
+**所有人**（`:23298-23621`）：귓속말거부/허용、차단（封多个）、외치기거부、교환거부、문파가입、동맹허용/동맹/동맹파기（文派主）、문파전음차단、H/HELP、
+내공（`EFFECTIVE_HIGHLEVEL` 以上开关 50 级内功特效 + `RecalcAbilitys`）、일지（测试任务日志）、
+공격방식（循环 `HAM_ALL/PEACE/GROUP/GUILD/PKATTACK`）、휴식（`BoSlaveRelax` 主仆休/攻）、
+비밀번호/gsa（转密码态）、사북성문（仅城主文派）、
+**이동**（瞬移戒指 `BoAbilSpaceMove`，10s CD，`PEnvir.NoPositionMove` 禁）、**탐색**（探查项链，10s CD）、
+천지합일거부/허용、소환거부/허용、**천지합일**（群体召唤，`BoCGHIEnable`，3min CD，仅 `GroupOwner`，成员可拒）、
+**MeetCouple/만남**（需 `fLover` 满 100 天 + 戴 `SHAPE_COUPLERING`，20min CD）、**HappyBirthDay/생일축하**（`PremiumBirthDay`，30s CD，全屏粉色广播）。
+
+**`UD_OBSERVER` 以上**（`:23624-23643`）：`@!` 全服公告、`@$` 本服公告、`@#` 本地图公告。
+
+**`UD_SYSOP`**（`:23646-23891`）：ReloadLineNotice、Move/이동、PositionMove/PMove/자유이동、Stealth/스텔스、
+Info/렙、MobLevel、KingMob、MobCount、Human、Map、Kick、Ting、SuperTing、Shutup/ReleaseShutup/ShutupList、
+ReloadChatLog/AddChatLog/ReleaseChatLog/ChatLogList、GameMaster、Observer、Superman/무적、Level（≤40）、
+SabukWallGold、Recall/소환、RecallMap/맵소환、flag/showopen/showunit（查任务标记）、addfriend、
+CharMove/캐릭터이동、Goto/출두、ContestPoint/StartContest/EndContest/Announcement（文派战）、
+누구/whoare、안전/safezone、PKpoint、ChangeJob、ChangeGender、LuckyPoint。
+
+**`UD_ADMIN`**（`:23895-24444`）：attack、Mob、RecallMob、복권（抽奖统计）、ReloadGuild、ReadAbuseInformation、Backstep、
+무태보、FreePenalty、IncPkPoint、ChangeLuck、Hunger、hair、Training、DeleteSkill、NameColor、Mission、MobPlace、
+Transparency/tp、DeleteItem、Level0、퀘스트초기화、setflag/setopen/setunit、Reconnection、
+DisableFilter、CHGUSERFULL、CHGZENFASTSTEP、`GET_INFO_PASSWD`（时长卡统计）、CHG_ECHO_PASSWD、
+`KIL_SERVER_PASSWD`（**随机 1/4 触发停服/公告定时**）、OXQuizRoom（空）、TESTTIME、외치기범위。
+
+**`UD_SUPERADMIN`/测试服**（`:24196-24443`）：Make、DelGold、AddGold、`TEST_GOLD_Change~`、무기제련、
+ReloadAdmin、MarketOpen/MarketClose（SQL 寄售开关）、ReloadNpc、ReloadMonItems、ReloadDiary、
+AdjustLevel、AdjustExp、AddGuild、DelGuild、ChangeSabukLord、ForcedWallconquestWar、
+AddToItemEvent/AsPieces/ItemEventList/StartingGiftNo/DeleteAllItemEven/StartItemEvent/ItemEventTerm（**物品事件**）、
+AdjustTestLevel、OPTraining、OPDeleteSkill、ChangeWeaponDura（≤65）、Upgrade、모든보옥/모든신주、
+ReloadMakeItemList、글자색（DEBUG）、Alive、스핵체크（`g_SpeedHackCheck`）、AgitDecoMonCount/Here、
+FamePoint/FameName、UserMarketDebug、연인해제；另 ReloadGuildAgit、OneKill（测试）、MonClear。
+
+#### 10.31.3 普通聊天（`:24446-24573`）
+
+- `PEnvir.NoChat` 地图禁言。
+- **防刷屏（도배）**：同串 3s 内重复 → `BombSayCount++`，≥2 → **禁言 1 分钟**（`BoShutUpMouse`）；
+ **高速聊天**：2s 内连发 → ≥5 → **禁言 30 秒**。
+- 运营者 `ShutUpList` 命中 → 禁言。
+- `/名字 内容` → `Whisper`（SYSOP 额外 `/who`，ADMIN `/total`）。
+- `!!` 组队、`!~` 文派（+ 跨服 `ISM_GUILDMSG`）、`!` 外喊（需 ≥8 级，10s CD；**文派主无 CD 走 `GuildAgitCry` 50 格**，普通 `g_CryWide`）、`♡` 恋人私聊。
+- 否则 `inherited Say`（普通聊天）。
+
+### 10.32 `ThinkEtc` / `ReadySave`（Round 964；`ObjBase.pas:24576-24586`）
+
+- `ThinkEtc`：`Bright <> MirDayTime` 时更新并 `SendMsg(RM_DAYCHANGING)`（昼夜变化）。
+- `ReadySave`：`Abil.HP := WAbil.HP`（存档前同步）。
+
+**未验证**：`GetValidStr3`/`CryCry`/`GuildAgitCry`/`UserSpaceMove`/`Cmd*` 各实现未逐一读；
+`GET_A_CMD`/`GET_A_PASSWD`/`GET_SA_CMD`/`EFFECTIVE_HIGHLEVEL`/`g_CryWide` 常量值未查；无运行期验证。
 
 ---
 
