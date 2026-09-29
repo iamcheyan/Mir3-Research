@@ -13662,3 +13662,20 @@ HUD cap2「技能图鉴」flag 消费者；任务详情面板 `detail_geometry` 
 **〔未闭合〕** ObjBase 其余大段（`Cmd*` 19197-20375/21987-22663、`ServerGet*` 26685-31768）仍未逐行读。**保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 965 — 2026-09-29：`ObjBase.pas` 使用/屠宰/商店/仓库处理
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:26685-27468`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔`ServerGetEatItem`〕** 死亡禁用；按 `StdMode`：0/1/2/3 → `EatItem`；4 → `ReadBook`（学会后开 `+LNG/+WID/+CRS` 远程/范围攻击标志）；8 → 邀请函或使用；31 → 拆捆（需 6 格空间，`UnbindPotionUnit`）。`SM_EAT_OK/FAIL`，日志 `'11'`。
+
+**〔`ServerGetButch`〕** 2 格内、`Death & not BoSkeleton & BoAnimal`；`BodyLeathery-=5+Random(16)`、`MeatQuality-=100+Random(201)`；皮革耗尽 → 动物类变骷髅 + `ApplyMeatQuality` + `RM_SKELETON` + 掉落；`BodyLeathery:=50` 防刷屏；`RM_BUTCH`。
+
+**〔商店〕** 商人在同图 15 格内（或隐形地图任务 NPC）；询价/卖出/修理/购买/制造；**台湾活动物品不可卖**；计数物品可部分卖。
+
+**〔仓库〕** 50 件/页发 `SM_SAVEITEMLIST`；**体验模式禁仓**；台湾物品不可存；计数物品仓库内合并（上限 1000）；`SM_STORAGE_OK/FULL/FAIL`、`SM_TAKEBACKSTORAGEITEM_OK/FULLBAG/FAIL`；取回有**重量预检**（`OverlapItem=1` 按 `W+W*(cnt div 10)`）；日志 `'1'` 存 / `'0'` 取。
+
+**〔未闭合〕** `TMerchant.*`/`EatItem`/`ReadBook`/`TakeCretBagItems` 实现未读；常量值未查。ObjBase 其余大段（组队/交易/行会/关系/寄售/庄园 `27471-31768`、`Cmd*` 19197-22663）仍未逐行读。**保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

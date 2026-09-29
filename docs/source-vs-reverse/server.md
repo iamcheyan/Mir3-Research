@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962 / 963 / 964）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962 / 963 / 964 / 965）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1816,6 +1816,45 @@ FamePoint/FameName、UserMarketDebug、연인해제；另 ReloadGuildAgit、OneK
 
 **未验证**：`GetValidStr3`/`CryCry`/`GuildAgitCry`/`UserSpaceMove`/`Cmd*` 各实现未逐一读；
 `GET_A_CMD`/`GET_A_PASSWD`/`GET_SA_CMD`/`EFFECTIVE_HIGHLEVEL`/`g_CryWide` 常量值未查；无运行期验证。
+
+### 10.33 使用/屠宰/商店/仓库处理（Round 965；`ObjBase.pas:26685-27468`）
+
+#### 10.33.1 `ServerGetEatItem(svindex, itmname)`（`:26685-26837`）
+
+死亡时禁用。按 `MakeIndex` 定位，按 `StdMode` 分派：
+- `0,1,2,3`（试药/肉/食物/卷轴）→ `EatItem`，删除 + `SM_EAT_OK`；`StdMode=3` 且 `Shape<>2` 才记日志。
+- `4`（书）→ `ReadBook`；学会后按技能开 `+LNG`（어검술 御剑）/`+WID`（반월검법 半月）/`+CRS`（광풍참 狂风）远程/范围攻击标志。
+- `8`（可食/使用，如邀请函 `SHAPE_OF_INVITATION`）→ `EatItem`。
+- `31`（捆绑药）→ 需背包空间 `ItemList.Count+6-1 <= MAXBAGITEM` → `UnbindPotionUnit(GetUnbindItemName(Shape), 6)` 拆成 6 个。
+- 结果 `SM_EAT_OK`/`SM_EAT_FAIL`；日志 `'11'`（사용_）。
+
+#### 10.33.2 `ServerGetButch(animal, x, y, ndir)`（`:26873-26908`）
+
+屠宰（新版权重 `IsValidFrontCreature`，旧版 `IsValidCreature` 已注释）：
+- 目标须 `abs(x-CX)<=2 and abs(y-CY)<=2`，且 `Death and not BoSkeleton and BoAnimal`。
+- `BodyLeathery -= 5+Random(16)`（皮革度）、`MeatQuality -= 100+Random(201)`（肉质量，下限 0）。
+- `BodyLeathery<=0`：若 `RaceServer in [RC_ANIMAL, RC_MONSTER)` → `BoSkeleton:=TRUE` + `ApplyMeatQuality` + `RM_SKELETON`；`TakeCretBagItems` 掉落；`BodyLeathery:=50`（防连发消息）。
+- `DeathTime := GetTickCount`（屠宰中尸体不消失）；广播 `RM_BUTCH`。
+
+#### 10.33.3 NPC 交互与商店（`:26910-27468`）
+
+- `ServerGetMagicKeyChange`：改魔法热键。
+- `ServerGetClickNpc` / `ServerGetMerchantDlgSelect`：交易中禁止；商人在同图且 `|dx|,|dy|<=15`（或 `BoInvisible` 地图任务 NPC）→ `UserCall`/`UserSelect`。
+- 询价/修理价/卖出：按 `MakeIndex`+名定位，`TMerchant.QueryPrice/QueryRepairCost/UserSellItem/UserRepairItem`。
+ **台湾活动物品（`TAIWANEVENTITEM`）不可卖**；计数物品（`OverlapItem>=1`）可按 `sellcnt` 部分卖。
+- `ServerGetUserMenuBuy`（`CM_USERBUYITEM`/`CM_USERGETDETAILITEM`）、`ServerGetMakeDrug`/`MakeItemSel`/`MakeItem`（制造）。
+
+#### 10.33.4 仓库（`:27087-27406`）
+
+- `ServerSendStorageItemList(npcid)`：按 **50 件/页**分页发 `SM_SAVEITEMLIST`（param=npcid，param2=页码）；未鉴定物品按 `Desc[8]` 隐藏属性。
+- `ServerGetUserStorageItem`（存）：**体验模式 `ApprovalMode=1` 禁用**；台湾活动物品不可存；
+ 计数物品（`OverlapItem>=1`）在仓库内**合并**（`SaveCountItemAdd`，同 `StdMode`+`Looks`+名，上限 1000）；`SaveItems.Count < MAXSAVELIMIT`；
+ 结果 `SM_STORAGE_OK`（param2=剩余量）/`SM_STORAGE_FULL`/`SM_STORAGE_FAIL`；日志 `'1'`（보관_）。
+- `ServerGetTakeBackStorageItem`（取）：**重量预检**——`OverlapItem=1` 时 `Weight + Weight*(cnt div 10)`，`>=2` 时 `Weight*cnt`，否则 `Weight`；
+ 计数物品可部分取；`SM_TAKEBACKSTORAGEITEM_OK`/`_FULLBAG`/`_FAIL`；日志 `'0'`（찾기_）。
+
+**未验证**：`EatItem`/`ReadBook`/`TMerchant.*`/`TakeCretBagItems`/`UserCounterItemAdd` 实现未读；
+`MAXBAGITEM`/`MAXSAVELIMIT`/`TAIWANEVENTITEM`/`ApprovalMode` 值未查；无运行期验证。
 
 ---
 
