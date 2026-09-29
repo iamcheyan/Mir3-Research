@@ -13200,3 +13200,18 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** 未找到 EI 原版 `.Lib` 加密的 `primary-static` 对照；`FPassword` 来源、写入端布局、真实 `.Lib` 运行期验证均缺（本机无 `.Lib`）。属静态阅读。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 939 — 2026-09-29：`Client/HerbActor.pas` 全实现（采集物/特殊对象）
+
+**〔范围〕** 完整读取 `Source/Client/HerbActor.pas:1-993`（CP949）。未运行 Delphi/客户端。
+
+**〔动作帧〕** `TKillingHerb.CalcActorFrame` 按 `CurrentAction` 展开 `pm.Act*` 帧段（`SM_TURN/DIGUP/HIT/STRUCK/DEATH/NOWDEATH/DIGDOWN`）；`SM_DIGDOWN` 用 `ActDeath` + `BoDelActionAfterFinished`（动作完即删 actor）；`SM_DEATH` 停在末帧。`Race=106` 站姿随机 0..3 帧。
+
+**〔各类〕** 详见 `client-rendering.md §8.3`。要点：`TMineMon` 强制无方向 + 每 60 s 重载图库；`TCentipedeKingMon` 攻击用 `ActCritical` + 特效（`g_WMon24Img`/`g_WMon15Img`，50 ms/帧）；`TDragonBody` 用 `g_WDragonImg` 固定 0..1 帧/400 ms；`TSoccerBall` 空壳。
+
+**〔攻城表现〕** `TCastleDoor` 用 **`Map.MarkCanWalk` 在客户端独立标记门通行**（10+ 格、开/关/破三态、`DownDrawLevel` 1/2、镜头格变化重刷）；`TWallStructure` 取 `offset+8+Dir` 破损贴图 + 224/240 特效，`SetActorDrawLevel(self,0)` 画最底层，同样独立 `MarkCanWalk`。→ **客户端与服务端各维护一份门/墙通行位图**（服务端见 `monsters.md §12.4`），一致性未验证。
+
+**〔未闭合〕** 未找到 EI 原版客户端采集物/攻城渲染的 `primary-static` 对照；图库基址常量与真实资源、`PlayScene.SetActorDrawLevel` 语义未验证；无运行期验证。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

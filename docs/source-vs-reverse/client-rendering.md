@@ -168,7 +168,7 @@ frametime  := pm.ActXxx.ftime;
 
 ## 4. `HerbActor.pas`（采集对象）
 
-**未读**（标注 pending）。
+✅ **已闭合**（Round 939，见 §8.3 全实现）。
 
 ---
 
@@ -262,21 +262,72 @@ frametime  := pm.ActXxx.ftime;
 客户端有 `TSkeletonOma`/`TCatMon`/`TZombiDigOut` 等 ——
 **两边类名与层次结构不同**（各自独立实现，只共享 `Race`/`Appearance` 数值约定）。
 
-### 8.3 `HerbActor.pas` —— 采集物与特殊对象（10 类）
+### 8.3 `HerbActor.pas` —— 采集物与特殊对象（10 类，Round 939 全实现）
+
+> 常量（`:10-14`）：`BEEQUEENBASE=600`、`DOORDEATHEFFECTBASE=120`、
+> `WALLLEFTBROKENEFFECTBASE=224`、`WALLRIGHTBROKENEFFECTBASE=240`。
 
 **顶层基类**（都继承 `TActor`）：`TKillingHerb`（`:19`，**可采集物基类**）、
 `TBeeQueen`、`TCastleDoor`、`TWallStructure`、`TSoccerBall`。
+**`TKillingHerb` 的派生**：`TMineMon`（矿）、`TCentipedeKingMon`（蜈蚣王）、
+`TBigHeartMon`（大心怪）、`TSpiderHouseMon`（蜘蛛巢）、`TDragonBody`（火龙身）。
 
-**`TKillingHerb` 的派生**（`:28-108`）：`TMineMon`（矿）、
-`TCentipedeKingMon`（蜈蚣王）、`TBigHeartMon`（大心怪）、
-`TSpiderHouseMon`（蜘蛛巢）、**`TDragonBody`**（注释「화룡몸 FireDragon」= 火龙身体）。
+#### 8.3.1 `TKillingHerb.CalcActorFrame`（`:141-223`）—— 动作→帧段映射
 
-**独立类**：`TCastleDoor`（城门）、`TWallStructure`（城墙结构）、
-`TSoccerBall`（足球）。
+按 `CurrentAction` 把 `pm.Act*` 段展开为 `startframe/endframe/frametime`：
+
+| `CurrentAction` | 帧源 | 备注 |
+|---|---|---|
+| `SM_TURN` | `ActStand`（**无方向**） | `Race=106` 时随机取 `startframe+Random(3000) mod 4` |
+| `SM_DIGUP` | `ActWalk`（无方向） | `maxtick/curtick/movestep` 用于位移 |
+| `SM_HIT` | `ActAttack + Dir*(frame+skip)` | 置 `WarModeTime` |
+| `SM_STRUCK` | `ActStruck + Dir*(...)` | 用 `struckframetime` |
+| `SM_DEATH` | `ActDie + Dir*(...)` | **`startframe := endframe`**（停在最后一帧） |
+| `SM_NOWDEATH` | `ActDie + Dir*(...)` | 从头播 |
+| `SM_DIGDOWN` | `ActDeath`（无方向） | `Race<>106` 时 `BoDelActionAfterFinished:=TRUE`（**动作结束即删 actor**） |
+
+`GetDefaultFrame`：死亡 → `ActDeath`（有骨架）或 `ActDie` 末帧；否则 `ActStand + currentdefframe`。
+
+#### 8.3.2 各类实现要点
+
+| 类 | 行 | 要点 |
+|---|---|---|
+| `TMineMon`（지뢰/矿） | `:249-358` | **强制 `Dir:=0`**；`SM_HIT`/`SM_STRUCK` 复用 `ActStand`（无攻击动画）；`DrawChr` **每 60 s 重调 `LoadSurface`** 防图库内存被释放，再 `Drawblend` |
+| `TBeeQueen`（비막원충） | `:365-438` | 无 `SM_DIGUP`/`SM_DIGDOWN`；全部无方向 |
+| `TCentipedeKingMon`（지네왕/촉룡신） | `:445-570` | `SM_HIT` 用 `ActCritical` + **特效**：`BoReadyEffect` 等 5 帧后转 `BoUseEffect`，`LoadEffectSurface` 从 `g_WMon24Img`（`Race=106`，基址 1410）或 `g_WMon15Img`（基址 100）取帧；`Run` 以 50 ms/帧推进 `effectframe` 0..9 |
+| `TBigHeartMon`/`TSpiderHouseMon` | `:579-596` | 仅 `Dir:=0` + `inherited` |
+| `TDragonBody`（화룡몸） | `:924-988` | `LoadSurface` 从 **`g_WDragonImg`**（按 `GetOffset(Appearance)`）；`CalcActorFrame` 固定 `startframe=0/endframe=1/frametime=400`；`DrawChr` 每 60 s 重载 |
+
+#### 8.3.3 `TCastleDoor`（城门，`:604-784`）—— **客户端独立碰撞**
+
+- `Create`：`Dir:=0`、`DownDrawLevel:=1`（注释「1셀 먼저 그림」= **先画 1 格**，
+  防玩家头从门下滑出）。
+- **`ApplyDoorState(dstate)`（`:612-637`）**：用 **`Map.MarkCanWalk`** 在客户端
+  **独立标记 10+ 格的可通行性**（与服务端 `TCastleDoor.ActiveDoorWall` 的
+  `GetMarkMovement` 是两套平行实现）—— 3 格门框恒不可走；开/关切其余格；开门时再封 3 格。
+- `CalcActorFrame`：`SM_DIGUP`=开门→`ActAttack`+`dsOpen`；`SM_DIGDOWN`=关门→`ActCritical`+
+  `dsClose`；`SM_NOWDEATH`/`SM_DEATH`→`ActDie`+`dsBroken`；否则 `Dir<3` 关（`ActStand+Dir`）
+  或 `Dir>=3` 开（`ActCritical`）。
+- `GetDefaultFrame` 按开/关设 `DownDrawLevel` 1/2；`Run` 在**镜头格变化时重刷门状态**；
+  `DrawChr` 叠画 `DOORDEATHEFFECTBASE(120)+frame` 特效。
+
+#### 8.3.4 `TWallStructure`（城墙，`:792-920`）—— 破损贴图 + 底部绘制
+
+- `Dir∈0..7`；`LoadSurface`：死亡/受击时 `BodySurface := offset+deathframe`，
+  另取 `BrokenSurface := offset+8+Dir`；特效基址按 `Appearance=901` 选
+  `WALLLEFTBROKENEFFECTBASE(224)` 或 `WALLRIGHTBROKENEFFECTBASE(240)`。
+- `Run`：按 `Death` 切 `Map.MarkCanWalk(XX,YY)`（**独立碰撞标记**），
+  并 `PlayScene.SetActorDrawLevel(self, 0)`（**画在最底层**）；`DrawChr` 叠画 `BrokenSurface`+特效。
+
+#### 8.3.5 `TSoccerBall`
+
+空壳（`:103-106`），渲染完全走基类 `TActor`。
 
 > **`TCastleDoor`/`TWallStructure` 是「攻城」的客户端表现** ——
-> 与 `Castle.pas` 的 `CASTLEMAINDOORREPAREGOLD` 等费用常量
-> （`items-systems.md` §3）配套。
+> 与 `Castle.pas` 的 `CASTLEMAINDOORREPAREGOLD` 等费用常量（`items-systems.md` §3）
+> 及服务端 `ObjMon2.pas` 的 `TCastleDoor`/`TWallStructure`（`monsters.md` §12.4）配套。
+> ⚠️ **客户端与服务端各自维护一份门/墙通行位图**（`Map.MarkCanWalk` vs `PEnvir.GetMarkMovement`），
+> 两者一致性未验证。
 
 ### 8.4 `magiceff.pas` —— 魔法特效运行时（15 类）
 
@@ -385,7 +436,7 @@ fy := fireY + stepy;
 | 项 | 原因 |
 |---|---|
 | `AxeMon.pas` 各类的 `DrawEff`/`Run` 实现 | 只读了类层次 |
-| `HerbActor.pas` 各类的实现 | 只读了类层次 |
+| ~~`HerbActor.pas` 各类的实现~~ | ✅ **已闭合**（Round 939，§8.3） |
 | `magiceff.pas` 其余 12 个特效类的实现 | 只读了基类 + `TFlyingAxe` 构造 |
 | `FLYBASE`/`EXPLOSIONBASE`/`FLYOMAAXEBASE` 常量值 | 未查 |
 | `TMagicType` 枚举 | 未读 |

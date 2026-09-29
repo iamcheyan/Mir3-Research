@@ -145,7 +145,7 @@ D-client	Source/Client/DWinCtl.pas	7804	226540	partial	Round 806/818: 类层次+
 D-client	Source/Client/DrawHint.pas	441	15405	covered	Round 898: unbound TDxHintMgr parser/cache/render behavior; active DScreen hint path belongs to DrawScrn
 D-client	Source/Client/DrawScrn.pas	550	17810	covered	Round 804 场景切换
 D-client	Source/Client/FState.pas	14853	531645	partial	Round 817: TFrmDlg.Initialize 运行时布局(345项)+窗口声明+帧号；其余主体待读
-D-client	Source/Client/HerbActor.pas	993	30165	partial	Round 826: 10 类层次(TKillingHerb/TCastleDoor/TWallStructure等)；实现待读
+D-client	Source/Client/HerbActor.pas	993	30165	covered	Round 826 10 类层次; Round 939 full 1–993 (CP949): 常量 BEEQUEENBASE=600/DOORDEATHEFFECTBASE=120/WALLLEFTBROKENEFFECTBASE=224/WALLRIGHTBROKENEFFECTBASE=240; TKillingHerb.CalcActorFrame 动作→Act* 帧段(SM_TURN/DIGUP/HIT/STRUCK/DEATH/NOWDEATH/DIGDOWN, SM_DIGDOWN 用 ActDeath+BoDelActionAfterFinished), GetDefaultFrame; TMineMon 强制 Dir=0 + 60s 重载图库; TCentipedeKingMon SM_HIT=ActCritical+特效(g_WMon24Img 1410 / g_WMon15Img 100, 50ms/帧); TCastleDoor 客户端 Map.MarkCanWalk 独立门碰撞(10+格, DownDrawLevel 1/2, 开/关/破 三态, 镜头格变化重刷); TWallStructure BrokenSurface=offset+8+Dir + 224/240 特效 + SetActorDrawLevel 0 + MarkCanWalk 独立阻挡; TDragonBody g_WDragonImg 固定帧 0..1/400ms; TSoccerBall 空壳; 客户端与服务端各维护门/墙通行位图; no Delphi/runtime/EI comparison
 D-client	Source/Client/IntroScn.pas	1776	55353	covered	Round 804 TSceneType
 D-client	Source/Client/Logo.pas	105	2921	covered	Round 899: RLE decoder and ClMain references traced; LogoBitemp.inc missing and Logo unit binding unresolved
 D-client	Source/Client/MShare.pas	32	775	covered	Round 900: interface-only image metadata; sole import is unlinked DrawHint and packed TWMImages is distinct from WIL alias
