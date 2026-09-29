@@ -159,7 +159,28 @@ EI 主 UI 的窗口 id 空间是 **0..15**，由 `0x0042B3E4` 跳转表 + `0x004
 | 关闭框/键盘链 | `confirmation-prompt-evidence.json`（F950 三按钮 + 键盘/激活链） | `LogoutConfirmDialog` | **MATCH**（`--legacy-keychain-selftest` PASS：Tab 循环/回绕/跳过 disabled、帧表 150/153/156 与 44×20/44×20/64×20 匹配） |
 | 分页/滚动 | 行会 `this+0x9C` 行偏移 + 18 行上限；仓库 divisor 12；背包 `this+0x58` + F280 gauge；聊天 ±19 行 | 各窗口 `DXVScrollBar`/`ScrollValue` | 行会本轮改为行偏移（§6.1）；仓库/背包/聊天 **MATCH**；背包 F280 见 §9 I-2 |
 | 拖放 | 交易/背包/仓库 `GridType` 链接模型（`bag-list-fill-chain-evidence.json`） | `DXItemCell`/`DXItemGrid` `LinkedSourceGrid` | **MATCH**（`UIItemGridAudit`/`UIBeltLinkAudit` PASS） |
-| 键盘入口 | `hotkey-label-handler-consistency.json`（Q/W/E/R/S/D/N/G/Z…） | `KeyBindManager` + `GameScene.HandleKeyBind` | **MATCH**（legacy 键位表见 `LEGACY_EI_UI_AUDIT_2026-09-23.md`） |
+| 键盘入口 | `hud-label-evidence.json::caption_ctor_table`（16 caption 文案含键位）+ `hotkey-label-handler-consistency.json` | legacy 覆盖层 `GameScene._UnhandledKeyInput`（`LegacyUi` 分支，`GameScene.cs:10877-10988`）；其余走 `KeyBindManager` | **16/16 MATCH**（逐项见下） |
+
+**legacy 键位逐项对照**（2026-09-30 复核；上一轮曾误记「整表反向」，实为 14/16 早已覆盖）：
+
+| EI 键（caption 文案） | EI 语义 | Godot legacy 路径 | 判定 |
+|---|---|---|---|
+| Q / Ctrl+Q | 包袱栏 | `Key.Q` → Toggle InventoryDialog | MATCH |
+| W / Ctrl+W | 状态栏 | `Key.W` → ToggleCharacterWindow | MATCH |
+| E / Ctrl+E | 技能书 | `Key.E` → Toggle MagicDialog | MATCH |
+| R / Ctrl+R | 聊天记录 | `Key.R` → LegacyChatDialog | MATCH |
+| N / Ctrl+N | 设置栏 | `Key.N` → OpenConfigDialog | MATCH |
+| G / Ctrl+G | 组队 | `Key.G` → GroupWindow | MATCH |
+| D / Ctrl+D | 信息窗口(任务) | `Key.D` → Toggle QuestDialog | MATCH |
+| C / Ctrl+C | 交易栏 | `Key.C` → TradeRequest | MATCH |
+| S / Ctrl+S | 坐骑 | `Key.S` → ToggleHorseWindow | MATCH |
+| T | 小地图切换 | `Key.T` → MiniMap toggle | MATCH |
+| Z / Ctrl+Z | 腰带 | `KeyBindManager` `Key.Z`=BeltWindow | MATCH |
+| V / Ctrl+V | 小地图 | `KeyBindManager` `Key.V`=MapMiniWindow | MATCH |
+| Alt+Q | 退出游戏 | `KeyBindManager` `Alt+Q`=ExitGameWindow | MATCH |
+| Alt+X | 注销人物 | `KeyBindManager` `Alt+X`=LogoutCharacter | MATCH |
+| F / Ctrl+F | 行会 | **本轮补**：legacy 覆盖层加 `Key.F`→OpenGuildDialog（commit `7e2a2340`）；此前落到 `Key.F`=BlockListWindow | **已修复** |
+| B / Ctrl+B | 技能图鉴 | 仍为 `KeyBindManager` `Key.B`=MapBigWindow | **未修复**（= §9 B-5，原版语义是 toggle 技能图标网格） |
 | 角色属性文本 | `status-window-render-evidence.json`；`status-attribute-colors-evidence.json` | `CharacterDialog` 14 行 (255,67+15i)/(331,67+15i) | **MATCH**（`--legacy-character-selftest` PASS：14 项全部匹配） |
 
 ## 6. 本轮已修复

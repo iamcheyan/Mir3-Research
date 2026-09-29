@@ -88,30 +88,37 @@
 **需要**：运行时捕获一次原版 gauge 的屏幕矩形（本机无原版运行环境 → 需 Windows 主机）。
 **在那之前**：Godot 自绘轨道 + 拖柄保留。
 
-### B-4b legacy 键盘绑定与 EI caption 反向（`CONFIRMED_DIFFERENCE`）
+### B-4b legacy 键盘绑定：14/16 已覆盖，F→行会 缺失（`CONFIRMED_DIFFERENCE`）
 
-**EI 证据**（`hud-label-evidence.json::caption_ctor_table`，全 16 caption 文案含键位）：
-`Q/Ctrl+Q`=包袱栏、`W/Ctrl+W`=状态栏、`E/Ctrl+E`=技能书、`D/Ctrl+D`=信息窗口(任务)、
-`F/Ctrl+F`=行会、`G/Ctrl+G`=组队、`N/Ctrl+N`=设置、`S/Ctrl+S`=坐骑、`Z/Ctrl+Z`=腰带、
-`R/Ctrl+R`=聊天记录、`B/Ctrl+B`=技能图鉴、`V/Ctrl+V`=小地图、`C/Ctrl+C`=交易栏。
+**纠正**（2026-09-30 复核）：上一轮称「全表反向」是**错误**的。GameScene 的
+`_UnhandledKeyInput` 在 `AutoLoginArgs.LegacyUi` 下有 10 个键的 EI 语义覆盖
+（`GameScene.cs:10877-10978`）：
 
-**Godot 现状**（`KeyBindManager.KeyBinds` 默认表）：`Q`=CharacterWindow(状态)、
-`W`=InventoryWindow(背包)、`E`=MagicWindow(技能书)、`B`=MapBigWindow(大地图)、
-`G`=GuildWindow(行会)、`F`=BlockListWindow(黑名单)、`S`=StorageWindow(仓库)、
-`R`=RankingWindow(排行)、`D`=默认未绑、`N`=MenuWindow。
-→ **Q/W 反了，B/D/F/G/S/R 全部映射到错误窗口**。
+| EI 键 | EI 语义 | Godot legacy 覆盖 | 状态 |
+|---|---|---|---|
+| Q | 包袱栏 | `Key.Q`→Toggle InventoryDialog ✓ | MATCH |
+| W | 状态栏 | `Key.W`→ToggleCharacterWindow ✓ | MATCH |
+| E | 技能书 | `Key.E`→Toggle MagicDialog ✓ | MATCH |
+| R | 聊天记录 | `Key.R`→LegacyChatDialog ✓ | MATCH |
+| N | 设置 | `Key.N`→OpenConfigDialog ✓ | MATCH |
+| G | 组队 | `Key.G`→GroupWindow ✓ | MATCH |
+| D | 信息窗口(任务) | `Key.D`→Toggle QuestDialog ✓ | MATCH |
+| C | 交易栏 | `Key.C`→TradeRequest ✓ | MATCH |
+| S | 坐骑 | `Key.S`→ToggleHorseWindow ✓ | MATCH |
+| T | 小地图切换 | `Key.T`→MiniMap toggle ✓ | MATCH |
+| Z | 腰带 | KeyBindManager `Key.Z`=BeltWindow ✓ | MATCH |
+| V | 小地图 | KeyBindManager `Key.V`=MapMiniWindow ✓ | MATCH |
+| Alt+Q | 退出游戏 | KeyBindManager `Alt+Q`=ExitGameWindow ✓ | MATCH |
+| Alt+X | 注销人物 | KeyBindManager `Alt+X`=LogoutCharacter ✓ | MATCH |
+| **F** | **行会** | KeyBindManager `Key.F`=BlockListWindow ✗ | **CONFIRMED_DIFFERENCE** |
+| **B** | **技能图鉴** | KeyBindManager `Key.B`=MapBigWindow ✗ | **= B-5** |
 
-legacy 模式只在 handler 里用 `AutoLoginArgs.LegacyUi` 区分**行为**（如 CharacterButton→坐骑），
-但**不改键位表本身**。HUD 按钮（cap0..15）的 frame+坐标+caption 文案是对的，
-点击行为也对（见矩阵 §2、§5）；只是**键盘快捷键**与 caption 文案不一致。
+→ legacy 模式下 14/16 键已与 EI caption 一致；只剩 **F→行会** 和 **B→技能图鉴**（B-5）。
 
-**选项**：
-1. legacy 模式下加载一套 EI 键位表（Q=包袱、W=状态、B=技能图鉴…）覆盖默认；
-2. 只修 Q/W（最常用的两个）；
-3. 保持现状。
-
-**推荐**：选项 1（`KeyBindManager` 在 `LegacyUi` 时注入 EI caption 表）。
-风险：用户自定义键位会被覆盖，需保留运行时设置优先级。
+**修复方案（F→行会）**：在 `GameScene._UnhandledKeyInput` 的 legacy 覆盖层加
+`if (LegacyUi && key.Keycode == Key.F && !Alt && !Shift) → OpenGuildDialog(); return;`。
+最小、可逆、与现代 `Key.F`（FilterDrop/BlockList）不冲突（legacy 下被覆盖）。
+**推荐**：执行。
 
 ### B-5 HUD cap2「技能图鉴」动作（`H-1`）
 
@@ -140,11 +147,30 @@ Godot legacy 仍渲染现代分组列表（x=8/18/28、金色/白色、分组标
 **在那之前**：不擅自改，避免「按猜测换文本」。
 **推荐**：找到填充链后按原版实现扁平列表（含 >160px 换行）。
 
-### B-8 目标框 / 悬停名牌（`UNVERIFIED`）
+### B-8 目标框 / 悬停名牌（`CONFIRMED_DIFFERENCE`，未实现）
 
-原版有独立证据 `target-box-evidence.json`（名牌框 `0x40B850`、悬停 3000ms `0x40BB00`、
-HP 条 `0x40A8A0`、锚点 (376,227) 或 48×32 瓦片公式）。Godot 侧有 `MonsterDialog`
-（当前被显式隐藏）与目标框绘制。本轮**未逐项对照** → 登记为下一轮范围。
+**原版**（`target-box-evidence.json`，5 个组件，全部锚定 `HUD+0xE4/+0xE8`）：
+
+| 组件 | VA | 原版行为 |
+|---|---|---|
+| 名字牌框 | `0x0040B850` | **代码绘制**（无 WIL 帧）：`0xA0A0A` 边框 + 名字文本；框宽贴文字宽 w，高 15px，位于锚点**上方** (anchor_y-0x1E .. anchor_y-0xF)，水平居中 `anchor_x+(48-w)/2` |
+| 悬浮名字 | `0x0040B750` | 选择器 `0x566DD4`（ProgUse.wil）帧 2/3 |
+| 悬停名牌 | `0x0040BB00` | 带 **3000ms** 保持门（`byte[HUD+0x620A0]`） |
+| HP 条 | `0x0040A8A0` | 选择器元素 `0x5600FC + [HUD+0x8D]*0x144`，**帧号 = HP 值**（预渲染逐值条），400/300 中心公式 |
+
+**Godot 现状**：
+- `ObjectRenderer.Focused`（`ObjectRenderer.cs:40`）**只被 `GameScene.cs:9164` 赋值，全仓无任何读取** → **没有常驻目标框**。
+- `ObjectRenderer.DrawName()`（`:573`）只在 `NameHovered` 时画名字 → 没有「目标名字牌框」，也没有 3000ms 悬停保持（Godot 是即时悬停）。
+- 唯一的血条是 `MapObjectNode.DrawHealthBar()`（`:316`）：受击后 5 秒临时显示，用 **Interface 80 底 / 79 填充 + 裁剪**（源自 Zircon C# `MonsterObject.DrawHealth`），**与 EI 的「帧号 = HP 值」机制不同**。
+- Godot 另有 `TargetOutlineColour` 圆点标记（移植版自加，原版无）。
+
+**结论**：原版的目标框（名字牌框 + 逐值 HP 条 + 3000ms 悬停名牌）在 Godot **整体缺失**，
+现有实现是另一套（hover 即时名字 + 受击临时血条）。
+
+**修复方案**：按证据实现 —— 名字牌框（`0xA0A0A` 边框、贴文字宽、锚上方 15px）、
+HP 条（`0x5600FC` 元素 + 帧号 = HP）、悬停 3000ms 门。属**新功能实现**，
+建议单独一个 goal（需要逐类型选择器绑定 + 运行截图对照）。
+**推荐**：纳入下一轮，不在本轮擅自半实现。
 
 ### B-9 原版客户端运行 A/B 与联机验收
 
