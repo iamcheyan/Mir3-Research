@@ -220,6 +220,71 @@ procedure DirectPaint(dsurface);
 **`EscClose`** 是独立的 ESC 处理入口 —— 原版反编译里 ESC 键的路由
 （`0x447FA0` 那类点击处理器 + 键盘转发）可以对照这里。
 
+### 5.1 `TDWinManager` 输入分派的完整实现（Round 943）
+
+**所有鼠标事件都按同一优先级链分派**（`MouseDown :2326` / `MouseUp :2414` /
+`MouseWheel :2513` / `DblClick :2573` / `Click :2615`）：
+
+```
+PopUpDWindow（弹出菜单）
+  → ModalDWindowList（倒序）
+  → ModalDWindow（单个模态）
+  → TopDWindow（置顶窗）
+  → MouseCaptureControl（鼠标捕获）
+  → DWinList（顺序遍历，第一个返回 True 的胜出）
+```
+
+**细节差异**：
+- `MouseDown`/`Click` 里 PopUp/Modal/Top 分支**无条件 `exit`**（即使子控件返回 False 也吃掉事件）；
+- `MouseUp` 的 PopUp 分支有 **`m_boClose`** 逻辑：菜单项关闭时 `ReleaseDCapture` 并恢复
+  `MouseEntryControl`（避免鼠标悬停状态卡住）；
+- `MouseUp` 的 TopDWindow 分支：子控件返回 False 时**直接隐藏该窗口**（点窗外关闭）；
+- **`MouseWheel` 没有 TopDWindow 分支**，回退是 `MouseCaptureControl` → **`FocusedControl`**
+  （不是 `DWinList`）—— 滚轮走焦点，不走命中。
+
+**`DirectPaint`（`:2691-2738`）的置顶顺序**：先**临时隐藏** `ModalDWindow`/`PopUpDWindow`，
+按 `DWinList` 顺序画普通窗口，再依次画 `ModalDWindow` → `ModalDWindowList` → `PopUpDWindow`
+—— **模态与弹出菜单永远画在最上层**。
+
+**`EscClose`（`:2742-2805`）**：PopUp → ModalList（倒序删）→ Modal → Top → Capture → DWinList，
+每层命中即返回 True。
+
+**z 序重排 `ChangeChildOrder`（`:1371-1406`）**：按 `FControlStyle` 分三类 ——
+`dsBottom` **不重排**（恒在底层）；`dsTop` 移到列表**末尾**（最上）；
+`dsNone` 插到「最后一个非 `dsTop` 窗口」之后。
+
+### 5.2 `TDWindow` 与 `TDModalWindow`
+
+- `TDWindow`（`:2043-2170`）：`FFloating` + `FEscClose`，默认 120×120，`FControlStyle=dsNone`。
+  `SetVisible`/`Show`/`TopShow` 都会 `SetDFocus` + `ChangeChildOrder`（**显示即置顶**）。
+  **拖动**（`MouseMove :2072`）：`FFloating and MouseCaptureControl=self and ssLeft` 时按
+  `SpotX/SpotY` 移动，并用 `WINLEFT`/`GUIFScreenWidth-60`/`WINTOP`/`GUIFScreenHeight-60`
+  **钳制**（窗口不能完全移出屏幕）。
+- `TDModalWindow`（`:7348-7401`）：`ModalShow` 把自己加入 `ModalDWindowList` + `SetDFocus`；
+  `ModalClose` **逐个清空 8 个全局单例指针**（`MouseCaptureControl`/`FocusedControl`/`KeyControl`/
+  `ModalDWindow`/`TopDWindow`/`PopUpDWindow`/`MouseEntryControl`/`KeyDownControl`，先对子控件再对自己），
+  `DControls.Clear`，并从 `ModalDWindowList` 移除。
+
+### 5.3 其余控件实现要点
+
+| 控件 | 行 | 要点 |
+|---|---|---|
+| `TDControl` 基类 | `:1117-1817` | `CreateSurface` 建 `TDXImageTexture`（无图库时默认 `A4R4G4B4`）；`SurfaceX/Y`/`LocalX/Y` 逐级加/减父 `Left/Top`；`InRange` 矩形 + **像素 alpha**（`WLib.Images[FaceIndex].Pixels[x,y] <= 0` 则不算命中）；`AddChild` 把 `TDEdit` 也加入 `DTabControls`；`KeyDown/KeyUp/KeyPress` 只处理 `KeyControl=self` 的控件，`KeyDown` 会记 `KeyDownControl` |
+| `TDCheckBox` | `:2807-2917` | `FChecked` 状态 + 自绘 + `MouseDown/Up` |
+| `TDUpDown` | `:2918-3195` | 通用**滚动条**：`Position`/`MaxPosition`/`OnPositionChange`；按钮按下/移动/抬起驱动 |
+| `TDHooKKey` | `:3196-3580` | **快捷键捕获**控件：`RefHookKeyStr` 把按键+修饰键转显示串；`KeyDown`/`MouseDown` 记录 |
+| `TDEdit` | `:3581-4327` | 单行编辑：`GetPasswordstr`（密码掩码）、`MoveCaret`/`SetCursorPos`、`ClearKey`/`CloseIME`；**`KeyDown` 实现 Ctrl+X/C/V/A**（密码模式下禁用剪贴板）、Shift 选择（`FStartX`/`FStopX`/`FCursor`）、方向键/Delete |
+| `TDComboBox` | `:4328-4595` | 下拉框：`UpDown` 按钮 + 弹出列表；`SetItem`/`SetItemIndex`/`SetShowCount`/`SetShowHeight` |
+| `TDListView` | `:4596-4813` | 表头 `AddHead` + 行 `AddItem`（`TStringList`）；`MouseMove` 按行高算 `FItemIndex`；`MouseDown` 按列宽定位列并回调 `FOnItemIndex`。⚠️ **`DirectPaint` 的列表绘制主体被整段 `{ }` 注释掉**（`:4667-4748`），当前**只画滚动条** |
+| `TDMemo` | `:4815-6045` | 多行编辑器：自定义 **`TDMemoStringList`**（带 `GetText: PChar`/`SaveToFile`/`LoadFromFile`）、`KeyCaret`/`MoveCaret`/`DownCaret`/`SetCaret`、`UpDown` 滚动 |
+| `TDPopUpMemu`（原文拼写） | `:6046-6318` | 弹出菜单：`Popup(Sender,nLeft,nTop,sName)` + `RefSize` 算尺寸；`SetItem`/`SetItemIndex`/`SetOffset`/`SetVisible2` |
+| `TDImageEdit` | `:6319-7347` | **图文混排编辑器**：`AddImageToList`/`AddItemToList`/`AddStrToList`、`RefEditText`/`RefEditSurfce`、`GetCopy`/`GetItemName`、`SetBearing` |
+| `TDTreeView` | `:7405-7732` | **树形控件（原版无）**：`pTDTreeNodes` 链表（`boOpen`/`boMaster`/`ItemList`）；`DirectPaint` **递归绘制**（`FDownY` 命中的行切换 `boOpen` 或设为 `FSelectTreeModes`）；`GetTreeNodes` 按名查找/新增；`RefHeight` 算总高并驱动 `UpDown`；`MouseUp` 记 `FDownY`+置 `FboChange` |
+| `TDCustomEdit` | `:7736-7781` | **IME（输入法）处理**：密码/整数/单大小写模式 `Enter` 时**强制关闭 IME**（`ImmSimulateHotKey`）；否则**启用 IME 并记住/恢复键盘布局** `HklKeyboardLayout`；`Leave` 时若当前是 IME 则关掉 |
+
+**单元初始化/终结**（`:7783-7793`）：`GetMem(ChrBuff, 2048)` + `ModalDWindowList := TList.Create`；
+`finalization` 释放。
+
 ---
 
 ## 6. 与原版证据的对照
@@ -247,12 +312,14 @@ procedure DirectPaint(dsurface);
 
 | 项 | 说明 |
 |---|---|
+| ~~`TDWindow`（`:257-291`）移动/关闭逻辑~~ | ✅ **已闭合**（Round 943，§5.2） |
+| ~~`TDMemo`/`TDEdit` 输入与 IME~~ | ✅ **已闭合**（Round 943，§5.3） |
+| ~~`TDTreeView`~~ | ✅ **已闭合**（Round 943，§5.3；原版无对应控件） |
+| ~~`AddDControl` 的 z 序插入策略~~ | ✅ **已闭合**（Round 943，§5.1 `ChangeChildOrder`） |
 | `TDButton`（`:203-220`）内部实现 | 只读了声明，未读 pressed/hover/disabled 三态切换 |
-| `TDWindow`（`:257-291`）移动/关闭逻辑 | 未读 |
 | `TDGrid`（`:221-256`）格子模型 | 背包 6×6 格与源码 `TDGrid` 的对应未核 |
-| `TDMemo`/`TDEdit` 输入与 IME | 未读（`FrmShowIME`/`HklKeyboardLayout` 有中文输入线索） |
-| `TDTreeView` | 未读（原版无对应控件） |
-| `AddDControl` 的 z 序插入策略 | 未读，影响「索引小 = 更靠前」的确认 |
+| `TDImageEdit`（`:6319-7347`）图文混排 | 只读声明与关键方法名，未逐行读 |
+| `TDHooKKey`（`:3196-3580`）快捷键捕获 | 只读声明，未读 `RefHookKeyStr` 全表 |
 | `芥竟` 字体的真实名称 | CP949 解码字形，需确认 |
 
 ---

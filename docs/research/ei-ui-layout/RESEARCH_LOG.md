@@ -13262,3 +13262,16 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** 未找到 EI 原版对应 LUT/Move 的 `primary-static` 对照；LUT 数值正确性、`Move` 运行期边界、真实 `.WZX`/`.Lib` 验证均缺（本机无文件）。属静态阅读。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 943 — 2026-09-29：`Client/DWinCtl.pas` 主链全实现（控件系统）
+
+**〔范围〕** 读取 `Source/Client/DWinCtl.pas:1117-7804`（CP949）的控件主链：`TDControl` 基类、`TDWindow`/`TDModalWindow`/`TDWinManager` 输入分派、`TDCheckBox`/`TDUpDown`/`TDHooKKey`/`TDEdit`/`TDComboBox`/`TDListView`/`TDMemo`/`TDPopUpMemu`/`TDImageEdit`/`TDTreeView`/`TDCustomEdit`。未运行 Delphi/客户端。
+
+**〔输入分派〕** `TDWinManager` 所有鼠标事件按五级链：`PopUpDWindow` → `ModalDWindowList`（倒序）→ `ModalDWindow` → `TopDWindow` → `MouseCaptureControl` → `DWinList`。`MouseUp` 的 PopUp 分支有 `m_boClose`/`MouseEntryControl` 恢复，Top 分支点窗外即隐藏；**`MouseWheel` 没有 Top 分支且回退 `FocusedControl`**。`DirectPaint` 把模态/弹出放到最后画；`ChangeChildOrder` 按 `FControlStyle` 决定 z 序。
+
+**〔控件〕** `TDWindow` 拖动+边界钳制+显示即置顶；`TDModalWindow.ModalClose` 清 8 个全局单例指针；`TDControl.InRange` 矩形+像素 alpha、`AddChild` 把 `TDEdit` 收入 `DTabControls`；`TDEdit` 实现 Ctrl+X/C/V/A（密码模式禁剪贴板）与 Shift 选择；`TDMemo` 含自定义 `TDMemoStringList`；`TDTreeView` 递归绘制+`UpDown` 滚动；`TDCustomEdit` 处理 IME 开关与键盘布局记忆。⚠️ **`TDListView.DirectPaint` 的列表绘制主体被整段 `{ }` 注释掉**，当前只画滚动条。
+
+**〔未闭合〕** `TDImageEdit`/`TDHooKKey` 主体只读声明；未找到 EI 原版对应控件行为的 `primary-static` 对照；无运行期验证。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
