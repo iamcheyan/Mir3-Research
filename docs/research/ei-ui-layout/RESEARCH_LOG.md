@@ -13185,3 +13185,18 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** EI 原版对应证据缺失；`PushedCount` 递增点、`MagMakeCurseArea`/`CharRushRush`/`IncHealthSpell`/`RM_FOXSTATE` 的完整实现未追；无运行期验证。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 938 — 2026-09-29：`Common/DES.pas` 全实现（.Lib 加密）
+
+**〔范围〕** 完整读取 `Source/Common/DES.pas:1-563`（CP949）。追读调用点 `Client/wmMyImage.pas:235`（`.Lib` 头校验）、`:307/311/324/327`（图信息/前 128 字节）；确认 ImageEditor 同名副本（Round 884）为同一实现。未运行 Delphi/GameServer。
+
+**〔实现〕** 教科书标准 DES：`BitIP/BitCP/BitExp/BitPM/sBox/BitPMC1/BitPMC2` 位级表，`makeKey` 用标准 `bitDisplace=(1,1,2,2,...,1)` 生成 16 轮子密钥，`desData` 16 轮 Feistel，`encry` 做 E 扩展→异或→S 盒→P 置换；**纯 ECB、无密钥派生/校验位**。API：`EncryStr`/`DecryStr`/`EncryStrHex`/`DecryStrHex`/`EncryBuffer`/`DecryBuffer`。
+
+**〔静态缺陷〕** ①`EncryBuffer:349` 分块长度 `nSourceLen + (8 - nSourceLen mod 8)` 对 8 的倍数入参**多加一个整块**（被目标长度边界掩盖，未落盘）；`EncryStr` 用 while 循环无此问题。②`EncryBuffer`/`DecryBuffer` 写满目标即 `Exit`（中途返回、无返回值），可能留半个块。③`DecryBuffer` 不补块，尾部不足 8 字节忽略。④`EncryStr` 禁末字节 NUL 却又用 NUL 补齐，`DecryStr` 删尾 NUL → **原串尾部 NUL 有损**。⑤密钥规约两套：buffer 版取 ≤7 字节、string 版补齐 8 字节。
+
+**〔与 .Lib 接线〕** `wmMyImage.Initialize:235` 对 **7 字节** `sEnStr` 字段 `DecryBuffer(...,8,8)` —— **读 8 字节**，第 8 字节落在 `nVer` 上；写入端 8 字节布局未核实。另 `:306/:310/:321` 的加解密门 `FCanEncry and (FPassword='')` 与 `FCanEncry` 定义（要求 `FPassword<>''`）**互斥，为死代码**。
+
+**〔未闭合〕** 未找到 EI 原版 `.Lib` 加密的 `primary-static` 对照；`FPassword` 来源、写入端布局、真实 `.Lib` 运行期验证均缺（本机无 `.Lib`）。属静态阅读。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

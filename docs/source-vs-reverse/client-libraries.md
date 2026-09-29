@@ -360,11 +360,48 @@ else                                     // ← 索引未压缩
 → **三种容器的头部/图头/压缩/加密全都不同** ——
 **做解码器时必须先识别容器类型，不能假设统一格式**。
 
-### 8.7 未验证项
+### 8.7 `Common/DES.pas` —— `.Lib` 加密用的 DES 实现（Round 938，563 行）
+
+> `Source/Common/DES.pas` 是**教科书标准 DES**（`Source/Tools/ImageEditor/{DES.pas,Common/DES.pas}`
+> 是同一实现的副本）。客户端 `wmMyImage.pas` 通过 `uses DES` 使用它。
+
+**接口（`:13-18`）**：`EncryStr`/`DecryStr`（按 8 字节块处理字符串）、
+`EncryStrHex`/`DecryStrHex`（密文转 hex）、`EncryBuffer`/`DecryBuffer`（对缓冲区原地加解密）。
+
+**实现要点**：
+- 标准位级表：`BitIP`(IP)、`BitCP`(IP⁻¹)、`BitExp`(E)、`BitPM`(P)、`sBox`(8×64 S 盒)、
+  `BitPMC1`(PC-1)、`BitPMC2`(PC-2)；`makeKey` 用标准 `bitDisplace=(1,1,2,2,...,1)`
+  做 16 轮子密钥；`desData` 16 轮 Feistel（`encry` 做 E 扩展→异或→S 盒→P 置换）。
+  **无密钥校验位/无派生**，纯 ECB。
+- **密钥处理**：`EncryBuffer`/`DecryBuffer` 取 `Key[1..MIN(7,Length(Key)-1)]` 共最多 7 字节
+  （第 8 字节恒 0）；`EncryStr`/`DecryStr` 则把 key 用 `Chr(0)` 补齐到 8 字节。
+  **同一实现里两套密钥规约不一致**，调用方须知道自己在用哪个。
+
+**静态缺陷（均已确认，未运行验证）**：
+1. **`EncryBuffer` 的分块长度算错**（`:349`）：
+   `nSrcLen := nSourceLen + (8 - (nSourceLen mod 8))` —— 当 `nSourceLen` **本身是 8 的倍数**时
+   会**多出一个完整 8 字节零块**（正确写法应加 `mod 8` 保护）。实际影响被**目标长度边界**掩盖：
+   写入循环 `if nDesLen >= nDestLen then Exit` 在写满 `nDestLen` 后退出，多出的块不会落盘。
+   `EncryStr` 用的是 `while Length(Str) mod 8 <> 0` 循环，**没有这个问题**。
+2. **目标缓冲区写满是 `Exit`（中途返回）**：`EncryBuffer`/`DecryBuffer` 在块中途写满就退出，
+   可能留下**半个块的密文/明文**，调用方无法从返回值判断（无返回值）。
+3. **`DecryBuffer` 不补块**：只处理 `nSourceLen div 8` 个整块，尾部不足 8 字节被忽略。
+4. **`EncryStr` 禁止输入末字节为 NUL**（`raise`），但**内部又用 NUL 补齐**；
+   `DecryStr` 靠**删尾部 NUL** 还原长度 —— 即**原串尾部若有 NUL 会被破坏**（有损）。
+
+**与 `.Lib` 的接线**：`wmMyImage.Initialize:235` 调
+`DecryBuffer(FPassword, @FHeader.sEnStr[0], @sEnStr[0], 8, 8)`。注意
+**`sEnStr` 字段只有 7 字节**（`array[0..6] of Char`，`:16`），而这里**读 8 字节** ——
+第 8 字节落在 `nVer` 上（=1）。即校验块实际由「7 字节密文 + 1 字节 nVer」组成，
+**写入端是否也按 8 字节布局存密文未核实**（`FormatHeader`/`{$IFDEF WORKFILE}` 写路径）。
+另 `:306/:310/:321` 的加解密门是 `FCanEncry and (FPassword = '')`，而
+`FCanEncry` 的定义要求 `FPassword <> ''`（`:233`）—— **两者互斥，那几条路径实际为死代码**。
+
+### 8.8 未验证项
 
 | 项 | 原因 |
 |---|---|
-| `DecryBuffer` 的 DES 具体实现 | 在 `DES` 单元（未读） |
+| `DecryBuffer` 的 DES 具体实现 | ✅ **已闭合**（Round 938，§8.7） |
 | `FPassword` 的来源 | 未追（`uWilFile.pas` 有 `AWMImages.Password`） |
 | `FormatHeader`/`FormatImageInfo`/`FormatDataBuffer` 的加密写出 | `{$IFDEF WORKFILE}` 条件编译，客户端不启用 |
 | `IndexOffset1`/`IndexOffset2` 的用途 | 未追（只读了 `IndexOffset`） |
