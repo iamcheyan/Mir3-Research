@@ -192,6 +192,27 @@ SpellButton cap8 (703,16)、MenuButton cap11 (703,85)、CashShopButton cap15 (66
 `detail_geometry`（primary-static：F705 @(65,294) 204×76、正文 (80,310)、行距 15、
 3 行、色 0x7D0000）与 `list_row_geometry`（见 §9 Q-2）。
 
+### 6.4 背包格子布局的运行验收（本轮核对，无需改动）
+
+任务书特别要求「背包格子不能凭印象判断」。本轮按原版权威值逐项核对：
+
+| 项 | 原版（primary-static） | Godot legacy 实测 | 判定 |
+|---|---|---|---|
+| 可视网格 | 6 列 × 6 行 = 36 格 | `GridSize=(6,6)`、`VisibleHeight=6` | MATCH |
+| 格子像素/步距 | 36×36、stride 36 | `DXItemCell.CellWidth/Height=36`、`Step=36` | MATCH |
+| 网格起点 | (win.x+0x19, win.y+0x29) = (25,41) | `Grid.Location=(25,41)` | MATCH |
+| 首屏 36 个命中矩形 | (25+36·c, 41+36·r, 36, 36) | 逐格一致（`inventory-window-render-evidence.json` 的 index_to_rect） | MATCH |
+| 记录容量 | **46 条**（stride 0xC2C）+ 6×100 WORD 占位表 | 现代 48 项数组 + footprint first-fit 动态行 | §9 I-1（模型差异，非几何） |
+| 滚动控件 | F280 gauge 16×424、填充区 12×218、`(x+0xF8,y-0xA5)` | 自绘 16×424 轨道 + 16×34 拖柄 | §9 I-2 |
+
+运行证据：`.artifacts/godot-ui-parity-2026-09-29/legacy-inventory-grid.png`
+（Xvfb 1280×960；F250 窗口 + 6×6 空格网格 + 锁链滚动轨 + 골드 行同帧可见）
+与 `legacy-audit-2026-09-29.log` 的 `inventory size=(284,324) grid=(6,6)@(25,41)`。
+
+结论：**背包的可视格子数量、尺寸、间距、起点与原版一致**；
+差异只在「记录容量/占位表模型」与「滚动 gauge 绘制」，二者均受数据身份或
+未闭合证据阻塞（§9 I-1/I-2）。
+
 ## 7. 与 Zircon `Client/`（移植来源）的对照
 
 | 项 | `Client/`（C#） | `GodotClient` 现代路径 | 判定 |
