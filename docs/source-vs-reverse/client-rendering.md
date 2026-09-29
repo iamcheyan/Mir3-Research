@@ -279,18 +279,17 @@ if BoUseMagic and (CurEffFrame = SpellFrame-1) then  // 发射帧
   **`t_wmMyImage`（= `.Lib`）**/`t_wmM3Def`（= `.wil`）/`t_wmWoool`/`t_wm521g`/
   `t_wmM2Zip`/`t_wmM3Zip`
 - `wmM3Zip.pas`（`.Zl` 压缩）已读：25B 索引头 + 17B 图头 + zlib
-- `wmUtil.pas`（4,497 行）**未读** —— 是图像/压缩工具库
+- `wmUtil.pas`（4,497 行）✅ **已闭合**（Round 942，见 `client-libraries.md §10`）—— 图像/压缩工具库
 
 ### 5.2 本阶段新增
 
 | 文件 | 行数 | 状态 |
 |---|---:|---|
-| `wmM2Zip.pas` | — | **未读**（Mir2 压缩变体） |
-| `wmMyImage.pas` | — | **未读**（`.Lib` 格式解析器） |
-| `wmUtil.pas` | 4,497 | **未读** |
+| `wmM2Zip.pas` | 302 | ✅ 已闭合（Round 825，`client-libraries.md §9`） |
+| `wmMyImage.pas` | 741 | ✅ 已闭合（Round 824，`client-libraries.md §8`） |
+| `wmUtil.pas` | 4,497 | ✅ 已闭合（Round 942，`client-libraries.md §10`） |
 
-**这三个是图库解析的最后缺口**。`wmMyImage.pas` 尤其重要 ——
-它解析的是 Preview 版**优先加载**的 `.Lib` 格式。
+**图库解析已全部闭合**。`wmMyImage.pas` 是 Preview 版**优先加载**的 `.Lib` 格式解析器。
 
 ---
 
@@ -314,12 +313,12 @@ if BoUseMagic and (CurEffFrame = SpellFrame-1) then  // 发射帧
 | 项 | 原因 |
 |---|---|
 | `magiceff.pas` | 未读 |
-| `AxeMon.pas`（客户端怪物渲染） | 未读 |
-| `HerbActor.pas` | 未读 |
-| `wmM2Zip.pas` / `wmMyImage.pas` / `wmUtil.pas`（4,497 行） | 未读 |
-| `TActor.Run`（`:2875`，主更新循环） | 未读 |
-| `ReadyAction`（消息 → 动作状态） | 未读 |
-| `THumActor`/`TNpcActor` 的特有实现 | 未读 |
+| ~~`AxeMon.pas`（客户端怪物渲染）~~ | ✅ 已闭合（Round 940，§8.2） |
+| ~~`HerbActor.pas`~~ | ✅ 已闭合（Round 939，§8.3） |
+| ~~`wmM2Zip.pas` / `wmMyImage.pas` / `wmUtil.pas`（4,497 行）~~ | ✅ 已闭合（`client-libraries.md §8-10`） |
+| ~~`TActor.Run`（`:2875`，主更新循环）~~ | ✅ 已闭合（Round 941，§1.8.3） |
+| ~~`ReadyAction`（消息 → 动作状态）~~ | ✅ 已闭合（Round 941，§1.8.2） |
+| ~~`THumActor`/`TNpcActor` 的特有实现~~ | ✅ 已闭合（Round 941，§1.8.6/§1.8.7） |
 | `actor-frames.tsv` 与 `ClientData/frame-formulas.json` 的对照 | 超出本 Goal（Zircon 侧） |
 
 ---

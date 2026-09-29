@@ -13247,3 +13247,18 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** 未找到 EI 原版客户端角色渲染的 `primary-static` 对照；`WORDER`/`GetEffectBase`/`PlayScene.NewMagic`/`TScrollHideEffect` 等实现与真实资源未验证；无运行期验证。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 942 — 2026-09-29：`Client/wmUtil.pas` 全实现（色表/Move/ZIP）
+
+**〔范围〕** 完整读取 `Source/Client/wmUtil.pas:1-4497`（GB18030）；用脚本实测三张表的条目数。未运行 Delphi/客户端。
+
+**〔三张表〕** `X8_A1R5G5B5`（`:14-31`，**256** 项，8 位索引→A1R5G5B5）、`R5G6B5_A1R5G5B5`（`:33-4130`，**65536** 项，R5G6B5→A1R5G5B5）、`ColorArray`（`:4133-4198`，**1024 字节**，`initialization` 拷入 `PotoPalette`）。→ 与 `BitChange.inc` 同性质的**预计算色转换 LUT**。
+
+**〔Move〕** `:4214-4329` 是**覆盖 RTL `System.Move` 的 32 位 x86 汇编**：`Source=Dest` 直返；`count>32`（含负数，无符号比较）→ Large；9..32 用 x87 `fild/fistp` 8 字节装载；0..8 走跳转表 `@@M01..@@M08`；Large 按重叠方向做正/反 8 字节对齐循环。**纯 32 位汇编，不能 64 位编译**；名字遮蔽 RTL 是静态分析陷阱。
+
+**〔Line/ ZIP〕** `LineX8_A1R5G5B5`/`LineR5G6B5_A1R5G5B5` 是无边界检查的像素查表循环。`ZIPCompress`/`ZIPDecompress` 是 zlib 封装（`deflate`/`inflate` + `ReallocMem` 扩容）；`CCheck`/`DCheck` 的 `raise` **被外层 `except`（`//raise`）吞掉** → 失败时静默 `OutBuf:=nil`，调用方必须自检。`Line32Move` = `Move(..., Count*4)`。
+
+**〔未闭合〕** 未找到 EI 原版对应 LUT/Move 的 `primary-static` 对照；LUT 数值正确性、`Move` 运行期边界、真实 `.WZX`/`.Lib` 验证均缺（本机无文件）。属静态阅读。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

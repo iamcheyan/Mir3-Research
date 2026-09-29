@@ -235,7 +235,7 @@ Preview 源码的 `wmM3Zip` 是**它自己那一套**（25 B 头 + 17 B 图头 +
 | `wmMyImage.pas`（`.Lib` 格式） | 未读 —— 这是 Preview 版 `.Lib` 的解析器 |
 | `wilsdk.py` 是否支持 `.wix` 的 20 字节 0 头变体 | 本阶段只测了 `.wil` 侧 |
 | `zlsdk.py` 对真实 `.Zl` 的验证 | **本机没有 `.Zl` 文件**（`mir2ei` 与 EI 客户端目录均无），未能实测 |
-| `wmUtil.pas`（4497 行，图像/压缩工具） | 未读 |
+| `wmUtil.pas`（4497 行，图像/压缩工具） | ✅ **已闭合**（Round 942，§10） |
 
 ---
 
@@ -405,8 +405,8 @@ else                                     // ← 索引未压缩
 | `FPassword` 的来源 | 未追（`uWilFile.pas` 有 `AWMImages.Password`） |
 | `FormatHeader`/`FormatImageInfo`/`FormatDataBuffer` 的加密写出 | `{$IFDEF WORKFILE}` 条件编译，客户端不启用 |
 | `IndexOffset1`/`IndexOffset2` 的用途 | 未追（只读了 `IndexOffset`） |
-| `wmM2Zip.pas`（Mir2 压缩变体） | 未读 |
-| `wmUtil.pas`（4,497 行） | 未读 |
+| `wmM2Zip.pas`（Mir2 压缩变体） | ✅ **已闭合**（Round 825，§9） |
+| `wmUtil.pas`（4,497 行） | ✅ **已闭合**（Round 942，§10） |
 | 用真实 `.Lib` 文件验证 | **本机无 `.Lib` 文件**（`mir2ei` 与 EI 客户端目录只有 `.wil/.wix`） |
 
 ---
@@ -540,12 +540,65 @@ ReadSize := nLen * h;
 **`wmUtil.pas` 的 `ZIPDecompress` 就是 `wmM3Zip`/`wmM2Zip`/`wmMyImage` 都调用的
 那个解压函数** —— 即**三种压缩容器的解压实现是同一份**。
 
-### 10.5 未验证项
+### 10.5 前 4,200 行的三张表（Round 942，已实测条目数）
+
+| 常量 | 行 | 声明 | 实测条目 | 用途 |
+|---|---|---:|---:|---|
+| `X8_A1R5G5B5` | `:14-31` | `array[Byte] of Word` | **256** | **8 位索引 → A1R5G5B5** 色表 |
+| `R5G6B5_A1R5G5B5` | `:33-4130` | `array[Word] of Word` | **65536** | **R5G6B5 → A1R5G5B5** 全色域转换表 |
+| `ColorArray` | `:4133-4198` | `array[0..1023] of Byte` | **1024 字节**（256 个 `TRGBQuad`） | 调色板，`initialization` 拷进 `PotoPalette` |
+
+→ **与 `BitChange.inc`（479 KB，A1R5G5B5 LUT，已排除未入库）同性质**：
+这是**预计算的色转换查找表**，把每像素的乘除/移位换成一次查表。
+
+### 10.6 `Move`（`:4214-4329`）—— **覆盖 RTL `Move` 的 32 位汇编实现**
+
+本单元导出的 `Move` **遮蔽 `System.Move`**（客户端全局用它拷贝内存）。分档：
+
+1. `Source = Dest` → 直接返回。
+2. `count > 32`（**含负数**，因 `ja` 是无符号比较）→ `@@LargeMove`。
+3. `9..32` → `@@SmallMove`：用 **x87 `fild/fistp` 8 字节装载** 首/尾 8 字节
+   （必要时加第 2、3 个 8 字节），避免重叠破坏。
+4. `0..8` → `@@TinyMove`：跳转表 `@@M01..@@M08` 逐字节/字/双字显式拷贝。
+5. `@@LargeMove`：`count<0` 直接返回；`Source>Dest` 或**不重叠** → 正向（8 字节对齐循环）；
+   否则**反向**拷贝（`@BwdLoop`，8 字节递减）。
+
+⚠️ **纯 32 位 x86 汇编**（`fild/fistp`、`lea [eax+ecx]`）—— **不能在 64 位编译**。
+用 `Move` 名字遮蔽 RTL 是**移植/静态分析时的陷阱**：读客户端代码时
+`Move(...)` 调的是这份 asm，不是 `System.Move`。
+
+### 10.7 `LineX8_A1R5G5B5` / `LineR5G6B5_A1R5G5B5`（`:4331-4395`）
+
+- `LineX8_A1R5G5B5`：逐**1 字节**读索引 → `X8_A1R5G5B5[idx]` → 写 2 字节。
+- `LineR5G6B5_A1R5G5B5`：逐**2 字节**读 R5G6B5 → `R5G6B5_A1R5G5B5[w]` → 写 2 字节。
+两者都是**无边界检查的像素循环**（`Count` 由调用方保证），输出 A1R5G5B5（含 1 位 alpha）。
+
+### 10.8 `CCheck`/`DCheck`（`:4396-4408`）与错误吞噬
+
+```pascal
+function CCheck(code): Integer;
+begin Result := code; if code < 0 then raise ECompressionError.Create('ZIP Error'); end;
+```
+
+`CCheck`/`DCheck` 在 zlib 返回负值时 `raise`，但**都在 `ZIPCompress`/`ZIPDecompress`
+的 `try..except` 内被调用**，而该 `except` **注释掉了 `raise`**（`:4442`/`:4483`）
+→ **错误被静默吞掉**，`OutBuf := nil`、`Result` 保持初值。调用方必须自检
+`OutBuf <> nil`（`.Zl`/Mir2/`.Lib` 的调用处都检查了）。
+
+### 10.9 `initialization`（`:4492-4495`）
+
+```pascal
+Move(ColorArray, PotoPalette, SizeOf(ColorArray));   // 1024 字节
+```
+
+即单元加载时把内置调色板拷进全局 `PotoPalette`。
+
+### 10.10 未验证项
 
 | 项 | 原因 |
 |---|---|
-| 前 4,200 行的查表内容 | 未逐表分析（疑为色转换 LUT，与 `BitChange.inc` 同性质） |
-| `Move` 的重载实现（`:4214-4330`） | 未读（117 行，疑为性能优化的汇编/分块拷贝） |
-| `CCheck`/`DCheck`（zlib 错误码转换） | 未读 |
-| `LineX8_A1R5G5B5`/`LineR5G6B5_A1R5G5B5` 实现 | 未读 |
-| 真实 `.WZX` 文件验证 | **本机无 `.WZX`/`.Lib` 文件** |
+| 三张表的**具体数值** | 只实测了条目数（256/65536/1024），未逐项校验 LUT 正确性 |
+| `Move` 的**运行期正确性**（重叠/对齐边界） | 汇编逻辑已读，但未在真实 x86 环境跑测试 |
+| `CCheck`/`DCheck` 的 zlib 错误码语义 | 只读签名 |
+| 真实 `.WZX`/`.Lib` 文件验证 | **本机无这些文件** |
+| 与 `Source/Client/wmUtil.pas` 同名的 MapEdit/ImageEditor 副本 | 各自独立，未逐一对照 |
