@@ -13587,3 +13587,20 @@ HUD cap2「技能图鉴」flag 消费者；任务详情面板 `detail_geometry` 
 **〔未闭合〕** `IsTakeOnAvailable`/`CanTakeOn`/`CopyToUserItemFromName` 未逐一读；常量值未查；ObjBase 其余大段（`GetGiftFromBox/Egg/OldBox` `15396-17126`、`TUserHuman` 全部 `Cmd*` 命令 `18915-24626`、`ServerGet*` 商店/仓库/市场/行会庄园 `26685-31768`）仍未逐行读。**ObjBase.pas 保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 961 — 2026-09-29：`ObjBase.pas` 礼物箱/彩蛋/旧匣掉落表
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:15396-17125`（CP949+mixed），并用脚本提取三个 `case` 掉落表的区间→物品映射。未运行 Delphi/GameServer。
+
+**〔机制〕** 三函数均 `if RaceServer<>RC_USERHUMAN exit` + 背包未满 + 单 `case Random(N)`；命中则 `CopyToUserItemFromName` 入包 + `WeightChanged` + `SendAddItem`，失败 `Dispose`。**概率 = 区间宽度/N**，区间外为空。
+
+**〔`GetGiftFromBox`〕** `Random(250000)`，73 项：12 种신주（1..12）→ 11 种보옥（13..122）→ 축복의기름（123..632）→ 무신의기름（633..3132）→ 흑철/금광석 → 六种석(대/중/소) → 20 种饰品 → 四种수（연풍/선계/마성/용맹，各 6%）→ 체력/마력회복약(특) → 체력/마력약묶음 → 선화수(중)。
+
+**〔`GetGiftFromEgg`〕** `Random(300000)`，48 项：신주/보옥 → 축복의기름 → 백금/금광석 → 석(대) → 饰品 → 약묶음(특) → **노끈（绳）** → 약묶음 → 무신의기름 → 회복약(특/대) → 선화수(중) → **복권**；249094..299999 空。
+
+**〔`GetGiftFromOldBox`〕** `Random(250000)`，39 项：보옥 → 축복의기름 → 무신의기름 → **10 种마패（各 1200 点）** → 용맹수/마성수 → 솔잎 → 선계수/연풍수 → 달콤한사탕 → **이벤트응모권** → 약묶음 → 회복약(특/대) → 선화수(중) → 만년설삼 → 인삼；224460..249999 空。
+
+**〔未闭合〕** 物品名对应 EI `StdItem` 数据行未解析；ObjBase 其余大段（`TUserHuman` 全部 `Cmd*` 命令 `18915-24626`、`ServerGet*` 商店/仓库/市场/行会庄园 `26685-31768`）仍未逐行读。**ObjBase.pas 保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
