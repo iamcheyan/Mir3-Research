@@ -2,6 +2,10 @@
 
 本文件是 Zircon 移植的长期对齐任务清单。所有差异必须以原版代码、资源元数据、运行时日志或同场景截图为依据；仅凭“代码看起来相似”不得标记为完成。
 
+> **UI 窗口级对照另见**：[`research/ei-ui-layout/GODOT_WINDOW_PARITY_MATRIX_2026-09-29.md`](research/ei-ui-layout/GODOT_WINDOW_PARITY_MATRIX_2026-09-29.md)
+> —— 13 个 EI 主窗口 + HUD + 确认框 + 小地图的逐窗口对照矩阵（原版 primary-static 证据
+> vs Godot legacy 实现），含容器格子数量/尺寸清单、已修复项、冲突与阻塞清单。
+
 ## 对照范围
 
 | 领域 | 原版权威入口 | Godot 对应入口 | 状态 |
