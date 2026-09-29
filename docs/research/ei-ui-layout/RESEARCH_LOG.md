@@ -13623,3 +13623,20 @@ HUD cap2「技能图鉴」flag 消费者；任务详情面板 `detail_geometry` 
 **〔未闭合〕** `DoUpgradeItem`/`GetTotalValueOfOption` 等实现未读；常量值未查。ObjBase 其余大段（`Cmd*` 约 19000-24600 的庄园/行会命令、`Send*` 系列、`Say`、`ServerGet*` 26685-31768）仍未逐行读。**保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 963 — 2026-09-29：`ObjBase.pas` 物品/魔法同步包
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:22664-22974`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔物品编码〕** 统一 `TClientItem = {S: TStdItem; MakeIndex; Dura; DuraMax; UpgradeOpt}`，`GetUpgradeStdItem` 并入强化属性。
+- 商品券（`StdMode=50`）名字追加 `' #'+Dura`；未鉴定物品按 `Desc[8]` 置/清 `IDC_UNIDENTIFIED`（`StdMode in [15,19,20,21,22,23,24,26,52,53,54]`）。
+- `SendUpdateItem*` 对 Index 706/707/708 走 `BanjjakChangeItemByJob`（3 期闪烁活动），其余 `ChangeItemByJob`（龙物品）；`WithLevel` 走 `ChangeItemWithLevel`（天衣无缝）。
+- 包：`SM_ADDITEM`/`SM_UPDATEITEM`/`SM_DELITEM`（param2=破坏标志）/`SM_DELITEMS`/`SM_BAGITEMS`/`SM_SENDUSEITEMS`（遍历 `0..U_CHARM` 只发已装备槽，前缀槽号）。
+
+**〔魔法〕** `TClientMagic = {Key, Level, CurTrain, Def}`；`SM_ADDMAGIC`/`SM_DELMAGIC`（param1=MagicId）/`SM_SENDMYMAGIC`。
+**`SM_SENDMYMAGIC` param1 = `(Σ DelayTime xor $773F1A34) xor $4BBC2255`**（混淆校验和）。
+
+**〔未闭合〕** `GetUpgradeStdItem`/`ChangeItemByJob` 等实现未读；槽位编号/位值未核实。ObjBase 其余大段（庄园/行会 `Cmd*`、`Say`、`ServerGet*`）仍未逐行读。**保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

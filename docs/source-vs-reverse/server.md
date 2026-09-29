@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962 / 963）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1730,6 +1730,30 @@ GM/脚本造物：
 
 **未验证**：`DoUpgradeItem`/`GetTotalValueOfOption`/`RealAttackSpeed`/`RandomUpgradeItem`/`RandomSetUnknownItem`/`UpgradeResultToStr`
 实现未逐一读；`MAX_OVERLAPITEM`/`MAXBAGITEM`/`UD_SUPERADMIN`/`STDMODE_OF_DECOITEM`/`SHAPE_OF_*` 常量值未查；无运行期验证。
+
+### 10.30 物品/魔法同步包（Round 963；`ObjBase.pas:22664-22974`）
+
+统一的物品编码：`TClientItem = {S: TStdItem; MakeIndex; Dura; DuraMax; UpgradeOpt}`。
+`ItemMan.GetUpgradeStdItem(ui, std)` 把强化属性并入 `std`，`UpgradeOpt` 单独回传。
+
+| 函数 | 包 | 载荷/特判 |
+|---|---|---|
+| `SendAddItem` | `SM_ADDITEM`（param=self，count=1） | 商品券 `StdMode=50` → `Name + ' #' + Dura`；**未鉴定**：`StdMode in [15,19,20,21,22,23,24,26,52,53,54]` 时按 `Desc[8]` 置/清 `IDC_UNIDENTIFIED` |
+| `SendUpdateItem` | `SM_UPDATEITEM` | Index 706/707/708 → `BanjjakChangeItemByJob`（3 期闪烁活动），否则 `ChangeItemByJob`（龙物品按职业变属性） |
+| `SendUpdateItemWithLevel(ui, lv)` | `SM_UPDATEITEM` | `ChangeItemWithLevel`（天衣无缝按等级变） |
+| `SendUpdateItemByJob(ui, lv)` | `SM_UPDATEITEM` | 同上 706/707/708 分支 + `ChangeItemByJob(lv)` |
+| `SendDelItem` | `SM_DELITEM`（param2=0） | 同上商品券/编码 |
+| `SendDelItemWithFlag(ui, wBreakdown)` | `SM_DELITEM`（**param2=wBreakdown**） | 强化破坏特效包 |
+| `SendDelItems(ilist)` | `SM_DELITEMS` | `name/makeindex/` 串接 |
+| `SendBagItems` | `SM_BAGITEMS`（count=ItemList.Count） | 整包编码每个 `TClientItem` 用 `/` 分隔 |
+| `SendUseItems` | `SM_SENDUSEITEMS` | 遍历 `0..U_CHARM`（注释 8→12），**只发 `Index>0` 的槽**，前缀 `槽号/`；`U_DRESS` 走 `ChangeItemWithLevel`，其余按职业变 |
+
+**魔法**：`TClientMagic = {Key, Level, CurTrain, Def: TMagic}`。
+- `SendAddMagic` → `SM_ADDMAGIC`（1 条）；`SendDelMagic` → `SM_DELMAGIC`（param1=`MagicId`）。
+- `SendMyMagics` → `SM_SENDMYMAGIC`（count=MagicList.Count），**param1 = `(Σ DelayTime xor $773F1A34) xor $4BBC2255`**（校验和/混淆，防止客户端伪造魔法表）。
+
+**未验证**：`GetUpgradeStdItem`/`ChangeItemByJob`/`BanjjakChangeItemByJob`/`ChangeItemWithLevel` 实现未读；
+`U_CHARM`/`U_DRESS` 槽位编号、`IDC_UNIDENTIFIED` 位值未逐一核实；无运行期验证。
 
 ---
 
