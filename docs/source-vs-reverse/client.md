@@ -149,22 +149,132 @@ TSceneType = (stIntro, stLogin, stSelectCountry, stSelectChr,
 
 ---
 
-## 5. 待办
+## 5. `ClMain.pas` 主窗体实现（Round 944，9,924 行）
+
+`TFrmMain` 是客户端主窗体：**网络收发 + 服务器消息分派 + 输入 + HUD/对话框调度**。
+
+### 5.1 主循环 `AppOnIdle`（`:1999-2147`）
+
+按 `FInterval` 节流渲染（`LagCount := t2 div FInterval2`，掉帧补偿）；场景为 `PlayScene` 时
+依次渲染 **Background / ObjSurface（`m_boPlayChange`）/ LightSurface（`ViewFog`）/
+WeaSurface（`Weather<>0`）/ MagSurface** 五层，再 `DeviceRender`。末尾做**反作弊自检**：
+- 每 1 s 校验 `DayBright`/`DarkLevel` 与 `pDayBrightCheck`/`pDarkLevelCheck`（**改内存改亮度**检测）；
+- 每 5 s 校验 `pLocalFileCheckSum` 与三个 `pClientCheckSum*`，不符则 `FrmMain.Close`
+  （**文件校验和反作弊**，`{$IFNDEF COMPILE}`）。
+
+### 5.2 服务器消息分派 `DecodeMessagePacket`（`:5264-7292`）—— **客户端的心脏**
+
+按 `datablock[1]` 分流：
+- **`'+'` 前缀**（服务器即时反馈）：解析 `tagstr` 设置攻击可用标志
+  （`PWR`/`LNG`/`WID`/`CRS`/`TWN`/`FIR`/`STN`）、`GOOD`/`FAIL` 解 `ActionLock`；
+  第三段是**攻速核对**（`Myself.HitSpeed` 不符则 `SHHitSpeedCount++`，>3 提示、>6 上报
+  `SendSpeedHackUser(10002)` 并关客户端）。
+- **`'='` 前缀**：`DIG` 置 `Myself.BoDigFragment`（挖矿/挖石）。
+- **`< DEFBLOCKSIZE`**：短包丢弃。
+- 否则 `head := Copy(1, DEFBLOCKSIZE)` → `DecodeMessage(head)` 得 `TDefaultMessage`，
+  `body` 为剩余。
+
+**未登录（`Myself=nil`）阶段**只处理登录/选服/建角类：`SM_PASSWD_FAIL`（按 `Recog`
+给出 5 种错误文案）、`SM_PASSOK_SELECTSERVER`（解析账号/IP 剩余时长）、`SM_SEND_PUBLICKEY`
+（`SetPublicKey(msg.Param xor msg.Tag)`）、`SM_SELECTSERVER_OK`、`SM_QUERYCHR`（角色列表）、
+`SM_NEWCHR_*`、`SM_CHGPASSWD_*`、`SM_DELCHR_*`、`SM_STARTPLAY`、`SM_STARTFAIL`、
+`SM_VERSION_FAIL`。
+
+**`MapMoving` 期间**只缓存 `SM_CHANGEMAP`（`WaitingMsg`/`WaitingStr`），其余消息**全部丢弃**。
+
+**登录后主分派**（约 150 个 `SM_*` 分支）覆盖：
+- **移动/朝向**：`SM_TURN`/`SM_WALK`/`SM_RUN`/`SM_BACKSTEP`/`SM_RUSH`/`SM_RUSHKUNG`/
+  `SM_SPACEMOVE_*` —— 解 `TCharDesc`（feature/status）+ 名字/颜色后缀，转 `PlayScene.SendMsg`；
+  `SM_SPACEMOVE_SHOW` 对**非自己**先 `PlayScene.NewActor`。
+- **战斗**：`SM_HIT/HEAVYHIT/POWERHIT/LONGHIT/WIDEHIT/CROSSHIT/TWINHIT/STONEHIT/BIGHIT/FIREHIT`
+  只对**别人**播放；`SM_FLYAXE`/`SM_LIGHTING*`/`SM_DRAGON_FIRE*` 解 `TMessageBodyW(L)` 设
+  `TargetX/Y/Recog/MagicNum`；`SM_STRUCK` 解 `TMessageBodyWL`（`lTag1`=攻击者 id），
+  自己被红名打时记 `LatestStruckTime`，别人被打时 `CancelAction`。
+- **施法**：`SM_SPELL`/`SM_MAGICFIRE`/`SM_MAGICFIRE_FAIL` → `UseMagicSpell`/`UseMagicFire`/
+  `UseMagicFireFail`；`SM_NORMALEFFECT`/`SM_LOOPNORMALEFFECT` → `UseNormalEffect`/`UseLoopNormalEffect`。
+- **属性/状态**：`SM_ABILITY`（金币/职业/`TAbility` + `ChangeWalkHitValues`）、`SM_SUBABILITY`
+  （命中/闪避/抗性 6 项）、`SM_DAYCHANGING`（`DayBright`/`DarkLevel` → `ViewFog`）、
+  `SM_WINEXP`、`SM_CHANGEFAMEPOINT`、`SM_LEVELUP`、`SM_HEALTHSPELLCHANGED`、
+  `SM_OPENHEALTH`/`SM_CLOSEHEALTH`/`SM_INSTANCEHEALGUAGE`（显血条）、`SM_BREAKWEAPON`
+  （武器破碎特效）、`SM_WEIGHTCHANGED`（**带 `(Recog+Param+Tag)=((Series xor 0xaa21) xor 0x1F35) xor 0x3A5F` 校验**，
+  不符则把三种重量都设成 127 防超重外挂）、`SM_GOLDCHANGED`、`SM_FEATURECHANGED`、
+  `SM_CHARSTATUSCHANGED`、`SM_CHANGEFACE`（变身，`AddChangeFace`）、
+  `SM_FOXSTATE`（狐狸/天珠 TempState）、`SM_CHECK_CLIENTVALID`（三个客户端校验和）、
+  `SM_TIMECHECK_MSG`（`CheckSpeedHack`）。
+- **聊天/名字**：`SM_HEAR`/`SM_CRY`/`SM_GROUPMESSAGE`/`SM_GUILDMESSAGE`/`SM_WHISPER`/
+  `SM_SYSMESSAGE`/`SM_SYSMSG_REMARK` → `AddChatBoardString`；`SM_USERNAME`（`FameName/DescUserName/NameColor`）、
+  `SM_CHANGENAMECOLOR`。
+- **物品**：`SM_ADDITEM`/`SM_UPDATEITEM`/`SM_DELITEM(S)`/`SM_BAGITEMS`/`SM_COUNTERITEMCHANGE`/
+  `SM_ITEMSHOW`/`SM_ITEMHIDE`/`SM_DROPITEM_*`/`SM_TAKEON_*`/`SM_TAKEOFF_*`/`SM_EAT_OK`/`SM_EAT_FAIL`/
+  `SM_DURACHANGE`/`SM_UPGRADEITEM_RESULT`/`SM_SENDUSEITEMS`。
+- **NPC/商店**：`SM_MERCHANTSAY`/`SM_MERCHANTDLGCLOSE`/`SM_SENDGOODSLIST`/`SM_DECOITEM_LIST*`/
+  `SM_SENDUSERMAKEDRUGITEMLIST`/`SM_SENDUSERMAKEITEMLIST`/`SM_SENDUSERSELL`/`SM_SENDUSERREPAIR`/
+  `SM_SENDBUYPRICE`/`SM_USERSELLITEM_*`/`SM_SENDREPAIRCOST`/`SM_STORAGE_*`/`SM_SAVEITEMLIST`/
+  `SM_TAKEBACKSTORAGEITEM_*`/`SM_BUYITEM_*`/`SM_MAKEDRUG_*`/`SM_SENDDETAILGOODSLIST`/
+  `SM_PLAYDICE`/`SM_PLAYROCK`（掷骰/猜拳）。
+- **地图/门**：`SM_NEWMAP`（五层渲染的 `EffectNum`）、`SM_MAPDESCRIPTION`、
+  `SM_OPENDOOR_OK`/`SM_OPENDOOR_LOCK`/`SM_CLOSEDOOR`、`SM_READMINIMAP_OK/FAIL`、
+  `SM_CLEAROBJECTS`（置 `MapMoving`）、`SM_SHOWEVENT`/`SM_HIDEEVENT`（`TClEvent`）、
+  `SM_DIGUP`/`SM_DIGDOWN`。
+- **组队/行会/交易/师徒/好友/便签/市场**：`SM_CREATEGROUPREQ`/`SM_ADDGROUPMEMBERREQ`/
+  `SM_GROUP*`/`SM_OPENGUILDDLG*`/`SM_GUILD*`/`SM_GABOARD_*`/`SM_DEAL*`/`SM_LM_*`/`SM_FRIEND_*`/
+  `SM_TAG_*`/`SM_USER_INFO`/`SM_MARKET_LIST`/`SM_MARKET_RESULT`（按 `UMResult_*` 21 种结果分支）。
+- **登出**：`SM_CANCLOSE_OK`（需 10 s 内无受击/施法/攻击或已死亡才 `AppLogOut`）。
+
+**未匹配的 `Ident`** 落 `else` → `DScreen.AddSysMsg(IntToStr(msg.Ident)+' : '+body)`
+（**未知消息打印**）。末尾若 `datablock` 含 `#` 也打印。
+
+> ⚠️ **静态观察**：`SM_WEIGHTCHANGED` 的校验和常量 `$aa21/$1F35/$3A5F` 与
+> `SM_STORAGE_FAIL` 分支里 `if msg.Ident <> SM_STORAGE_OK`（在 `SM_STORAGE_FAIL` 分支内
+> 恒真）等属可复核的源码瑕疵。
+
+### 5.3 输入处理
+
+- **`ProcessKeyMessages`（`:2289`）**：F1–F12 → `UseMagic(MouseX, MouseY, GetMagicByKey(char('1'+F?-F1)))`。
+- **`ProcessActionMessages`（`:2311`）**：按 `ChrAction`（`caWalk`/`caRun`）向 `TargetX/Y` 走/跑，
+  **带卡位绕行**（`PlayScene.CanWalk` 失败时试左/右相邻格）、`CheckDoorAction` 开门、
+  `CanRun`/`RunReadyCount` 门控、`Myself.RealActionMsg` 发 `SendActMsg`/`SendSpellMsg`；
+  NPC 对话框距离 >8 格自动关。
+- **`_FormMouseDown`（`:3540`）**：先 `g_DWinMan.MouseDown`（**控件优先**）；中键切自动跑；
+  右键 = 跑（≤2 格转向否则设 `TargetX/Y`），Ctrl+右键查玩家状态；
+  左键 = 攻击/交互：`GetAttackFocusCharacter` 选目标，商店 NPC → `CM_CLICKNPC`，
+  无主怪/Shift/敌对色 → `AttackTarget`；持**曲柄(Shape=19)**对不可走格 → `CM_HIT+1` 挖矿；
+  Alt+左键 → `SendButchAnimal`（屠宰）；无目标时按 `BoCanLongHit/WideHit/CrossHit` +
+  `TargetInSword*AttackRange` 选 `CM_LONGHIT/WIDEHIT/CROSSHIT`。
+- **`FormKeyDown`（`:2454`）**：先 `g_DWinMan.KeyDown`；F1–F12 记 `ActionKey`（受
+  `LatestSpellTime + 500 + MagicDelayTime` 冷却）；`VK_PAUSE` 截图、Alt+Enter 全屏。
+
+### 5.4 网络与发送族
+
+- `CSocketConnect/Disconnect/Error/Read`（`:4074-4156`）：`CSocketRead` 收包 → `DecodeMessagePacket`。
+- `SendClientMessage(msg, Recog, param, tag, series)`（`:4170`）/ `SendClientMessage2`（带 body）。
+- **`Send*` 族约 120 个**：登录/选服/建角（`SendLogin`/`SendNewAccount`/`SendQueryChr`/`SendSelChr`…）、
+  移动/攻击（`SendActMsg`/`SendSpellMsg`）、物品（`SendDropItem`/`SendPickup`/`SendTakeOnItem`/
+  `SendEat`/`UpgradeItem`/`SendButchAnimal`）、NPC（`SendMerchantDlgSelect`/`SendQueryPrice`/
+  `SendSellItem`/`SendRepairItem`/`SendStorageItem`/`SendMaketSellItem`）、
+  组队/行会/交易/好友/便签/市场（`SendCreateGroup`/`SendGuildAddMem`/`SendDealTry`/
+  `SendAddFriend`/`SendMail`/`SendBuyMarket`…）、`SendWantMiniMap`/`SendQueryUserName`/
+  `SendVersionNumber`/`SendSpeedHackUser`。
+
+---
+
+## 6. 待办
 
 | 项 | 说明 |
 |---|---|
 | 40 个窗口逐个（帧号/坐标/控件/事件） | ✅ **已提取**（`client-windows.md` §8 运行时布局 345 项 + `client-runtime-layout.tsv`） |
 | `DWinCtl.pas`（7804 行）通用控件基类 | ✅ **已读**（`client-controls.md` + `client-internals.md`） |
 | `uWilFile.pas` 的 57 个资源路径与加载顺序 | ✅ **已读**（`client-libraries.md`，含 `.Lib → .wil` 回退规则） |
+| ~~`Actor.pas`/`AxeMon.pas`/`HerbActor.pas`~~ | ✅ **已读**（Round 939/940/941，`client-rendering.md`） |
 | `PlayScn.pas` 的主循环与实体渲染 | ⚠️ 部分（`client-internals.md` §4 结构+调用点，主循环 pending） |
-| `Actor.pas`/`AxeMon.pas`/`HerbActor.pas` | ⚠️ 部分（`Actor.pas` 动作帧表已提取；`AxeMon`/`HerbActor` pending） |
-| `magiceff.pas` 魔法特效 | ⚠️ 仍 pending |
+| `magiceff.pas` 魔法特效 | ⚠️ 见 `client-rendering.md §8.4`（基类已读，其余类部分） |
+| `ClMain.pas`（9924 行）主窗体 | ✅ **主链已读**（Round 944，§5；约 120 个 `Send*` 与 150 个 `SM_*` 分支已索引） |
 | `FState.pas`（14853 行） | ⚠️ 部分（窗口声明+帧号+**运行时布局 345 项**已读；其余主体 pending） |
 | 那 10 个共同范围内的帧号是否同图 | 需逐帧像素比对（需原版 WIL + Preview 版 WIL） |
 
 ---
 
-## 6. 复核方式
+## 7. 复核方式
 
 ```bash
 # 窗口清单重生成（含帧号范围与越界统计）

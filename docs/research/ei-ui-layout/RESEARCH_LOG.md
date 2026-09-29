@@ -13275,3 +13275,18 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** `TDImageEdit`/`TDHooKKey` 主体只读声明；未找到 EI 原版对应控件行为的 `primary-static` 对照；无运行期验证。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 944 — 2026-09-29：`Client/ClMain.pas` 主链全实现（主窗体/消息分派）
+
+**〔范围〕** 读取 `Source/Client/ClMain.pas`（cp949+mixed，9,924 行）主链：`AppOnIdle`、`DecodeMessagePacket`（全读）、`ProcessKeyMessages`/`ProcessActionMessages`、`_FormMouseDown`、`FormKeyDown`、`CSocketRead` 与 `Send*` 族索引。未运行 Delphi/客户端。
+
+**〔主循环〕** `AppOnIdle` 节流渲染五层（Background/Obj/Light/Wea/Mag），并做反作弊自检：每 1 s 校验 `DayBright/DarkLevel` 与 `pDayBrightCheck/pDarkLevelCheck`（改内存改亮度检测），每 5 s 校验 `pLocalFileCheckSum` 与三个 `pClientCheckSum*`，不符即关客户端。
+
+**〔消息分派〕** `DecodeMessagePacket` 是客户端心脏：`'+'` 前缀做攻速核对与攻击可用标志（`PWR/LNG/WID/CRS/TWN/FIR/STN`）+ `GOOD/FAIL` 解 `ActionLock`（攻速不符累计上报 `SendSpeedHackUser(10002)`）；`'='` 前缀 `DIG`；`<DEFBLOCKSIZE` 丢弃；`MapMoving` 期间只缓存 `SM_CHANGEMAP`。约 150 个 `SM_*` 分支覆盖移动/战斗/施法/属性/显血/物品/NPC/商店/地图门/组队行会交易师徒好友便签市场/登出。**`SM_WEIGHTCHANGED` 带 `(Recog+Param+Tag)=((Series xor 0xaa21) xor 0x1F35) xor 0x3A5F` 校验**，不符把三种重量设 127 防超重外挂。未知 `Ident` 打印。
+
+**〔输入〕** `ProcessActionMessages` 按 `caWalk`/`caRun` 走跑并带**卡位绕行**（试左/右相邻格）+ `CheckDoorAction` + `RunReadyCount`；`_FormMouseDown` 先过 `g_DWinMan.MouseDown`（控件优先），右键跑、左键攻击/交互、Alt 屠宰、持曲柄对不可走格挖矿、按 `BoCanLong/Wide/CrossHit` 选 `CM_LONGHIT/WIDEHIT/CROSSHIT`。
+
+**〔未闭合〕** 约 120 个 `Send*` 与若干 `ClientGet*` 辅助函数只索引未逐行读；未找到 EI 原版客户端主窗体/消息分派的 `primary-static` 对照；无运行期验证。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
