@@ -80,7 +80,7 @@ symlink 指向已失效的 `/tmp/nas_mnt/NAS`，**要用 `/data/NAS`**）下
 | 0 | 背包 | `window_layout.json:11`；`inventory-window-render-evidence.json` | F250 284×324；可视 6×6@36px 起点(25,41)；46 条记录 | `InventoryDialog.cs:219` `ApplyLegacyEiLayout` | `size=(284,324) grid=(6,6)@(25,41)` | **MATCH**（格子几何）/ §9 I-1（记录模型） |
 | 1 | 人物状态 | `window_layout.json:12`；`status-window-render-evidence.json`；`equipment-slots-evidence.json` | F200 244×328；8 个 38×38 装备格 + 3 非方格区（11 记录）；切换键 (176,264,36,36)；关闭 (212,298) | `CharacterDialog.cs:339` | `size=(244,328) toggle=(176,264)/(36,36) visibleSlots=11` | **MATCH** |
 | 2 | 商店/仓库 | `window_layout.json:13`；`store-state-graph.json::states[2]` | F1000 300×304 @(0,184)；state2 网格 4×3 步距 38；购买键 (127,267,48,20) F1012；行距 46 | `NPCGoodsPanel.cs:136`、`StorageDialog.cs:262` | `goods screen=(0,184) size=(300,304) rowHeight=46 buy=(127,267)`；`storage grid=(4,25)@(21,42) step=38 firstCell=(22,43)` 可见 3 行 | **MATCH** |
-| 3 | 交易 | `window_layout.json:14`；`trade-window-render-evidence.json::geometry` | F1050 484×330；每侧 5×6@36 stride36；accept (185,332) F1061/1062；cancel (225,332) F1064/1065；close (532,350) | `TradeDialog.cs:115` | `size=(484,330) userGrid=(5,6)@(20,47) playerGrid=(5,6)@(252,47) close=(532,350) accept=(185,332)#1061` | **MATCH** / §9 T-1（close 语义） |
+| 3 | 交易 | `window_layout.json:14`；`trade-window-render-evidence.json::geometry` | F1050 484×330；每侧 5×6@36 stride36；accept (185,332) F1061/1062；cancel (225,332) F1064/1065（WIL 缺帧、纯热区）；close (532,350)（窗口外、只播音不关窗） | `TradeDialog.cs:115` | `size=(484,330) userGrid=(5,6)@(20,47) playerGrid=(5,6)@(252,47) close=(532,350) accept=(185,332)#1061`；close 热区本轮改为不关窗 | **MATCH**（close 语义已修，见 §6.6 / B-2） |
 | 4 | 行会 | `window_layout.json:15`；`social-window-render-evidence.json::windows[1]`；`guild-window-paint-evidence.json` | F600 596×446 @(102,22)；成员 1 列 x=win+35 y=win+60 行距=字高+5 上限 18；9 控件 paint 位置 | `GuildDialog.cs:95` | `size=(596,446) bg=(-214,-33) actions=8 rows=18/18 first=(35,60) step=21` | **本轮修复**（§6） |
 | 6 | 组队 | `window_layout.json:17`；`social-window-render-evidence.json::windows[0]` | F900 256×244；成员 2 列 x=+45/+145 行距 20；5 控件 (226,214)/(17,197)/(80,197)/(159,197)/(9,52) | `GroupDialog.cs:114` | `size=(256,244) remove=(80,197) allow=(166,40) invite=(17,197) close=(226,214)` | **MATCH** |
 | 8 | 聊天弹窗 | `window_layout.json:19`；`chat-window-render-evidence.json` | F350 572×388 **@(114,76)**；历史 clip (35,28,485,266) 文本(40,29) 行距14 19 行；输入 (25,311,499,15)；6 频道键 36×34 x=25+40k y=332；关闭 (532,350) | `LegacyChatDialog.cs:39` | 代码常量 `VisibleRows=19 LineStep=14`；`_historyClip=(35,28,485,266)`；按钮 `25+40i,332`；`_input=(25,311,499,15)`；**位置本轮修**：原为屏幕居中 (114,106) → 改 EI 实参 (114,76) | **MATCH**（规格与位置；位置修复见 §6.5） |
@@ -275,6 +275,15 @@ SpellButton cap8 (703,16)、MenuButton cap11 (703,85)、CashShopButton cap15 (66
 | 2 | `WindowManager` 对已释放窗口崩溃 | 真机按 R 关聊天窗抛 `ObjectDisposedException`（`RefreshZOrder` → `SetZIndex`），整轮 Z 序刷新中断 | 新 `IsAlive` 守卫，六个入口先剔除失效引用 |
 
 真机回归：同流程日志 `ObjectDisposedException` 计数 **0**（修复前 ≥2）。
+
+### 6.6 交易 close 热区改为「只播音不关窗」（`131a3514`）
+
+原版 F1050 的 close 热区行为是「命中 → 播音 + 消费点击，窗口保持打开」
+（`trade-window-render-evidence.json::buttons.close.behavior`，primary-static），
+且其坐标 (532,350) 在 484 宽窗口之外、按窗口 rect 分派**不可达**。
+Godot 此前把同一坐标按钮绑成 `CloseTrade()` → 多出一个非原版入口。
+legacy 下改为不关窗（保留按钮以获得一致的点击音效）；Esc 仍是关闭入口。
+验证：`--legacy-audit` trade=True；点击行为需第二玩家 → UNVERIFIED。
 
 ## 7. 与 Zircon `Client/`（移植来源）的对照
 
