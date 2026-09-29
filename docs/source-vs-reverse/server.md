@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1398,6 +1398,43 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 
 **未验证**：`GetFameName`/`IsMember`/`IsAllyGuild` 实现未逐一读；名声上限/称号表未解析；
 `ExtraAbil` 的 `EABIL_*` 常量值与消费点（`RecalcAbilitys`）已部分读；无运行期验证。
+
+### 10.23 安全区、名字颜色、PK 与金币/负重（Round 956；`ObjBase.pas:7182-7611`）
+
+#### 10.23.1 安全区（`:7182-7244`）
+
+- **`InSafeZone`**：地图 `Lawfull`；或 `BADMANHOMEMAP` 内 `BADMANSTART ±10`；
+  或落在 `StartPoints`/`SafePoints` 的范围内（**范围来自 `MapInfo.txt` 的 `/n` 后缀，默认 10**）。
+- `InGuildWarSafeZone`：`Lawfull` 或 `StartPoints ±60`（**行会战禁战区**）。
+
+#### 10.23.2 PK 与名字颜色（`:7246-7412`）
+
+- **`PKLevel := PlayerKillingPoint div 100`**（≥1 黄名、≥2 红名）。
+- `MyColor`：默认 `DefNameColor`；`PKLevel=1 → 251`（黄）、`≥2 → 249`（红）。
+- **`GetThisCharColor(cret)`（`:7272`）—— 关系色**（`self` 看 `cret` 的颜色）：
+  - 人类：`BoIllegalAttack` → 47（棕）；行会关系 1/3 → 180（蓝，己方）、2 → 69（橙）；
+    `Fight3Zone`（行会比武场）同/异会 → 180/69；**攻城战**中双方都在 Free-PK 区 → 221（绿），
+    再按守方/攻方/盟会细分 180/69。
+  - 怪物：分身 → 主人色；`SlaveExpLevel` 色表 `(255,254,147,154,229,168,180,252)`；
+    狂暴 249（红）、善狂 253（紫）、HolySeize 125。
+- `GetGuildRelation`：0 无关系 / 1 本会 / 2 敌对 / 3 同盟；**行会战安全区返回 0**；
+  有 `KillGuilds` 时置 `BoGuildWarArea`。
+- `IsGuildMaster`（Rank=1）/`IsMyGuildMaster`（Rank=1 且当前图庄园号=本会庄园号）/
+  `GetGuildNameHereAgit`/`GetGuildMasterNameHereAgit`。
+
+#### 10.23.3 PK 点、幸运与金币（`:7450-7571`）
+
+- `IncPKPoint`：上限 **1,000,000**；跨档且 `PKLevel<=2` 时 `ChangeNameColor`。
+  `DecPKPoint`：下限 0，跨档 `0<old<=2` 时改名色。
+- `GetPKTimeMin`：`Round(PlayerKillingPoint*2/60)` 小时（**1 PK 点≈2 分钟衰减**）。
+- **`AddBodyLuck(r)`（`:7498`）**：`BodyLuck` 钳在 `±5*BODYLUCKUNIT`；`BodyLuckLevel = Trunc(BodyLuck/BODYLUCKUNIT)` 钳 `-10..5`。
+- `IncGold`/`DecGold`：以 `AvailableGold` 为上限（`Int64` 防溢出）；单次 `>= EXORBITANT_GOLD`
+  写日志码 `45`（금전/金钱，带等级十位）。
+- **负重**：`CalcBagWeight`（`OverlapItem=1` → `Dura/10`；`≥2` → `Dura*Weight`；否则 `Weight`）；
+  `CalcWearWeightEx(windex)`（除指定槽与武器/右手外累加）。
+
+**未验证**：`StartPoints`/`SafePoints`/`AvailableGold`/`EXORBITANT_GOLD`/`BODYLUCKUNIT` 常量值未查；
+颜色码的客户端业务名未核实；无运行期验证。
 
 ---
 

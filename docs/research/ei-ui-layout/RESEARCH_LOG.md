@@ -13471,3 +13471,18 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** `GetFameName`/`IsMember`/`IsAllyGuild` 未逐一读；名声称号表未解析；ObjBase 其余大段（负重/金币/能力重算 `7182-7982`、`RecalcAbilitys` 尾段 `8620-9320`、`GetGiftFromBox/Egg/OldBox` `15396-17126`、`TUserHuman` 构造/`Cmd*` 命令与 `ServerGet*` 商店/市场 `17430-31768`）仍未逐行读。**ObjBase.pas 保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 956 — 2026-09-29：`ObjBase.pas` 安全区/颜色/PK/金币/负重
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:7182-7611`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔安全区〕** `InSafeZone`：`Lawfull` 图、`BADMANHOMEMAP ±10`、或 `StartPoints`/`SafePoints` 范围（来自 `MapInfo.txt` 的 `/n`，默认 10）。`InGuildWarSafeZone`：`Lawfull` 或 `StartPoints ±60`。
+
+**〔PK/颜色〕** `PKLevel = PlayerKillingPoint div 100`；`MyColor` 黄 251/红 249；**`GetThisCharColor`** 按非法攻击、行会关系（本会/同盟 180、敌对 69）、Fight3Zone、攻城战守/攻/盟关系（221 绿/180/69）着色；怪物按 SlaveExpLevel 色表 `(255,254,147,154,229,168,180,252)`、狂暴 249、善狂 253、HolySeize 125。`GetGuildRelation` 0/1/2/3。
+
+**〔PK 点/幸运/金币/负重〕** `IncPKPoint` 上限 100 万、`GetPKTimeMin = points*2/60` 小时（1 点≈2 分钟）；`AddBodyLuck` 钳 `±5*BODYLUCKUNIT`、等级 -10..5；`Inc/DecGold` 以 `AvailableGold` 为上限、大额写日志码 `45`；`CalcBagWeight`（`OverlapItem=1` → `Dura/10`，`≥2` → `Dura*Weight`）。
+
+**〔未闭合〕** 常量值未查、颜色码业务名未核实；ObjBase 其余大段（`RecalcLevelAbilitys`/`RecalcHitSpeed`/`ItemDamageRevivalRing` `7613-7982`、`RecalcAbilitys` 尾段 `8620-9320`、`GetGiftFromBox/Egg/OldBox` `15396-17126`、`TUserHuman` 构造/`Cmd*`/`ServerGet*` `17430-31768`）仍未逐行读。**ObjBase.pas 保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
