@@ -39,10 +39,23 @@
 
 **Godot 现状**：点窗口空白区不关闭（只有拖拽）。
 
-**为什么没直接改**：这是一条**跨全部窗口**的输入模型改动，且与拖拽共用左键；
-若按「press+release 即 MouseClick」实现，拖拽物品后在窗口空白处松手会误关窗
-（原版用 `0x423FA0` 拖动路径与 click 路径区分，需要先确认 Godot `DXControl.MouseClick`
-的触发条件能否区分「点击」与「拖拽释放」）。风险高、影响面大。
+**为什么没直接改（已核实前提）**：本轮查了 `DXControl._GuiInput`
+（`Controls/DXControl.cs:262-290`）：`MouseClick` 在 **press 后 release 即触发**，
+**没有任何拖拽距离阈值**（`_dragging` 只用于 `MouseMove` 分支，release 时照样
+`MouseClick?.Invoke`）。所以在 Godot 里「窗内按下 → 拖动 → 在窗内松手」会误判为点击；
+直接照搬 B-1 会让**每次拖拽窗口/物品都以关窗收尾**。
+原版靠 `0x423FA0`（拖动路径）与 click 分派（`0x42C4D4`）两条独立路径区分，
+Godot 侧没有等价区分。
+
+**因此 B-1 的前置条件**（本轮新增结论）：先给 `DXControl` 加 click/drag 判别
+（例如记录 press 位置、release 时位移超阈值则不发 `MouseClick`，或新增
+`DragHappened` 标志），**再**逐窗口接「背景点击 → `0x42ADB0(hud,id)` 等价关闭」。
+前者改动共享基类 `DXControl`，影响全部窗口 → 必须单独回归。
+
+**补充**：原版 `0x42BF85`/`0x42C00B` 等 case 证实背包/交易/状态/行会都吃这条
+「handler 返回 0 → toggle 关窗」；且 `0x42BF85` 显示**点背包的装饰 X（F161/162）
+最终也走这条背景路径关窗**，所以 Godot 现在把 F161/162 绑 `WindowManager.Close`
+在**可观测结果**上与原版一致（见 A-10）。
 
 **选项**：
 1. 照搬（最 1:1，但需先设计 click/drag 判别，逐窗口回归）；
