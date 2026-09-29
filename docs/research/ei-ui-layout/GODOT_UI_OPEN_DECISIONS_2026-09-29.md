@@ -20,6 +20,7 @@
 | A-8 | 背包「46 格」口径 | 判定 **46 = 记录容量，36 = 可视格**；Godot 可视 6×6/36px/(25,41) 与原版一致 | `0x0042F150`/`0x0042F2A0`/`0x0042F79C` + 运行实测 | 矩阵 §6.4 |
 | A-9 | 背包三个子控件帧号 | 判定 Godot 现有实现**正确**（idle 取 `[+0x20]`，即 handler 最后 push 的 263/270/273） | `0x417880` 字段映射 + `0x417640` 状态机 + 三个 mode handler 的 push 序 | 矩阵 §9 I-3 已收窄 |
 | A-10 | 背包 F161/162「关闭」是否偏差 | 判定 **不是确认差异**（保留现状） | `0x42BF85`：背包窗口输入 handler 返回 0 时 `0x42ADB0(hud,0)` = 切换关闭背包；点 X 命中其装饰 vtable（只播音）后仍落到背景路径 → 原版也会关 | 本轮新证据 |
+| A-11 | legacy 行会窗去掉「创建行会」页 | **去掉了**（`752a41cc`） | 原版 id4 的 9 个控件里没有建会入口；**原版建会是 GM 指令** `AddGuild <gname> <mastername>`（`ObjBase.pas:24263-24266` → `CmdCreateGuild`，`:19835`），普通玩家从 UI 也建不了会。Zircon 侧等价物是 `@createGuild`（`ServerLibrary/Envir/Commands/Command/Admin/CreateGuild.cs`）→ **能力未被移除**（与原版同）。故 legacy 隐藏现代建会页属 1:1 修复，非功能回归。真机截图佐证（`02-guild-window-after-F.png`） | `752a41cc` |
 
 ## B. 待决（需要用户决策或需要目标资源/协议，本轮不擅自改）
 
