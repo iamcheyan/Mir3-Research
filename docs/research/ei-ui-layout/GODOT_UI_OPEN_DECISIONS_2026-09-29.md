@@ -88,6 +88,31 @@
 **需要**：运行时捕获一次原版 gauge 的屏幕矩形（本机无原版运行环境 → 需 Windows 主机）。
 **在那之前**：Godot 自绘轨道 + 拖柄保留。
 
+### B-4b legacy 键盘绑定与 EI caption 反向（`CONFIRMED_DIFFERENCE`）
+
+**EI 证据**（`hud-label-evidence.json::caption_ctor_table`，全 16 caption 文案含键位）：
+`Q/Ctrl+Q`=包袱栏、`W/Ctrl+W`=状态栏、`E/Ctrl+E`=技能书、`D/Ctrl+D`=信息窗口(任务)、
+`F/Ctrl+F`=行会、`G/Ctrl+G`=组队、`N/Ctrl+N`=设置、`S/Ctrl+S`=坐骑、`Z/Ctrl+Z`=腰带、
+`R/Ctrl+R`=聊天记录、`B/Ctrl+B`=技能图鉴、`V/Ctrl+V`=小地图、`C/Ctrl+C`=交易栏。
+
+**Godot 现状**（`KeyBindManager.KeyBinds` 默认表）：`Q`=CharacterWindow(状态)、
+`W`=InventoryWindow(背包)、`E`=MagicWindow(技能书)、`B`=MapBigWindow(大地图)、
+`G`=GuildWindow(行会)、`F`=BlockListWindow(黑名单)、`S`=StorageWindow(仓库)、
+`R`=RankingWindow(排行)、`D`=默认未绑、`N`=MenuWindow。
+→ **Q/W 反了，B/D/F/G/S/R 全部映射到错误窗口**。
+
+legacy 模式只在 handler 里用 `AutoLoginArgs.LegacyUi` 区分**行为**（如 CharacterButton→坐骑），
+但**不改键位表本身**。HUD 按钮（cap0..15）的 frame+坐标+caption 文案是对的，
+点击行为也对（见矩阵 §2、§5）；只是**键盘快捷键**与 caption 文案不一致。
+
+**选项**：
+1. legacy 模式下加载一套 EI 键位表（Q=包袱、W=状态、B=技能图鉴…）覆盖默认；
+2. 只修 Q/W（最常用的两个）；
+3. 保持现状。
+
+**推荐**：选项 1（`KeyBindManager` 在 `LegacyUi` 时注入 EI caption 表）。
+风险：用户自定义键位会被覆盖，需保留运行时设置优先级。
+
 ### B-5 HUD cap2「技能图鉴」动作（`H-1`）
 
 原版 cap2 点击只翻转 `[hud+0x6208]` 布尔 flag（`0x42C241`），该 flag 的**消费者未闭合**；
