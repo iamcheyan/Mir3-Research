@@ -19,16 +19,38 @@
 | A-7 | 任务列表行公式 | 更正为 **y=win.y+90+15·line**（旧文字漏了 ×5） | `0x00447618 lea eax,[ecx+ecx*2+0x12]` + `0x00447622 lea eax,[eax+eax*4]` | `40474946` |
 | A-8 | 背包「46 格」口径 | 判定 **46 = 记录容量，36 = 可视格**；Godot 可视 6×6/36px/(25,41) 与原版一致 | `0x0042F150`/`0x0042F2A0`/`0x0042F79C` + 运行实测 | 矩阵 §6.4 |
 | A-9 | 背包三个子控件帧号 | 判定 Godot 现有实现**正确**（idle 取 `[+0x20]`，即 handler 最后 push 的 263/270/273） | `0x417880` 字段映射 + `0x417640` 状态机 + 三个 mode handler 的 push 序 | 矩阵 §9 I-3 已收窄 |
-| A-10 | 背包 F161/162「关闭」是否偏差 | 判定 **不是确认差异**（保留现状） | `0x42BF85`：背包窗口输入 handler 返回 0 时 `0x42ADB0(hud,0)` = 切换关闭背包；点 X 命中其装饰 vtable（只播音）后仍落到背景路径 → 原版也会关 | 本轮新证据 |
+| A-10 | 背包 F161/162「关闭」是否偏差 | 判定 **不是确认差异**（保留现状） | `0x42BF85`：背包窗口输入 handler 后 `test eax,eax` 决定是否 `0x42ADB0(hud,0)`；点 X 命中其装饰 vtable（只播音）后仍落到同一背景路径 → 原版也会关。**注**：该结论依赖的「返回 0 = 未消费」约定在 §B-1 的复核里被标为**未闭合**（与交易 close/accept 的 return 描述冲突）。但「不是确认差异」仍成立——现有证据**不足以证明**原版不关，故保留现状、不据此改 | 本轮新证据 |
 | A-11 | legacy 行会窗去掉「创建行会」页 | **去掉了**（`752a41cc`） | 原版 id4 的 9 个控件里没有建会入口；**原版建会是 GM 指令** `AddGuild <gname> <mastername>`（`ObjBase.pas:24263-24266` → `CmdCreateGuild`，`:19835`），普通玩家从 UI 也建不了会。Zircon 侧等价物是 `@createGuild`（`ServerLibrary/Envir/Commands/Command/Admin/CreateGuild.cs`）→ **能力未被移除**（与原版同）。故 legacy 隐藏现代建会页属 1:1 修复，非功能回归。真机截图佐证（`02-guild-window-after-F.png`） | `752a41cc` |
 | A-12 | `WindowManager` 对已释放窗口崩溃 | 加 `IsAlive` 守卫（`Open/Close/Toggle/CloseTop/BringToFront/RefreshZOrder`） | 真机复现：按 R 关聊天窗时 `OpenWindows` 残留一个已释放窗口 → `RefreshZOrder` 写 `ZIndex` 抛 `ObjectDisposedException`（`WindowManager.cs:79`），整轮 Z 序刷新中断。属健壮性缺陷，非 UI 布局差异 | `607418c1` |
 | A-13 | F350 聊天窗位置 | 改为 EI 构造实参 **(114,76)** | `layout.json` / main-init 实参 `0x427839` 给 `window.chat-pop` (114,76)；`LayoutHud` 末尾的既有约定就是「旧版窗口坐标来自 exe 构造参数、**不是居中布局**」，而 `LegacyChatDialog` 是**唯一漏掉**的一个（构造期用屏幕居中 → (114,106)）。x 巧合同为 114；y 差 30：居中值使窗口底边 106+388=494 压进 HUD 顶边 465 约 29px，原值 76 时底边 464 正好贴在 HUD 之上。真机截图量到 (114,~104)，与居中值一致、与证据不符 | 见 §11 |
 
 ## B. 待决（需要用户决策或需要目标资源/协议，本轮不擅自改）
 
-### B-1 窗口「点击背景即关闭」这一交互模型要不要照搬
+### B-1 窗口「点击背景」的语义 —— **降级为 `UNVERIFIED`（我上轮的判定未经验证）**
 
-**原版事实（primary-static）**：子窗口点击分派 `0x42C4D4` 每个 case 的形态一致 ——
+**2026-09-30 复核更正**：上一轮我据 `0x42BF85` 的
+`call 0x4300F0(bag, 鼠标); test eax,eax; je 0x42C198(尾部); … 0x42ADB0(hud,0)`
+判定「handler 返回 0 → 关窗」，并把这条推广成「点窗口背景 = 关闭该窗口」。
+
+**该判定未闭合**，理由：
+1. `0x4300F0` 区间的返回指令有 `ret 0xc` / `ret 8` / `ret` 三种（`0x4301C3`…`0x4306DC`），
+   说明那段包含**多个函数**；`0x4300F0` 的入口与 `ret 8` 尾部的对应关系未逐条核。
+2. 语义自相矛盾：交易证据里 **accept 按钮「returns 0 (not consumed)」**、
+   **close 按钮「returns 1 + consumed」**；若「非 0 → toggle」，则 accept 不关窗 ✓、
+   但 close 会把窗口 toggle 成**隐藏**，与同一证据写的
+   `close.behavior = "window stays open"` **冲突**。两者不能同时成立。
+3. 因此「0/非 0 哪个代表已消费」以及「click 分派是否在 mouse-down」都还没定；
+   在这一步之前**不能**据此改 Godot 的任何窗口关闭行为。
+
+**待闭合**：逐条解 `0x42C198`（共享尾部语义）、`0x4300F0` 的 `ret 8` 尾部返回值、
+以及 `0x42C4D4` 的调用点（`_Input` 的 mouse-down/up 分支）。
+
+**因此**：B-1 降级为 `UNVERIFIED`，**不实现**（此前记录的「DXControl 无拖拽阈值」
+仍是实现前必须解决的前置条件，但已不是当前瓶颈）。
+
+（原记录保留在下）
+
+**原版事实（primary-static，待复核）**：子窗口点击分派 `0x42C4D4` 每个 case 的形态一致 ——
 先调该窗口自己的输入 handler，**返回 0 就 `0x42ADB0(hud, id)` 切换关闭该窗口**：
 
 | id | 窗口 | 输入 handler | 关闭调用 |
@@ -38,17 +60,11 @@
 | 3 | 交易 | `0x416EF0`（`0x42C00B`） | `0x42ADB0(hud,3)` |
 | 4 | 行会 | `0x4258F0`（`0x42C039`） | 同形 |
 
-即：**点窗口内没被 handler 消费的区域 = 关闭该窗口**（背包/交易/状态/行会…通用）。
-
-**Godot 现状**：点窗口空白区不关闭（只有拖拽）。
-
 **为什么没直接改（已核实前提）**：本轮查了 `DXControl._GuiInput`
 （`Controls/DXControl.cs:262-290`）：`MouseClick` 在 **press 后 release 即触发**，
 **没有任何拖拽距离阈值**（`_dragging` 只用于 `MouseMove` 分支，release 时照样
 `MouseClick?.Invoke`）。所以在 Godot 里「窗内按下 → 拖动 → 在窗内松手」会误判为点击；
 直接照搬 B-1 会让**每次拖拽窗口/物品都以关窗收尾**。
-原版靠 `0x423FA0`（拖动路径）与 click 分派（`0x42C4D4`）两条独立路径区分，
-Godot 侧没有等价区分。
 
 **因此 B-1 的前置条件**（本轮新增结论）：先给 `DXControl` 加 click/drag 判别
 （例如记录 press 位置、release 时位移超阈值则不发 `MouseClick`，或新增
@@ -140,14 +156,33 @@ Godot 侧没有等价区分。
 最小、可逆、与现代 `Key.F`（FilterDrop/BlockList）不冲突（legacy 下被覆盖）。
 **推荐**：执行。
 
-### B-5 HUD cap2「技能图鉴」动作（`H-1`）
+### B-5 HUD cap2「技能图鉴」动作（`H-1`）—— 消费者已闭合，**已修复**
 
-原版 cap2 点击只翻转 `[hud+0x6208]` 布尔 flag（`0x42C241`），该 flag 的**消费者未闭合**；
-Godot 把它映射成打开技能书（与 cap8 重复）。
+**原版（primary-static，2026-09-30 解出）**：
+- cap2（`0x42C241`）与 B 键（`0x42CE29`）都只翻转 `[hud+0x6208]` 布尔 flag；
+  初值由 `0x42711D` 写 **0**（`xor ebx,ebx` 后 `mov [esi+0x6208],ebx`）。
+- 该 flag 的唯一消费者在 HUD paint 内（`0x429607` → `0x42A850`）：
+  `[hud+0x6208] == 0` 时 `je 0x42AAA4` **直接跳过整段图标绘制** → 默认不显示。
+- flag != 0 时画的是**一行 12 个技能图标**：
+  - 数据 = `hud+0x52E45` 起逐字节（每个 icon 索引一个 byte）；
+  - 图标 = selector `0x566C90`（**MIcon**，本机 1106 帧）帧 **`byte + 0x3E7`(999)**；
+  - 步距 = `0x28`(40)，且索引 4/8 处额外 +0x28 → **每 4 个一组多一个间隔**；
+  - 缩放 `0x3F169697 ≈ 0.588`（64×64 图标 → ≈37.6px），循环上限 `esi+ebp < 0xC`(12)。
 
-**需要**：定位 `[hud+0x6208]` 的读取点（全二进制扫描 `mov al,[reg+0x6208]` 类模式）。
-本轮未做完 → 登记。
-**推荐**：找到消费者后按原版改；找不到就保留 Godot 映射并标注。
+**12 槽 = F1–F12 技能条**；Godot 的 `MagicBar` 正是「12 列技能条」→ 同一概念。
+
+**Godot 差异**：`cap2` 此前打开**技能书**（与 cap8 重复）；`B` 打开**大地图**；
+技能条恒显。
+
+**修复**（本轮）：
+1. legacy 下 `cap2`(SkillEntryButton) → toggle `_magicBar`（不再开技能书）；
+2. legacy 下 `B`/Ctrl+B → toggle `_magicBar`（大地图仍可由小地图按钮打开）；
+3. legacy 下 `_magicBar` **默认隐藏**（对应 flag 初值 0），由 cap2/B 显示。
+
+**残余（记录）**：EI 用 MIcon 帧 `999+槽ID`（64×64 缩放 ≈0.588，步距 40/分组间隔 40），
+Godot `MagicBar` 用 `MagicInfo.Icon`（36×36，步距 37/组间隔 5）→ 图标**帧号空间与尺寸不同**
+（同 Inventory 的情况：现代 MIcon.Zl 是 1773 帧的重编码库，EI 是 1106 帧/138 非空）。
+逐图标像素一致需 EI 的槽→图标映射证据，未闭合。
 
 ### B-6 行会解散（`G-1`）
 
@@ -206,6 +241,19 @@ Godot legacy 仍渲染现代分组列表（x=8/18/28、金色/白色、分组标
 HP 条（`0x5600FC` 元素 + 帧号 = HP）、悬停 3000ms 门。属**新功能实现**，
 建议单独一个 goal（需要逐类型选择器绑定 + 运行截图对照）。
 **推荐**：纳入下一轮，不在本轮擅自半实现。
+
+**2026-09-30 补充：锚点/坐标已可落地**（降低下一轮成本）
+- 原版 box 几何：`left = anchor_x + (48-w)/2`、`right = anchor_x + (w+48)/2`、
+  `top = anchor_y - 0x1E`、`bottom = anchor_y - 0xF`。
+  → box **中心 = anchor_x + 24**（即 48 宽瓦片的**中心**），高度 15px，
+  位于 `anchor_y - 30 .. anchor_y - 15`（瓦片**顶边上方** 15~30px）。
+- Godot 侧同一约定：`ObjectRenderer.DrawName` 用 `new Vector2(24f, y)` 画名字
+  （即节点原点 + 24 = 瓦片中心）→ **Godot 的节点原点 = 原版 anchor（瓦片左边）**，
+  于是 box 应画在 `(origin.x + 24 - (w+48)/2, origin.y - 30) .. (+w+48, +15)`。
+- 名字基线参考：`RenderPrimitives.OriginalNameBaseline` 注释给出原版
+  `name_top = DrawY - (32 - labelH)/2 - 6`；box 内名字用 `0x45DE50` 另画一次。
+- **仍未闭合**：HP 条的 `0x5600FC` 元素 WIL 文件名（原版运行时绑定，candidate）
+  → HP 条暂不能忠实实现；名字牌框可独立先做。
 
 ### B-9 原版客户端运行 A/B 与联机验收
 

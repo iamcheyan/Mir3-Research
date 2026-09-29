@@ -180,7 +180,7 @@ EI 主 UI 的窗口 id 空间是 **0..15**，由 `0x0042B3E4` 跳转表 + `0x004
 | Alt+Q | 退出游戏 | `KeyBindManager` `Alt+Q`=ExitGameWindow | MATCH |
 | Alt+X | 注销人物 | `KeyBindManager` `Alt+X`=LogoutCharacter | MATCH |
 | F / Ctrl+F | 行会 | **本轮补**：legacy 覆盖层加 `Key.F`→OpenGuildDialog（commit `7e2a2340`）；此前落到 `Key.F`=BlockListWindow | **已修复** |
-| B / Ctrl+B | 技能图鉴 | 仍为 `KeyBindManager` `Key.B`=MapBigWindow | **未修复**（= §9 B-5，原版语义是 toggle 技能图标网格） |
+| B / Ctrl+B | 技能图鉴（= 12 槽技能条的一行图标） | **本轮补**：legacy 下 `Key.B` → toggle `_magicBar`（commit `684a6e67`）；此前落到 `Key.B`=MapBigWindow | **已修复**（§6.7） |
 | 角色属性文本 | `status-window-render-evidence.json`；`status-attribute-colors-evidence.json` | `CharacterDialog` 14 行 (255,67+15i)/(331,67+15i) | **MATCH**（`--legacy-character-selftest` PASS：14 项全部匹配） |
 | 鼠标交互全量（左/右/中键、双击、拖拽、滚轮、锁定） | 旧版 `Client/`（`MapControl.cs`/`DXItemCell.cs`/各 Dialog）+ EI 证据 | Godot 对应实现 | **69 条逐项 ✅**（见本仓库 [`MOUSE_INTERACTION_CATALOG.md`](../../MOUSE_INTERACTION_CATALOG.md) 2026-08-08 版：世界地图 17 条、物品格与窗口控件 22 条、对话框与全局 30 条；含右键（2.9 按控件语义路由、1.2 右键跑步、1.3 右键转身、1.11 右键取消目标、2.9 物品格右键、3.23 大图右键传送）、双击（2.8/2.22/3.14/3.24/3.25）、拖拽（2.19 窗口拖动、2.20 边缘缩放、2.21 滚动条、3.6 交易拖物）、滚轮（2.13/3.4））。**注**：该目录口径是「Godot vs `Client/`」，本矩阵口径是「Godot vs EI 原版」；EI 侧另无独立右键菜单（`LEGACY_CLICK_ACTION_CATALOG.md`：右键按控件语义） | MATCH（按 Client/ 口径）；EI 交叉见 `LEGACY_CLICK_ACTION_CATALOG.md` |
 
@@ -275,6 +275,20 @@ SpellButton cap8 (703,16)、MenuButton cap11 (703,85)、CashShopButton cap15 (66
 | 2 | `WindowManager` 对已释放窗口崩溃 | 真机按 R 关聊天窗抛 `ObjectDisposedException`（`RefreshZOrder` → `SetZIndex`），整轮 Z 序刷新中断 | 新 `IsAlive` 守卫，六个入口先剔除失效引用 |
 
 真机回归：同流程日志 `ObjectDisposedException` 计数 **0**（修复前 ≥2）。
+
+### 6.7 cap2/B 按原版 toggle 12 槽技能条（`684a6e67`）
+
+原版 cap2（`0x42C241`）与 B（`0x42CE29`）只翻转 `[hud+0x6208]`，其唯一消费者
+`0x42A850`（HUD paint `0x429607` 调用）在 flag==0 时 `je 0x42AAA4` **跳过整段**，
+否则画**一行 12 个技能图标**（数据 `hud+0x52E45` 逐 byte；图标 = MIcon selector
+`0x566C90` 帧 `byte+999`；步距 `0x28` 且索引 4/8 处额外 +0x28；缩放 `0x3F169697≈0.588`）。
+12 槽 = F1–F12 技能条，与 Godot `_magicBar`（12 列）同一概念。
+
+Godot 差异：cap2 打开技能书（与 cap8 重复）、B 打开大地图、技能条恒显。
+修复：legacy 下 cap2 与 B 都 toggle `_magicBar`，且**默认隐藏**（对应 flag 初值 0）。
+
+**真机验证**：默认无技能条 → 按 B 出现 12 槽 → 再按 B 隐藏
+（`docs/evidence/godot-runtime-acceptance-2026-09-30/07-skillbar-toggle-by-B.png`）。
 
 ### 6.6 交易 close 热区改为「只播音不关窗」（`131a3514`）
 
