@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1531,6 +1531,46 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 
 **未验证**：`ADJ_LEVEL`/`DEFHP`/`DEFMP`/`DEFHIT`/`DEFSPEED`/`AM_FIREBALL`/`AM_HEALING`/`RING_REVIVAL_ITEM`
 常量值未查；`FOR_ABIL_POINT` 是否启用未核实；无运行期验证。
+
+### 10.26 `RecalcAbilitys` 尾段与最终能力合成（Round 959；`ObjBase.pas:8620-9299`）
+
+#### 10.26.1 套装加成续（`:8620-8765`）
+
+- **强化版套装**：강화백금（DC+0/3、HP+30、HitSpeed+2、MaxWearWeight+2）、
+  강화연옥（SC+0/2、HP+15、MP+20、UndeadPower+1、HIT+1、SPEED+1）、
+  강화홍옥（MC+0/2、MP+40、SPEED+2）。
+- **용 세트（龙套）** 分两大分支：
+  - **全套 10 件**：AC+1/4、MAC+1/4、Luck+2、HitSpeed+2、AntiMagic+6、AntiPoison+6、
+    MaxHandWeight+34、MaxWearWeight+27、MaxWeight+120、MaxHP+70、MaxMP+80、SPEED+1、
+    DC+1/4、MC+1/3、SC+1/3。
+  - 否则 **Type B**（衣+头+武+靴+带 → B-3；衣+靴+带 → B-2；衣+头+武 → B-1）与
+    **Type A**（五件饰品 A-6 起，按戒指/手镯/项链组合递减到 A-1）两套独立加成。
+
+#### 10.26.2 事件装备与特殊甲（`:8772-8978`）
+
+- **반짝천의（banjjak2_dress）**：`Level>=20` 起，按 `<30`/`<40`/`40+` 三档给 DC/MC/SC/AC/MAC。
+- **천의무봉（dset_wingdress）**：同上，四档（`<30`/`<40`/`<50`/`50+`）。
+- **반짝 무기 692/693/694**（`banjjak_weapon38/39/40`）：`Level>20` 生效，**红名（`PKLevel>=2`）额外 `UnLuck+10`（诅咒）**；
+  按等级档给 DC/SC/MC 与手部负重（如 38 号 30–39 级 `HandWeight+25`、40+ `+50`）。
+- **반짝 2차 武器 697/698/699**（`banjjak2_weapon0/1/2`）：同构，红名诅咒，负重更大。
+- **수정갑옷（crystal_dress）**：`MissProbability := 2`、`FeedbackProbability := 30`、`FeedbackRatio := 50`
+  （**2% 闪避 + 30% 概率反伤 50%**）。
+
+#### 10.26.3 最终合成（`:8982-9097`）
+
+- `WAbil.Weight := CalcBagWeight`。
+- 隐身：`BoFixedHideMode + STATE_TRANSPARENT` → `BoHumHideMode`，状态变化时 `CharStatusChanged`。
+- **攻速折半**（`sonmg`）：`AddAbil.HitSpeed >= 0` 时 `div 2`，负数时 `(x-1) div 2`（**向下取整偏小**），
+  再 `_MIN(15, ...)` 封顶。
+- `Light := GetMyLight`，变化则广播 `RM_CHANGELIGHT`。
+- **叠加 `AddAbil` 到最终值**：`SpeedPoint/AccuracyPoint/AntiPoison/PoisonRecover/HealthRecover/
+  SpellRecover/AntiMagic/Luck`（`Luck -= AddAbil.UnLuck`）、`HitSpeed`；
+  `MaxHP/MaxMP := Abil + AddAbil`；`AC/MAC/DC/MC/SC := MakeWord(_MIN(255, AddAbil+Abil))`。
+- `STATE_DEFENCEUP`/`MAGDEFENCEUP` 用**新公式**（`HIBYTE += Level div 7 + StatusValue[]`）。
+- `ExtraAbil[EABIL_DCUP/MCUP/SCUP/HITSPEEDUP/HPUP/MPUP]` 叠加（`:9099-9299` 收尾）。
+
+**未验证**：所有 `*_SHAPE`/`banjjak_weapon*` 物品索引对应的 EI 数据行未解析；
+`GetMyLight`/`ApplyItemParameters`/`ApplyItemParametersEx` 已部分读；无运行期验证。
 
 ---
 

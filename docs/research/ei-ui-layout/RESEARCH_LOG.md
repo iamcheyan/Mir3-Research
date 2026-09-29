@@ -13557,3 +13557,18 @@ HUD cap2「技能图鉴」flag 消费者；任务详情面板 `detail_geometry` 
 **〔未闭合〕** 常量值未查、`FOR_ABIL_POINT` 是否启用未核实；ObjBase 其余大段（`RecalcAbilitys` 尾段 `8620-9320`、`GetGiftFromBox/Egg/OldBox` `15396-17126`、`TUserHuman` 全部 `Cmd*` 命令 `18915-24626`、`ServerGet*` 商店/市场 `26333-31768`）仍未逐行读。**ObjBase.pas 保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 959 — 2026-09-29：`ObjBase.pas` 套装尾段与最终能力合成
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:8620-9299`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔套装续〕** 强化版 백금/연옥/홍옥；**용 세트**：全套 10 件给 AC+1/4、MAC+1/4、Luck+2、HitSpeed+2、AntiMagic/AntiPoison+6、MaxHandWeight+34、MaxWearWeight+27、MaxWeight+120、MaxHP+70、MaxMP+80、SPEED+1、DC/MC/SC 加成；否则 **Type B**（衣/头/武/靴/带 B-3→B-1）与 **Type A**（饰品 A-6→A-1）两套独立组合。
+
+**〔事件装备〕** `banjjak2_dress`/`dset_wingdress` 按等级三/四档给属性；**반짝 무기 692-694/697-699** 红名（`PKLevel>=2`）额外 `UnLuck+10`，按等级档给 DC/MC/SC 与手部负重；**수정갑옷** 置 `MissProbability=2`/`FeedbackProbability=30`/`FeedbackRatio=50`。
+
+**〔最终合成〕** `WAbil.Weight := CalcBagWeight`；隐身同步；**攻速折半**（负数用 `(x-1) div 2`）再封顶 15；`Light := GetMyLight`（变化广播）；把 `AddAbil` 叠加到 `SpeedPoint/AccuracyPoint/抗性/Luck`（减 `UnLuck`）、`MaxHP/MaxMP`、`AC/MAC/DC/MC/SC := _MIN(255, AddAbil+Abil)`；`DEFENCEUP/MAGDEFENCEUP` 新公式；`ExtraAbil[DCUP/MCUP/SCUP/HITSPEEDUP/HPUP/MPUP]` 收尾。
+
+**〔未闭合〕** 所有 `*_SHAPE`/物品索引对应的 EI 数据行未解析；ObjBase 其余大段（`GetGiftFromBox/Egg/OldBox` `15396-17126`、`TUserHuman` 全部 `Cmd*` 命令 `18915-24626`、`ServerGet*` 商店/市场 `26333-31768`）仍未逐行读。**ObjBase.pas 保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
