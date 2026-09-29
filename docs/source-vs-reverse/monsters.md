@@ -263,7 +263,7 @@ end;
 | `ObjMon3.pas`（18 类） | 未逐个读 |
 | `MakeClone`（怪物克隆/召唤） | 未读 |
 | `RecalcAbilitys`（属性重算） | 未读 |
-| `TSuperGuard`（`ObjGuard.pas`，继承 `TNormNpc`） | 未读 |
+| ~~`TSuperGuard`（`ObjGuard.pas`，继承 `TNormNpc`）~~ | **已闭合**（Round 933，§10.2） |
 | `TSoccerBall` / `TMineMonster`（特殊玩法怪） | 未读 |
 | 怪物与 `MonGen.txt` 的 `MonName` 匹配机制 | 未读（`MonName` → 类实例化的分派点） |
 | `Monster.dat` 的二进制表解析 | 未读 |
@@ -368,3 +368,92 @@ end;
 | `TAnimal.Attack`/`Struck`/`LoseTarget` 实现 | 未读 |
 | `ObjMon2.pas` 的具体怪物 AI | 未读（后续） |
 | `FindPathRate` 常量值 | 未找到定义（节流被注释掉） |
+
+---
+
+## 10. `ObjAxeMon.pas`（190 行）与 `ObjGuard.pas`（101 行）实现（Round 933）
+
+### 10.1 `ObjAxeMon.pas` —— 远程「飞斧」怪物族（3 类）
+
+```
+TMonster
+└── TDualAxeMonster      (:12)  RC_DUALAXESKELETON=87  「쌍도끼해골 / 双斧骷髅」
+    ├── TThornDarkMonster(:26)  RC_THORNDARK=93        ChainShotCount=3
+    └── TArcherMonster   (:31)  RC_ARCHERMON=104       「마궁사 / 魔弓手」ChainShotCount=6
+```
+
+**工厂分派**：`UsrEngn.AddCreature`（`:841`）按 `race` 建对象 ——
+`:931 RC_DUALAXESKELETON→TDualAxeMonster`、`:962 RC_THORNDARK→TThornDarkMonster`、
+`:1034 RC_ARCHERMON→TArcherMonster`。**这三类不在 `ObjMon*.pas` 里，而是独立单元。**
+
+**`TDualAxeMonster.Create`（`:41-52`）**：`ViewRange:=5`、`RunNextTick:=250`、
+`SearchRate:=3000`、`ChainShot:=0`、`ChainShotCount:=2`（默认 2 连发）。
+
+**`FlyAxeAttack(targ)`（`:59-83`）—— 飞斧核心**：
+
+1. `PEnvir.CanFly(CX,CY,targ.CX,targ.CY)` 做**弹道遮挡检查**（不能穿墙）；
+2. 伤害 = `Lobyte(DC) + Random(SmallInt(Hibyte(DC)-Lobyte(DC))+1)`（DC 低/高字节区间随机）；
+3. **原来的护甲减法被整段注释掉**（`:70-73`），改为 `targ.GetHitStruckDamage(self, dam)`；
+4. `targ.StruckDamage(dam, self)` + `SendDelayMsg(RM_STRUCK, ..., 600 + max(|dx|,|dy|)*50 ms)`
+   —— **延迟随距离线性增长**（切比雪夫距离）；
+5. `SendRefMsg(RM_FLYAXE, Dir, CX, CY, Integer(targ), '')` 让客户端播放飞斧动画。
+
+**`AttackTarget`（`:85-114`）—— 连发 + 追击 + 丢失**：
+
+- 门 `GetCurrentTime-HitTime > GetNextHitTime`（继承的 `Run` 会重设 `HitTime`）；
+- **7 格方框内**：`ChainShot < ChainShotCount-1` 时 `Inc(ChainShot)` 并再飞一斧；
+  否则 `Random(5)=0` 才把 `ChainShot` 清零 —— 即**连发之间要 1/5 概率才重新开始**，
+  实际是「打满 N 发后等一个 1/5 门再重置」，不是每 N 发固定重置；
+- **8–11 格方框**且同图：`SetTargetXY` 追击；**不同图**：`LoseTarget`（注释提醒 `TargetCret` 会被置 nil）。
+
+**`Run`（`:116-161`）—— 覆盖基类**：注释掉的旧门（`Death/RunDone/BoGhost/中毒状态`）被
+`if not RunDone and IsMoveAble` 取代。每 5 秒扫描 `VisibleActors` 选**曼哈顿最近**合法目标
+（条件同 `TAnimal` 索敌：非死亡 + `IsProperTarget` + 隐身可见门）。4 格内**逃跑**：
+≤2 格时 1/5 概率逃、3–4 格必逃（`GetBackPosition`）—— **这是「保持距离的远程 AI」**。
+最后 `inherited Run`。
+
+> **要点**：这是全源码里少见的「**风筝型（kiting）远程怪**」——
+> 连发、追击、贴脸逃跑、弹道遮挡、延迟随距离，都在一个 190 行单元里。
+> 与客户端 `Source/Client/AxeMon.pas`（4,217 行，仅渲染）**不是同一文件**（见 `client-rendering.md`）。
+
+### 10.2 `ObjGuard.pas` —— `TSuperGuard`（唯一继承 NPC 的「怪物」）
+
+`TSuperGuard = class(TNormNpc)`（`:12`），`RC_DOORGUARD=11`（문지기 경비병 / 门卫）。
+工厂：`UsrEngn.AddCreature:854 RC_DOORGUARD→TSuperGuard.Create`。
+属性：`ViewRange:=7`、`Light:=2`。**它不是 `TAnimal`，没有 AI 移动/攻击基类逻辑**，
+`Run`/`AttackTarget` 全部自实现。
+
+**`AttackTarget`（`:47-76`）—— 瞬移突刺**：
+
+```
+ox:=CX; oy:=CY; olddir:=Dir;              // 记住原位
+GetBackPosition(TargetCret, CX, CY);       // 瞬移到目标旁
+Dir := GetNextDirection(...);
+SendRefMsg(RM_HIT, ...); _Attack(HM_HIT, TargetCret);   // 「점프해서 공격」= 跳劈
+TargetCret.SetLastHiter(self);
+TargetCret.ExpHiter := nil;                // 注释「경험치를」未写完
+CX:=ox; CY:=oy; Dir:=olddir; Turn(Dir);    // 回到原位
+BreakHolySeize;
+```
+
+→ 门卫的攻击是**视觉上的瞬移跳劈**：真身回到原格，只有攻击结算落在目标身上。
+`TargetCret.PEnvir <> PEnvir` 时 `LoseTarget`。**无 nil 守卫**（`TargetCret` 由调用点保证非 nil）。
+
+**`Run`（`:78-98`）—— 选敌**：每 `GetNextHitTime` 周期扫描 `VisibleActors`，
+选第一个 `PKLevel>=2`（红名）**或** `RaceServer>=RC_MONSTER 且非 BoHasMission`（无任务的怪）的目标，
+`SelectTarget` 后 `break`；有目标则 `AttackTarget`；最后 `inherited Run`。
+
+> ⚠️ **`TSuperGuard` vs `TGuardUnit`/`TArcherGuard`（`ObjMon2.pas`）**：
+> 后者是 `TAnimal` 系（Round 931 已读，`IsProperTarget` 按城堡/犯罪标记选目标）；
+> `TSuperGuard` 是 `TNormNpc` 系，按红名/无任务怪选目标。**两套守卫语义不同，不可混用。**
+
+### 10.3 与 EI / Zircon 对照与未验证项
+
+| 项 | 原版反编译 | 源码 | 结论 |
+|---|---|---|---|
+| 飞斧弹道/延迟 | 未闭合 | `CanFly` + `600+max(dx,dy)*50 ms` | `source-only` |
+| 门卫跳劈 | 未闭合 | `GetBackPosition` 后回位 | `source-only` |
+| 连发重置概率 | 未闭合 | `Random(5)=0` | `source-only` |
+
+未验证：`GetHitStruckDamage`/`GetNextHitTime`/`CanFly` 的具体实现与运行期数值；
+`ChainShot` 状态在目标切换时是否复位（源码未见复位点）；Zircon 对应实现未比对。

@@ -108,7 +108,83 @@ end;
 
 **`GetUpgradeStdItem(ui, std)`（`:28`）**：把 `TUserItem` 的 `Desc[]` 数组
 叠加到 `TStdItem` 上，得到**实际生效的物品属性**。
-→ **这是「基础物品 + 升级加成」的合成点**。
+→ **这是「基础物品 + 升级加成」的合成点**（详见 §1.6）。
+
+### 1.4 八个 `UpgradeRandom*` 全表（Round 934，`:94-361`）
+
+**统一结构**：每项属性先 `up := GetUpgrade(a,b)`，再用一个 `Random(N)=0`（或 `<k`）
+门决定**是否**写入，写 `Desc[i] := 1+up`（或 `up div 2`）。
+
+> ⚠️ **`up` 在门之前就算**：无论属性是否生效，`GetUpgrade` 都会消耗 RNG。
+> 即随机流是「先抽 `up`、再抽门」，做概率复现/工具时必须按此顺序。
+
+| 函数 | StdMode（`UsrEngn:693-710`） | 属性（Desc 槽 ← 门概率） |
+|---|---|---|
+| `UpgradeRandomWeapon` | 5,6 武器 | DC `Desc[0]`←1/15；攻速 `Desc[6]`←1/20（见下）；MC `Desc[1]`←1/15；SC `Desc[2]`←1/15；准确 `Desc[5]`←1/24；耐久 ←2/3；强度 `Desc[7]`←1/10 |
+| `UpgradeRandomDress` | 10,11 衣服 | AC←1/30、MAC←1/30、DC/MC/SC←1/40、耐久←6/8 |
+| `UpgradeRandomNecklace` | 20,21,24 项链/手镯 | `Desc[0]`(HIT/AC)←1/60、`Desc[1]`(SPEED/MAC)←1/60、DC/MC/SC←1/30、耐久←15/20 |
+| `UpgradeRandomBarcelet` | 26 手镯 | AC/MAC←1/20、DC/MC/SC←1/30、耐久←15/20 |
+| `UpgradeRandomNecklace19` | 19 项链 | `Desc[0]`=魔法回避←1/40、`Desc[1]`=幸运←1/40、DC/MC/SC←1/30、耐久←3/4 |
+| `UpgradeRandomRings` | 22 戒指 | **只有** DC/MC/SC←1/30、耐久←3/4（**无 AC/MAC**） |
+| `UpgradeRandomRings23` | 23 戒指 | `Desc[0]`=中毒抵抗←1/40、`Desc[1]`=中毒恢复←1/40、DC/MC/SC←1/30、耐久←3/4 |
+| `UpgradeRandomHelmet` | 15 头盔 | AC←1/40、MAC←1/30、DC/MC/SC←1/30、耐久←3/4 |
+
+- **`GetUpgrade(a,b)` 参数**：武器/头盔/衣服用 `(12,15)`（攻击类）、`(6,15~20)`（防具类）；
+  耐久用 `(12,12)`（武器）/`(6,10~12)`（防具）。**耐久增量 = `(1+up)*2000`（武器/衣服）
+  或 `*1000`（其余）**，`_MIN(65000, ...)` 封顶。
+- **武器攻速特例**（`:102-110`）：`up := GetUpgrade(12,15)`；`incp := (1+up) div 3`（注释
+  「잘 안 붙도록」= 故意难出）；`incp>0` 时 `Random(3)<>0` → `Desc[6]:=incp`（**负攻速**，
+  因 `RealAttackSpeed` 把 ≤10 解释为负），否则 `Desc[6]:=10+incp`（**正攻速**）。
+- **武器强度 `Desc[7]`**：`1+(up div 2)`；仅在 `SpecialPwr>=0` 时写入（`:606-610`，见 §1.6）。
+
+### 1.5 「未知物品」`RandomSetUnknown*`（Round 934，`:367-571`）
+
+工厂 `UsrEngn.RandomSetUnknownItem:714-725` 分派：`15 头盔→RandomSetUnknownHelmet`、
+`22,23 戒指→RandomSetUnknownRing`、`24,26 手镯→RandomSetUnknownBracelet`。
+
+**与 §1.4 的关键区别**：用 **`GetUpgrade2`**（分段概率曲线，非 `GetUpgrade`）累加；
+`pu.Desc[8] := 1` 无条件标记**「미지의 속성」（未知属性）**；`Random(30)=0` 追加
+`Desc[7]:=1`（不掉落/不爆）。累加 `sum` 达阈值后**按最大属性决定「佩戴需求」**：
+
+| 物品 | 阈值 | 需求类型 `Desc[5]` 与等级 `Desc[6]` |
+|---|---|---|
+| 头盔 | `sum>=3` | AC≥5→`1`(필파) `25+AC*3`；DC≥2→`1` `35+DC*4`；MC≥2→`2`(필마) `18+MC*2`；SC≥2→`3`(필도) `18+SC*2`；否则 `18+sum*2` |
+| 戒指 | `sum>=3` | DC≥3→`1` `25+DC*3`；MC≥3→`2` `18+MC*2`；SC≥3→`3` `18+SC*2`；否则 `18+sum*2` |
+| 手镯 | `sum>=2` | AC≥3→`1` `25+AC*3`；DC≥2→`1` `30+DC*3`；MC≥2→`2` `20+MC*2`；SC≥2→`3` `20+SC*2`；否则 `18+sum*2` |
+
+- 头盔 AC = `GetUpgrade2(12,13)+GetUpgrade2(9,10)`；戒指 DC/MC = `GetUpgrade2(12,13)×2`；
+  手镯 DC/MC/SC = `GetUpgrade2(6,7)×2`。**同一属性可能由两次 `GetUpgrade2` 相加**。
+- **`Desc[5]` 语义**：`1=필파(需破坏) 2=필마(需魔法) 3=필도(需道术)`，`Desc[6]` 是**需求等级**。
+
+### 1.6 `GetUpgradeStdItem` 的 `StdMode` 映射全表（Round 934，`:576-855`）
+
+返回 `UCount` = **被升级的 Desc 槽数量**（用于「鉴定/属性计数」）。按 `std.StdMode` 分支：
+
+| StdMode | 物品 | 叠加的属性 |
+|---|---|---|
+| 5,6 | 武器 | DC/MC/SC **高字节** `+= Desc[0/1/2]`（`_MIN(255)`）；`AC:=MakeWord(LOBYTE+Desc[3], HIBYTE+Desc[5])`（**3:幸运 5:准确**）；`MAC:=MakeWord(LOBYTE+Desc[4], HIBYTE)`（**4:诅咒**）；随后 `MAC 高字节 := GetAttackSpeed(高字节, Desc[6])`；`SpecialPwr:=Desc[7]`（1..10 且原值≥0）；`Desc[10]<>0 → IDC_UNIDENTIFIED`；`Slowdown+=Desc[12]`；`Tox+=Desc[13]` |
+| 10,11 | 衣服 | AC/MAC/DC/MC/SC 高字节 `+= Desc[0..4]`；`Agility+=Desc[11]`；`MgAvoid+=Desc[12]`；`ToxAvoid+=Desc[13]` |
+| 15 | 头盔 | 同上 AC/MAC/DC/MC/SC + `Accurate+=Desc[11]` + `MgAvoid/ToxAvoid`；`Need:=Desc[5]`、`NeedLevel:=Desc[6]` |
+| 19,20,21 | 项链 | 高字节 `+= Desc[0..4]`；`AtkSpd+=Desc[9]`；`Undead+=Desc[10]`（PAIN 系列）；`Slowdown+=Desc[12]`；`Tox+=Desc[13]`；19→`Accurate+=Desc[11]`、20→`MgAvoid+=Desc[11]`、21→`Accurate+=Desc[11]` 且 `MgAvoid+=Desc[7]`（注释「7번을 사용 안하나?」） |
+| 22,23 | 戒指 | 高字节 `+= Desc[0..4]`；`AtkSpd+=Desc[9]`；`Undead+=Desc[10]`；`Slowdown/Tox`；Need/NeedLevel |
+| 24 | 手镯24 | 仅 AC/MAC/DC/MC/SC 高字节 + Need/NeedLevel |
+| 26 | 手镯26 | 高字节 `+= Desc[0..4]`；`Undead+=Desc[10]`；`Accurate+=Desc[11]`；`Agility+=Desc[12]`；Need/NeedLevel |
+| 52 | 鞋（sonmg 加） | AC/MAC 高字节 `+= Desc[0/1]`；`Agility+=Desc[3]` |
+| 53 | 护身石（sonmg 2006/01/17） | **仅** `Undead+=Desc[10]`（UCount 恒为 0） |
+| 54 | 腰带（sonmg 加） | AC/MAC 高字节；`Accurate+=Desc[2]`；`Agility+=Desc[3]`；`ToxAvoid+=Desc[13]` |
+
+- **属性叠加一律改「高字节」**（`MakeWord(LOBYTE, _MIN(255, HIBYTE+n))`）——
+  与 §1.2 攻速存 `MAC` 高字节一致；**低字节是另一属性**（如武器 AC 低字节存幸运、高字节存准确）。
+- **`Desc[5]/Desc[6]` = 需求类型/需求等级**；`Desc[7]` = 强度（武器）或「不掉落」（未知物品，
+  头盔/项链/戒指/手镯分支**被注释**，见 `:668-673`）；`Desc[8]` = 未知属性（同样被注释未消费）；
+  `Desc[9]/Desc[10]` = 攻速/不死系（PAIN）；`Desc[11..13]` = 各模式的特殊属性（**同一槽在不同
+  StdMode 下语义不同**，这是最易搞错的地方）。
+- **消费点**：`ObjBase.pas:9329/10273`（装备/换装时合成实际属性）、`:22674/22711/22745/22773/22803`
+  等（属性展示）、`ObjNpc.pas:3222`（NPC 判断装备）。**`UCount` 用于属性条数统计**。
+
+> ⚠️ **`Desc[]` 是「按 StdMode 重载的联合体」**：做工具/迁移时必须**先按 StdMode 查表**，
+> 不能把 `Desc[9]` 当固定含义。`52/53/54` 三个 StdMode 是 **Preview 专属**（注释 `added by sonmg`），
+> EI 原版是否有对应槽位未验证。
 
 ---
 
@@ -219,12 +295,98 @@ sonmg 2005/09/01）、`CmdLoverCharSpaceMove`/`CmdBreakLoverRelation` 配套。
 
 ---
 
-## 7. `DragonSystem.pas`（604 行）—— 龙系统
+## 7. `DragonSystem.pas`（604 行）—— 龙系统（Round 932 完整实现）
 
-`TDragonSystem = class(TObject)`（`:39`）单例。
-配置 `DRAGONITEMFILE = 'DragonItem.txt'`（`:13`），
-状态机式命令流格式（`config.md` §14.12）。
-`svMain.pas:1167` 的 `gFireDragon.Initialize(...)` 是初始化入口。
+`TDragonSystem = class(TObject)`（`:39`）**全局单例** `gFireDragon`（`svMain.pas:126` 声明、
+`:422` 创建、`:795` 释放）。这是「파천마룡 / 破天火龙」世界事件：
+全服累计打龙经验 → 升级 → 在指定地图按配置掉落物品，并周期性对指定地图的玩家放雷电/火焰。
+
+### 7.1 常量与配置（`:9-13`）
+
+| 常量 | 值 | 说明 |
+|---|---:|---|
+| `DRAGON_MAX_LEVEL` | 13 | 龙等级上限（数组 0..12） |
+| `DRAGON_RESETTIME` | 15×60×1000 = **900,000 ms（15 分钟）** | 无经验后多久重置等级 |
+| `MAP_ATTACK_TIME` | 10×1000 = **10 s** | 对自动攻击地图的出手间隔 |
+| `DRAGONITEMFILE` | `'DragonItem.txt'` | 配置文件名（格式见 `config.md` §14.12） |
+
+> ⚠️ **注释与常量不一致（两处）**：`:11` 注释「최대 15분간은 레셋되지않는다」（最多 15 分钟不重置）
+> 与常量一致；但 `Run` 的 `:585` 注释写「30분정도」（约 30 分钟）——**以常量 15 分钟为准**。
+
+### 7.2 数据结构（`:16-37`）
+
+```pascal
+TDropItemInfo  = record Name; FirstRate; SecondRate; Amount; DropCount; end;
+TDragonLevelInfo = record Level; DropExp; DropItemList: TList; end;   // 每级一份掉落表
+TATMapInfo     = record Envir: TEnvirnoment; Mode: integer; end;      // 1=雷电 2=火焰
+```
+
+`FLevelInfo: array[0..12] of TDragonLevelInfo`；`FAutoAttackMap: TList`（元素 `PTATMapInfo`）。
+
+### 7.3 生命周期与配置加载
+
+- `InitFirst`（`:114-149`）：13 级全部置 `Level:=i+1`、`DropExp:=(i+1)*10000`（即第 n 级需
+  `n×10000` 经验）、各建一个 `TList`；`FLevel:=1`/`FExp:=0`。
+- `DecodeStrInfo`（`:195-323`）：**状态机命令流**。`!LEVEL n` 切当前等级；`!EXP n` 写
+  `FLevelInfo[CurrentLevel-1].DropExp`；`!DROPMAP name` / `!DROPAREA l t r b` 设掉落图与矩形；
+  其余非 `!`/非 `;` 行按 `Name FirstRate SecondRate Amount DropCount` 追加到**当前等级**的掉落表。
+- `Initialize`（`:325-349`）：`FileExists` → `TStringList.LoadFromFile` → `DecodeStrInfo`。
+- `Reload`（`:351-356`）：`RemoveAll` + `InitFirst` + `Initialize(FInitFileName)`。
+- `RemoveAll`（`:152-193`）：逐级 `dispose(DropItemList[0])`+`Delete(0)` 再 `Free`；自动攻击表同理。
+
+**两处真实缺陷**：
+
+1. **等级越界检查是死代码**（`:237`）：
+   `if (CurrentLevel <= 0) and (CurrentLevel > DRAGON_MAX_LEVEL)` 用了 `and`，
+   条件永假 → 非法 `!LEVEL`（如 `0`/`14`）不会被拒，随后 `FLevelInfo[CurrentLevel-1]`
+   **可能负索引或越界**。正确写法应为 `or`。
+2. **`FInitFileName` 少了 `EnvirDir` 前缀**（`:147`）：源码是
+   `FInitFileName := {EnvirDir +} DRAGONITEMFILE;`（前缀被注释掉）。
+   而 `svMain.pas:1167` 是 `Initialize(EnvirDir + DRAGONITEMFILE, ...)`。
+   即**启动时**从 `EnvirDir` 读对，但**构造时**（`:98`）和**任何 `Reload`** 都从
+   进程当前目录读 `DragonItem.txt` → 工作目录不含该文件时静默失败（`except` 吞异常）。
+   另 `Initialize` 的 `except` 无日志（`:347-348`），失败不可见。
+
+### 7.4 运行时行为
+
+- **经验累积** `ChangeExp(exp)`（`:539-569`）：刷新 `FLastChangeExpTime`；`FLevel<13` 且
+  `exp>0` 且 `FEXP<GetNextLevelExp` 时累加；越阈值则先 `OnLevelup(FLEVEL)`（**用升级前的旧等级**，
+  注释 `위치수정 sonmg 2006/01/27` 表明这是刻意修正），再 `FLEVEL+1`、`FEXP:=0`。
+  一次命中**最多升一级，超出部分经验丢弃**（`FEXP:=0` 而非取余）。
+- **经验来源**：`RM_DRAGON_EXP`（`Grobal2.pas:1994 = 10430`）的消费者在
+  `TCreature.RunMsg`（`ObjBase.pas:14339-14345`）→ `gFireDragon.ChangeExp(msg.lParam1)`。
+  生产者两处，均**只在 8 格方框内**给 1–3 点经验（防远程法师偷袭）：
+  - `ObjBase.pas:14204-14209`：`RM_DELAYMAGIC` 命中目标是 `RC_FIREDRAGON`/`RC_DRAGONBODY` 时；
+  - `ObjMon3.pas:890-902`（`TDragon.Struck`）与 `:952-962`（`TDragonBody.Struck`）。
+- **升级掉落** `OnDropItem(changelevel)`（`:375-439`）：**门 `changelevel<1 或 >=13` 直接返回**
+  → 只有 1..12 级会掉。每项按 `DropCount` 次判定 `random(SecondRate) < FirstRate`；
+  `px∈[Left,Right]`，`py` 由矩形**四条对角线斜率**求合法区间
+  （`Low=max(slope1-px, px+slope3)`、`High=min(slope2-px, px+slope4)`），
+  再 `MakeItemToMap(FDropMapName, Name, Amount, px, py)` 落地；成功则写用户日志码 `15`（掉落）。
+  掉落者名韩版写 `'파천마룡'`、非韩版写 `'EvilMir'`（`{$IFDEF KOREA}`）。
+  边界：`High<Low` 时 `Random(负数+1)`、矩形非法时 `Random` 参数可能 ≤0，源码未守卫。
+- **自动攻击** `OnMapAutoAttack`（`:499-510`）遍历 `FAutoAttackMap` → `OnAutoAttack`（`:469-496`）
+  取该图全部用户，仅 `RC_USERHUMAN` 且 `random(2)=0`（50%）→ `OnAttackTarget`（`:441-467`）：
+  跳过 `Death/BoGhost/BoSysopMode/BoSuperviserMode`；Mode1 发 `NE_THUNDER`、Mode2 发 `NE_FIRE`；
+  伤害 `20*(random(3)+1)`（20/40/60）经 `GetMagStruckDamage(nil,pwr)` 后 `StruckDamage`，
+  再 `SendDelayMsg(RM_STRUCK, ..., 200ms)`，hitter 传 `nil`。
+- **自动攻击图注册**：`SetAutoAttackMap` 由 `LocalDB.pas:711/757` 在加载 `MapInfo.txt` 时调用，
+  条件 `TempEnvir.AutoAttack ∈ {1,2}`（`MapInfo` 的 `THUNDER`=1 / `FIRE`=2，见 `LocalDB.pas:631-632`）。
+- **重置** `Run`（`:582-601`）：每 tick 检查，`GetTickCount-FLastChangeExpTime > 15min` → `ResetLevel`
+  （`FLevel:=1/FExp:=0`）；`GetTickCount-FLastAttackTme > 10s` → `OnMapAutoAttack`。
+  整体 `try/except`，异常只打 `'EXCEPTION DRAGON SYSTEM'`。`Run` 由 `UsrEngn.pas:3247/3354` 每轮驱动。
+
+### 7.5 `SetItemDropMap` 的字段错位（`:530-536`）
+
+```pascal
+FDopItemEnvir := GrobalEnvir.GetEnvir( FDropMapName );   // ← 用的是旧 FDropMapName，不是入参 MapName
+FDropItemRect := Area_;
+```
+
+入参 `MapName` **未被使用**，且该方法不写 `FDropMapName`。因此实际生效的掉落图是
+`DragonItem.txt` 的 `!DROPMAP`（`DecodeStrInfo` 里赋 `FDropMapName`），
+`FDopItemEnvir` 也只是被赋值后**从未再读**（`OnDropItem` 走 `UserEngine.MakeItemToMap(FDropMapName,...)`）。
+属**静态可判的错位/死字段**，无运行期验证。
 
 ---
 
@@ -268,10 +430,11 @@ sonmg 2005/09/01）、`CmdLoverCharSpaceMove`/`CmdBreakLoverRelation` 配套。
 
 | 项 | 原因 |
 |---|---|
-| `DragonSystem.pas` 除 `DecodeStrInfo` 外的实现 | 只读了格式解析 |
-| `UserSystem.pas`（153 行） | 未读 |
-| `itmunit.pas` 的 8 个 `UpgradeRandom*` 实现 | 只读了签名与 `Desc[]` 映射 |
-| `RealAttackSpeed` 的**实际影响**（攻速如何转成延迟） | 未追到消费点 |
+| `RealAttackSpeed` 的**实际影响**（攻速如何转成延迟） | 未追到消费点（`GetNextHitTime` 实现未读） |
+
+> 已闭合：`DragonSystem.pas` 全实现（Round 932，§7）；
+> `UserSystem.pas`（Round 843）；`itmunit.pas` 8 个 `UpgradeRandom*` + `RandomSetUnknown*`
+> + `GetUpgradeStdItem` 全表（Round 934，§1.4–1.6）。
 
 ---
 

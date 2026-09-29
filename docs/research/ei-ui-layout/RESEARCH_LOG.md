@@ -13109,3 +13109,46 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** 未找到 EI 原版 PvP/召唤物/守卫目标资格或魔法路径的 `primary-static` 对照；事件标志的设置者、守卫可见列表语义及各边界的实战可达性均未查明。`ObjBase.pas` 保持 partial，本轮为静态阅读，无运行期行为结论。
 
 **〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`python3 Tools/source-read/ledger.py --summary`：393 文件 / 315,324 行，covered 334 / 165,829，partial 16 / 89,265，excluded 43 / 60,230，pending 0；三个目标文档的 `git diff --check` 通过。未运行 Delphi/GameServer。
+
+
+## Round 932 — 2026-09-29：`DragonSystem.pas` 全实现（破天火龙世界事件）
+
+**〔范围与调用链〕** 经授权 source reader 完整读取 `Source/GameServer/DragonSystem.pas:1-604`（CP949）。追读创建/驱动/生产者/消费者调用点：`svMain.pas:126/422/795/1167`（`gFireDragon` 声明/创建/释放/`EnvirDir` 初始化）、`UsrEngn.pas:3247/3354`（`Run` 每轮驱动）、`LocalDB.pas:703-759`（`MapInfo` 加载时按 `AutoAttack∈{1,2}` 注册自动攻击图）、`ObjBase.pas:14204-14209` 与 `ObjMon3.pas:890-902/952-962`（`RM_DRAGON_EXP` 生产者，8 格内给 1–3 点）、`ObjBase.pas:14339-14345`（消费者 → `ChangeExp`）。未运行 Delphi/GameServer。
+
+**〔结构与常量〕** `TDragonSystem = class(TObject)` 单例。`DRAGON_MAX_LEVEL=13`；`DRAGON_RESETTIME=900000ms`（15 分钟，但 `Run` 注释误写「30분」）；`MAP_ATTACK_TIME=10000ms`；`DRAGONITEMFILE='DragonItem.txt'`。`TDropItemInfo{Name,FirstRate,SecondRate,Amount,DropCount}`、`TDragonLevelInfo{Level,DropExp,DropItemList}`、`TATMapInfo{Envir,Mode(1=雷 2=火)}`。`InitFirst` 置第 n 级 `DropExp=n×10000`。`DecodeStrInfo` 是状态机命令流：`!LEVEL`/`!EXP`/`!DROPMAP`/`!DROPAREA` 切换上下文，数据行按 `Name 分子 分母 数量 次数` 追加到当前等级。
+
+**〔两处静态缺陷〕** ①`:237` 的等级范围检查写成 `(CurrentLevel<=0) and (CurrentLevel>13)`，`and` 使条件永假 → 非法 `!LEVEL` 不被拒，随后 `FLevelInfo[CurrentLevel-1]` 可能负索引/越界；应为 `or`。②`FInitFileName := {EnvirDir +} DRAGONITEMFILE;`（`:147`）**丢了 `EnvirDir` 前缀**，而 `svMain.pas:1167` 用 `EnvirDir + DRAGONITEMFILE`；故构造时（`:98`）与任何 `Reload` 都从进程 CWD 找文件，失败被空 `except`（`:347-348`）吞掉。`SetItemDropMap`（`:530-536`）入参 `MapName` 未使用（用旧 `FDropMapName`），且 `FDopItemEnvir` 赋值后从未再读。
+
+**〔运行时行为〕** `ChangeExp` 刷新 `FLastChangeExpTime`，达阈值先按**旧等级** `OnLevelup` 再 `FLEVEL+1`、`FEXP:=0`（一次最多升一级，溢出经验丢弃）。`OnDropItem` 门 `changelevel<1 或 >=13` → 仅 1..12 级掉落；每项 `DropCount` 次 `random(SecondRate)<FirstRate`，`px` 均匀、`py` 由矩形四条对角线斜率求合法区间，`MakeItemToMap(FDropMapName,...)` 落地并写日志码 `15`（掉落），韩版署名 `'파천마룡'`、非韩版 `'EvilMir'`。`OnAttackTarget` 跳过 Death/Ghost/Sysop/Superviser，按 Mode 发 `NE_THUNDER`/`NE_FIRE`，伤害 `20×(random(3)+1)`（20/40/60），`RM_STRUCK` 延迟 200ms、hitter=nil。`OnAutoAttack` 取图内用户，仅 `RC_USERHUMAN` 且 50% 概率出手。`Run` 每 tick 检查 15 分钟重置与 10 秒自动攻击，异常仅打日志。
+
+**〔未闭合〕** 未找到 EI 原版对应「破天火龙」世界事件的 `primary-static` 证据；`Random` 参数可能 ≤0 的边界、`Reload` 实际可达性、`FDropItemRect` 非法配置下的行为均未运行验证。属静态阅读。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`python3 Tools/source-read/ledger.py --summary` 待本轮更新后重跑；`git diff --check` 通过。未运行 Delphi/GameServer。
+
+
+## Round 933 — 2026-09-29：`ObjAxeMon.pas` / `ObjGuard.pas` 全实现
+
+**〔范围与调用链〕** 完整读取 `ObjAxeMon.pas:1-190`、`ObjGuard.pas:1-101`（均 CP949）。追读工厂 `UsrEngn.AddCreature`（`:841`）：`:854 RC_DOORGUARD→TSuperGuard`、`:931 RC_DUALAXESKELETON→TDualAxeMonster`、`:962 RC_THORNDARK→TThornDarkMonster`、`:1034 RC_ARCHERMON→TArcherMonster`。种族常量在 `Grobal2.pas`（`RC_DOORGUARD=11`/`RC_DUALAXESKELETON=87`/`RC_THORNDARK=93`/`RC_ARCHERMON=104`）。未运行 Delphi/GameServer。
+
+**〔飞斧族〕** `TDualAxeMonster`（`TMonster` 派生，默认 `ChainShotCount=2`）及 `TThornDarkMonster(=3)`/`TArcherMonster(=6)`。`FlyAxeAttack`：`PEnvir.CanFly` 弹道遮挡 → `DC` 低/高字节区间随机伤害（**原护甲减法整段注释**）→ `GetHitStruckDamage` → `StruckDamage` + `RM_STRUCK` 延迟 `600+max(|dx|,|dy|)*50 ms` → `RM_FLYAXE` 播放动画。`AttackTarget`：7 格内按 `ChainShot` 连发，**打满后需 `Random(5)=0` 才重置**（非固定 N 发）；8–11 格追击，异图 `LoseTarget`。`Run` 每 5s 扫描 `VisibleActors` 选曼哈顿最近合法目标；4 格内风筝逃跑（≤2 格 1/5 概率逃、3–4 格必逃）。这是**远程风筝型 AI**。
+
+**〔门卫〕** `TSuperGuard`（`TNormNpc` 派生，`ViewRange=7`/`Light=2`）。`AttackTarget` 用 `GetBackPosition` **瞬移到目标旁跳劈**（`HM_HIT`），再回原位/原朝向，`SetLastHiter`+`ExpHiter:=nil`+`BreakHolySeize`；异环境 `LoseTarget`。`Run` 周期扫描选首个 `PKLevel>=2` 或 `RaceServer>=RC_MONSTER 且非 BoHasMission` 目标。与 `TAnimal` 系 `TGuardUnit`/`TArcherGuard` 是**两套不同守卫体系**（后者见 Round 931）。
+
+**〔未闭合〕** 未找到 EI 原版飞斧弹道/门卫跳劈的 `primary-static` 对照；`ChainShot` 是否在目标切换时复位、`CanFly`/`GetNextHitTime` 数值、Zircon 对应实现均未验证。属静态阅读。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`git diff --check` 通过。未运行 Delphi/GameServer。
+
+
+## Round 934 — 2026-09-29：`itmunit.pas` 升级族全实现
+
+**〔范围与调用链〕** 完整读取 `itmunit.pas:1-897`（CP949）。追读分派点 `UsrEngn.RandomUpgradeItem:687-712` 与 `RandomSetUnknownItem:714-725`（按 `StdMode` 选择函数），消费点 `ObjBase.pas:9329/10273`（换装合成）、`:22674/22711/22745/22773/22803`（属性展示）、`ObjNpc.pas:3222`。未运行 Delphi/GameServer。
+
+**〔八个 `UpgradeRandom*`〕** 统一结构：每项先 `up := GetUpgrade(a,b)`，再 `Random(N)=0`（或 `<k`）门决定是否写 `Desc[i] := 1+up`；**`up` 在门之前算，RNG 顺序固定**。全表：Weapon(5,6)/Dress(10,11)/Necklace(20,21,24)/Barcelet(26)/Necklace19(19)/Rings(22)/Rings23(23)/Helmet(15)。武器攻速 `incp:=(1+up) div 3`，`Random(3)<>0` 写 `incp`（负）、否则 `10+incp`（正）；耐久增量武器/衣服 `(1+up)*2000`、其余 `*1000`，`_MIN(65000)`。Rings 只升 DC/MC/SC，无 AC/MAC。
+
+**〔未知物品〕** 3 个 `RandomSetUnknown*` 用 **`GetUpgrade2`** 累加 `sum`；无条件 `Desc[8]:=1`（未知属性）、`Random(30)=0` 追加 `Desc[7]:=1`（不掉落）；`sum` 达阈值（头盔/戒指 ≥3、手镯 ≥2）按最大属性定 `Desc[5]` 需求类型（1 필파/2 필마/3 필도）与 `Desc[6]` 需求等级。
+
+**〔`GetUpgradeStdItem`〕** 按 `StdMode` 全表叠加：`5,6/10,11/15/19,20,21/22,23/24/26/52/53/54`。属性一律改**高字节**（低字节另有所属）；武器 `MAC 高字节 := GetAttackSpeed(HIBYTE, Desc[6])`、`SpecialPwr:=Desc[7]`、`Desc[10]→IDC_UNIDENTIFIED`；`Desc[5]/[6]`=需求类型/等级。返回 `UCount`=非零 Desc 槽数。**`Desc[]` 是按 `StdMode` 重载的联合体**；`52/53/54` 为 `added by sonmg` 的 Preview 专属 StdMode。
+
+**〔未闭合〕** 未找到 EI 原版升级概率/`Desc` 槽位语义的 `primary-static` 对照；`GetUpgrade2` 的分段概率公式与旧版注释差异、`RealAttackSpeed` 到实际攻击延迟的消费点均未验证。属静态阅读。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`git diff --check` 通过。未运行 Delphi/GameServer。
