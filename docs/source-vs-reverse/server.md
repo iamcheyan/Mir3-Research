@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1142,6 +1142,62 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 **未验证**：`TurnXY/WalkXY/RunXY/HitXY/SpellXY/SitdownXY`（移动/攻击合法性核心）未逐一读；
 `UserCastle.*`/`UserMgrEngine.ExternSendMsg`/`FrmIDSoc` 实现未追；颜色对数值的业务含义未核实；
 无运行期验证。
+
+### 10.18 外观、出现/消失、行走与换图（Round 951；`ObjBase.pas:3891-4414`）
+
+#### 10.18.1 外观与状态（`:3891-4045`）
+
+- **`GetRelFeature(who)`（`:3896-3980`）**：人类 → `MakeFeature(0, Dress, Weapon, Face)`，
+  其中 `dress := pstd.Shape*2 + Sex`（男女衣服分开）、`weapon := pstd.Shape`、`face := Hair`；
+  **分身（`RC_CLONE`）→ `MasterFeature`**（显示主人外观）；其余 → `MakeFeatureAp(RaceImage, DeathState, Appearance)`。
+  旧的意大利旧版本映射逻辑整段被注释。
+- **`GetCharStatus`（`:3982`）**：遍历 `StatusArr`，`>0` 的位设 `$80000000 shr i`，再或上
+  `CharStatusEx and $0000FFFF`。
+- `Initialize`（`:4000`）：`InitValues`（`WAbil := Abil`）→ 魔法等级钳到 0..3 → `Appear`（记录 `ErrorOnInit`）
+  → `GetCharStatus` → `AddBodyLuck(0)`。`Finalize` 空。
+- `FeatureChanged`/`CharStatusChanged`：分别广播 `RM_FEATURECHANGED`/`RM_CHARSTATUSCHANGED`。
+- `Appear`（`:4047`）：`PEnvir.AddToMap` 成功即返回真，非 `HideMode` 时广播 `RM_TURN`。
+- `Disappear(num)`（`:4061`）：`FAlreadyDisapper` 时直接返回（**防跨服重复消失**）；
+  `DeleteFromMap` 失败打日志，成功广播 `RM_DISAPPEAR`。
+- `KickException`（`:4086`）：人类回 `HomeMap/HomeX/HomeY` + `EmergencyClose`；
+  非人类 `Death := TRUE` + `MakeGhost(3)`。
+
+#### 10.18.2 `Walk(msg)`（`:4105-4215`）—— 行走与过门/换服
+
+1. 扫描当前格的 `ObjList`：找 `OS_GATEOBJECT`（门）与 `OS_EVENTOBJECT`（事件）。
+2. 事件 `OwnCret.IsProperTarget(self)` → `SendMsg(event.OwnCret, RM_MAGSTRUCK_MINE, ...)`
+   （**踩到别人放的地雷/事件受伤**）。
+3. 有门时**只有人类**能通过（NPC 不许出门）；`AroundDoorOpened` 为真才过；
+   **`NeedHole` 地图必须有 `ET_DIGOUTZOMBI` 事件**（`EventMan.FindEvent`），否则 `goto needholefinish`（不换图）。
+4. **同服** → `EnterAnotherMap(EnterEnvir, EnterX, EnterY)`；
+   **跨服** → `Disappear(1)` + 设 `ChangeMapName/CX/CY`、`BoChangeServer`、`ChangeToServerNumber`、
+   `EmergencyClose`、`SoftClosed`（**不使认证失效**）、`FAlreadyDisapper`（**由 `Operate` 的登出分支完成实际换服**）。
+   跨服前有 1 s `LatestDropTime` 冷却。
+5. 无门 → `SendRefMsg(msg, Dir, CX, CY, ...)` 正常广播移动。整段 `try..except` 打 `down` 断点。
+
+#### 10.18.3 `EnterAnotherMap`（`:4217-4342`）—— 地图切换总入口
+
+- 门槛：`Abil.Level >= enterenvir.NeedLevel`；`MapQuest` 非 nil 时 `TMerchant.UserCall(self)`；
+  `NeedSetNumber >= 0` 时 `GetQuestMark(NeedSetNumber) = NeedSetValue`；
+  `CorePEnvir`（沙巴克内城）→ `UserCastle.CanEnteranceCoreCastle`。
+- `Disappear(2)` → 清 `MsgTargetList`/`VisibleItems`/`VisibleEvents`/`VisibleActors`（每步独立 try/except）
+  → `RM_CLEAROBJECTS`。
+- 切 `PEnvir/MapName/CX/CY` → `RM_CHANGEMAP`（带 `GetGuildAgitRealMapName`）→ `Appear` 成功则
+  `MapMoveTime := now`、`SpaceMoved := TRUE`；失败则**还原**旧环境并重新 `AddToMap`。
+- `Fight3Zone` 进出变化 → `UserNameChanged`（**行会战区域名字变色**）。
+
+#### 10.18.4 说话与幽灵（`:4344-4414`）
+
+- `Turn(dir)` 广播 `RM_TURN`；`Say` 广播 `RM_HEAR`（`UserName + ': ' + str`）。
+- `SysMsg(str, mode)`：**非人类直接返回**（不给怪物发系统消息）；`mode` 映射
+  `1→RM_SYSMESSAGE2`、`2→RM_SYSMSG_BLUE`、`3→RM_SYSMESSAGE3`、`4→RM_SYSMSG_REMARK`、
+  `5→RM_SYSMSG_PINK`、`6→RM_SYSMSG_GREEN`、否则 `RM_SYSMESSAGE`。
+- `BoxMsg`→`RM_MENU_OK`（仅人类）；`GroupMsg`→组员 `RM_GROUPMESSAGE`（前缀 `-`）；
+  `NilMsg`→`RM_HEAR`（sender=nil）。
+- `MakeGhost(num)`：`BoGhost := TRUE` + `GhostTime` + `Disappear(3)`，失败打 `Not MakeGhost` 日志。
+
+**未验证**：`AroundDoorOpened`/`CanEnteranceCoreCastle`/`EventMan.FindEvent`/`MakeFeature(Ap)` 实现未逐一读；
+跨服换服的实际握手（`ChangeToServerNumber` 消费点）未追；无运行期验证。
 
 ---
 

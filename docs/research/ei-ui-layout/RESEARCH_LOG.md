@@ -13388,3 +13388,20 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** `TurnXY/WalkXY/RunXY/HitXY/SpellXY`（移动攻击合法性核心）未逐一读；`UserCastle.*`/`FrmIDSoc` 未追；颜色对业务含义未核实；ObjBase 其余大段（`ServerGet*` 各商店/仓库/市场实现、`TUserHuman` 命令 `Cmd*`、fame/gift boxes、`GetGiftFrom*`、`TUserHuman` 构造/初始化 `Initialize/Finalize`）仍未逐行读。**ObjBase.pas 保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 951 — 2026-09-29：`ObjBase.pas` 外观/出现消失/行走换图
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:3891-4414`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔外观/状态〕** `GetRelFeature`：人类 `MakeFeature(0, Dress, Weapon, Face)`（`dress=pstd.Shape*2+Sex`）；**分身→`MasterFeature`**；其余 `MakeFeatureAp(RaceImage, DeathState, Appearance)`。`GetCharStatus` 用 `$80000000 shr i` 位掩码 + `CharStatusEx` 低字。`Appear`/`Disappear`（`FAlreadyDisapper` 防跨服重复消失）/`KickException`（人类回城+关连接，怪物 `MakeGhost(3)`）。
+
+**〔Walk〕** 扫描当前格门/事件；踩事件 `RM_MAGSTRUCK_MINE`；门**只有人类能过**且需 `AroundDoorOpened`；**`NeedHole` 地图必须有 `ET_DIGOUTZOMBI` 事件**（洞机制）；同服 `EnterAnotherMap`，**跨服**则 `Disappear(1)` + 设 `ChangeMapName/CX/CY`/`BoChangeServer`/`ChangeToServerNumber`/`SoftClosed`/`FAlreadyDisapper`（实际换服在 `Operate` 登出分支完成）。
+
+**〔EnterAnotherMap〕** 门槛 `NeedLevel`/`MapQuest`/`NeedSetNumber`/`CanEnteranceCoreCastle`；`Disappear(2)` + 清四类可见列表 + `RM_CLEAROBJECTS`；切环境 + `RM_CHANGEMAP`；`Appear` 失败则还原；`Fight3Zone` 变化 → `UserNameChanged`。
+
+**〔说话/幽灵〕** `SysMsg` 非人类直接返回，`mode` 映射 `RM_SYSMESSAGE2/BLUE/SYSMESSAGE3/REMARK/PINK/GREEN/SYSMESSAGE`；`BoxMsg`→`RM_MENU_OK`；`GroupMsg`→组员；`MakeGhost`→`BoGhost`+`Disappear(3)`。
+
+**〔未闭合〕** `AroundDoorOpened`/`CanEnteranceCoreCastle`/`EventMan.FindEvent`/`MakeFeature(Ap)` 未逐一读；跨服换服握手消费点未追；ObjBase 其余大段（`WalkTo`/`RunTo`、`HitHit`/`CharPushed`/`CharRushRush`、经验/等级/金币/负重、`TUserHuman` 命令 `Cmd*` 与 `ServerGet*` 商店/市场、fame/gift boxes）仍未逐行读。**ObjBase.pas 保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
