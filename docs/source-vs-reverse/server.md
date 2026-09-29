@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962 / 963 / 964 / 965 / 966）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962 / 963 / 964 / 965 / 966 / 967）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1883,6 +1883,69 @@ FamePoint/FameName、UserMarketDebug、연인해제；另 ReloadGuildAgit、OneK
 
 **未验证**：`EnterGroup`/`DelGroupMember`/`UserCounterDealItemAdd`/`ServerGetDealChangeGold`/`ServerGetDealEnd` 未逐一读；
 `GROUPMAX`/`MAXDEALITEM`/`MAX_OVERLAPITEM` 值未查；无运行期验证。
+
+### 10.35 行会 / 加点 / 关系（Round 967；`ObjBase.pas:28541-29590`）
+
+#### 10.35.1 行会（`:28541-28936`）
+
+- `SendChangeGuildName` → `SM_CHANGEGUILDNAME`（`GuildName/GuildRankName`）。
+- `ServerGetQueryUserState(who, x, y)`：`CretInNearXY` 内；分身（`RC_CLONE`）映射到主人；
+ 组 `TUserStateInfo`（`Feature`/`UserName`/`NameColor`/`GuildName`/`GuildRankName`/`bExistLover`/`LoverName`/`FameName`/`UseItems[0..U_CHARM]` 含天衣/闪烁/龙物品变换）→ `SM_SENDUSERSTATE`。
+- `ServerGetOpenGuildDlg`/`GuildHome`：`<Notice>`/`<KillGuilds>`/`<AllyGuilds>` 段，每段累计 >5000 截断 → `SM_OPENGUILDDLG`。
+- `ServerGetGuildMemberList`：按职级分组（`#Rank/*RankName/成员…`）→ `SM_SENDGUILDMEMBERLIST`。
+- `ServerGetGuildAddMember(who)`：**仅文派主**，须对方**面对面** + `AllowEnterGuild` + 无文派 + `MemberList.Count < MAXGUILDMEMBER`；
+ 错误码 `1`(非文派主)/`2`(不在/非对面)/`3`(已加入)/`4`(已属他派)/`5`(对方拒绝)；成功 `AddMember` + `ISM_RELOADGUILD` + 改名色。
+- `ServerGetGuildDelMember(who)`：仅文派主；**文派战（`GetGuildRelation=2`）中不可退**；
+ 逐出他人记日志 `'50'`；**文派主自退**（须无其他成员）→ `DelGuildMaster` + `GuildMan.DelGuild` + `ISM_DELGUILD`；**被逐者 `DecFamePoint(400)`**（`ENABLE_FAME_SYSTEM`）。
+- `ServerGetGuildUpdateNotice`/`UpdateRanks`：仅 `GuildRank=1`；`#13` 分段；`SaveGuild` + `ISM_RELOADGUILD`。
+- `ServerGetGuildMakeAlly`：须双方文派主**面对面** + 对方 `AllowAllyGuild` + 双向 `CanAlly` → 双向 `MakeAllyGuild` + 全体改名色 + 广播；错误码 `-1..-4`。
+- `ServerGetGuildBreakAlly(gname)`：仅文派主 + 确为同盟 → 双向 `BreakAlly`；`-1..-3`。
+
+#### 10.35.2 加点（`ServerGetAdjustBonus`，`:28938-29015`，`FOR_ABIL_POINT`）
+
+客户端发 `TNakedAbility`（DC/MC/SC/AC/MAC/HP/MP/Hit/Speed）；**校验 `sum = BonusPoint - remainbonus`**（防作弊）；
+按职业 `WarriorBonus/WizzardBonus/PriestBonus` 换算：DC/MC/SC 用 `CalcLoHi`（低字节优先增到 hi-1 再增 hi），
+AC/MAC 只增 hi 字节，HP/MP/Hit/Speed 直接加；余数留 `CurBonusAbil`；`RecalcLevelAbilitys`+`RecalcAbilitys`+`RM_ABILITY`+`RM_SUBABILITY`。
+
+#### 10.35.3 随从重召（`RmMakeSlaveProc`，`:29018-29044`）
+
+道士（`Job=2`）`maxcount=3`，其余 `5`；`MakeSlave` 后回填 `SlaveExp`/`SlaveExpLevel`/`HP`/`MP`；
+**按 `SlaveMakeLevel` 提速**：`NextWalkTime ≤ 1500 − lvl*200`，`NextHitTime ≤ 2000 − lvl*200`。
+
+#### 10.35.4 恋人/师徒关系（`:29046-29590`）
+
+- `ServerGetRelationOptionChange`：反转 `fLover` 的 `RsState_Lover` 开关 → `SM_LM_OPTION`。
+- `ServerGetRelationRequest(ReqType, ReqSeq)`：须**面对面** + 异性 + **双方 ≥22 级**；
+ 状态机 `RsReq_None/WantToJoinOther/WaitAnser/WhoWantJoin/AloowJoin/DenyJoin/Cancel`；
+ 错误码 `RsError_LessLevelMe/Other`、`EqualSex`、`RejectMe/Other`、`FullUser`、`DontJoin`、`CancelJoin`、`DenyJoin`、`SuccessJoin/Joined`；
+ 成功时双方 `fLover.Add` + `SM_LM_LIST` + `SM_LM_RESULT` + `RM_LM_DBADD` 存库 + **全屏粉色 `CryCry` 300 格祝贺** + 日志 `'47'`（연인_）。
+- `ServerGetRelationDelete`/`DeleteRequestOk/Fail`/`RelationShipDeleteOther`/`ServerSetRelationDB*`/`ServerGetRelationDBGetList`/`ServerGetLoverLogout`：删除/DB 同步/恋人登出。
+
+### 10.36 `DoUpgradeItem`（Round 967；`ObjBase.pas:29618-29805`）
+
+`CmdUpgradeItem` 成功分支的落地：按 `psSeed.StdMode` 把 `psJewelry`（宝石）属性累加进 `puSeed.Desc[]`：
+
+| StdMode | 位置 | Desc 映射 |
+|---|---|---|
+| 5,6 | 武器 | `[0]+=DC [1]+=MC [2]+=SC`；`[6]=UpgradeAttackSpeed(攻速)`，**上限 `15+10`**；`[12]+=Slowdown [13]+=Tox` |
+| 10,11 | 衣 | `[0]+=AC [1]+=MAC [11]+=Agility [12]+=MgAvoid [13]+=ToxAvoid` |
+| 15 | 盔 | `[0]+=AC [1]+=MAC [11]+=Accurate [12]+=MgAvoid [13]+=ToxAvoid` |
+| 19 | 项链19 | `[2]+=DC [3]+=MC [4]+=SC [11]+=Accurate [0]+=MgAvoid`；`[9]+=AtkSpd`（**上限 15**） |
+| 20 | 项链 | `[2]+=DC [3]+=MC [4]+=SC [0]+=Accurate [1]+=Agility [11]+=MgAvoid`；`[9]` 同上 |
+| 21 | 项链 | `[2]+=DC [3]+=MC [4]+=SC [7]+=MgAvoid [11]+=Accurate`；`[9]` 同上 |
+| 22 | 戒指 | `[0]+=AC [1]+=MAC [2]+=DC [3]+=MC [4]+=SC`；`[9]` 同上 |
+| 23 | 戒指23 | `[2]+=DC [3]+=MC [4]+=SC`；`[9]` 同上 |
+| 24 | 手镯24 | `[0]+=Accurate [1]+=Agility [2]+=DC [3]+=MC [4]+=SC` |
+| 26 | 手镯26 | `[0]+=AC [1]+=MAC [2]+=DC [3]+=MC [4]+=SC [11]+=Accurate [12]+=Agility` |
+| 52 | 鞋 | `[0]+=AC [1]+=MAC [3]+=Agility` |
+| 54 | 腰带 | `[0]+=AC [1]+=MAC [2]+=Accurate [3]+=Agility [13]+=ToxAvoid` |
+
+末尾 `DuraMax := min(65000, DuraMax + 宝石DuraMax)` + `SendUpdateItem` + `RM_ABILITY` + `RM_SUBABILITY`。
+> 与 §10.29.4 `SumOfOptions` 的 `Desc[]` 槽选择一一对应（决定「옵션합」）。
+
+`CmdLetterColor`（`:29808-29817`，DEBUG）：`SM_WHISPER` 带色测试。
+
+**未验证**：`TGuild.*`/`MakeSlave`/`fLover.*` 实现未读；`MAXGUILDMEMBER`/`ENABLE_FAME_SYSTEM`/`FOR_ABIL_POINT` 等值未查；无运行期验证。
 
 ---
 

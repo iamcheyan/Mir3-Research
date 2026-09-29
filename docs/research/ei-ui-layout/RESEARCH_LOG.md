@@ -13692,3 +13692,24 @@ HUD cap2「技能图鉴」flag 消费者；任务详情面板 `detail_geometry` 
 **〔未闭合〕** `EnterGroup`/`ServerGetDealChangeGold`/`ServerGetDealEnd` 等未逐一读；常量值未查。ObjBase 其余大段（行会/关系/寄售/庄园 `28529-31768`、`Cmd*` 19197-22663）仍未逐行读。**保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 967 — 2026-09-29：`ObjBase.pas` 行会/加点/关系与 DoUpgradeItem
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:28541-29229` 与 `29618-29817`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔行会〕** 加人仅文派主 + 面对面 + `AllowEnterGuild` + 无派 + `MAXGUILDMEMBER`（错误码 1..5）；逐人仅文派主，**文派战中不可退**，被逐 `DecFamePoint(400)`；文派主自退（须无人）→ `DelGuild` + `ISM_DELGUILD`；公告/职级仅 `GuildRank=1`；结盟须双方文派主面对面 + 双向 `CanAlly`；`SM_GUILDADDMEMBER_OK/FAIL`、`SM_GUILDDELMEMBER_OK/FAIL`、`SM_GUILDMAKEALLY_OK/FAIL`、`SM_GUILDBREAKALLY_OK/FAIL`。
+
+**〔用户状态包〕** `ServerGetQueryUserState` → `SM_SENDUSERSTATE`（`TUserStateInfo`：Feature/名色/文派/职级/恋人/名声/`UseItems[0..U_CHARM]` 含天衣/闪烁/龙变换）；分身映射主人。
+
+**〔加点〕** `ServerGetAdjustBonus`（`FOR_ABIL_POINT`）**校验 `sum = BonusPoint - remainbonus`**；按职业系数 `CalcLoHi` 换算；余数留 `CurBonusAbil`。
+
+**〔随从重召〕** `RmMakeSlaveProc` 道士 3 只、余 5 只；按 `SlaveMakeLevel` 提速走/砍。
+
+**〔恋人/师徒〕** `ServerGetRelationRequest` 状态机 `RsReq_*`；**面对面 + 异性 + 双方 ≥22 级**；成功双方 `fLover.Add` + `RM_LM_DBADD` + 300 格粉色广播 + 日志 `'47'`。
+
+**〔`DoUpgradeItem`〕** 按 `StdMode` 把宝石属性累加进 `Desc[]`（表见 §10.36），武器攻速上限 `15+10`、其余 `[9]` 上限 15；`DuraMax := min(65000, +宝石DuraMax)`。与 `SumOfOptions` 槽位一一对应。
+
+**〔未闭合〕** `TGuild.*`/`MakeSlave`/`fLover.*` 实现未读；常量值未查。ObjBase 其余大段（寄售/庄园 `29819-31768`、`Cmd*` 19197-22663）仍未逐行读。**保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
