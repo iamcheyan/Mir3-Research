@@ -254,9 +254,13 @@ SpellButton cap8 (703,16)、MenuButton cap11 (703,85)、CashShopButton cap15 (66
 | 记录容量 | **46 条**（stride 0xC2C）+ 6×100 WORD 占位表 | 现代 48 项数组 + footprint first-fit 动态行 | §9 I-1（模型差异，非几何） |
 | 滚动控件 | F280 gauge 16×424、填充区 12×218、`(x+0xF8,y-0xA5)` | 自绘 16×424 轨道 + 16×34 拖柄 | §9 I-2 |
 
-运行证据：`.artifacts/godot-ui-parity-2026-09-29/legacy-inventory-grid.png`
-（Xvfb 1280×960；F250 窗口 + 6×6 空格网格 + 锁链滚动轨 + 골드 行同帧可见）
-与 `legacy-audit-2026-09-29.log` 的 `inventory size=(284,324) grid=(6,6)@(25,41)`。
+运行证据（两轮）：
+- lab：`Zircon/.artifacts/godot-ui-parity-2026-09-29/legacy-inventory-grid.png`
+  + `legacy-audit-2026-09-29.log` 的 `inventory size=(284,324) grid=(6,6)@(25,41)`；
+- **真机联机**（2026-09-30）：`docs/evidence/godot-runtime-acceptance-2026-09-30/`
+  `03-bag-window-after-Q.png` 与 `04-bag-grid-6x6-zoom.png` —— 进入游戏后按 Q 打开
+  背包，放大图可**逐格点数 6 列×6 行 = 36 格**，并同帧可见
+  `负重 0/总量 1899`、`金钱 100000172`（浅蓝 0x64C8F8）、`[包袱]`、`수리`、锁链滚动轨。
 
 结论：**背包的可视格子数量、尺寸、间距、起点与原版一致**；
 差异只在「记录容量/占位表模型」与「滚动 gauge 绘制」，二者均受数据身份或
@@ -299,7 +303,8 @@ SpellButton cap8 (703,16)、MenuButton cap11 (703,85)、CashShopButton cap15 (66
 | N-1 | NPC `mode=1 && overflow=1` 的 14px 行距分支 | `candidate` | 需 token/layout state；当前统一 21px。 |
 | — | 目标 EI EXE/WIL/WIX 版本身份 | **已闭合** | 见 §0.1：NAS `TMP/EI传奇3.0客户端/` 与本机逐文件 MD5 相同。 |
 | — | 原版客户端运行 A/B | `UNVERIFIED` | 原版为 Windows-only，本机无法运行（见 `../../ORIGINAL_GODOT_PARITY_AUDIT.md` P-002）。目标客户端文件已在 NAS 可取（§0.1），如需 A/B 需 Windows 主机。 |
-| — | 行会/任务修复的**联机**验收 | `UNVERIFIED` | 本轮验收在真实 Godot 进程里跑真实控件（`LegacyHudLayoutLab --legacy-audit` + `--legacy-guild-sample` + Xvfb 截图 + 三组交互自检），但**未连服务端**：文档端口 7000 当前无实例（机器上只有一个并行的隔离测试实例监听 7001/3001，未接入以免干扰），因此「服务端下发行会数据 → 窗口渲染」的联机链路未跑。不影响控件级结论，但联机复验仍待补。 |
+| — | 行会/背包的**联机**验收 | **已跑通**（2026-09-30） | 自建隔离服务端 `/tmp/godot-parity-srv`（`Port=7002`，DB 为副本）+ 800×600 客户端 + 角色 `EIFlow1`：登录→选角→StartGame 过场→公告框点击→进游戏 Bichon Town；按 Q 开 legacy 背包（**真机逐格点数 6×6=36**、负重/总量、金钱 100000172、[包袱]、수리、锁链轨），按 F 开 legacy 行会窗。详见 [`GODOT_UI_RUNTIME_ACCEPTANCE_2026-09-30.md`](GODOT_UI_RUNTIME_ACCEPTANCE_2026-09-30.md)。**该路径暴露并修复了 lab 测不到的缺陷**（legacy 行会窗残留现代建会页 → `752a41cc`）。 |
+| — | 任务窗的联机验收 | `UNVERIFIED` | 本轮真机未打开任务窗（该角色无任务数据）。 |
 
 ## 10. 验证方法（可复现）
 
