@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -688,6 +688,7 @@ DC 为 `(1,-2)`，之后 DC/SC 为 30–39 `(2,2)/(0,2)`、40–49 `(3,6)/(1,3)`
 | 死亡主路径与击杀归因 | 未闭合 | `TCreature.Run` 在 HP=0 时检查复活能力后调用 `Die`；`ExpHiter`/`LastHiter` 分别影响经验和击杀归因 | Zircon `PlayerObject.Die` 与 `MonsterObject.Die` 分流；没有直接行为等价证据 |
 | 实体周期状态与中毒 | 本轮未核实 EI `primary-static` 定时规则 | `TCreature.Run` `:14394-14940` 覆盖恢复、状态到期、hitter 清理与毒伤；`UsrEngn` `:3012-3175` 调度怪物/NPC/商人 | — |
 | 动态消息与延迟魔法 | 本轮未核实 EI `primary-static` 消息语义 | `TCreature.RunMsg` `:14174-14352` 路由魔法伤害、治疗与毒；selected `Magic.pas` callers 先做友方/目标检查；派生 `RunMsg` 改写部分事件 | — |
+| 目标资格与魔法通路 | 本轮未找到 EI `primary-static` 对照 | `CheckAttackRule2`、`_IsProperTarget`、动态 `IsProperTarget`；魔法另有 `MagCanHitTarget`，`TGuardUnit` 覆写独立规则 | — |
 
 装备等级/职业转换仍保持 `primary-static` 原版证据缺口、Preview `secondary-source` 的边界。
 Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读死亡掉落、地面物品归属
@@ -710,6 +711,7 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 | EI 原版死亡/红名处罚/复活规则 | 未找到可证明 Preview 对应服务端行为的 `primary-static` 证据 |
 | `TCreature.Run` 的派生类有效行为 | 本轮完整读基类与 `TAnimal.Run` 的 inherited 路径；`ObjMon`/`ObjNpc` 等动态覆写未逐类审查，也没有运行验证 |
 | `TCreature.RunMsg` 的全部生产者与派生覆写 | 本轮覆盖基类、`TAnimal`、`TMonster`、`TGoldenImugi` 和选定 Magic/ObjBase 调用；其他怪物/NPC 覆写与全量生产者未逐一审查，也无运行验证 |
+| EI 原版 PvP/召唤物/守卫目标资格与魔法通路 | 未找到可证明 Preview 这些服务端细节的 `primary-static` 证据；Preview 特殊事件标志、城堡守卫分支和射线边界也未运行验证 |
 
 ### 10.9 死亡、经验归属与 PK 合法性（Round 928；`:4898-5486`）
 
@@ -814,6 +816,26 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 #### 10.11.3 派生分派与其他消息
 
 `TAnimal.RunMsg` 对 `RM_STRUCK` 只在 `msg.Sender=self` 且 `lParam3<>0` 时记录 hitter、调用 `Struck`、打断 Holy Seize；若有主人且击中者为非主人的人类，则给主人 `AddPkHiter`。该 case 不调用 inherited，其他消息才进入基类。`TMonster.RunMsg` 直接 inherited；`TGoldenImugi.RunMsg` 收到中毒消息时先清 `DontAttack` 再 inherited。基类还路由 `RM_REFMESSAGE`、透明/随机移动、开放生命、引用计数、龙经验和诅咒等消息；其他类覆写尚未逐一核对。
+
+### 10.12 目标资格、PK规则与魔法路径（Round 931；`ObjBase.pas:13814-13839/14943-15149`、`ObjMon2.pas:917-1077`）
+
+#### 10.12.1 `IsProperTarget`：玩家攻击模式与分支优先级
+
+`_IsProperTarget`（`:14985-15118`）先拒绝 nil/self。玩家攻击模式按种族、组队和行会关系筛目标：`HAM_ALL` 排除 NPC/和平 NPC；`HAM_PEACE` 仅接受 `RaceServer>=RC_ANIMAL`；`HAM_GROUP` 排除 NPC 与组员；`HAM_GUILD` 排除 NPC、同会及城战区盟会；`HAM_PKATTACK` 排除 NPC，并按玩家 PK 级别只允许红白名相互攻击。`BoNonPKServer` 另对 `HAM_ALL/GROUP/GUILD/PKATTACK` 的人类目标调用非 PK 规则：默认禁止非战斗区目标，城堡被攻且攻击者处于 Free-PK/城战范围或行会关系满足条件时才允许；`HAM_PEACE` 不走这层规则。非人类且 `RaceServer<RC_ANIMAL` 的攻击者在该分支直接获准。
+
+怪物/召唤物规则另行判断。带 `Master` 的召唤物会按主人 `LastHiter`、`ExpHiter`、`TargetCret` 及目标当前指向关系选择候选；普通门控还检查同主人、Holy Seize、主人 `BoSlaveRelax`、目标 `BoGoodCrazyMode`、人类安全区和地图名。随后 `BoCrazyMode` 可把此前结果重新设为允许；`BoGoodCrazyMode` 再禁止人类与召唤目标、允许其他目标。无主动物可攻击人类、攻击型 NPC 与召唤物。最终基类检查拒绝 `BoSysopMode`、`BoStoneMode`、`HideMode` 目标。
+
+人类对人类目标在基类合法后才调用 `CheckAttackRule2`（`:14943-14982`）：任一方在安全区则拒绝；非 Free-PK 目标下，等级大于 10 的红名不能攻击 10 级及以下白名，反向也拒绝；任一方 `MapMoveTime<3s` 亦拒绝。旧 ApprovalMode 检查已注释。`IsProperTarget` 随后对带 `BoTaiwanEventUser` 的非 nil 目标无条件设 `Result=true`，可覆盖 `_IsProperTarget` 的 self/隐藏/保护拒绝及双方 PK 检查；设置条件、可达性和事件意图未运行核实，不据静态分支断言漏洞。人类攻击召唤物时另以 `_IsProperTarget(target.Master)` 检查主人并补安全区门控，不复用主人对人类目标的完整 `IsProperTarget`/`CheckAttackRule2` 路径。
+
+#### 10.12.2 `MagCanHitTarget`：有限步路径门控
+
+`:13814-13839` 对非 nil 目标记录初始 Manhattan 距离，最多尝试 13 步：逐步取 `GetNextDirection`/`GetNextPosition`，遇到不能前进或 `CanFireFly` 为 false 即退出；到达目标坐标或当前 Manhattan 距离大于初始值时返回 true，否则最终为 false。`olddis` 在循环中不更新，因此比较始终针对初始距离；这不是单独的 `IsProperTarget` 替代门。所读 Magic 三个 `MagCanHitTarget` 调用路径还各自做 `IsProperTarget` 检查。该路径没有运行测试，拐路/超 13 步情形的实战表现未验证。
+
+#### 10.12.3 `TGuardUnit` 的独立覆盖
+
+`TGuardUnit.IsProperTarget`（`ObjMon2.pas:926-991`）不调用 inherited，直接覆盖基类规则。有关联 `Castle` 时，允许 LastHiter；`BoCrimeforCastle` 的代码窗为 2 分钟（源码注释写 5 分钟），过期清标记；目标本身有关联城堡时清其标记并拒绝。城堡被攻时放开候选，之后仍拒绝 NPC/和平 NPC、自身、同城堡目标，并按主人行会/盟会关系过滤。`TGuardUnit.Struck` 在有城堡时给 hitter 设 `BoCrimeforCastle` 及时间。
+
+无 `Castle` 时，候选仅由“曾被该守卫击中”“正在攻击弓箭守卫”或 `PKLevel>=2` 放行，随后仍拒绝 Sysop、Stone 与自身；此分支没有基类的安全区、`HideMode` 或玩家攻击模式门控。`TArcherGuard.Create` 将 `Castle` 置 nil；`Run` 遍历 `VisibleActors`，按距离选择通过覆写谓词的目标并调用 `ShotArrow`。覆盖体无 nil 守卫，但所读调用点先解引用候选并检查死亡状态；nil 是否可进入该列表未验证。未运行守卫/城战场景，不能把静态规则推为实战可达行为。
 
 ---
 

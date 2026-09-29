@@ -13093,3 +13093,19 @@ staged paths 仅为本轮授权的三个文档。
 
 **〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`python3 Tools/source-read/ledger.py --summary`：393 文件 / 315,324 行，covered 334 / 165,829，partial 16 / 89,265，excluded 43 / 60,230，pending 0；三个目标文档的 `git diff --check` 通过。
 提交前 global privacy scanner 对三个 staged 文档及 commit message 均返回退出码 0；staged paths 仅为本轮授权的三个文档。
+
+## Round 931 — 2026-09-28：`ObjBase.pas` 攻击目标资格与守卫覆写
+
+**〔范围〕** 经授权 source reader 读取 `TCreature.CheckAttackRule2`（`ObjBase.pas:14943-14982`）、`_IsProperTarget`（`:14985-15118`）、`IsProperTarget`（`:15121-15149`）及 `MagCanHitTarget`（`:13814-13839`）；追读 `TGuardUnit.Struck/IsProperTarget`、`TArcherGuard.Create/Run`（`ObjMon2.pas:917-1077`）、`TMonster.Think/AttackTarget`（`ObjMon.pas:382-425`）与 Magic 的两个 `MagCanHitTarget` 调用例（`:1011-1024/1399-1412`）。未运行 Delphi/GameServer。
+
+**〔玩家与召唤物规则〕** `_IsProperTarget` 按 HAM_ALL/PEACE/GROUP/GUILD/PKATTACK 分流，分别处理 NPC 种族、组队/行会/盟会与人类 PK 级别；`BoNonPKServer` 只加在 ALL/GROUP/GUILD/PKATTACK 的人类目标路径，默认拒绝非战斗区目标，并有城战 Free-PK/行会关系例外。生物分支按主人 hitter/焦点关联、同主人、Holy Seize、主人休闲态、目标 GoodCrazy、目标安全区和地图名筛选；其后 `BoCrazyMode` 可重设为允许，`BoGoodCrazyMode` 再排除人类及召唤物。基类尾部拒绝 Sysop、Stone、Hide 目标。
+
+**〔PK门控顺序〕** `CheckAttackRule2` 只在基类已允许且攻击者/目标均为人类时运行：安全区拒绝、Free-PK 外的红白名等级门以及双方 3 秒地图移动门；ApprovalMode 旧分支已注释。之后 `IsProperTarget` 对非 nil `BoTaiwanEventUser` 目标无条件写回 true，可覆盖 `_IsProperTarget` 的 self/隐藏/保护拒绝及双方 PK 检查；flag 的设置条件和运行期影响未核实。人类攻击召唤物另检查主人 `_IsProperTarget` 与安全区，不走主人对人类目标的完整 `IsProperTarget`/`CheckAttackRule2`。
+
+**〔魔法路径〕** `MagCanHitTarget` 最多迭代 13 次，逐步要求 `GetNextPosition` 与 `CanFireFly`，到达目标或 Manhattan 距离超过初始值时允许。`olddis` 不随步进更新，比较始终对照起始距离。所读两个 Magic 调用例还分别调用 `IsProperTarget`；这里没有运行验证路径绕行和超过步数的实际表现。
+
+**〔守卫覆写〕** `TGuardUnit.IsProperTarget` 不 inherited：有关联城堡时走 hitter、犯罪标记、城战状态和主人行会规则，犯罪标记代码时长为 2 分钟而注释为 5 分钟；无城堡时按 LastHiter、正在攻击弓箭守卫或红名选目标，再排除 Sysop/Stone/自身。该无城堡分支未复用基类安全区/HideMode/玩家攻击模式。`TArcherGuard.Create` 置 `Castle=nil`；其 `Run` 遍历 `VisibleActors`，选最近合法目标并发箭。覆写体无 nil 守卫，但所读调用点先解引用可见对象；nil 是否可进入该列表未验证。
+
+**〔未闭合〕** 未找到 EI 原版 PvP/召唤物/守卫目标资格或魔法路径的 `primary-static` 对照；事件标志的设置者、守卫可见列表语义及各边界的实战可达性均未查明。`ObjBase.pas` 保持 partial，本轮为静态阅读，无运行期行为结论。
+
+**〔验证〕** `python3 Tools/source-read/verify_all.py`：ALL VERIFY PASS；`python3 Tools/source-read/ledger.py --summary`：393 文件 / 315,324 行，covered 334 / 165,829，partial 16 / 89,265，excluded 43 / 60,230，pending 0；三个目标文档的 `git diff --check` 通过。未运行 Delphi/GameServer。
