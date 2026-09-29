@@ -13215,3 +13215,16 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** 未找到 EI 原版客户端采集物/攻城渲染的 `primary-static` 对照；图库基址常量与真实资源、`PlayScene.SetActorDrawLevel` 语义未验证；无运行期验证。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 940 — 2026-09-29：`Client/AxeMon.pas` 全实现（35 类）
+
+**〔范围〕** 完整读取 `Source/Client/AxeMon.pas:1-4217`（CP949）。未运行 Delphi/客户端。
+
+**〔基类与常量〕** `TSkeletonOma`/`TGasKuDeGi` 两个顶层基类；`:10-62` 是**大量特效帧基址常量表**。`TSkeletonOma.CalcActorFrame` 按 `CurrentAction` + **大量 `Race` 特判**（93/94/100/107-110/111/112/23/55/81）展开帧段；`Run` 在消息队列 ≥2 时帧时长 ×2/3（加速），`Race=92` 的 `SM_LIGHTING` 第 4 帧发 `MAGIC_DUN_THUNDER`；`GetDefaultFrame` 用 `SitDown` 与 `DownDrawLevel`。
+
+**〔派生要点〕** 详见 `client-rendering.md §8.2`。`TDualAxeOma`/`TArcherMon`/`TPBOMA1Mon`/`TPBOMA6Mon` 在攻击帧发飞行物（`TFlyingAxe`/`TFlyingArrow`/`TFlyingBug`，各按 `Race` 选图库与基址）；`TZombiDigOut` 发 `ET_DIGOUTZOMBI` 客户端事件；`TGasKuDeGi` 用 `GetFlyDirection16` 做 16 方向攻击效果；`TSkeletonKingMon` 有 8 套 `SKELETONKINGEFFECT*`；`TBanyaGuardMon` 按 `Race` 分派死亡/攻击效果与 `MAGIC_SERPENT_1`/`MAGIC_FOX_*`/`MAGIC_SIDESTONE_ATT1`/`MAGIC_TURTLE_WARTERATT`；`TAngel` 双图层；**`TFireDragon` 是唯一带 `TTimer` 的怪物**（Race 83/110/118 三种闪电，`LightningTimerTimer` 按 Tag 0..7 递增发魔法）。
+
+**〔未闭合〕** 未找到 EI 原版客户端怪物渲染的 `primary-static` 对照；`Race`→帧基址的完整映射、图库名（`g_WMon*Img`）与真实资源、`GetFlyDirection16`/`PlayScene.NewMagic` 语义未验证；无运行期验证。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

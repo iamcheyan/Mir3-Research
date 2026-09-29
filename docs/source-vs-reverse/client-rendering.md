@@ -262,6 +262,94 @@ frametime  := pm.ActXxx.ftime;
 客户端有 `TSkeletonOma`/`TCatMon`/`TZombiDigOut` 等 ——
 **两边类名与层次结构不同**（各自独立实现，只共享 `Race`/`Appearance` 数值约定）。
 
+#### 8.2.1 帧基址常量（`:10-62`）
+
+本文件把**大量特效帧基址硬编码为常量**，按怪物分组：
+`DEATHEFFECTBASE=340`、`KUDEGIGASBASE=1445`、`COWMONFIREBASE=1800`、`COWMONLIGHTBASE=1900`、
+`ZOMBILIGHTINGBASE=350`、`SCULPTUREFIREBASE=1680`、`MOTHPOISONGASBASE=DUNGPOISONGASBASE=3590`、
+`SUPERIORGUARDEFFECTBASE=760`、`ELECTRONICSCOPIONEFFECTBASE=430`、`KINGBIGEFFECTBASE=860`、
+`TOXICPOISONGASBASE=720`、`SAMURAIDIEBASE=350`、`SKELMUJANGDIEBASE=1160`、`SKELSOLDIERDIEBASE=1600`、
+`BANYAGUARDRIGHTDIEBASE=2320`/`LEFTDIEBASE=2870`/`RIGHTHITBASE=2230`/`LEFTHITBASE=2780`/`LEFTFLYBASE=2960`、
+`DEADCOWKINGHITBASE=3490`/`FLYBASE=3580`、`PBSTONE1IDLE/ATTACK/DIE=2490/2500/2530`、
+`PBSTONE2*=2620/2630/2660`、`PBKINGATTACK1/2=3440/3520`、`PBKINGDIEBASE=3120`，
+以及 `SKELETONKINGEFFECT1..8BASE=2980/3060/3140/3220/3300/3380/3400/3570`。
+
+#### 8.2.2 `TSkeletonOma` 基类（`:326-698`）
+
+- **`CalcActorFrame`**：按 `CurrentAction` 展开帧段；**大量按 `Race` 特判** ——
+  93/100（환영한호/이무기）用 `SitDown`；107/108/109 站/走/受击**无方向**；111/112 攻击用
+  `340+Dir*10`；23/81（백골）`SM_DIGUP` 无方向；55（신수1）`SM_DIGDOWN` 逆播 `ReverseFrame`；
+  93/94 自定义帧速（200/150/110/130/160）。
+- **`GetDefaultFrame`**：死亡时 `Appearance in [30..34,151]`（우면귀）置 `DownDrawLevel:=1`
+  防尸体盖人；`SitDown` 时用 `420+Dir*10+cf`；`Race=110` 按 `TempState` 选 0/80/160/240/320 段；
+  108/109/110 触发效果帧（1500+/1610+/1710+）。
+- **`Run`**：帧推进；**`msgmuch`（消息队列 ≥2）时帧时长 ×2/3**（加速）；每帧调
+  `RunActSound`+`RunFrameAction`；**`Race=92`（주마격뢰장）在 `SM_LIGHTING` 第 4 帧发
+  `MAGIC_DUN_THUNDER` + 声音 8301**。
+- **`DrawChr`**：`DrawBlendShadow` 画影子（死亡时偏移 +3/+2）+ `DrawEffSurface` 主体 + 效果。
+
+#### 8.2.3 各派生类（要点）
+
+| 类 | 机制 |
+|---|---|
+| `TDualAxeOma` | `Run` 在 `SM_FLYAXE` 第 `AXEMONATTACKFRAME-4`(=2) 帧发 `TFlyingAxe`；按 `Race` 选 `FlyImageBase`（15→`FLYOMAAXEBASE`、22→`THORNBASE`、111→2356、112→2786）与图库（默认 `g_WMon3Img`，111/112 用 `g_WMon24Img`） |
+| `TWarriorElfMonster` | `RunFrameAction`：`SM_HIT` 第 5 帧建 `TMapEffect`（`WARRIORELFFIREBASE+10*Dir+1`，`g_WMon18Img`） |
+| `TCatMon` | `DrawChr`：`Race=81`（월령）**不混合、无颜色效果**绘制 |
+| `TArcherMon` | `Run` 在 `SM_FLYAXE` 第 4 帧发 `TFlyingArrow`（**新**：`mtFlyArrow`+`ARCHERBASE2`；**旧版注释保留**：`g_WMon5Img`+`ARCHERBASE`） |
+| `TZombiDigOut` | `RunFrameAction`：`SM_DIGUP` 第 6 帧建 **`TClEvent` `ET_DIGOUTZOMBI`**（客户端「洞」事件） |
+| `THuSuABi` | 攻击效果 `DEATHFIREEFFECTBASE=2860`（`g_WMon3Img`） |
+| `TGasKuDeGi` | 大型毒气怪基类（见下 §8.2.4） |
+| `TExplosionSpider` | 自爆效果 `730+`（`g_WMon14Img`） |
+| `TFlyingSpider` | `SM_NOWDEATH` 建 `TNormalDrawEffect`（`g_WMon12Img` 1420，20 帧） |
+| `TFireCowFaceMon`/`TCowFaceKing` | `Light`：有攻击效果时亮度 ≥2（**发光怪**） |
+| `TSculptureMon` | `STATE_STONE_MODE` 石像；48/49 攻击效果 `SCULPTUREFIREBASE=1680`（`g_WMon7Img`）；**92（주마격뢰장）站姿自带 940+Dir*10 效果** |
+| `TElectronicScolpionMon` | `Race=60`：`SM_LIGHTING` 用 `ELECTRONICSCOPIONEFFECTBASE=430`（`g_WMon19Img`） |
+| `TBossPigMon` | `Race=61`：`KINGBIGEFFECTBASE=860`（`g_WMon19Img`） |
+| `TKingOfSculpureKingMon` | `Race=62`：攻击/暴击/死亡三段效果（`KINGOFSCOLPTUREKINGATTACK/EFFECT/DEATHEFFECTBASE`，`g_WMon19Img`） |
+| `TSkeletonKingMon` | `Race=63`：**8 套效果**（走/受击/近战/飞斧/召唤/死亡/飞行弹）用 `SKELETONKINGEFFECT1..8BASE`（`g_WMon20Img`）；`Run` 在 `SM_FLYAXE` 第 4 帧发 `TFlyingFireBall`（`mtFireBall`，`SKELETONKINGEFFECT8BASE`） |
+| `TSkeletonArcherMon` | 死亡效果 `SKELARCHERDIEBASE=1600`（`g_WMon20Img`）；91/94/102 无死亡效果 |
+| `TBanyaGuardMon` | 见下 §8.2.5 |
+| `TStoneMonster` | `Race=75/77`（마계석）：待机/攻击/死亡效果 `PBSTONE1/2*`（`g_WMon22Img`），`Dir:=0` |
+| `TPBOMA1Mon` | `SM_FLYAXE` 第 4 帧发 `TFlyingBug`（`g_WMon22Img` 350，爆炸 430） |
+| `TPBOMA6Mon` | 同上发 `TFlyingAxe`（`mtFlyBolt`，`g_WMon22Img` 1989） |
+| `TAngel` | **双图层**：`BodySurface` + `BodySurface2`（`1280+currentframe`，透明层）；`DrawChr` 先 `Drawblend` 本体再 `DrawEffSurface` 透明层（`AngelFastDraw` 时强制 `blend:=False`） |
+| `TFireDragon` | 见下 §8.2.6 |
+| `TDragonStatue` | `Race=84..89`（용석상）：效果 `310`/`330`（`g_WDragonImg`）；`SM_LIGHTING` 第 4 帧发 `MAGIC_FIREBURN`+声音 8222 |
+| `TJumaThunderMon` | `Race=92`：走/站/攻击/受击/闪电各有帧段 `1020/940/1100/1180/1200+Dir*10`（`g_WMon23Img`）；石像模式停 `420+Dir*10` |
+
+#### 8.2.4 `TGasKuDeGi` 基类（`:979-1346`）
+
+攻击时**用 `GetFlyDirection16` 把目标屏幕坐标换成 16 方向**（`fire16dir`），
+`effectend` 按 `Race=20` 特殊 +1；`LoadSurface` 按 `Race` 分派图库与基址：
+24→`SUPERIORGUARDEFFECTBASE`(`g_WMonImg`)、16→`KUDEGIGASBASE`(`g_WMon3Img`)、
+20→`COWMONFIREBASE`、21→`COWMONLIGHTBASE`、40→`ZOMBILIGHTINGBASE`(`g_WMon5Img`) 且带
+`ZOMBIDIEBASE` 死亡效果、52/95→`MOTHPOISONGASBASE`、53→`DUNGPOISONGASBASE`、
+64→`TOXICPOISONGASBASE`(`g_WMon20Img`)、65/66/67/68→各死亡效果。`Race=95` 死亡时**改用
+`g_WMon4Img` 3580 混合绘制**。
+
+#### 8.2.5 `TBanyaGuardMon`（`:2189-2771`）—— 后期 Boss 表现
+
+- `LoadSurface` 的**死亡效果**按 `Race`：70/71（반야좌우사）、78（파황마신，`PBKINGDIEBASE`）、
+  93（환영한호 1790）、100（황금이무기 2900）、103/104/105（비월여우 340，首帧播 10420）、
+  108/109（호기연 1540/1650）——均 `g_WMon21/22/23/24Img`。
+- **攻击效果/魔法**按 `Race` 分派（`Run` 中按帧触发）：
+  70/81 强격（`MagicNum`）、71 화이어볼、72 마법진、78 地面范围、93 결빙장、
+  94 音效、100 **멸천화 `MAGIC_SERPENT_1`**、103 暴击、104 **`MAGIC_FOX_FIRE1`**、
+  105 **`MAGIC_FOX_CURSE`/`MAGIC_FOX_FIRE2`**（폭살계）、107 **`MAGIC_SIDESTONE_ATT1`**、
+  117 **`MAGIC_TURTLE_WARTERATT`** —— 每个都配固定音效号。
+
+#### 8.2.6 `TFireDragon`（`:3159-3872`）—— 唯一带 `TTimer` 的怪物
+
+- `Create` 建 `LightningTimer`（`Race=83`→70ms，`110`→10ms），`Enabled:=False`。
+- `LoadSurface` 用 **`g_WDragonImg`**（`Race=83`，本体帧 10/20/30/40+，效果 60/90/100/110+，
+  且 `px/py/ax/ay` **整体 -14/-15**）、`g_WMon24Img`（`110` 1670+）、`g_WMon25Img`（`118` 1650+）。
+- `CalcActorFrame`：`Race=110` 按 `TempState` 5 段；`118`（현무현신）有独立 340/420/500/580 攻击帧段。
+- `Run`：`Race=118` 的 `SM_LIGHTING_1/2/3` 分别发 `MAGIC_KINGTURTLE_ATT1/ATT2(启 Timer)/ATT3`；
+  `110` 发 `MAGIC_SOULBALL_ATT1/ATT2`；`83` 的 `SM_DRAGON_FIRE1/2/3` 发对应魔法 + 声音 8203。
+- **`LightningTimerTimer`**：按 `Tag` 计数 0..7，`Race=83` 每次在自身周围随机发
+  `SM_DRAGON_LIGHTING` 闪电（interval 递增 +15）；`110` 发 `MAGIC_SOULBALL_ATT3_*`（+100）；
+  `118` 发 `MAGIC_KINGTURTLE_ATT2_*`（+200）；结束时复位 `Enabled:=False`。
+
 ### 8.3 `HerbActor.pas` —— 采集物与特殊对象（10 类，Round 939 全实现）
 
 > 常量（`:10-14`）：`BEEQUEENBASE=600`、`DOORDEATHEFFECTBASE=120`、
@@ -435,7 +523,7 @@ fy := fireY + stepy;
 
 | 项 | 原因 |
 |---|---|
-| `AxeMon.pas` 各类的 `DrawEff`/`Run` 实现 | 只读了类层次 |
+| ~~`AxeMon.pas` 各类的 `DrawEff`/`Run` 实现~~ | ✅ **已闭合**（Round 940，§8.2） |
 | ~~`HerbActor.pas` 各类的实现~~ | ✅ **已闭合**（Round 939，§8.3） |
 | `magiceff.pas` 其余 12 个特效类的实现 | 只读了基类 + `TFlyingAxe` 构造 |
 | `FLYBASE`/`EXPLOSIONBASE`/`FLYOMAAXEBASE` 常量值 | 未查 |
