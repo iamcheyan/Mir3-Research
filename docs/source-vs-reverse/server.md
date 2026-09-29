@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1198,6 +1198,78 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 
 **未验证**：`AroundDoorOpened`/`CanEnteranceCoreCastle`/`EventMan.FindEvent`/`MakeFeature(Ap)` 实现未逐一读；
 跨服换服的实际握手（`ChangeToServerNumber` 消费点）未追；无运行期验证。
+
+### 10.19 近战封装、击退、毒、召唤、组队与移动（Round 952；`ObjBase.pas:11167-12365`）
+
+#### 10.19.1 `HitHit` / `HitMotion` / `HitHit2`（`:11167-11356`）
+
+- `HitHit(target, hitmode, dir)`：`HM_WIDEHIT`/`HM_CROSSHIT`/`HM_TWINHIT` 先扣 MP
+  （`DamageSpell(GetSWSpell(skill) + skill.pDef.DefSpell)`，`MP=0` 则**降级为 `RM_HIT`**）；
+  `Dir := dir`；`target=nil` 时 `GetFrontCret`；持武器时 `CheckWeaponUpgradeResult`；
+  `_Attack` 成功则 `SelectTarget`；按 `hitmode` 把 `msg` 映射到 `RM_HIT/HEAVYHIT/BIGHIT/POWERHIT/LONGHIT/WIDEHIT/FIREHIT/CROSSHIT/TWINHIT`；`HitMotion` 广播。
+- **`CheckWeaponUpgradeResult`/`IdentifyWeapon`（`:11168-11225`）**：`Desc[10]`（**鉴定标记**）
+  `10..13/20..23/30..33` 分别给 `Desc[0]/[1]/[2]` 加成；`=1` → **武器破碎**（`Index:=0`）；
+  `Desc[0]+[1]+[2] < 20` 才鉴定，否则直接 `Index:=0`。成功写日志码 `20`（업성/升级成功）、
+  失败写 `21`（업실/升级失败）并 `RM_BREAKWEAPON`。
+- `HitHit2` = `HitHitEx2(target, RM_HIT, hitpwr, magpwr, all)`（`:11327`）：
+  `HitHitEx2` 对目标格 `GetAllCreature` 内每个 `IsProperTarget` 目标算
+  `GetHitStruckDamage(hitpwr) + GetMagStruckDamage(magpwr)`，`StruckDamage` + `RM_STRUCK`（200 ms），
+  再 `SendRefMsg(rmmsg, ...)`（**范围物理+魔法混合伤害**，怪物 AI 常用）。
+
+#### 10.19.2 击退与冲刺（`:11359-11634`）
+
+- **`CharPushed(ndir, pushcount)`（`:11359`）**：朝 `ndir` 逐格 `GetFrontPosition` + `CanWalk(不重叠)`
+  + `MoveToMovingObject`；每成功一格 `RM_PUSH(GetBack(ndir), ...)`；动物（`RaceServer>=RC_ANIMAL`）
+  `WalkTime += 800`（**被推后出手变慢**）；返回实际推动格数。
+- **`CharRushRush(ndir, rushlevel, isHumanSkill)`（`:11392`）—— 무태보/推人**：
+  `CanPush(cret)` = 等级更高 + 非 `StickMode` + `Random(20) < 6+rushlevel*3+levelgap` + `IsProperTarget`；
+  `rushlevel>=3` 时还会推前方第 2 格的目标；命中目标 `CharPushed(Dir,1)` + `Inc(PushedCount)`
+  （**`TPushedMon` 的计数来源**）；`RM_RUSH`；撞墙 → `RM_RUSHKUNG` + `SysMsg('밀어낼 힘이 달립니다.')`；
+  `isHumanSkill` 时按 `(1+damagelevel)*4 + Random((1+damagelevel)*5)` 对被推者和自己造成伤害。
+- **`CharDrawingRush`（`:11514`）**：与 `CharRushRush` 同构，但**有目标的推人循环整段被 `{ }` 注释掉**
+  （只剩无目标的前进分支）—— 注释标「포승검 수정」（**当前实际是空实现的有目标分支**）。
+
+#### 10.19.3 毒、周围实体与召唤（`:11636-11943`）
+
+- `SiegeCount`：1 格内存活实体数；`SiegeLockCount`：8 邻格中**不可走**的格数（**被围程度**，
+  `TCowKingMonster` 用它触发脱围）。
+- **`MakePoison(poison, sec, poisonlv)`（`:11667`）**：`sec -= PoisonRecover`，`<=0` 直接返回；
+  `StatusArr[poison]` 取较大值；`POISON_DAMAGEARMOR` 设 `RedPoisonLevel`、否则 `PoisonLevel`；
+  `PlusPoisonFactor<>0` 时**乘 `(PlusPoisonFactor div 100)`**；`CharStatusChanged`；人类提示「중독되었습니다」。
+- `ClearPoison`；`GetFrontCret`/`GetBackCret`（前方/后方格实体）；`CretInNearXY`（3×3 内找指定实体）。
+- **`MakeSlave(sname, slevel, max_slave, royaltysec)`（`:11769`）**：天使/护卫额外 +1 名额；
+  `SlaveList.Count < max_slave+AddPlus` 时 `AddCreatureSysop` + 设 `Master/MasterRoyaltyTime/
+  SlaveMakeLevel/SlaveExpLevel/MasterFeature` + `RecalcAbilitys` + HP 补到中间值 + `ChangeNameColor` + 入列。
+- `ClearAllSlaves`（`BoDisapear`+`MakeGhost(4)`）/`KillAllSlaves`（HP:=0）/`ExistAttackSlaves`
+  （**有正在攻击人类的召唤物则不能登出**）/`GetExistSlave`（按名找存活召唤物）。
+- **`EnableRecallMob(TargetMob, SkillLevel)`（`:11879`）—— 驯服**：`NoMaster`/`LA_CREATURE`/
+  非分身/非天使/`Level < MAXKINGLEVEL-1`；护卫/弓箭护卫不可驯；目标 `Level>=50` 时**每有一只 ≥50 的
+  召唤物，成功率按 `Random(3*count)` 递减**；환영한호（鬼虎）唯一；上限 `2 + SkillLevel + AddPlus`。
+
+#### 10.19.4 组队（`:11949-12071`）
+
+`IsGroupMember`/`CheckGroupValid`（成员 ≤1 时解散 + `RecalcAbilitys`）/
+`DelGroupMember`（队长退出则全队解散 + `RM_GROUPCANCEL`）/`EnterGroup`/`LeaveGroup`/`DenyGroup`。
+`EnterGroup`/`LeaveGroup` 都调 `RecalcAbilitys`（**情人节情侣组队加成**）。
+
+#### 10.19.5 攻击范围判定（`:12078-12170`）
+
+- **`TargetInAttackRange`**：目标在 **1 格八邻域**（不含自身格）→ 按相对位置定 `DR_*` 方向。
+- **`TargetInSpitRange`**：2 格内；相邻（|dx|,|dy|≤1）走 `TargetInAttackRange`，否则映射到
+  `SpitMap[targdir, ny, nx]` 的 5×5 模板（**喷吐型攻击的形状表**）。
+- **`TargetInCrossRange`**：同上，用 `CrossMap`（**十字/广域攻击形状表**）。
+
+#### 10.19.6 `WalkTo` / `RunTo`（`:12173-12359`）
+
+- **`WalkTo(dir, allowdup)`**：`BoHolySeize` 时**不能移动**；按 `dir` 算下一格；边界检查；
+  `BoFearFire` 时要求 `CanSafeWalk`（**怕火怪避火**）；有主人时**不挡主人正前方**；
+  `MoveToMovingObject` 成功后 `Walk(RM_WALK)`；`Walk` 失败则回退到原格并重新 `AddToMap`；
+  移动时若 `BoFixedHideMode` → **破隐身**（`STATE_TRANSPARENT := 1`）。
+- **`RunTo(dir, allowdup)`**：一次移动 **2 格**，要求两格都可走；`Walk(RM_RUN)`；失败回退原格。
+- `IsEnoughBag`：`Itemlist.Count < MAXBAGITEM`。
+
+**未验证**：`MoveToMovingObject`/`CanSafeWalk`/`GetNextPosition`/`GetAllCreature` 实现未逐一读；
+`CharDrawingRush` 注释掉的推人分支是否为有意禁用未核实；`MAXKINGLEVEL` 值未查；无运行期验证。
 
 ---
 

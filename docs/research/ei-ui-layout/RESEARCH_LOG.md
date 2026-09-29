@@ -13405,3 +13405,20 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** `AroundDoorOpened`/`CanEnteranceCoreCastle`/`EventMan.FindEvent`/`MakeFeature(Ap)` 未逐一读；跨服换服握手消费点未追；ObjBase 其余大段（`WalkTo`/`RunTo`、`HitHit`/`CharPushed`/`CharRushRush`、经验/等级/金币/负重、`TUserHuman` 命令 `Cmd*` 与 `ServerGet*` 商店/市场、fame/gift boxes）仍未逐行读。**ObjBase.pas 保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 952 — 2026-09-29：`ObjBase.pas` 近战/击退/毒/召唤/组队/移动
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:11167-12365`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔近战封装〕** `HitHit`：`HM_WIDE/CROSS/TWINHIT` 先扣 MP（不足降级 `RM_HIT`）；`target=nil` 用 `GetFrontCret`；持武器时 `CheckWeaponUpgradeResult`（`Desc[10]` 鉴定标记；成功日志 `20`/失败 `21`+`RM_BREAKWEAPON`）；按 hitmode 映射 `RM_*` 后 `HitMotion`。`HitHit2/HitHitEx2`：对目标格 `GetAllCreature` 内每个合法目标做 `GetHitStruckDamage+GetMagStruckDamage` 混合范围伤害。
+
+**〔击退/冲刺〕** `CharPushed` 逐格推、`RM_PUSH`、动物 `WalkTime+800`；`CharRushRush`（무태보）`CanPush` 门（等级+非 StickMode+`Random(20)<6+rushlevel*3+levelgap`），命中 `CharPushed`+`Inc(PushedCount)`（**TPushedMon 计数来源**），撞墙 `RM_RUSHKUNG`；`CharDrawingRush`（포승검）**有目标推人分支被整段注释**。`SiegeLockCount` 统计不可走邻格（**被围程度**）。
+
+**〔毒/召唤〕** `MakePoison`（`sec -= PoisonRecover`、`RedPoisonLevel/PoisonLevel`、`PlusPoisonFactor` 倍率）；`MakeSlave`（设 Master/SlaveMakeLevel/MasterFeature）；`EnableRecallMob`（驯服：等级≥50 的怪按已有数量递减成功率、鬼虎唯一、上限 `2+SkillLevel+AddPlus`、护卫不可驯）；`ExistAttackSlaves` 阻止战斗登出。
+
+**〔组队/范围/移动〕** 组队解散与情人节 `RecalcAbilitys`；`TargetInAttackRange`（八邻域）/`TargetInSpitRange`（`SpitMap` 5×5）/`TargetInCrossRange`（`CrossMap`）；`WalkTo`（`BoHolySeize` 禁动、`BoFearFire` 避火、不挡主人、破固定隐身）、`RunTo`（2 格）。
+
+**〔未闭合〕** `MoveToMovingObject`/`CanSafeWalk`/`GetAllCreature` 未逐一读；`CharDrawingRush` 注释分支意图未核实；ObjBase 其余大段（经验/等级/金币/负重/能力重算主体、`HitHit` 之外的魔法/防御区 `13700-17202`、`TUserHuman` 命令 `Cmd*` 与 `ServerGet*` 商店/市场 `26333-31768`、fame/gift boxes）仍未逐行读。**ObjBase.pas 保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
