@@ -13713,3 +13713,22 @@ HUD cap2「技能图鉴」flag 消费者；任务详情面板 `detail_geometry` 
 **〔未闭合〕** `TGuild.*`/`MakeSlave`/`fLover.*` 实现未读；常量值未查。ObjBase 其余大段（寄售/庄园 `29819-31768`、`Cmd*` 19197-22663）仍未逐行读。**保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 968 — 2026-09-29：`ObjBase.pas` 寄售/庄园/名声/合并（含文件末尾）
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:29923-31763`（至文件末 `end.`）。未运行 Delphi/GameServer。
+
+**〔时间卡〕** `SetExpiredTime`/`CheckExpiredTime`：每秒递减，整分提示「剩 N 分钟」，归零 `BoAccountExpired`。
+
+**〔寄售 위탁상점〕** `IsEnableUseMarket` 要求同图 8 格内 + `Abil.Level >= MARKET_ALLOW_LEVEL`；委托金 `[MARKET_CHARGE_MONEY, MARKET_MAX_TRUST_MONEY]`；**不能买自己上架**；SQL 驱动（`RequestSell/Buy/Cancel/GetPayUserMarket`）；`RM_MARKET_RESULT` + `UMResult_*`。
+
+**〔庄园〕** 留言板读需本庄园文派（`UD_ADMIN` 例外）、通知类仅文派主、正文禁单引号；装饰品/상현袋购买。
+
+**〔名声称号 `GetFameName`〕** 按 `FameBase` 分 **20 级**，修饰词 + 职业名词（战士/术士/道士 各段换词：전사→낭인→무사→협객→검제→검황 等），表见 §10.37.4。
+
+**〔物品合并 `UserUnifyItem`〕** 3 件同类（项链 `[19,20,21]`/手镯 `[24,26]`/戒指 `[22,23]`）；按 `DuraMax` 加权随机保留 1 件；`DuraMax := min(60000, ΣDuraMax*1000)`，再按概率减 `Random(DuraMax div 3)`；删其余 2 件；日志 `'44'`。
+
+**〔未闭合〕** `SqlEngine.*`/`FUserMarket`/`GuildAgit*` 实现未读；常量值未查。ObjBase 剩余未逐行读区段：`Cmd*` 19197-20375 / 21987-22663 / 29230-29590 / 29819-29922 / 30120-30451 / 30785-31401。**保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

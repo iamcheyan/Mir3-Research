@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962 / 963 / 964 / 965 / 966 / 967）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962 / 963 / 964 / 965 / 966 / 967 / 968）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1946,6 +1946,66 @@ AC/MAC 只增 hi 字节，HP/MP/Hit/Speed 直接加；余数留 `CurBonusAbil`�
 `CmdLetterColor`（`:29808-29817`，DEBUG）：`SM_WHISPER` 带色测试。
 
 **未验证**：`TGuild.*`/`MakeSlave`/`fLover.*` 实现未读；`MAXGUILDMEMBER`/`ENABLE_FAME_SYSTEM`/`FOR_ABIL_POINT` 等值未查；无运行期验证。
+
+### 10.37 寄售（위탁상점）/庄园/名声/物品合并（Round 968；`ObjBase.pas:29923-31763`）
+
+#### 10.37.1 时间卡到期（`:29923-29952`）
+
+`SetExpiredTime`（> `EXPERIENCELEVEL` 才启用）/`CheckExpiredTime`：每秒递减 `FExpireCount`，整除 60 时提示「剩 N 分钟」，归零置 `BoAccountExpired`。
+
+#### 10.37.2 寄售/委托商店（위탁상점，SQL 驱动，`:29954-31207`）
+
+- `IsEnableUseMarket`：非请求中（`BoFlagUserMarket`）、须在**委托 NPC 同图 8 格内**、`Abil.Level >= MARKET_ALLOW_LEVEL`。
+- `ServerGetMarketList`（page 0 刷新 / 1 翻页 / 2 按名搜索 `USERMARKET_TYPE_ITEMNAME`）。
+- `RequireSellUserMarket`：**委托金 `>= MARKET_CHARGE_MONEY`**、`<= MARKET_MAX_TRUST_MONEY`、`Gold >= MARKET_CHARGE_MONEY`、物品存在、`ps.ItemType <> 0`；计数物品须 `Dura >= SellCount`；组装 `TMarketLoad`（`MarketName = ServerName_NPC名`）→ `RequestSellItemUserMarket`。
+- `RequireBuyUserMarket`：索引存在、`Gold >= 价格`、背包未满、**不能买自己上架的**（`IsMyItem`）。
+- `RequireCancelUserMarket`/`RequireGetPayUserMarket`：取消/领款。
+- `DeleteFromBagItem`（拆分上架）/`AddToBagItem`/`SendUserMarketList`/`SellUserMarket`/`BuyUserMarket`/`CancelUserMarket`/`GetPayUserMarket`/`GetMarketData`。
+- 包：`RM_MARKET_RESULT`（`UMResult_NoItem/LessTrustMoney/MaxTrustMoney/LessMoney/DontSell/MaxBagItemCount/DontBuy`）。
+
+#### 10.37.3 庄园（`:30028-30362, 31208-31400`）
+
+- `ServerGetGuildAgitList`/`GaBoardList`（分页）、`ServerGetGaBoardRead`（**非本庄园文派不可读，`UD_ADMIN` 例外**）、`ServerGetGaBoardAdd`（`KIND_NOTICE` 仅文派主；**正文禁单引号**）、`GaBoardDel/DelAll/Edit/NoticeCheck`。
+- `ServerGetGuildAgitTag`（仅文派主）、`ServerGetDecoItemBuy`/`CmdBuyDecoItem`/`SendDecoItemList`（装饰品/상현주머니）、`ExecuteGuildAgitTrade`（庄园交易）。
+- 包：`SM_GABOARD_READ`。
+
+#### 10.37.4 名声称号（`GetFameName`，`:31401-31582`）
+
+按 `Abil.FameBase` 分 **20 级**，称号 = `修饰词 + 职业名词`（职业 0 战士/1 术士/2 道士 各段换词）：
+
+| 级 | FameBase ≤ | 修饰 | 战士 | 术士 | 道士 |
+|---:|---:|---|---|---|---|
+| 1 | 60 | 무명의(无名) | 전사 | 술사 | 도사 |
+| 2 | 700 | 평범한(平凡) | 전사 | 술사 | 도사 |
+| 3 | 4,600 | 능란한(能干) | 전사 | 술사 | 도사 |
+| 4 | 13,000 | 노련한(老练) | 낭인(浪人) | 환술사(幻术师) | 수행인(修行人) |
+| 5 | 40,000 | 뛰어난(出众) | 낭인 | 환술사 | 수행인 |
+| 6 | 114,000 | 우수한(优秀) | 낭인 | 환술사 | 수행인 |
+| 7 | 230,000 | 대단한(了不起) | 무사(武士) | 지인(智人) | 도인(道人) |
+| 8 | 360,000 | 촉망받는(受瞩目) | 무사 | 지인 | 도인 |
+| 9 | 550,000 | 덕망있는(德望) | 무사 | 지인 | 도인 |
+| 10 | 940,000 | 강인한(刚强) | 협객(侠客) | 현인(贤人) | 선인(仙人) |
+| 11 | 1,300,000 | 용맹한(勇猛) | 협객 | 현인 | 선인 |
+| 12 | 3,200,000 | 현명한(贤明) | 협객 | 현인 | 선인 |
+| 13 | 5,340,000 | 불굴의(不屈) | 검제(剑帝) | 대현인(大贤人) | 진인(真人) |
+| 14 | 8,580,000 | 투지의(斗志) | 검제 | 대현인 | 진인 |
+| 15 | 13,000,000 | 위대한(伟大) | 검제 | 대현인 | 진인 |
+| 16 | 17,000,000 | 비범한(非凡) | 검황(剑皇) | 마존(魔尊) | 태선인(太仙人) |
+| 17 | 21,300,000 | 존경받는(受尊敬) | 검황 | 마존 | 태선인 |
+| 18 | 25,600,000 | 영예로운(荣耀) | 검황 | 마존 | 태선인 |
+| 19 | 30,000,000 | 영광의(光荣) | 검황 | 마존 | 태선인 |
+| 20 | ∞ | 최강의(最强) | 검황 | 마존 | 태선인 |
+
+#### 10.37.5 物品合并（`UserUnifyItem`，`:31586-31763`）
+
+取背包中 **3 件同类**（`NECKLACE`/목걸이=`[19,20,21]`，`BRACELET`/팔찌=`[24,26]`，`RING`/반지=`[22,23]`）：
+- `LimitDura=60000`；按各件 `DuraMax` 加权随机选出「保留件」（`Random(totalDura) < 该件 DuraMax`），失败回退最大耐久件。
+- 保留件 `DuraMax := min(LimitDura, ΣDuraMax*1000)`，再按 `Random(totalDura*1000) < OrgDura` 概率**减去 `Random(DuraMax div 3)`**；`Dura` 超限则下调。
+- 其余 2 件删除，日志 `'44'`（제조삭_）。
+- 须商人在同图 15 格内。
+
+**未验证**：`SqlEngine.*`/`FUserMarket`/`GuildAgitBoardMan`/`GuildAgitMan` 实现未读；
+`MARKET_ALLOW_LEVEL`/`MARKET_CHARGE_MONEY`/`MARKET_MAX_TRUST_MONEY`/`EXPERIENCELEVEL` 等值未查；无运行期验证。
 
 ---
 
