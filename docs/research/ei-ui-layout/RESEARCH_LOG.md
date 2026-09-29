@@ -13228,3 +13228,22 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** 未找到 EI 原版客户端怪物渲染的 `primary-static` 对照；`Race`→帧基址的完整映射、图库名（`g_WMon*Img`）与真实资源、`GetFlyDirection16`/`PlayScene.NewMagic` 语义未验证；无运行期验证。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 941 — 2026-09-29：`Client/Actor.pas` 全实现（角色渲染核心）
+
+**〔范围〕** 完整读取 `Source/Client/Actor.pas:1-4743`（cp949+mixed；`Round 819` 已读帧表/公式）。未运行 Delphi/客户端。
+
+**〔消息管线〕** `SendMsg`/`UpdateMsg`/`CleanUserMsgs`/`ProcMsg`/`ProcHurryMsg`。`UpdateMsg` 对**主角**删除所有 `Ident 3000..3099`（客户端消息）与同 `Ident` 项；`ProcHurryMsg` **乱序扫描**取 `SM_MAGICFIRE`/`SM_MAGICFIRE_FAIL` 并从队列中间删除。`ProcMsg` 仅当 `CurrentAction=0` 时逐条 `ReadyAction`。
+
+**〔ReadyAction〕** `CM_*`→`SM_*`（`Ident-3000`）；`CM_WALK/RUN` 先做 `PlayScene.CanWalk/CanRun`；`SM_STRUCK` 的 `struckframetime=max(80, 200-Level*5)`（**等级越高受击越快**）+ 组队显血；`SM_SPELL` 置 `ServerMagicCode:=-1` 等服务器 `SM_MAGICFIRE`；`SM_DEATH/NOWDEATH` → `Death:=TRUE`+`PlayScene.ActorDied`。
+
+**〔Run 施法门控〕** 施法动画在 `CurEffFrame = SpellFrame-2`（或 3 s 超时）**停住等 `CurMagic.ServerMagicCode >= 0`**，在 `SpellFrame-1` 帧才 `PlayScene.NewMagic`+音效。主角动作结束还需 `FrmMain.ServerAcceptNextAction`。
+
+**〔Move〕** 负重/`POISON_SLOW($08000000)` 累计 `MoveSlowLevel`，`SkipTick` 跳帧变慢；脚步在走路第 1/4 帧；`SM_RUSH` 结束 300 ms `DizzyDelay`、`SM_BACKSTEP` 1000 ms；`SM_RUSHKUNG` 末 3 帧位置还原。
+
+**〔TNpcActor / THumActor〕** NPC `Dir mod 3`（仅三方向）+ 按 `Appearance` 硬编码特效与位置修正，部分外观不画影子。人物 `HUMANFRAME` 分层偏移（身体/头发/武器/翅膀）；`SM_RUSH` 左右交替；`SM_SPELL` 按 `EffectNumber`（22/26/35/43/44/45/47）特判 `SpellFrame`/`frametime`/音效；`RunFrameAction` 处理重击挖石与投掷飞斧；`DrawChr` 用 **`WORDER[Sex, currentframe]`** 决定武器与身体的遮挡顺序，武器**不染色**（`ceNone`），`STATE_BUBBLEDEFENCEUP` 画泡泡，공파섬用 `HitEffectNumber=8` 特判。
+
+**〔未闭合〕** 未找到 EI 原版客户端角色渲染的 `primary-static` 对照；`WORDER`/`GetEffectBase`/`PlayScene.NewMagic`/`TScrollHideEffect` 等实现与真实资源未验证；无运行期验证。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

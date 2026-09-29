@@ -144,10 +144,109 @@ frametime  := pm.ActXxx.ftime;
 | `MoveFail`/`CancelAction` | `:3183`/`:3201` | 移动失败/取消动作 |
 | `Say` | `:3220` | 说话 |
 
-> ✅ **`Shift` 的重复定义已查明**：`:1910` 是**生效版本**；
-> `:2093` 的第二个定义**被 `{ }` 块注释掉**（`:2092` 是 `{`，块延伸到其后）。
-> 即**只有一个 `Shift` 生效**，不是重载。**读代码时的陷阱**：
-> 同文件里有被大括号注释掉的重复函数，静态 grep 会看到两个。
+### 1.8 `TActor` 消息管线与主循环实现（Round 941）
+
+#### 1.8.1 消息队列（`MsgList: TList` of `PTChrMsg`）
+
+| 方法 | 行 | 语义 |
+|---|---|---|
+| `SendMsg` | `:1414` | `new(pmsg)` 填字段后 `MsgList.Add` |
+| `UpdateMsg` | `:1430` | **自己是主角**：删除队列里所有**客户端消息**（`Ident 3000..3099`）与同 `Ident` 项，再入队；**别人**：只删第一个同 `Ident` 项再入队（合并同类动作） |
+| `CleanUserMsgs` | `:1464` | 只删 `Ident 3000..3099` |
+| `ProcMsg` | `:1748` | 逐条出队（**仅当 `CurrentAction=0`**）：`SM_STRUCK` 先记 `HiterCode:=msg.Sound` 再 `ReadyAction`；`SM_DEATH/NOWDEATH/SKELETON/ALIVE/CROSSHIT/TWINHIT/STONEHIT`/`SM_ACTION*`/`SM_DRAGON_LIGHTING..SM_LIGHTING_3`/`3000..3099` → `ReadyAction`；`SM_SPACEMOVE_HIDE(2)` → `TScrollHideEffect`+出音；`SM_SPACEMOVE_SHOW(2)` → `TCharEffect`+**转成 `SM_TURN` 再 `ReadyAction`**+入音 |
+| `ProcHurryMsg` | `:1817` | **乱序扫描**：找 `SM_MAGICFIRE`（置 `CurMagic.ServerMagicCode:=111`、目标/类型/效果号）与 `SM_MAGICFIRE_FAIL`（`ServerMagicCode:=0`）并**从队列中间删除** |
+
+#### 1.8.2 `ReadyAction`（`:1571-1746`）—— 消息→动作状态
+
+1. 记录 `actbeforex/y`（供冲刺/回退复位）。
+2. 非死亡时：移动类消息写 `Feature`/`State`；`STATE_OPENHEATH` 置 `BoOpenHealth`，
+   否则查 `ViewList` 里是否有 `RecogId`（**组队显血**）。
+3. **主角**（`self=Myself`）：`CM_WALK` 先 `PlayScene.CanWalk` 否则 `exit`；`CM_RUN` 先
+   `CanRun`；`CM_TURN/WALK/SITDOWN/RUN/HIT/POWERHIT/LONGHIT/WIDEHIT/CROSSHIT/HEAVYHIT/BIGHIT`
+   存 `RealActionMsg` 并把 `Ident-3000` 转成 `SM_*`；`CM_THROW` 解析目标指针；`CM_SPELL`
+   取 `UseMagicInfo`。
+4. `SM_STRUCK`：`struckframetime := max(80, 200 - Level*5)`（**等级越高受击动作越快**）；
+   被自己/队友打且 `MaxHP<2000` → 60 s 显血（`BoInstanceOpenHealth`）。
+5. `SM_SPELL`：`CurMagic := pmag^`、`ServerMagicCode:=-1`（**等服务器 `SM_MAGICFIRE`**）、
+   记 `TargX/TargY`，`Dispose(pmag)`。
+6. 其余消息：`XX/YY/Dir := msg.*`。
+7. `CurrentAction := msg.Ident` + `CalcActorFrame`；`SM_DEATH/NOWDEATH` → 移出组队列表、
+   `Death:=TRUE`、`PlayScene.ActorDied(self)`；最后 `RunSound`。
+
+#### 1.8.3 `Run`（`:2875-3007`）—— **魔法需服务器确认才推进**
+
+移动动作（WALK/BACKSTEP/RUN/RUSH/RUSHKUNG）由 `Move` 处理，`Run` 直接 `exit`。
+核心是**施法门控**：
+
+```
+if BoUseMagic then
+   if (CurEffFrame = SpellFrame-2) or MagicTimeOut(>3000ms) then
+      if CurMagic.ServerMagicCode >= 0 then 推进帧   // 等服务器 SM_MAGICFIRE
+   ...
+if BoUseMagic and (CurEffFrame = SpellFrame-1) then  // 发射帧
+   if CurMagic.ServerMagicCode > 0 then PlayScene.NewMagic(...) + 音效
+```
+
+→ **客户端施法动画会在「发射前 2 帧」停住等服务器回包**（`ProcHurryMsg` 把
+`SM_MAGICFIRE` 乱序插队处理）。主角动作结束还需 `FrmMain.ServerAcceptNextAction`。
+
+#### 1.8.4 `Move`（`:3009-3181`）—— 负重/减速/冲刺
+
+- **主角**计算 `MoveSlowLevel`：超重 `Weight div MaxWeight`、超穿戴
+  `WearWeight div MaxWearWeight`、`STATE` 位 `$08000000`（POISON_SLOW）额外 +5；
+  `SkipTick < MoveSlowLevel` 时**跳过一帧**（变慢）。
+- 脚步声：走路第 1、4 帧播 `footstepsound`/`+1`。
+- `SM_WALK/RUN/RUSH/RUSHKUNG` 正播、`SM_BACKSTEP` 反播；`SM_RUSH` 结束给 300 ms
+  `DizzyDelay`，`SM_BACKSTEP` 结束给 1000 ms；`SM_RUSHKUNG` 在末 3 帧**把位置还原到
+  `actbeforex/y`**（冲锋回归）。
+- 结束统一 `CurrentAction:=0` + `LockEndFrame:=TRUE` + `smoothmovetime:=now`。
+
+#### 1.8.5 `Say`（`:3220-3277`）
+
+按 `MAXWIDTH=150` 像素用 `FrmMain.Canvas.TextWidth` 折行；`byte(str[i])>=128` 时
+**双字节字符成对处理**；最多 `MAXSAY` 行。
+
+#### 1.8.6 `TNpcActor`（`:3285-3658`）—— NPC 只有 3 个方向
+
+`Dir := Dir mod 3`（NPC 资源只有 0/1/2 三方向）。按 `Appearance` 硬编码：
+33/34（시공석）、42-47（불항아리/탑불，**各有 ax/ay 位置修正**）、51（귀신 NPC）、
+52（눈사람，`SM_DIGUP` 触发 `PlaySnow`+随机歌声 146..152）、61-65（비월신전 불꽃/모닥불）、
+66（크리스마스트리）等；`Appearance in [35..41,48..50,52..55,57..65,69..74,78..80]` 强制 `Dir:=0`。
+`LoadSurface` 从 `g_WNpcImg` 取；`DrawChr` 对 `[51..57,59,71..75,87]` **不画影子**。
+
+#### 1.8.7 `THumActor`（`:3668-4739`）—— 人物分层渲染
+
+- **偏移量**：`BodyOffset := HUMANFRAME*(Dress div 2)`；`HairOffset := HUMANFRAME*hair`
+  （`hair<=1` 时 -1=无头发）；`WeaponOffset` 按武器号（254/101-200 特判）；`WingOffset`
+  按礼服 18-23；`WeaponEffectOffset` 按武器 254/76/77。
+- **`CalcActorFrame`**：用 `HA` 表；`SM_RUSH` **左右交替**（`RushDir` 0/1 切 `ActRushLeft/Right`）；
+  `SM_RUN` `movestep:=2`；攻击动作（HIT/POWERHIT/LONGHIT/WIDEHIT/FIREHIT/CROSSHIT/TWINHIT）
+  设 `BoHitEffect`+`MagLight:=2`+`HitEffectNumber 1..7`；`SM_SPELL` 按 `CurMagic.EffectNumber`
+  特判（22 뢰설화 `SpellFrame=10`、26 탐기파연=20+`frametime div 2`、35 무극진기=15、
+  43 사자후=20/70ms、44 공파섬=大击帧+`HitEffectNumber=8`+音效、45 화룡기염=10+`NE_FIRECIRCLE`、
+  47 포승검=10），否则 `DEFSPELLFRAME`。
+- **`RunFrameAction`**：`SM_HEAVYHIT` 第 5 帧且 `BoDigFragment` → `TMapEffect` +
+  `s_strike_stone` + `ET_PILESTONES` 事件计数 +1；`SM_THROW` 第 3 帧 → `TFlyingAxe`
+  （`FLYOMAAXEBASE`），之后 `BoHideWeapon`。
+- **`Run`**：`GenAniCount`（120 ms）驱动「주술의막」泡泡动画；`BoWeaponEffect` 武器破碎动画；
+  与 `TActor.Run` 同样的**施法服务器确认门控**；主角结束时记 `LatestSpellTime`。
+- **`LoadSurface`**：本体 `g_WM_HumImg`/`g_WWM_HumImg`（按 `Sex`）；头发 `g_WM_Hair`/`g_WWM_Hair`；
+  翅膀 `g_WGameInter1`（`Dress div 2 = 1`）；武器 `g_WM_Weapon[n]`/`g_WWM_Weapon[n]`
+  （`n := (Weapon-1) div 10`，>9 用 `WeaponEx`，254 用 `[4]`）；武器特效 `g_WMonMagicEx[3]`。
+- **`DrawChr` 绘制顺序**由 **`WORDER[Sex, currentframe]`**（`wpord`）决定：
+  `wpord=0` 先武器后身体，`wpord=1` 先身体后武器（**按视角决定武器遮挡关系**）；
+  武器用 `ceNone`（**不染色**）；`Dress in [24,25]` 不画头发；
+  `STATE_BUBBLEDEFENCEUP ($00100000)` 画泡泡（`MAGBUBBLEBASE + GenAniCount mod 3`，
+  受击时 `MAGBUBBLESTRUCKBASE + CurBubbleStruck`）；
+  `BoHitEffect` 特效（**공파섬 `HitEffectNumber=8` 特判**：`g_WMagicEx[1]` 的
+  `740+Dir*20+SKillCurrentFrame`；其余用 `GetEffectBase(..,1)`）；
+  武器破碎 `WPEFFECTBASE + Dir*10 + CurWpEffect`（`g_WMagic`）。
+
+### 1.9 `Shift` 的重复定义（已查明）
+
+`:1910` 是**生效版本**；`:2093` 的第二个定义**被 `{ }` 块注释掉**（`:2092` 是 `{`）。
+即**只有一个 `Shift` 生效**，不是重载。**读代码陷阱**：同文件里有被大括号注释掉的重复函数，
+静态 grep 会看到两个。
 
 ---
 
