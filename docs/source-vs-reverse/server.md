@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1482,6 +1482,55 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 
 **未验证**：`IsTakeOnAvailable`/`GetMyDegree`/`CheckHomePos`/`MemberLogin`/`GuildMan`/`FrmIDSoc.*`
 实现未逐一读；`EXPERIENCELEVEL`/`TestLevel`/`TestGold`/`VERSION_NUMBER` 常量值未查；无运行期验证。
+
+### 10.25 等级能力、命中/技能、道具魔法与复活戒指（Round 958；`ObjBase.pas:7618-7979`）
+
+#### 10.25.1 `RecalcLevelAbilitys`（`:7618-7751`）—— 两套公式
+
+本函数有 **`{$IFDEF FOR_ABIL_POINT}` 两个版本**（开关决定用哪套）：
+- **ABIL_POINT 版**（`:7618`）：`mlevel := _MIN(Level, ADJ_LEVEL)`；按 `Job` 0/1/2 算
+  `MaxWeight/MaxWearWeight/MaxHandWeight/MaxHP/MaxMP/DC/MC/SC/AC/MAC`，最后**叠加 `BonusAbil`**。
+- **普通版**（`:7688`）：用**完整 Level**，按 `Job` 0/1/2 算；`MaxHP := 14 + Round((Level/4+4.5+Level/20)*Level)`（战士）、
+  `Level/15+1.8`（法师）、`Level/6+2.5`（道士）；`MaxWeight` 战士 `/3`、法师 `/5`、道士 `/4`；
+  `DC/MC/SC` 用 `Level div 7` 派生；道士 `MAC := MakeWord(n div 2, n+1)`。
+
+> ⚠️ **两个版本不能混读**：公式注释里保留了旧系数（如 `/18`、`/13`），
+> **以未被注释的行 + `{$IFDEF}` 开关为准**。
+
+#### 10.25.2 `RecalcHitSpeed`（`:7758-7844`）—— 命中与剑法绑定
+
+重置 `AccuracyPoint := DEFHIT + BonusAbil.Hit`、`HitPowerPlus/HitDouble := 0`；
+`SpeedPoint := DEFSPEED + BonusAbil.Speed`（**道士额外 +3**）；清 9 个 `P*Skill` 指针；
+然后遍历 `MagicList` 按 `MagicId` 绑定技能并给加成：
+
+| `MagicId` | 技能 | 效果 |
+|---:|---|---|
+| 3 | 외수검법（战士基础） | `PSwordSkill`；`Accuracy += Round(9/3*Level)` |
+| 4 | 일광검법（道士基础） | `PSwordSkill`；`Accuracy += Round(8/3*Level)` |
+| 7 | 예도검법 | `PPowerHitSkill`；`Accuracy += Round(3/3*Level)`；`HitPowerPlus := 5+Level`；`AttackSkillCount := 7-Level`、`AttackSkillPointCount := Random(...)` |
+| 12 | 어검술 | `PLongHitSkill` |
+| 25 | 반월검법 | `PWideHitSkill` |
+| 26 | 염화결 | `PFireHitSkill`；**`HitDouble := 4 + Level*4`（+40%~+160%）** |
+| 34 | 광풍참 | `PCrossHitSkill`；`HitPowerPlus := 5+Level` |
+| 38 | 쌍룡참 | `PTwinHitSkill`；`HitPowerPlus := Level` |
+| 43 | 사자후 | `PStoneHitSkill`；`HitPowerPlus := Level` |
+
+→ **`_Attack` 的 `HitPowerPlus`/`HitDouble` 就来自这里**（配合 `HM_POWERHIT/FIREHIT`）。
+
+#### 10.25.3 道具魔法 `AddMagicWithItem`/`DelMagicWithItem`（`:7846-7915`）
+
+- `AddMagicWithItem(AM_FIREBALL/AM_HEALING)`：按 `AM_*` 找 `DefMagic`（韩/非韩名不同），
+  未学则加入 `MagicList`（`Level=1`）+ `SendAddMagic`。
+- `DelMagicWithItem`：**职业不符则删除**（`Job<>1` 删火球、`Job<>2` 删治疗），非人类直接返回。
+
+#### 10.25.4 `ItemDamageRevivalRing`（`:7918-7979`）
+
+遍历装备槽，左右戒指中 `Shape=RING_REVIVAL_ITEM`（**复活戒指**）每次使用 `Dura -= 1000`：
+- 归零 → 销毁 + `SendDelItem` + 提示 + **日志码 `16`（죽파/戒指损毁）** + `RecalcAbilitys`；
+- 未归零 → **日志码 `11`（사용/使用）**；耐久变化发 `RM_DURACHANGE`。
+
+**未验证**：`ADJ_LEVEL`/`DEFHP`/`DEFMP`/`DEFHIT`/`DEFSPEED`/`AM_FIREBALL`/`AM_HEALING`/`RING_REVIVAL_ITEM`
+常量值未查；`FOR_ABIL_POINT` 是否启用未核实；无运行期验证。
 
 ---
 

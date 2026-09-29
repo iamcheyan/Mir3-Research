@@ -13499,3 +13499,61 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** `IsTakeOnAvailable`/`GetMyDegree`/`CheckHomePos`/`MemberLogin`/`FrmIDSoc.*` 未逐一读；常量值未查；ObjBase 其余大段（`RecalcLevelAbilitys`/`RecalcHitSpeed` `7613-7982`、`RecalcAbilitys` 尾段 `8620-9320`、`GetGiftFromBox/Egg/OldBox` `15396-17126`、`TUserHuman` 全部 `Cmd*` 命令 `18915-24626`、`ServerGet*` 商店/市场 `26333-31768`）仍未逐行读。**ObjBase.pas 保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round UI-1 — 2026-09-29：GodotClient EI 逐窗口一致性审计（UI）
+
+**〔范围〕** 以本目录 EI primary-static 证据 + 本机 `mir2ei/LegacyEI/Data/GameInter.wil` 为基准，
+逐窗口对照 Zircon `GodotClient` 的 legacy EI 实现；并用
+`LegacyHudLayoutLab --legacy-audit`（真实运行）+ Xvfb/scrot 截图取证。
+产出：本目录 [`GODOT_WINDOW_PARITY_MATRIX_2026-09-29.md`](GODOT_WINDOW_PARITY_MATRIX_2026-09-29.md)。
+
+**〔反汇编复核〕** 用 `Tools/reverse-engineering/disasm_capstone.py`（本机备份 EXE
+`/home/tetsuya/mir2ei.before-path-fix-20260927-2330/Mir3.exe`，MD5 `264d848da377c2172ffe1444bf31e7d0`）
+复核了三条此前只有结论、没有原始指令的记录：
+
+1. **技能书 id14 尺寸**：`0x004278E1-0x00427904` 的 9 参 push 序列
+   （`3,1,0x17C,0x1C4,0,0x15C,0x190,ecx,0xE`）→ arg3=frame 400、arg4=x 348、
+   arg5=y 0、arg6=w **452**、arg7=h **380**；与已验证的 NPC wrapper `0x0043ED00`
+   参数位一致。**纠正 `window_layout.json` / `window-initialization-evidence.json`
+   里 id14 = (0,0)/296×332 的旧值（那是 window.horse 的复制）**。
+   独立佐证：`GameInter` F400 画布 512×512、alpha bbox (30,67)-(481,445)=451×378。
+   → Godot `MagicDialog` 的 452×380 原本正确。
+
+2. **行会成员行几何**：`0x004252BD mov [esp+0x14],0x12`（可见行上限 18）、
+   `0x004252C5 add eax,5`（行距 = 字体度量高 + 5）、
+   `0x004253FB lea eax,[ecx+edx+0x3C]` / `0x00425409 add ecx,0x23`
+   （y = win.y+60+(row-scroll)×step、x = win.x+35）、
+   `0x00425404 push 0x96FF`（标记行色）。→ 修正 `guild-window-paint-evidence.json`
+   里 (x+0x22, y+0x3B) 的 1px 偏差（正确值 x+0x23/y+0x3C）。
+
+3. **背包 hit/draw 几何**：`0x0042F150`（0..0xD8=216 步进 0x24=36 → 6×6）、
+   `0x0042F79C`（占位表扫描起点 max(0,this+0x58-5)）、
+   `0x0042F2A0`（index%6/÷6 → rect win.x+0x19+36col, win.y+0x29+36row）。
+   与 `inventory-window-render-evidence.json` 一致，Godot 首屏 36 格逐格吻合。
+
+**〔已修〕** `GuildDialog` legacy：补回 8 个原版动作控件（F610..F625 @ paint 坐标）、
+成员列表改 (35,60)/字高+5/18 行上限、修 legacy 背景帧被 `ApplyGuild` 覆写成
+GameInter 261 导致**背景整块消失**的缺陷。Zircon commit `b8c26340`。
+
+**〔未闭合〕** 背包逐物品图标映射（EI item data +0x28 → Inventory.wil vs 现代
+`ItemInfo.Image` → StoreItem.Zl，无同号映射证据，且 `LegacyEI/Data` 缺旧版物品表）；
+背包 F280 gauge 轨道/拖柄；交易与背包的关闭热区语义（原版为纯装饰/不关窗，
+修掉即移除非原版入口，属产品行为取舍）；行会解散（无 disband 协议）；
+HUD cap2「技能图鉴」flag 消费者；任务详情面板 `detail_geometry` 证据缺口。
+目标 EI EXE/WIL/WIX 版本身份仍受 NAS 路径不可读阻塞。
+
+
+## Round 958 — 2026-09-29：`ObjBase.pas` 等级能力/命中技能/道具魔法/复活戒指
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:7618-7979`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔`RecalcLevelAbilitys`〕** 有 **`{$IFDEF FOR_ABIL_POINT}` 两套公式**：ABIL_POINT 版用 `mlevel=min(Level, ADJ_LEVEL)` 并按 `Job` 算能力后叠加 `BonusAbil`；普通版用完整 `Level`（战士 `MaxHP=14+((L/4+4.5+L/20)*L)`、法师 `L/15+1.8`、道士 `L/6+2.5`；负重 `/3`/`/5`/`/4`；`DC/MC/SC` 由 `L div 7` 派生）。**注释里保留旧系数，读时以未注释行+开关为准**。
+
+**〔`RecalcHitSpeed`〕** 重置命中/`HitPowerPlus`/`HitDouble`，道士 `SpeedPoint+3`；按 `MagicId` 绑定：3/4 基础剑术（`PSwordSkill`）、7 예도검법（`HitPowerPlus=5+Level`）、12 어검술、25 반월검법、26 염화결（**`HitDouble=4+Level*4`**）、34 광풍참、38 쌍룡참、43 사자후。`_Attack` 的 `HitPowerPlus/HitDouble` 来源于此。
+
+**〔道具魔法/复活戒指〕** `AddMagicWithItem`（火球/治疗，`Level=1`）/`DelMagicWithItem`（职业不符则删）。`ItemDamageRevivalRing`：复活戒指每次 `Dura-=1000`，归零销毁（日志码 `16` 죽파），否则日志码 `11`（사용）。
+
+**〔未闭合〕** 常量值未查、`FOR_ABIL_POINT` 是否启用未核实；ObjBase 其余大段（`RecalcAbilitys` 尾段 `8620-9320`、`GetGiftFromBox/Egg/OldBox` `15396-17126`、`TUserHuman` 全部 `Cmd*` 命令 `18915-24626`、`ServerGet*` 商店/市场 `26333-31768`）仍未逐行读。**ObjBase.pas 保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
