@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -988,6 +988,43 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 
 **未验证**：`GetAttackPower`/`DoDamageWeapon`/`TrainSkill`/`CheckMagicLevelup`/`MakePoison` 实现未逐一读；
 `Random(target.SpeedPoint)` 与 `AccuracyPoint` 的实战命中率、`MissProbability`/`FeedbackProbability` 设置点未核实；
+无运行期验证。
+
+### 10.15 拾取与使用物品（Round 948；`ObjBase.pas:13267-13698`）
+
+#### 10.15.1 `PickUp`（`:13267-13469`）
+
+- 交换中（`BoDealing`）不能捡；取脚下 `PEnvir.GetItem(CX,CY)`。
+- **归属门**：`GetTickCount - pmi.droptime > ANTI_MUKJA_DELAY`（120 s）→ `ownership := nil`；
+  `canpickup`（owner 为 nil 或自己）或 `cangrouppickup`（owner 在 `GroupOwner.GroupMembers` 里）才可捡，
+  否则 `SysMsg('일정시간 동안 줍지 못합니다.')`。
+- **金币**（`NAME_OF_GOLD`）：`DeleteFromMap` 成功 → `IncGold(pmi.Count)` → `RM_ITEMHIDE`；
+  **≥500 才写用户日志码 `4`（줍기/拾取）**；`GoldChanged`；`Dispose(pmi)`。
+- **计数物品**（`StdMode.OverlapItem >= 1`）：先 `UserCounterItemAdd(StdMode, Looks, Dura, Name, FALSE)` 合并，
+  成功即 `Dispose` 返回；失败则放回地图。
+- **普通物品**：`IsEnoughBag` 才继续。
+  - **庄园装饰袋**（`StdMode=STDMODE_OF_DECOITEM & Shape=SHAPE_OF_DECOITEM`）：
+    无主时**只有行会会长**能捡、有主时只有主能捡 → `GuildAgitMan.DeleteAgitDecoMon` + 保存。
+  - `DeleteFromMap` → `new(pu); pu^ := pmi.UserItem`；按 `OverlapItem` 算重量；
+    `AddItem(pu)`；**地图任务检查**：`PEnvir.HasMapQuest` 时用掉落者名 `GetMapQuest` 找 NPC 并 `UserCall`；
+    非廉价物品写日志码 `4`；`SendAddItem` 同步客户端；
+    **台湾事件物品**（`StdMode=TAIWANEVENTITEM`）→ 置 `BoTaiwanEventUser`、`STATE_BLUECHAR=60000`、
+    重算状态/光照并广播 `RM_CHANGELIGHT`、`UserNameChanged`。
+
+#### 10.15.2 `EatItem`（`:13471-13698`）—— 按 `StdMode`/`Shape` 分派
+
+`PEnvir.NoDrug` 地图直接拒绝。分派：
+
+| `StdMode` | 类型 | 行为 |
+|---|---|---|
+| 0 | 시약（药剂） | `FASTFILL_ITEM`（선화수）→ `IncHealthSpell(AC, MAC)` + `MaxHP/MaxMP * DC/MC %`；`FREE_UNKNOWN_ITEM` → `BoNextTimeFreeCurseItem`；否则 `IncHealth += AC`、`IncSpell += MAC`（各封顶 1000） |
+| 1 | 고기（肉） | 直接 `Result := TRUE` |
+| 2 | 식당 음식 | `SHAPE_BUNCH_OF_FLOWERS` → `RM_LOOPNORMALEFFECT`（花束特效） |
+| 3 | 스크롤（卷轴） | `INSTANTABILUP_DRUG`（属性药）→ `EnhanceExtraAbility` 提升 DCUP/MCUP/SCUP/HITSPEEDUP/HPUP/MPUP（支持百分比 `HIBYTE(MC)`），再 `RecalcAbilitys`；`INSTANT_EXP_DRUG`（经验药）→ `WinExp`（按 `AC/MAC` 组合公式 ×100）；`SHAPE_COUPLE_ALIVE_STONE`（연인부활석）→ 需**高级情侣戒指 + 交往 ≥365 天 + 与恋人相邻 1 格 + 恋人已死** → 恋人以 10% HP 复活、自己 HP/MP 各 ÷10；否则 `UseScroll(Shape)` |
+| 8 | 사용 아이템 | `SHAPE_OF_INVITATION`（초대장）→ 有效期检查后 `CmdGuildAgitFreeMove(pu.Dura)`（按庄园号传送）；`SHAPE_OF_TELEPORTTAG`（왕방마패）→ `UserSpaceMove(Reference, HpAdd, MpAdd)`；`SHAPE_OF_GIFTBOX` → `GetGiftFromBox`；`SHAPE_OF_OLDBOX` → `GetGiftFromOldBox` |
+
+**未验证**：`IncHealthSpell`/`EnhanceExtraAbility`/`WinExp`/`UseScroll`/`GetGiftFromBox`/
+`GetGiftFromOldBox`/`UserSpaceMove` 实现未逐一读；`FASTFILL_ITEM` 等 `Shape` 常量值未查；
 无运行期验证。
 
 ---

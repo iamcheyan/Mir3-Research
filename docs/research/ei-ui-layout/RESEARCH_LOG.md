@@ -13341,3 +13341,16 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** `GetAttackPower`/`DoDamageWeapon`/`TrainSkill`/`CheckMagicLevelup`/`MakePoison` 未逐一读；命中率/反伤率的设置点未核实；ObjBase 其余大段（`PickUp`/`EatItem`/`UseScroll`、`TUserHuman` 命令与商店/市场处理器、fame/gift boxes、`TUserHuman.Operate`）仍未逐行读。**ObjBase.pas 保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 948 — 2026-09-29：`ObjBase.pas` 拾取与使用物品
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:13267-13698`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔PickUp〕** 归属门：掉落 >`ANTI_MUKJA_DELAY`(120s) 清 owner；`canpickup`（无主或自己）或 `cangrouppickup`（主在 `GroupOwner.GroupMembers`）。金币 `IncGold` + `RM_ITEMHIDE`，**≥500 才写日志码 `4`**。计数物品先 `UserCounterItemAdd` 合并。普通物品需 `IsEnoughBag`；**庄园装饰袋**无主时只有会长能捡、有主时只有主能捡（`GuildAgitMan.DeleteAgitDecoMon`）；`AddItem` 后查 `PEnvir.HasMapQuest` 找 NPC `UserCall`；非廉价物品写日志；`SendAddItem` 同步；**台湾事件物品**置 `BoTaiwanEventUser`+`STATE_BLUECHAR`+广播 `RM_CHANGELIGHT`。
+
+**〔EatItem〕** 按 `StdMode`：0 药剂（선화수 `IncHealthSpell`+百分比；`FREE_UNKNOWN_ITEM` 解咒；否则 `IncHealth/IncSpell` 封顶 1000）；1 肉；2 食物（花束特效）；3 卷轴（`INSTANTABILUP_DRUG`→`EnhanceExtraAbility` 提升 DCUP/MCUP/SCUP/HITSPEEDUP/HPUP/MPUP 后重算；`INSTANT_EXP_DRUG`→`WinExp`；**연인부활석**需高级情侣戒指+交往≥365天+相邻+恋人已死→恋人 10% HP 复活、自己 HP/MP ÷10；否则 `UseScroll`）；8 使用品（초대장→按庄园号传送、왕방마패→`UserSpaceMove`、礼物盒/旧匣→`GetGiftFromBox/OldBox`）。
+
+**〔未闭合〕** `IncHealthSpell`/`EnhanceExtraAbility`/`WinExp`/`UseScroll`/`GetGiftFrom*`/`UserSpaceMove` 未逐一读；`Shape` 常量值未查；ObjBase 其余大段（`UseScroll` 本体、`Repaire*`/`MakeWeaponGoodLock`、`TUserHuman` 命令与商店/市场处理器、fame/gift boxes、`TUserHuman.Operate` 玩家输入分派、`Send*`/`ServerGet*` 族）仍未逐行读。**ObjBase.pas 保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
