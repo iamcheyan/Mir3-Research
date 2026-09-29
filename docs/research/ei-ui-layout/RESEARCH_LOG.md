@@ -13604,3 +13604,22 @@ HUD cap2「技能图鉴」flag 消费者；任务详情面板 `detail_geometry` 
 **〔未闭合〕** 物品名对应 EI `StdItem` 数据行未解析；ObjBase 其余大段（`TUserHuman` 全部 `Cmd*` 命令 `18915-24626`、`ServerGet*` 商店/仓库/市场/行会庄园 `26685-31768`）仍未逐行读。**ObjBase.pas 保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 962 — 2026-09-29：`ObjBase.pas` 造物与装备强化（제련）系统
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:19089-21107`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔`CmdMakeItem`〕** 造物：`count>MAX_OVERLAPITEM` 拒绝；`Price>=15000` 仅 `UD_SUPERADMIN`/测试服；`Random(10)=0` 自带强化；未知系列 `RandomSetUnknownItem`；邀请函/祥现袋受庄园成员门槛；计数物品/矿石纯度特判。
+
+**〔强化材料判定 `CheckSeedItem`〕** 返回 0/1/2/3/10/11/20/21；基底限 `StdMode in [5,6,10,11,15,19,20,21,22,23,24,26,52,54]`；`UniqueItem and $01` 禁强化；按装备位列出**宝石属性冲突表**（武器禁防御类、衣服禁攻防类、戒指23/手镯24 特意去掉 AC/MAC）；针修衣类、骨锤修饰品类、绳捆绑。
+
+**〔`SumOfOptions`〕** 「옵션합」iSum = 该位有效 `Desc[]` 之和 + 武器 `RealAttackSpeed` + 部分位 `Desc[9]` + 耐久超额 `max(0,(DuraMax−StdDuraMax)/2000)`，夹 `[0,10]`。
+
+**〔`CalcUpgradeProbability`〕** `UpProb[0..10]`，`iBase=10000`；보옥三档 + 신주 = 보옥×2（MFactor/DFactor=4/2）。成功值 = `min(iBase, Round(v*|29+BodyLuckLevel+(武器幸运−诅咒)/2|/30))`；攻速宝石 `Shape=9` 打 6 折；**보옥三态（成功/不变/损坏）**，`iFail=Round((iBase−iSucceed)*0.7)`；**신주两态（不碎）**。
+
+**〔`CmdUpgradeItem`〕** 三态流程 + `SM_UPGRADEITEM_RESULT` 回包；破坏时 `DeletePItemAndSendWithFlag` 带特效包。
+
+**〔未闭合〕** `DoUpgradeItem`/`GetTotalValueOfOption` 等实现未读；常量值未查。ObjBase 其余大段（`Cmd*` 约 19000-24600 的庄园/行会命令、`Send*` 系列、`Say`、`ServerGet*` 26685-31768）仍未逐行读。**保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

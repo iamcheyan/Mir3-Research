@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1653,6 +1653,83 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 
 **未验证**：物品名对应的 EI `StdItem` 数据行未解析；`MAXBAGITEM` 值未查；
 `CopyToUserItemFromName` 失败（物品不存在）时的行为已在源码 `Dispose` 处理；无运行期验证。
+
+### 10.29 造物与装备强化（제련）系统（Round 962；`ObjBase.pas:19089-21107`）
+
+#### 10.29.1 `CmdMakeItem(itmname, count)`（`:19089-19195`）
+
+GM/脚本造物：
+- `count > MAX_OVERLAPITEM` 直接 exit；逐件造，背包满 `MAXBAGITEM` 停。
+- **价格门槛**：`StdItem.Price >= 15000` 的物件**只有 `UD_SUPERADMIN` 或测试服**能造。
+- `Random(10)=0` → `RandomUpgradeItem`（造出来自带强化）。
+- **未知系列**（`StdMode in [15,19,20,21,22,23,24,26,52,53,54]` 且 `Shape` 为 `RING/BRACELET/HELMET_OF_UNKNOWN`）→ `RandomSetUnknownItem`（随机鉴定属性）。
+- **邀请函**（`StdMode=8` + `Shape=SHAPE_OF_INVITATION`）→ 必须 `GuildAgitInvitationItemSet`（只限该庄园成员）。
+- **祥现袋/DecoItem**（`StdMode=STDMODE_OF_DECOITEM` + `Shape=SHAPE_OF_DECOITEM`）→ `GuildAgitDecoItemSet`。
+- 计数物品（`OverlapItem>=1`）`Dura:=count`，只造 1 次；矿石（`StdMode=43`）`Dura:=GetPurity`（纯度）。
+- `BoEcho` 时输出 + 日志 `'5'`（운만_，造物）。
+
+#### 10.29.2 `CheckSeedItem(psSeed, psJewelry)`（`:20375-20499`）——强化材料判定
+
+返回码：`0` 不可用 / `1` 属性冲突 / `2` 可强化 / `3` 唯一物品不可强化 / `10/11` 修理 / `20/21` 捆绑。
+- **针（`StdMode=61`,`Shape=SHAPE_OF_NEEDLE`）**：可修 衣/盔/鞋/腰带（`StdMode in [10,11,15,52,54]`）→ 11，否则 10。
+- **骨锤（`Shape=SHAPE_OF_HAMMER`）**：可修 项链/戒指/手镯（`[19,20,21,22,23,24,26]`）→ 11。
+- **绳（`StdMode=7`,`Shape=SHAPE_OF_CORD`）**：`CheckUnbindItem` 通过 → 21（可捆），否则 20。
+- 基底必须 `StdMode in [5,6,10,11,15,19,20,21,22,23,24,26,52,54]` 才 `Result:=2`，否则 0。
+- **唯一物品**：`UniqueItem and $01 <> 0` → `3`（连升级也不行）。
+- **属性冲突表**（每种装备位禁用的宝石属性不同，如武器禁 `AC/MAC/Accurate/Agility/MgAvoid/ToxAvoid`，衣服禁 `DC/MC/SC/Accurate/AtkSpd/Slowdown/Tox`，戒指 23/手镯 24 特意去掉 `AC/MAC`）→ 冲突则 `1`。
+
+#### 10.29.3 `CheckJewelryItem(StdMode)`（`:20502`）
+
+可作强化媒介：`7`（绳）/`60`（보옥 宝石）/`61`（신주 神酒）。
+
+#### 10.29.4 `SumOfOptions(puSeedItem, psSeedItem)`（`:20511-20596`）——「옵션합」iSum
+
+按装备位把该位**有效 `Desc[]` 槽**相加（武器另加 `RealAttackSpeed(Desc[6])`；19/20/21/22/23 项链戒指另加 `Desc[9]` 攻速），
+再加 **耐久超额** `max(0, (pu.DuraMax - ps.DuraMax)/2000)`（注释：2003-11-07 从 /1000 改 /2000）。
+→ iSum 被夹在 `[0,10]`，是概率表行号。
+
+#### 10.29.5 `CalcUpgradeProbability(...)`（`:20600-20838`）——核心概率
+
+**`UpProb[0..10]` 表**（`iBase=10000`；`iValue[0..2]` = 보옥 三档，`iValue[3..5]` = 신주 三档 = 보옥 ×`MFactor/DFactor` = ×2，注释「原值 4，临时改 1.5 倍」）：
+
+| iSum | v0(보옥/武器) | v1(보옥/手鞋) | v2(보옥/项链·其它) | 신주 = ×2 |
+|---:|---:|---:|---:|---:|
+| 0 | 5000 | 5000 | 5000 | 10000/10000/10000 |
+| 1 | 4500 | 3000 | 4000 | 9000/6000/8000 |
+| 2 | 4000 | 1000 | 3000 | 8000/2000/6000 |
+| 3 | 3500 | 500 | 1000 | 7000/1000/2000 |
+| 4 | 3000 | 100 | 500 | 6000/200/1000 |
+| 5 | 1500 | 25 | 100 | 3000/50/200 |
+| 6 | 400 | 5 | 25 | 800/10/50 |
+| 7 | 100 | 5 | 5 | 200/10/10 |
+| 8 | 25 | 5 | 5 | 50/10/10 |
+| 9 | 5 | 5 | 5 | 10/10/10 |
+| 10 | 0 | 0 | 0 | 0（不可强化） |
+
+**成功值公式**（`iSucceed = min(iBase, Round(v * |系数| / 30))`）：
+- **武器**：系数 = `29 + BodyLuckLevel + (LOBYTE(seed.AC) + seedDesc[3] − LOBYTE(seed.MAC) − seedDesc[4]) / 2`
+ （`seed.AC` 低字节 = 武器**幸运**，`seed.MAC` 低字节 = **诅咒**；`BodyLuckLevel` = 角色体运）。
+- **衣服**：`29 + BodyLuckLevel`。
+- **手镯/鞋（24,26,52）** 用 `iValue[1]`；**项链 19** 与**其它**用 `iValue[2]`。
+- 若媒介 `Shape=9`（攻速宝石）→ `iSucceed := iSucceed*60 div 100`（打 6 折）。
+- **보옥（StdMode=60）**：`iFail := Round((iBase − iSucceed) * 0.7)`（注释「临时改 0.65」）→ 三态：`< iSucceed` 成功(2)、`< iSucceed+iFail` 不变(1)、否则**损坏(0)**。
+- **신주（StdMode=61）**：**不会碎** → `< iSucceed` 成功(2)，否则不变(1)。
+- `fRetProb := iSucceed / iBase`；`iExecCount>1` 时打印概率测试统计（调试用）。
+- 返回 `Result ∈ {0 破坏, 1 不变, 2 成功}`。
+
+#### 10.29.6 `CmdUpgradeItem(seedname, jewelryname, seedindex, jewelryindex, ExecCount)`（`:20842-21107`）
+
+- `seedindex/jewelryindex = 0` 视为**运营者命令**（按名字找背包里第一个）；否则按 `MakeIndex` 定位。
+- `CheckJewelryItem` 通过后 `CheckSeedItem` 定分支：
+ - `2`：`CalcUpgradeProbability` → `GetTotalValueOfOption` 取强化前后总值 →
+ `2` 成功：`DoUpgradeItem` 写入属性 + 删宝石 + `SysMsg`「상승」+ 日志 `'31'`(업후_)；失败返回 0 则「업그레이드할 수 없는 속성」。
+ - `1` 不变：删宝石 + 「아무런 변화도 일어나지 않았습니다」。
+ - `0` 破坏：删宝石 + `DeletePItemAndSendWithFlag(seed, true)`（**带破坏特效包**）+ 「아이템이 파괴되었습니다」。
+ - 三态均 `SendDefMessage(SM_UPGRADEITEM_RESULT, seedindex, iResult, ...)` 回客户端。
+ - `1` 属性冲突 / `3` 唯一不可强化 / `11` 走 `RepairItemNormaly` 修装备 / `21` 走 `FindItemToBindFromBag`+`BindPotionUnit`（绳捆药） / `10/20` 报错。
+
+**未验证**：`DoUpgradeItem`/`GetTotalValueOfOption`/`RealAttackSpeed`/`RandomUpgradeItem`/`RandomSetUnknownItem`/`UpgradeResultToStr`
+实现未逐一读；`MAX_OVERLAPITEM`/`MAXBAGITEM`/`UD_SUPERADMIN`/`STDMODE_OF_DECOITEM`/`SHAPE_OF_*` 常量值未查；无运行期验证。
 
 ---
 
