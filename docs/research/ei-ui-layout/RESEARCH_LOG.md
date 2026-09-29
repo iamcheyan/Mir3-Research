@@ -13439,3 +13439,20 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** `NEEDEXPS`/`GROUPMAX`/`MAXLEVEL`/`PAIN_SERIES_SHAPE` 常量值未查；`GetBonusPoint`/`RecalcLevelAbilitys` 未逐一读；ObjBase 其余大段（负重/金币/能力重算尾段 `7182-7982`、魔法/防御区 `13700-14174`、`TUserHuman` 命令 `Cmd*` 与 `ServerGet*` 商店/市场 `26333-31768`、fame/gift boxes `15396-17202`）仍未逐行读。**ObjBase.pas 保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 954 — 2026-09-29：`ObjBase.pas` 魔法/防御/诅咒
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:13700-14168`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔学习/施放〕** `ReadBook`：`Job=99 或 =自己 Job` 且 `Level>=NeedLevel[0]` 才学，`SendAddMagic`。`GetSpellPoint` = `Spell/(MaxTrainLevel+1)*(Level+1) + DefSpell`（客户端一致）。`DoSpell`：剑法跳过、MP 够才扣、`MagicMan.SpellNow`；分身术（42）单独回蓝通知。
+
+**〔穿透/命中〕** `MagPassThroughMagic`：13 步直线，`AntiMagic <= Random(50)` 魔法闪避门，`RM_MAGSTRUCK` 延迟 600，亡灵 ×1.5。`MagCanHitTarget` 见 §10.12.2。
+
+**〔防御/泡泡/诅咒〕** `MagDefenceUp`/`MagMagDefenceUp` 设状态秒数+值并重算；`MagBubbleDefenceUp` 泡泡（受击每次扣 3s）；`MagMakeDefenceArea` 给友方按 `SC/9` 加防；**`MagMakeCurseArea`** 范围诅咒（怪/人两套概率，`targetsec` 人类 `sec/6-PoisonRecover`、怪≥60 `sec/4`，`RM_CURSE` 延迟 1200）；`MagDcUp` 给自己+召唤物加 DCUP；`MagCurse` = `POISON_SLOW` + `EABIL_PWRRATE`。
+
+**〔技能升级/每日任务〕** `CheckMagicLevelup` 训练点满则升级 + `RM_MAGIC_LVEXP`（延迟 800）；`CheckMagicSpecialAbility`：**MagicId 28（탐기파연）≥2 级 → `BoAbilSeeHealGauge`（看破血量）**。`Get/SetDailyQuest` 用 `month*31+day` 作日期键。
+
+**〔未闭合〕** `MagicMan.SpellNow`/`IsSwordSkill`/`GetDefMagic` 未逐一读；概率公式实战命中率未验证；ObjBase 其余大段（负重/金币/能力重算 `7182-7982`、`GetGiftFromBox/Egg/OldBox`+fame `15152-17202`、`TUserHuman` 命令 `Cmd*` 与 `ServerGet*` 商店/市场 `26333-31768`、`TAnimal`/`TUserHuman` 构造初始化）仍未逐行读。**ObjBase.pas 保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

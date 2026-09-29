@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1317,6 +1317,53 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 
 **未验证**：`NEEDEXPS`/`GROUPMAX`/`MAXLEVEL`/`EXPERIENCELEVEL`/`PAIN_SERIES_SHAPE` 常量值未查；
 `GetBonusPoint`/`GetLevelBonusSum`/`RecalcLevelAbilitys` 实现未逐一读；无运行期验证。
+
+### 10.21 魔法学习、施放与防御/诅咒（Round 954；`ObjBase.pas:13700-14168`）
+
+#### 10.21.1 魔法学习与施放（`:13700-13775`）
+
+- `IsMyMagic(magid)`：在 `MagicList` 里按 `MagicId` 查找。
+- **`ReadBook(std)`（`:13713`）**：`GetDefMagic(std.Name)`；若未学且 `(pdm.Job=99 或 =自己 Job)` 且
+  `Level >= pdm.NeedLevel[0]` → `new(pum)`（`Level=0`/`CurTrain=0`/`Key=#0`）+ `MagicList.Add` +
+  `RecalcAbilitys` + `SendAddMagic`。
+- **`GetSpellPoint(pum)`（`:13742`）**：`Round(pDef.Spell/(MaxTrainLevel+1)*(Level+1)) + pDef.DefSpell`
+  （注释「클라이언트와 일치시켜야 함」）。
+- **`DoSpell(pum, xx, yy, target)`（`:13750`）**：剑法（`MagicMan.IsSwordSkill`）直接返回；
+  `spell = GetSpellPoint`，`MP >= spell` 才 `DamageSpell(spell)`（**MagicId=42 分身术**特殊：
+  扣蓝后单独 `HealthSpellChanged`）；`MagicMan.SpellNow(self, pum, xx, yy, target, spell)`。
+
+#### 10.21.2 穿透直线与命中（`:13782-13839`）
+
+- **`MagPassThroughMagic(sx,sy,tx,ty,ndir,magpwr,undeadattack)`（`:13782`）**：从 `(sx,sy)` 朝目标
+  逐格前进**最多 13 步**，每格取实体；`IsProperTarget` 且 `AntiMagic <= Random(50)`（**魔法闪避门**）
+  → `SendDelayMsg(RM_MAGSTRUCK, ..., 600)`；`undeadattack` 时伤害 ×1.5；返回命中数。
+- `MagCanHitTarget`（`:13814`）：13 步内要求 `CanFireFly` 且到达目标或 Manhattan 距离变大（详见 §10.12.2）。
+
+#### 10.21.3 防御/泡泡/诅咒/增益（`:13841-14113`）
+
+- **`MagDefenceUp`/`MagMagDefenceUp(sec, value)`（`:13841`/`:13861`）**：设 `STATE_DEFENCEUP`/
+  `STATE_MAGDEFENCEUP` 的秒数与 `StatusValue`（≤255），`RecalcAbilitys` + `RM_ABILITY`。
+- `MagBubbleDefenceUp(mlevel, sec)`（`:13881`）：仅在未挂时设 `STATE_BUBBLEDEFENCEUP` +
+  `BoAbilMagBubbleDefence` + `MagBubbleDefenceLevel`；`DamageBubbleDefence` 每次受击扣 3 s。
+- **`MagMakeDefenceArea(xx,yy,range,sec,BoMag)`（`:13913`）**：范围内 `IsProperFriend` 的实体
+  按 `LOBYTE(SC)/9 + Random(HIBYTE(SC)/9)` 加防/魔防，返回命中数。
+- **`MagMakeCurseArea(xx,yy,range,sec,pwr,skilllevel,BoMag)`（`:13950`）**：范围诅咒。
+  `BoMag=false`（怪魔法）与 `BoMag=true`（人魔法）两套概率公式；`targetsec` 人类 = `sec/6 - PoisonRecover`、
+  怪（≥60 级）= `sec/4`、普通怪 = `sec`；命中后 `RM_CURSE`（延迟 1200 ms）+ 对目标 `RM_STRUCK`。
+- `MagDcUp(sec, pwr)`（`:14044`）：给自己和所有召唤物加 `EABIL_DCUP`（+MCUP）限时增益。
+- `MagCurse(sec, pwrrate)`（`:14088`）：`POISON_SLOW` + `EABIL_PWRRATE`（攻击力百分比，<100 降、>100 升）。
+
+#### 10.21.4 技能升级与每日任务（`:14115-14168`）
+
+- **`CheckMagicLevelup(pum)`（`:14115`）**：`CurTrain >= MaxTrain[Level]` 时 `Level+1`、
+  `RM_MAGIC_LVEXP`（延迟 800 ms）、`CheckMagicSpecialAbility`。
+- `CheckMagicSpecialAbility`（`:14138`）：**MagicId=28（탐기파연）等级 ≥2 → `BoAbilSeeHealGauge := TRUE`**
+  （**看破血量**）。
+- `GetDailyQuest`/`SetDailyQuest`（`:14148`/`:14161`）：用 `month*31 + day` 作日期键，
+  跨日/未设置返回 0。
+
+**未验证**：`MagicMan.IsSwordSkill`/`SpellNow`/`GetDefMagic`/`IsProperFriend` 实现未逐一读；
+概率公式的实际命中率未运行验证；无运行期验证。
 
 ---
 
