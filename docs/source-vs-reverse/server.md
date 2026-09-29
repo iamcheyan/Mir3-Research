@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1026,6 +1026,53 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 **未验证**：`IncHealthSpell`/`EnhanceExtraAbility`/`WinExp`/`UseScroll`/`GetGiftFromBox`/
 `GetGiftFromOldBox`/`UserSpaceMove` 实现未逐一读；`FASTFILL_ITEM` 等 `Shape` 常量值未查；
 无运行期验证。
+
+### 10.16 卷轴、武器强化/修理与抽奖（Round 949；`ObjBase.pas:5826-6381`）
+
+#### 10.16.1 `UseScroll(Shape)`（`:5826-5998`）—— 卷轴按 `Shape` 分派
+
+| `Shape` | 道具 | 行为 |
+|---:|---|---|
+| 1 | 순간이동주문서 | 回 0 号图（`UserSpaceMove(HomeMap)`）；`NoEscapeMove/NoTeleportMove` 地图禁用；台湾事件用户禁用 |
+| 2 | 아공도약서 | 当前图随机跳（`UserSpaceMove(MapName)`）；`NoRandomMove/NoTeleportMove` 禁用；**城堡核心图被攻时 10 s 冷却**（`LatestSpaceScrollTime`） |
+| 3 | 귀환주문서 | 回 `HomeX/Y`；**`PKLevel>=2` 改送 `BADMANHOMEMAP/BADMANSTARTX/Y`**（红名专用回城点） |
+| 4 | 축복의기름 | `MakeWeaponGoodLock`（加幸运/减诅咒） |
+| 5 | 사북귀환주문서 | 行会占领沙巴克时传送城堡起点；否则无效 |
+| 6 | 귀환전서 | 回行会庄园（`CmdGuildAgitFreeMove`）；无庄园则退化为「回城」 |
+| 9 | 수리기름 | `RepaireWeaponNormaly`（一般修理） |
+| 10 | 무신의기름 | `RepaireWeaponPerfect`（完全修理） |
+| 11 | 복권 | `UseLotto`（抽奖） |
+
+#### 10.16.2 `MakeWeaponGoodLock`（`:6000-6102`）—— 武器幸运/诅咒
+
+- `difficulty := abs(HIBYTE(pstd.DC) - LOBYTE(pstd.DC)) div 5`（**武器随机幅度越大越难加幸运**）。
+- `Random(20)=1` → `MakeWeaponUnlock`（**中诅咒**，`Delta := -1`）。
+- 否则按诅咒/幸运分层：有诅咒（`Desc[4]>0`）先 **-1 诅咒**；否则加幸运 `Desc[3]`：
+  `<1` 必成、`<3` 需 `Random(6+difficulty)=1`、`<7` 需 `Random(30+difficulty*5)=1`。
+- 成功后 `RecalcAbilitys` + `SendUpdateItem` + `RM_ABILITY`/`RM_SUBABILITY`；写日志码 `29`（축기/祝福）。
+  ⚠️ 源码注释 `// if Delta <> 0 then` 已被注释掉 → **即使无效也写日志**（2005/04/13 改动）。
+
+#### 10.16.3 修理（`:6104-6259`）
+
+- **`RepaireWeaponNormaly`（`:6104`）**：`UniqueItem and $02` → 不可修；
+  `repair := _MIN(5000, _MAX(0, DuraMax - Dura))`；`DuraMax -= repair div 30`（**修理会永久降低上限**）；
+  `Dura += repair` 钳到 `DuraMax`；写日志码 `36` 类型 3。
+- **`RepaireWeaponPerfect`（`:6167`）**：`Dura := DuraMax`（**不降上限**）；日志码 `36` 类型 4。
+- **`RepairItemNormaly(psSeed, puSeed)`（`:6217`）**：对任意装备同「一般修理」公式（`DuraMax -= repair div 30`）。
+
+#### 10.16.4 `UseLotto`（`:6262-6381`）—— 抽奖
+
+`Random(30000)` 分档：`0..4999`→500（6 等）、`14000..15999`→1000（5 等）、
+`16000..16149`→10000（4 等）、`16150..16169`→100000（3 等）、`16170..16179`→200000（2 等）、
+`18000`→1000000（1 等）。**每档都有 `LottoSuccess < LottoFail` 门**（**保底/概率补偿**：
+`LottoFail` 每次未中奖 +500）。中奖 `IncGold`，背包满则 `DropGoldDown` 落地。
+
+#### 10.16.5 `MakeHolySeize`（`:6384-6390`）
+
+置 `BoHolySeize` + `HolySeizeStart/Time`，并 `ChangeNameColor`。
+
+**未验证**：`MakeWeaponUnlock`/`UserSpaceMove`/`GuildAgitMan`/`UserCastle`/`IncGold` 实现未逐一读；
+`LottoSuccess/LottoFail` 初值与持久化未追；无运行期验证。
 
 ---
 

@@ -13354,3 +13354,20 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** `IncHealthSpell`/`EnhanceExtraAbility`/`WinExp`/`UseScroll`/`GetGiftFrom*`/`UserSpaceMove` 未逐一读；`Shape` 常量值未查；ObjBase 其余大段（`UseScroll` 本体、`Repaire*`/`MakeWeaponGoodLock`、`TUserHuman` 命令与商店/市场处理器、fame/gift boxes、`TUserHuman.Operate` 玩家输入分派、`Send*`/`ServerGet*` 族）仍未逐行读。**ObjBase.pas 保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 949 — 2026-09-29：`ObjBase.pas` 卷轴/修理/抽奖
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:5826-6390`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔UseScroll〕** 按 `Shape`：1 回 0 号图（`NoEscape/NoTeleportMove` 禁用）；2 当前图随机跳（`NoRandomMove` 禁用；城堡核心被攻 10s 冷却）；3 回 `HomeX/Y`，**`PKLevel>=2` 改送 `BADMANHOMEMAP`**；4 祝福油→`MakeWeaponGoodLock`；5 沙巴克回城（需行会占领）；6 回庄园（无则退化回城）；9/10 一般/完全修理；11 抽奖。全部受台湾事件用户限制。
+
+**〔武器幸运/诅咒〕** `MakeWeaponGoodLock`：`difficulty=|HIBYTE(DC)-LOBYTE(DC)| div 5`；`Random(20)=1` 中诅咒；否则按诅咒递减/幸运分层（`<1` 必成、`<3` `Random(6+difficulty)`、`<7` `Random(30+difficulty*5)`）；`//if Delta<>0` 被注释 → **无效也写日志码 `29`**。
+
+**〔修理〕** `RepaireWeaponNormaly`：`UniqueItem and $02` 不可修；`repair=min(5000, DuraMax-Dura)`；**`DuraMax -= repair div 30`（永久降上限）**；日志码 `36` 类型 3。`RepaireWeaponPerfect`：`Dura:=DuraMax`，类型 4。`RepairItemNormaly` 对任意装备同公式。
+
+**〔抽奖〕** `UseLotto`：`Random(30000)` 分档 500/1000/10000/100000/200000/1000000（6..1 等）；**每档 `LottoSuccess < LottoFail` 保底门**，未中奖 `LottoFail += 500`；背包满则金币落地。
+
+**〔未闭合〕** `MakeWeaponUnlock`/`UserSpaceMove`/`GuildAgitMan`/`UserCastle` 未逐一读；`LottoSuccess/LottoFail` 初值与持久化未追；ObjBase 其余大段（`UseScroll` 之外的 `Repaire*`、`TUserHuman.Operate` 玩家输入分派、`ServerGet*`/`Send*` 族、`GetGiftFrom*`、fame 系统）仍未逐行读。**ObjBase.pas 保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
