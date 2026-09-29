@@ -13371,3 +13371,20 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** `MakeWeaponUnlock`/`UserSpaceMove`/`GuildAgitMan`/`UserCastle` 未逐一读；`LottoSuccess/LottoFail` 初值与持久化未追；ObjBase 其余大段（`UseScroll` 之外的 `Repaire*`、`TUserHuman.Operate` 玩家输入分派、`ServerGet*`/`Send*` 族、`GetGiftFrom*`、fame 系统）仍未逐行读。**ObjBase.pas 保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 950 — 2026-09-29：`ObjBase.pas` 玩家主循环 `TUserHuman.Operate`
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:24626-26325`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔周期检查〕** 交易对面校验（修面壁交易复制金钱）；账号到期 `EmergencyClose`；`BoAllowFireHit` 20s / `BoAllowTwinHit=2` 自动清并发 `+UFIR`/`+UTWN`；`BoTimeRecall` 到点 `SpaceMove`；每 20s 台湾事件坐标广播；每 3s `CheckHomePos`+重叠推挤（`>=3` 3s 或 `=2` 10s → `CharPushed`）+城堡战 FreePK 区；每 1s 连接日志/行会战改名色/**城堡核心占领**（`ChangeCastleOwner`+`ISM_CHANGECASTLEOWNER`+可能 `FinishCastleWar`）/区域状态/组员与召唤 `RM_GROUPPOS`；每 500ms 台湾事件物品检查。
+
+**〔CM_ 分派〕** 移动回 `+GOOD/+FAIL`；攻击回 `+GOOD/<HitSpeed>`（**攻速核对**）；`CM_PICKUP` 需坐标匹配；物品/NPC/商店/组队/交易/行会/师徒/市场/庄园/公告板/装饰各转 `ServerGet*`；`CM_FRIEND_ADD` **跨服** `ExternSendMsg(stInterServer,...)`。
+
+**〔RM_ 分派〕** 把内部消息编码为 `SM_*`（约 90 个）：`RM_LOGON`（`SM_NEWMAP`+`SendLogon`+`SM_CHECK_CLIENTVALID` 校验和）、`RM_CHANGEMAP`（NoGroup 解组）、移动/攻击/施法族、`RM_STRUCK`（**正当防卫 `AddPkHiter`+`SetLastHiter`**、红名 `HumStruckTime`、城堡犯罪标记）、死亡/复活/变身、传送/挖地/事件、特效、显血、聊天族（**每种映射固定颜色对**）、商店/市场/物品/行会/庄园/门/魔法/重量/金币/特性/状态/耐久/光照/计数/任务/掷骰。`RM_WEIGHTCHANGED` 校验和 `(((W+Wear+Hand) xor $3A5F) xor $1F35) xor $aa21`。
+
+**〔登出/换服〕** 非换服 → `KillAllSlaves`+通知恋人（本服/跨服）+`DropEventItems`；`MakeGhost(6)`；换服用 `ChangeMapName/CX/CY`；非 `SoftClosed` 通知 ID 服 `SendUserClose`。
+
+**〔未闭合〕** `TurnXY/WalkXY/RunXY/HitXY/SpellXY`（移动攻击合法性核心）未逐一读；`UserCastle.*`/`FrmIDSoc` 未追；颜色对业务含义未核实；ObjBase 其余大段（`ServerGet*` 各商店/仓库/市场实现、`TUserHuman` 命令 `Cmd*`、fame/gift boxes、`GetGiftFrom*`、`TUserHuman` 构造/初始化 `Initialize/Finalize`）仍未逐行读。**ObjBase.pas 保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

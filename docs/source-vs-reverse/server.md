@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1073,6 +1073,75 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 
 **未验证**：`MakeWeaponUnlock`/`UserSpaceMove`/`GuildAgitMan`/`UserCastle`/`IncGold` 实现未逐一读；
 `LottoSuccess/LottoFail` 初值与持久化未追；无运行期验证。
+
+### 10.17 `TUserHuman.Operate`（Round 950；`ObjBase.pas:24626-26325`）—— 玩家主循环
+
+`Operate` 是玩家每轮调度函数（由 `UsrEngn` 调用），结构 = **周期检查 → 消息分派 → 登出处理 → `inherited Run`**。
+
+#### 10.17.1 周期检查（`:24646-24902`）
+
+- `BoDealing` 时若对面不是 `DealCret`（或自身/nil）→ `BrokeDeal`（**修「面壁交易复制金钱」漏洞**）。
+- `CheckExpiredTime`；`BoAccountExpired` → 提示 + `EmergencyClose`（消息只发一次）。
+- `BoAllowFireHit` 超 20 s 自动清并 `+UFIR`；`BoAllowTwinHit=2` → 0 并 `+UTWN`。
+- `BoTimeRecall(Group)` 到点 `SpaceMove` 回 `TimeRecallMap/X/Y`。
+- 每 20 s：台湾事件用户 `CryCry` 广播自己坐标。
+- 每 3 s：`CheckHomePos`；**重叠推挤**（`GetDupCount>=3` 持续 3 s 或 `=2` 持续 10 s → `CharPushed(Random(8),1)`）；城堡战期间 `BoInFreePKArea := UserCastle.IsCastleWarArea`。
+- 每 1 s：夜间优惠边界写连接日志 + 每 2 h 写一次 `WriteConLog`；行会战安全区变化 → `ChangeNameColor`；
+  **城堡核心占领判定**：在 `CorePEnvir` 内、行会为进攻方且 `CheckCastleWarWinCondition` 成立 →
+  `UserCastle.ChangeCastleOwner` + `UserEngine.SendInterMsg(ISM_CHANGECASTLEOWNER, ...)`，
+  进攻方只剩 1 个时 `FinishCastleWar`；`AreaStateOrNameChanged` → `SendAreaState`+`UserNameChanged`；
+  向同图组员/召唤物发 `RM_GROUPPOS` + `RM_HEALTHSPELLCHANGED`。
+- 每 500 ms：台湾事件物品在背包中消失则清 `BoTaiwanEventUser`/`STATE_BLUECHAR`。
+
+#### 10.17.2 `CM_*`（客户端→服务端）分派（`:24907-25262`）
+
+- **移动/攻击回执**：`CM_TURN/WALK/RUN` → `TurnXY/WalkXY/RunXY`，回 `'+GOOD/'+GetTickCount` 或 `'+FAIL/'`；
+  攻击族 `CM_HIT/HEAVYHIT/BIGHIT/POWERHIT/LONGHIT/WIDEHIT/CROSSHIT/TWINHIT/FIREHIT` → `HitXY`，
+  回 `'+GOOD/'+GetTickCount+'/'+HitSpeed`（**把攻速回给客户端做反外挂核对**）。
+- `CM_SPELL` → `SpellXY`；`CM_SITDOWN` → `SitdownXY`；`CM_SAY` → `Say`。
+- 物品：`CM_DROPITEM`/`CM_DROPCOUNTITEM` → `UserDropItem/UserDropCountItem` + `SM_DROPITEM_SUCCESS/FAIL`；
+  `CM_PICKUP`（**需 `CX=lParam2 and CY=lParam3`**）→ `PickUp`；`CM_EAT`/`CM_BUTCH`/`CM_TAKEONITEM`/`CM_TAKEOFFITEM`；
+  `CM_UPGRADEITEM` → `CmdUpgradeItem`（try/except 打 `UPGRADE ERROR`）。
+- NPC/商店：`CM_CLICKNPC`/`CM_MERCHANTDLGSELECT`/`CM_MERCHANTQUERYSELLPRICE`/`...REPAIRCOST`/
+  `CM_USERSELLITEM`/`CM_USERREPAIRITEM`/`CM_USERSTORAGEITEM`/`CM_USERGETDETAILITEM`/`CM_USERBUYITEM`/
+  `CM_USERTAKEBACKSTORAGEITEM`/`CM_USERMAKEDRUGITEM`/`CM_USERMAKEITEMSEL`/`CM_USERMAKEITEM`。
+- 组队/交易/行会/师徒/市场/庄园：`CM_CREATEGROUP*`/`CM_ADDGROUPMEMBER*`/`CM_DELGROUPMEMBER`/
+  `CM_DEAL*`/`CM_OPENGUILDDLG`/`CM_GUILD*`/`CM_LM_*`/`CM_MARKET_*`/`CM_GUILDAGIT*`/`CM_GABOARD_*`/`CM_DECOITEM_BUY`。
+- 杂项：`CM_CANCLOSE`（`ExistAttackSlaves` 时 `RM_CANCLOSE_FAIL`，否则 OK）；
+  `CM_SOFTCLOSE`（回选人）；`CM_GROUPMODE`；`CM_WANTMINIMAP`；`CM_QUERYUSERSTATE`；`CM_ADJUST_BONUS`；
+  `CM_SPEEDHACKUSER`（记日志）；`CM_FRIEND_ADD` → **`UserMgrEngine.ExternSendMsg(stInterServer, ...)` 跨服转发**；
+  `CM_TEST`/`CM_EXCHGTAKEONITEM`（空）。
+
+#### 10.17.3 `RM_*`（服务端内部→客户端）分派（`:25266-26264`）
+
+把内部消息编码成对应 `SM_*` 发出。关键：
+- **`RM_LOGON`**：按地图 `Darkness/Dawn/Bright/DayLight` 算亮度 `n`，发 `SM_NEWMAP`（`MakeWord(LOBYTE(n), LOBYTE(PEnvir.AutoAttack))`）+ `SendLogon` + `GetQueryUserName` + `SendAreaState` + `SM_MAPDESCRIPTION` + **`SM_CHECK_CLIENTVALID`（3 个客户端校验和）**。
+- **`RM_CHANGEMAP`**：`NoGroup` 地图自动解散队伍；发 `SM_CHANGEMAP`。
+- 移动族 `RM_TURN/PUSH/RUSH/RUSHKUNG/WALK/RUN/FOXSTATE` → 对应 `SM_*`，带 `GetRelFeature`/`CharStatus`/`GetThisCharColor`。
+- 攻击族 `RM_HIT/.../PULLMON/SUCKBLOOD` → `SM_*`（仅非 self）。
+- 施法 `RM_SPELL`/`RM_MAGICFIRE`/`RM_MAGICFIRE_FAIL`。
+- **`RM_STRUCK`/`RM_STRUCK_MAG`**：自己被打时 `AddPkHiter`+`SetLastHiter`（**正当防卫记录**）；`PKLevel>=2` 记 `HumStruckTime`（红名不能重连）；打自己行会城堡成员 → `BoCrimeforCastle`；`HealthTick/SpellTick := 0`、`Dec(PerHealth/PerSpell)`。
+- 死亡/复活/变身 `RM_DEATH`（`lparam3=1` 用 `SM_NOWDEATH`）/`RM_SKELETON`/`RM_ALIVE`/`RM_CHANGEFACE`。
+- 传送族 `RM_SPACEMOVE_SHOW(_NO/2)/HIDE(_2)`；`RM_DIGUP`（`lTag1` 事件被强制置 0）/`RM_DIGDOWN`；`RM_SHOWEVENT`/`RM_HIDEEVENT`。
+- 特效/战斗视觉 `RM_FLYAXE`/`RM_LIGHTING(_1/_2/_3)`/`RM_DRAGON_FIRE1-3`/`RM_NORMALEFFECT`/`RM_LOOPNORMALEFFECT`。
+- 显血 `RM_OPENHEALTH/CLOSEHEALTH/INSTANCEHEALGUAGE`；`RM_BREAKWEAPON`；`RM_GROUPPOS`。
+- 名字/颜色 `RM_CHANGENAMECOLOR`/`RM_USERNAME`。
+- 经验/等级 `RM_WINEXP`/`RM_CHANGEFAMEPOINT`/`RM_LEVELUP`（连发 `SM_ABILITY`+`SM_SUBABILITY`）/`RM_POWERUP`。
+- **聊天族** `RM_HEAR/CRY/WHISPER/GMWHISPER/LM_WHISPER/SYSMESSAGE(2/3)/SYSMSG_BLUE/PINK/GREEN/REMARK/GROUPMESSAGE/GUILDMESSAGE/MERCHANTSAY`：每种映射到**固定颜色对**（如 `RM_HEAR→MakeWord(0,255)`、`RM_CRY→MakeWord(0,151)`、`RM_GMWHISPER→MakeWord(249,255)`）。
+- 商店/市场/物品/行会/庄园/门/使用品/魔法/重量/金币/特性/状态/清屏/魔法经验/声音/耐久/光照/灯油/计数/组取消/改名/建会/捐献/菜单/一次性密码/任务/掷骰/猜拳 → 对应 `SM_*`。
+- **`RM_WEIGHTCHANGED` 校验和**：`(((W+Wear+Hand) xor $3A5F) xor $1F35) xor $aa21`（与客户端 `SM_WEIGHTCHANGED` 的校验互为逆）。
+- 未匹配 → `inherited RunMsg(msg)`。
+
+#### 10.17.4 登出 / 换服（`:26272-26311`）
+
+`EmergencyClose/UserRequestClose/UserSocketClosed` 时：非换服则 `KillAllSlaves` + 通知恋人（本服 `RM_LM_LOGOUT`，跨服 `ISM_LM_LOGOUT`）+ `DropEventItems`；`MakeGhost(6)`；
+换服则用 `ChangeMapName/ChangeCX/CY`；`UserRequestClose` 发 `SM_OUTOFCONNECTION`；非 `SoftClosed` 时
+`FrmIDSoc.SendUserClose(UserId, Certification)` 通知 ID 服。整体 `try..except` 打
+`[Exception] Operate 2 #<name> Identback/Ident/Sender/wP/lP1-3`。
+
+**未验证**：`TurnXY/WalkXY/RunXY/HitXY/SpellXY/SitdownXY`（移动/攻击合法性核心）未逐一读；
+`UserCastle.*`/`UserMgrEngine.ExternSendMsg`/`FrmIDSoc` 实现未追；颜色对数值的业务含义未核实；
+无运行期验证。
 
 ---
 
