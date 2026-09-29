@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962 / 963 / 964 / 965）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960 / 961 / 962 / 963 / 964 / 965 / 966）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1855,6 +1855,34 @@ FamePoint/FameName、UserMarketDebug、연인해제；另 ReloadGuildAgit、OneK
 
 **未验证**：`EatItem`/`ReadBook`/`TMerchant.*`/`TakeCretBagItems`/`UserCounterItemAdd` 实现未读；
 `MAXBAGITEM`/`MAXSAVELIMIT`/`TAIWANEVENTITEM`/`ApprovalMode` 值未查；无运行期验证。
+
+### 10.34 组队与交易（Round 966；`ObjBase.pas:27471-28528`）
+
+#### 10.34.1 组队（`:27471-27879`）
+
+**两步握手**（请求者 → 被邀请者确认）：
+- `ServerGetCreateGroup(withwho)`：自身无组、对方存在且非己、双方 `PEnvir.NoGroup=FALSE`、双方 `LoginSign`、
+ 对方无组、`AllowGroup`；`GroupRequester` + `GroupRequestTime`（**40s 超时自动清空**）；失败码 `-1..-5`；
+ 发 `SM_CREATEGROUPREQ`。
+- `ServerGetCreateGroupRequestOk`：重校验后建组 `GroupMembers.AddObject` + `EnterGroup` + `SM_CREATEGROUP_OK` + `RefreshGroupMembers`。
+- `ServerGetCreateGroupRequestFail`：清请求 + 通知请求者。
+- `ServerGetAddGroupMember`：仅 `GroupOwner` 可加；`GroupMembers.Count >= GROUPMAX` 失败 `-5`；重复成员补丁（遍历比对 + nil 检查）；同上两步握手发 `SM_ADDGROUPMEMBERREQ`。
+- `ServerGetDelGroupMember`：仅队长；`SM_GROUPDELMEM_OK/FAIL`。
+- `RefreshGroupMembers`：把成员名 `/` 串接发 `SM_GROUPMEMBERS` 给每个成员，并 `RecalcAbilitys` + `RM_ABILITY`（**情人节情侣组队加成**）。
+
+#### 10.34.2 交易（`:27881-28528`）
+
+- `ServerGetDealTry`：需**面对面**（`GetFrontCret` 互指）+ 双方非 `BoDealing` + 对方 `BoExchangeAvailable`；
+ **庄园交易**（`BoGuildAgitDealTry`）要求**双方都是文派主**；成功 `StartDeal` 双向。
+- `StartDeal`：`BoDealing:=TRUE`，发 `SM_DEALMENU`（或 `SM_GUILDAGITDEALMENU`）。
+- 加/删物品：`AddDealItem`/`DelDealItem` 发 `SM_DEALADDITEM_OK`/`SM_DEALDELITEM_OK`，并向对方发 `SM_DEALREMOTEADDITEM`/`SM_DEALREMOTEDELITEM`（含 `TClientItem`，未鉴定物品按 `Desc[8]` 隐藏）；计数物品走 `SM_COUNTERITEMCHANGE`。
+- `ServerGetDealAddItem`：**`UniqueItem and $08` 不可交易**（注释 2005/03/14）；**台湾活动物品不可交易**；`DealList.Count < MAXDEALITEM`；计数物品 `count` 上限 `MAX_OVERLAPITEM`，可部分上架。
+- `BrokeDeal`：取消时归还 `DealList` 物品（计数物品 `UserCounterItemAdd` 合并）+ `IncGold(DealGold)`；`SM_DEALCANCEL`；双向递归取消；`BoDealEnding` 时禁止取消。
+- `ResetDeal`：清 `DealList` 回背包 + 金币回补。
+- `IsReservedMakingSlave`：`PrevServerSlaves.Count > 0`（服务器迁移待召唤的随从）。
+
+**未验证**：`EnterGroup`/`DelGroupMember`/`UserCounterDealItemAdd`/`ServerGetDealChangeGold`/`ServerGetDealEnd` 未逐一读；
+`GROUPMAX`/`MAXDEALITEM`/`MAX_OVERLAPITEM` 值未查；无运行期验证。
 
 ---
 

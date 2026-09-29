@@ -13679,3 +13679,16 @@ HUD cap2「技能图鉴」flag 消费者；任务详情面板 `detail_geometry` 
 **〔未闭合〕** `TMerchant.*`/`EatItem`/`ReadBook`/`TakeCretBagItems` 实现未读；常量值未查。ObjBase 其余大段（组队/交易/行会/关系/寄售/庄园 `27471-31768`、`Cmd*` 19197-22663）仍未逐行读。**保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 966 — 2026-09-29：`ObjBase.pas` 组队与交易
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:27471-28528`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔组队〕** 两步握手（请求者发起 → 被邀者确认）：`GroupRequester`+`GroupRequestTime`（**40s 超时**）；失败码 `-1..-5`；`PEnvir.NoGroup` 禁组；`LoginSign`、`AllowGroup`、`GROUPMAX` 校验；`RefreshGroupMembers` 发 `SM_GROUPMEMBERS` + `RecalcAbilitys`（情人节情侣加成）。包：`SM_CREATEGROUPREQ/OK/FAIL`、`SM_ADDGROUPMEMBERREQ/OK/FAIL`、`SM_GROUPDELMEM_OK/FAIL`。
+
+**〔交易〕** `ServerGetDealTry` 需**面对面互指**+双方非交易中+`BoExchangeAvailable`；**庄园交易限双方文派主**。`SM_DEALMENU`/`SM_GUILDAGITDEALMENU`；加删物品双向 `SM_DEALADDITEM_OK`/`SM_DEALREMOTEADDITEM`/`SM_DEALDELITEM_OK`/`SM_DEALREMOTEDELITEM`；计数物品 `SM_COUNTERITEMCHANGE`。**`UniqueItem and $08` 不可交易**、**台湾活动物品不可交易**；`MAXDEALITEM`；计数物品可部分上架。取消 `BrokeDeal` 归还物品+金币，`SM_DEALCANCEL`。
+
+**〔未闭合〕** `EnterGroup`/`ServerGetDealChangeGold`/`ServerGetDealEnd` 等未逐一读；常量值未查。ObjBase 其余大段（行会/关系/寄售/庄园 `28529-31768`、`Cmd*` 19197-22663）仍未逐行读。**保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
