@@ -93,6 +93,30 @@ godot-mono --path GodotClient -- --server 127.0.0.1 --port 7002 \
 | `03-bag-window-after-Q.png` | 按 Q → legacy 背包窗 + 行会窗并存 |
 | `04-bag-grid-6x6-zoom.png` | 背包网格 2×放大（可逐格点数 6×6） |
 
+## 4.2 逐窗口热键真机扫描（2026-09-30）
+
+进游戏后逐个按 EI caption 热键，验证打开的是**对应的 EI 窗口**（同一会话截图）：
+
+| 键 | EI 语义 | 真机结果 | 判定 |
+|---|---|---|---|
+| Q | 包袱栏 | legacy 背包 F250（6×6=36 格、负重/总量、金钱、[包袱]、수리、锁链轨） | MATCH |
+| W | 状态栏 | 人物状态 F200（纸娃娃 + 装备槽 + 属性文本） | MATCH |
+| E | 技能书 | 技能书 F400（书页 + 左页列表 + 右页详情文本） | MATCH |
+| R | 聊天记录 | F350 聊天弹窗（需先取消聊天输入焦点，见下） | MATCH |
+| N | 设置栏 | 设置 F750（배경음악/효과음/환경음/그림자 四组 ON/OFF + 滑条） | MATCH |
+| G | 组队 | 组队 F900（인원 관리/모집） | MATCH |
+| D | 信息窗口(任务) | 任务 F700（羊皮卷） | MATCH |
+| S | 坐骑 | 坐骑 F850（말타기/말내리기/말숨기기/말꺼내기 + 무게/스태미너 双 gauge + 关闭键） | MATCH |
+| F | 行会 | 行会 F600（8 个韩文动作控件） | MATCH（本轮补） |
+| Z / V / Alt+Q / Alt+X | 腰带 / 小地图 / 退出 / 注销 | 走 `KeyBindManager` 默认表，与本轮一致 | MATCH |
+
+证据：`docs/evidence/godot-runtime-acceptance-2026-09-30/05-window-sweep-hotkeys.png`
+（W/E/N/G/D/S 六窗带标注，2×3）。
+
+**发现的一处交互细节**：聊天输入框获得焦点时按 R 会被当作**输入文本**而不是热键
+（`GameScene.cs:10877-10882` 的 `InputHasFocus` 分支）—— 这与原版一致（聊天框有焦点时
+字母键应当输入文本），不是缺陷；真机扫描时需先点击世界取消焦点。
+
 ## 5. 仍未覆盖（本轮真机范围之外）
 
 - **原版客户端 A/B**：无 Windows 环境（`../../ORIGINAL_GODOT_PARITY_AUDIT.md` P-002）。

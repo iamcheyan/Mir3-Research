@@ -83,7 +83,7 @@ symlink 指向已失效的 `/tmp/nas_mnt/NAS`，**要用 `/data/NAS`**）下
 | 3 | 交易 | `window_layout.json:14`；`trade-window-render-evidence.json::geometry` | F1050 484×330；每侧 5×6@36 stride36；accept (185,332) F1061/1062；cancel (225,332) F1064/1065；close (532,350) | `TradeDialog.cs:115` | `size=(484,330) userGrid=(5,6)@(20,47) playerGrid=(5,6)@(252,47) close=(532,350) accept=(185,332)#1061` | **MATCH** / §9 T-1（close 语义） |
 | 4 | 行会 | `window_layout.json:15`；`social-window-render-evidence.json::windows[1]`；`guild-window-paint-evidence.json` | F600 596×446 @(102,22)；成员 1 列 x=win+35 y=win+60 行距=字高+5 上限 18；9 控件 paint 位置 | `GuildDialog.cs:95` | `size=(596,446) bg=(-214,-33) actions=8 rows=18/18 first=(35,60) step=21` | **本轮修复**（§6） |
 | 6 | 组队 | `window_layout.json:17`；`social-window-render-evidence.json::windows[0]` | F900 256×244；成员 2 列 x=+45/+145 行距 20；5 控件 (226,214)/(17,197)/(80,197)/(159,197)/(9,52) | `GroupDialog.cs:114` | `size=(256,244) remove=(80,197) allow=(166,40) invite=(17,197) close=(226,214)` | **MATCH** |
-| 8 | 聊天弹窗 | `window_layout.json:19`；`chat-window-render-evidence.json` | F350 572×388；历史 clip (35,28,485,266) 文本(40,29) 行距14 19 行；输入 (25,311,499,15)；6 频道键 36×34 x=25+40k y=332；关闭 (532,350) | `LegacyChatDialog.cs:39` | 代码常量 `VisibleRows=19 LineStep=14`；`_historyClip=(35,28,485,266)`；按钮 `25+40i,332`；`_input=(25,311,499,15)` | **MATCH** |
+| 8 | 聊天弹窗 | `window_layout.json:19`；`chat-window-render-evidence.json` | F350 572×388 **@(114,76)**；历史 clip (35,28,485,266) 文本(40,29) 行距14 19 行；输入 (25,311,499,15)；6 频道键 36×34 x=25+40k y=332；关闭 (532,350) | `LegacyChatDialog.cs:39` | 代码常量 `VisibleRows=19 LineStep=14`；`_historyClip=(35,28,485,266)`；按钮 `25+40i,332`；`_input=(25,311,499,15)`；**位置本轮修**：原为屏幕居中 (114,106) → 改 EI 实参 (114,76) | **MATCH**（规格与位置；位置修复见 §6.5） |
 | 9 | NPC 对话 | `window_layout.json:22`；`npc-window-render-evidence.json` | F1100 552×176；正文原点 (150,40)；关闭 (7,141,28,26)；上箭头 (290,145,12,8)；下箭头 (306,136,12,8) | `NPCDialog.cs:108` | `size=(552,176) text=(150,40) close=(7,141) up=(290,145) down=(306,136)` | **MATCH** |
 | 11 | 任务 | `window_layout.json:20`；`quest-window-render-evidence.json` | F700 340×440；详情 F705 @(65,294) 204×76 正文 (80,310)/15px/3 行；列表行 (65, 90+15·line) 上限 19；控件 (290,59)/(290,89) | `QuestDialog.cs:103` | `size=(340,440) scroll=(290,59)/(28,58) close=(304,404)` | **MATCH**（窗口/详情/控件）；列表行几何 §9 Q-2 `CONFIRMED_DIFFERENCE` |
 | 12 | 设置 | `window_layout.json:21`；`system-window-render-evidence.json` | F750 248×264；8 toggle（(148,43/116/190/217) 32×22 与 +37 的 40×22）；2 滑条 (34,96)/(34,170)；关闭 (218,238) | `ConfigDialog.cs:141` | `size=(248,264) legacyHitRects=8 paintedIndicators=4 volumeSliders=2` | **MATCH** |
@@ -265,6 +265,15 @@ SpellButton cap8 (703,16)、MenuButton cap11 (703,85)、CashShopButton cap15 (66
 结论：**背包的可视格子数量、尺寸、间距、起点与原版一致**；
 差异只在「记录容量/占位表模型」与「滚动 gauge 绘制」，二者均受数据身份或
 未闭合证据阻塞（§9 I-1/I-2）。
+
+### 6.5 真实联机验收暴露并修复的另外两处（2026-09-30）
+
+| # | 缺陷 | 原版依据 / 症状 | 修复 |
+|---|---|---|---|
+| 1 | F350 聊天窗位置 | 原版 `window.chat-pop` 构造实参 (114,76)（`window_layout.json` / `0x427839`）；`LayoutHud` 末尾既有约定是「旧版窗口坐标来自 exe 构造参数，不是居中布局」，`LegacyChatDialog` 是唯一漏项 → 居中 (114,106) 使窗口底边压进 HUD 29px | `ApplyLegacyWindowLocations` 补 `Place(_legacyChatDialog, 114, 76)` |
+| 2 | `WindowManager` 对已释放窗口崩溃 | 真机按 R 关聊天窗抛 `ObjectDisposedException`（`RefreshZOrder` → `SetZIndex`），整轮 Z 序刷新中断 | 新 `IsAlive` 守卫，六个入口先剔除失效引用 |
+
+真机回归：同流程日志 `ObjectDisposedException` 计数 **0**（修复前 ≥2）。
 
 ## 7. 与 Zircon `Client/`（移植来源）的对照
 

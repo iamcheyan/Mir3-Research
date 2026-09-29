@@ -21,6 +21,8 @@
 | A-9 | 背包三个子控件帧号 | 判定 Godot 现有实现**正确**（idle 取 `[+0x20]`，即 handler 最后 push 的 263/270/273） | `0x417880` 字段映射 + `0x417640` 状态机 + 三个 mode handler 的 push 序 | 矩阵 §9 I-3 已收窄 |
 | A-10 | 背包 F161/162「关闭」是否偏差 | 判定 **不是确认差异**（保留现状） | `0x42BF85`：背包窗口输入 handler 返回 0 时 `0x42ADB0(hud,0)` = 切换关闭背包；点 X 命中其装饰 vtable（只播音）后仍落到背景路径 → 原版也会关 | 本轮新证据 |
 | A-11 | legacy 行会窗去掉「创建行会」页 | **去掉了**（`752a41cc`） | 原版 id4 的 9 个控件里没有建会入口；**原版建会是 GM 指令** `AddGuild <gname> <mastername>`（`ObjBase.pas:24263-24266` → `CmdCreateGuild`，`:19835`），普通玩家从 UI 也建不了会。Zircon 侧等价物是 `@createGuild`（`ServerLibrary/Envir/Commands/Command/Admin/CreateGuild.cs`）→ **能力未被移除**（与原版同）。故 legacy 隐藏现代建会页属 1:1 修复，非功能回归。真机截图佐证（`02-guild-window-after-F.png`） | `752a41cc` |
+| A-12 | `WindowManager` 对已释放窗口崩溃 | 加 `IsAlive` 守卫（`Open/Close/Toggle/CloseTop/BringToFront/RefreshZOrder`） | 真机复现：按 R 关聊天窗时 `OpenWindows` 残留一个已释放窗口 → `RefreshZOrder` 写 `ZIndex` 抛 `ObjectDisposedException`（`WindowManager.cs:79`），整轮 Z 序刷新中断。属健壮性缺陷，非 UI 布局差异 | `607418c1` |
+| A-13 | F350 聊天窗位置 | 改为 EI 构造实参 **(114,76)** | `layout.json` / main-init 实参 `0x427839` 给 `window.chat-pop` (114,76)；`LayoutHud` 末尾的既有约定就是「旧版窗口坐标来自 exe 构造参数、**不是居中布局**」，而 `LegacyChatDialog` 是**唯一漏掉**的一个（构造期用屏幕居中 → (114,106)）。x 巧合同为 114；y 差 30：居中值使窗口底边 106+388=494 压进 HUD 顶边 465 约 29px，原值 76 时底边 464 正好贴在 HUD 之上。真机截图量到 (114,~104)，与居中值一致、与证据不符 | 见 §11 |
 
 ## B. 待决（需要用户决策或需要目标资源/协议，本轮不擅自改）
 
