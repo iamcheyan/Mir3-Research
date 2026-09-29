@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947 / 948 / 949 / 950 / 951 / 952 / 953 / 954 / 955 / 956 / 957 / 958 / 959 / 960）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -1571,6 +1571,41 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 
 **未验证**：所有 `*_SHAPE`/`banjjak_weapon*` 物品索引对应的 EI 数据行未解析；
 `GetMyLight`/`ApplyItemParameters`/`ApplyItemParametersEx` 已部分读；无运行期验证。
+
+### 10.27 装备/卸装/捆绑服务端处理（Round 960；`ObjBase.pas:26475-26683`）
+
+#### 10.27.1 `ServerGetTakeOnItem(where, svindex, itmname)`（`:26475-26584`）
+
+按 `MakeIndex` + 名字在背包定位目标，然后三重校验：
+1. **`IsTakeOnAvailable(where, ps)`**：装备位是否匹配（如刀不能穿在衣服位）。
+2. `std := ps^` 后 **`ItemMan.GetUpgradeStdItem(targpu^, std)`**（叠加升级属性）。
+3. **`CanTakeOn(where, @std)`**：性别/等级/职业是否达标。
+
+若目标槽已有装备，先做**不可脱下检查**：
+- `StdMode in [15,19,20,21,22,23,24,26,52,53,54]` 且 `Desc[7] <> 0` → 不可脱；
+- `ItemDesc and IDC_UNABLETAKEOFF <> 0` → 不可脱（`BoNextTimeFreeCurseItem` 可豁免）；
+- `ItemDesc and IDC_NEVERTAKEOFF <> 0` → 绝对不可脱。
+以上任一命中 → `SysMsg('아이템이 빠지지 않습니다.')` + 失败码 **-4**。
+
+成功后：未知属性（`Desc[8]`）**穿上即解明**置 0；`UseItems[where] := targpu^`；`DelItemIndex`；
+旧装备 `AddItem` + `SendAddItem`；`RecalcAbilitys` + `SM_TAKEON_OK`（带 `Feature`）+ `FeatureChanged`；
+**按装备类型选择同步**：翅膀/龙衣/破天衣 → `SendUpdateItemWithLevel`；破天/龙衣 → `SendUpdateItemByJob`；
+**반짝武器 692-694/697-699 → `SendUpdateItemWithLevel`**；否则 `SendUpdateItem`。
+失败码：-1 `CanTakeOn` 失败、-2 `IsTakeOnAvailable` 失败。
+
+#### 10.27.2 `ServerGetTakeOffItem(where, svindex, itmname)`（`:26586-26654`）
+
+`not BoDealing` 且 `where in [0..12]` 才可脱；`UseItems[where]` 已装备且 `MakeIndex` 匹配；
+**同样的不可脱下三重检查**（-4）；`AddItem` 成功才清槽 + `SM_TAKEOFF_OK` + `RecalcAbilitys` + `FeatureChanged`；
+**苦痛（PAIN）系列脱下时 `ItemExpPoint := 0`**（临时累积清零）。失败码：-1 状态不符、-2 未装备、-3 背包满。
+
+#### 10.27.3 `BindPotionUnit(Shape, Count)`（`:26657-26683`）
+
+把散装药捆成捆装：**符（`SHAPE_AMULET_BUNCH`）不可捆**；按 `GetStdItemNameByShape(31, Shape)`
+找捆装物品（`StdMode=31`），`CopyToUserItemFromName` 成功则入包 + `SendAddItem`。
+
+**未验证**：`IsTakeOnAvailable`/`CanTakeOn`/`CopyToUserItemFromName`/`GetStdItemNameByShape` 实现未逐一读；
+`DRESS_STDMODE_*`/`WEAPON_STDMODE*`/`SHAPE_AMULET_BUNCH` 常量值未查；无运行期验证。
 
 ---
 

@@ -13572,3 +13572,18 @@ HUD cap2「技能图鉴」flag 消费者；任务详情面板 `detail_geometry` 
 **〔未闭合〕** 所有 `*_SHAPE`/物品索引对应的 EI 数据行未解析；ObjBase 其余大段（`GetGiftFromBox/Egg/OldBox` `15396-17126`、`TUserHuman` 全部 `Cmd*` 命令 `18915-24626`、`ServerGet*` 商店/市场 `26333-31768`）仍未逐行读。**ObjBase.pas 保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 960 — 2026-09-29：`ObjBase.pas` 装备/卸装/捆绑
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:26475-26683`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔`ServerGetTakeOnItem`〕** 按 `MakeIndex`+名字定位 → 三重校验 `IsTakeOnAvailable`（槽位）/`GetUpgradeStdItem`（升级属性）/`CanTakeOn`（性别等级职业）；目标槽已装备时做**不可脱下三重检查**（`StdMode in [...]` 且 `Desc[7]<>0`、`IDC_UNABLETAKEOFF`、`IDC_NEVERTAKEOFF`）→ 失败码 `-4`；成功解明未知属性 `Desc[8]:=0`，换装后 `RecalcAbilitys`+`SM_TAKEON_OK`+`FeatureChanged`；翅膀/龙衣/破天衣/반짝武器按类型用 `SendUpdateItemWithLevel/ByJob`。失败码 `-1`（能力不足）/`-2`（槽位不符）。
+
+**〔`ServerGetTakeOffItem`〕** `not BoDealing` 且 `where in [0..12]`；同样不可脱下三重检查；`AddItem` 成功才清槽 + `SM_TAKEOFF_OK`；**苦痛（PAIN）系列脱下 `ItemExpPoint:=0`**。失败码 `-1/-2/-3`。
+
+**〔`BindPotionUnit`〕** 散装药捆绑（`StdMode=31`），**符（`SHAPE_AMULET_BUNCH`）不可捆**。
+
+**〔未闭合〕** `IsTakeOnAvailable`/`CanTakeOn`/`CopyToUserItemFromName` 未逐一读；常量值未查；ObjBase 其余大段（`GetGiftFromBox/Egg/OldBox` `15396-17126`、`TUserHuman` 全部 `Cmd*` 命令 `18915-24626`、`ServerGet*` 商店/仓库/市场/行会庄园 `26685-31768`）仍未逐行读。**ObjBase.pas 保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
