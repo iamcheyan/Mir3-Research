@@ -249,6 +249,7 @@ SpellButton cap8 (703,16)、MenuButton cap11 (703,85)、CashShopButton cap15 (66
 | N-1 | NPC `mode=1 && overflow=1` 的 14px 行距分支 | `candidate` | 需 token/layout state；当前统一 21px。 |
 | — | 目标 EI EXE/WIL/WIX 版本身份 | `BLOCKED`（环境） | 研究 NAS 路径当前不可读；所有像素级结论保留版本门禁。 |
 | — | 原版客户端运行 A/B | `UNVERIFIED` | 原版为 Windows-only，本机无法运行（见 `../../ORIGINAL_GODOT_PARITY_AUDIT.md` P-002）。 |
+| — | 行会/任务修复的**联机**验收 | `UNVERIFIED` | 本轮验收在真实 Godot 进程里跑真实控件（`LegacyHudLayoutLab --legacy-audit` + `--legacy-guild-sample` + Xvfb 截图 + 三组交互自检），但**未连服务端**：文档端口 7000 当前无实例（机器上只有一个并行的隔离测试实例监听 7001/3001，未接入以免干扰），因此「服务端下发行会数据 → 窗口渲染」的联机链路未跑。不影响控件级结论，但联机复验仍待补。 |
 
 ## 10. 验证方法（可复现）
 
