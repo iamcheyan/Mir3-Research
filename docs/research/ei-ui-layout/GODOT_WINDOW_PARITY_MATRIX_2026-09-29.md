@@ -22,10 +22,38 @@
 | `candidate` | 寄存器歧义 / 运行时决定 / 语义未证 |
 | `runtime` | 只能由真实运行观测 |
 
-本机资源身份：`/home/tetsuya/mir2ei/LegacyEI/Data/GameInter.wil` 与
-`Data/GameInter.wil`（ZL）**帧号空间一致（1103 帧）**，但 `Interface1c` 等
-库存在 WIL/ZL 帧内容差异（见 §8 冲突 C-3）。目标 EI EXE/WIL 身份仍未最终闭合
-（研究 NAS 路径当前不可读），因此**资源像素级结论保留版本门禁**。
+### 0.1 目标 EI 客户端身份：已闭合（2026-09-29）
+
+NAS（`/data/NAS`，SMB `//192.168.3.10/NAS`；注意 `/home/tetsuya/NAS` 这个
+symlink 指向已失效的 `/tmp/nas_mnt/NAS`，**要用 `/data/NAS`**）下
+`TMP/EI传奇3.0客户端/` 即目标 EI 客户端。逐文件 MD5 与本地对照：
+
+| 文件 | NAS | 本地 `mir2ei.before-path-fix-*` / `LegacyEI/Data` | 结果 |
+|---|---|---|---|
+| `Mir3.exe` | `264d848da377c2172ffe1444bf31e7d0` | 同 | **SAME** |
+| `mir3.dat` | `a6a842a71e73…` | 同 | **SAME** |
+| `Mir3.ini` | `f5a7cc9b76a8…` | 同 | **SAME** |
+| `Magic.exp` | `21e3f8a7d769…` | 同 | **SAME** |
+| `MInfo.dat` | `c35f297f95db…` | 同 | **SAME** |
+| `Weapon.ord` | `b9516d7727ff…` | 同 | **SAME** |
+| `Data/GameInter.wil` + `.wix` | `818359f887c5` / `00f4f1f56c22` | 同 | **SAME** |
+| `Data/Interface1c.wil` + `.wix` | `f1703234daa5` / `c86cb81f38f9` | 同 | **SAME** |
+| `Data/inventory.wil` + `.wix` | `7e880dad8022` / `4c039e53af03` | 同 | **SAME** |
+| `Data/Storeitem.wil` | `668d2f961be0` | 同 | **SAME** |
+
+**结论**：本机 `LegacyEI/Data/*` 与 `mir2ei.before-path-fix-*` 就是目标 EI 3.0
+客户端的同一份文件；此前"目标 EXE/WIL/WIX 版本身份未闭合"的门禁**解除**，
+本轮所有 primary-static / primary-resource 结论不再需要版本保留意见。
+
+**顺带修正 §8 冲突 C-3**：研究摘要称"Interface1c F268 在当前导出为空"，
+但**目标客户端自己的 `Interface1c.wil` 里 F267/F268 都有内容**
+（本机文件与目标逐字节相同）→ 该摘要要么指另一份导出，要么是错的；
+而现代 `Data/Interface1c.Zl` 的 F267/F268 为 blank（Zircon 转换产物）。
+两者都不是"目标资源为空"。
+
+> 其余仍在的版本差异：`Data/*.Zl` 是 Zircon 从 WIL 转出的 BC7 重编码
+> （见 §9 I-1 的量化：同号帧尺寸一致、肉眼一致、平均 RGB 差 ≈5），
+> 属资源管线特性，不是 UI 差异。
 
 ## 1. 结论摘要
 
@@ -228,7 +256,7 @@ SpellButton cap8 (703,16)、MenuButton cap11 (703,85)、CashShopButton cap15 (66
 |---|---|---|---|---|
 | C-1 | 技能书 id14 窗口尺寸 | 296×332 @(0,0) | **452×380 @(348,0)** | main-init 调用点 `0x004278E1-0x00427904` 9 参 push 序列（同 NPC wrapper 0x0043ED00 的已验证参数位）；`GameInter` F400 alpha bbox (30,67)-(481,445)=451×378；11 控件最大右边 419/最大底边 352 均超出 296×332。**Godot 侧原本即 452×380，正确。** 已改 `window_layout.json` 与 `window-initialization-evidence.json`（保留 `notes`/`correction` 原文）。 |
 | C-2 | 行会成员行原点 | `guild-window-paint-evidence.json` 写 (x+0x22, y+0x3B) | **(x+0x23, y+0x3C) = (35,60)** | 反汇编 `0x00425409 add ecx,0x23` / `0x004253FB +0x3C`；与 `social-window-render-evidence.json::windows[1]` 一致。 |
-| C-3 | Interface1c F267/268 内容 | 研究摘要称“F268 当前导出为空” | 本机 `LegacyEI/Data/Interface1c.wil` F267 76×88、F268 60×106 均有内容；现代 `Data/Interface1c.Zl` 两项 blank | 两版资源不同源；**目标 EI 资源身份未闭合**，保留 `BLOCKED`（不据此改客户端）。 |
+| C-3 | Interface1c F267/268 内容 | 研究摘要称“F268 当前导出为空” | 本机 `LegacyEI/Data/Interface1c.wil` F267 76×88、F268 60×106 均有内容；现代 `Data/Interface1c.Zl` 两项 blank | **已裁决（§0.1）**：本机 Interface1c.wil 与目标客户端逐字节相同（MD5 `f1703234daa5`），故「目标资源为空」不成立 —— 该摘要指的是别的导出或写错；现代 ZL 的 blank 是 Zircon 转换产物。结论：以目标 WIL 为准，F267/268 有内容。 |
 | C-4 | 背包滚动字段 this+0x58 | 旧注“仅 reset 清零、恒零” | EI-301：输入 handler 写 `trunc(position×94)`，paint 按 `value/(94-1)` 归一化 | 见 `inventory-window-render-evidence.json` + `trade-split-handle-evidence.json`；94 是共享定点尺度，不是 94 行。 |
 | C-5 | 背包占位表基址 | this+0x2C4 | bag+0x324 | `bag-list-fill-chain-evidence.json`（EI-293）。 |
 | C-6 | 背包 mode3 文案 | [木柴] | **[储存]** | 全二进制无「木柴」。 |
@@ -237,7 +265,8 @@ SpellButton cap8 (703,16)、MenuButton cap11 (703,85)、CashShopButton cap15 (66
 
 | # | 项 | 状态 | 证据与原因 |
 |---|---|---|---|
-| I-1 | 背包逐物品图标映射与记录模型 | `BLOCKED`（数据身份） | 原版图标走 selector el82=`0x5668C4` → `Data/Inventory.wil`，帧号来自 item data `+0x28`；Zircon 现代物品是 `ItemInfo.Image → StoreItem.Zl`。两侧**无同号映射证据**，`LegacyEI/Data` 缺旧版物品表。另：原版 46 条记录 + 6×100 WORD 占位表，Godot 用 48 项数组 + footprint first-fit（首屏 36 格命中矩形逐格一致）。 |
+| I-1 | 背包逐物品图标映射与记录模型 | **机制 MATCH**（残余为部署数据差异） | ①帧号空间同一：Zircon `ItemInfo.Image` 与 EI `stditem.dat::Looks` 同号（抽样：Gold 0=金币 0、Iron Sword 1043=铁剑 1043、Candle 290=蜡烛 290；按 (Price,Weight) 配对的 533 件里 364 件数值相等，不等的多为**同价同重的不同物品**误配，另有 `Commoner Outfit(M)` 941 vs `布衣（男）` 940 这类 1 之差待查）。②图标库内容同一：`Data/Inventory.Zl` 的 0..1439 帧与目标 `inventory.wil` 同号帧尺寸一致（496/499 可解码项）、肉眼一致、平均 RGB 差 ≈5（BC7 重编码）。③原版 46 条记录 + 6×100 WORD 占位表 vs Godot 48 项数组 + footprint first-fit（首屏 36 格命中矩形逐格一致）。**残余**：本机服务端物品库是 Zircon 上游英文物品集（1078 件），目标 EI 是 `stditem.dat` 中文 1143 件，逐物品 1:1 属**部署数据**问题，不是客户端缺陷。 |
+| I-1b | `Commoner Outfit` 941 vs `布衣（男）` 940 的 1 之差 | `UNVERIFIED` | 需逐条核对 Zircon `Image` 与 EI `Looks` 的对应（可能 Zircon 插入了额外帧）。不影响客户端实现。 |
 | I-2 | 背包 F280 gauge 轨道/拖柄 | `CONFIRMED_DIFFERENCE`（未修） | 原版 F280 16×424、填充区 12×218、`(x+0xF8, y-0xA5)`、值=this+0x58；Godot legacy 隐藏旧 `WeightBar`，自绘 16×424 轨道 + 16×34 拖柄。原版绘制调用相对父对象的最终屏幕换算仍未闭合（`INV-04`）。 |
 | T-1 | 交易 close 热区语义 | `CONFIRMED_DIFFERENCE`（未修） | `trade-window-render-evidence.json::buttons`：close (532,350) 在 484 宽窗口**之外**、只播音不关窗；Godot 绑定 `WindowManager.Close`。修掉会移除一个非原版入口，属产品行为取舍 → 待决策。 |
 | I-3 | 背包 F161/162 / F264/265 / F267/268 语义 | `CONFIRMED_DIFFERENCE`（未修） | `inventory-mode-tabs-evidence.json`：三者为装饰性子控件，单击只播音，模式由服务端消息写；Godot 把 F161/162 绑成关闭、F264/265 无业务、F267/268 缺失。同上属产品行为取舍。 |
@@ -247,8 +276,8 @@ SpellButton cap8 (703,16)、MenuButton cap11 (703,85)、CashShopButton cap15 (66
 | Q-2 | 任务列表行几何与配色 | `CONFIRMED_DIFFERENCE`（未修） | 原版列表行 **x=win.x+0x41=65、y=win.y+0x5A+15·line=90+15·line、行距 15、可见 19 行**，色 `0x1919C8`/`0x19197D`（`0x00447618` `lea eax,[ecx+ecx*2+0x12]` + `0x00447622` `lea eax,[eax+eax*4]` = ×5；`0x0044761F` `add ecx,0x41`；`0x004475DE` `cmp ecx,0x13`）。**旧证据文字「row = line×3+0x12」漏了 ×5**，已在 `list_row_geometry` 更正。Godot legacy 仍渲染现代分组列表（x=8/18/28、金色/白色、分组标题/描述），与 F700 背景不匹配。 |
 | S-1 | 技能书根尺寸与页签 | 已澄清 | 见 C-1；Godot 452×380 与 8 页签坐标全部匹配。 |
 | N-1 | NPC `mode=1 && overflow=1` 的 14px 行距分支 | `candidate` | 需 token/layout state；当前统一 21px。 |
-| — | 目标 EI EXE/WIL/WIX 版本身份 | `BLOCKED`（环境） | 研究 NAS 路径当前不可读；所有像素级结论保留版本门禁。 |
-| — | 原版客户端运行 A/B | `UNVERIFIED` | 原版为 Windows-only，本机无法运行（见 `../../ORIGINAL_GODOT_PARITY_AUDIT.md` P-002）。 |
+| — | 目标 EI EXE/WIL/WIX 版本身份 | **已闭合** | 见 §0.1：NAS `TMP/EI传奇3.0客户端/` 与本机逐文件 MD5 相同。 |
+| — | 原版客户端运行 A/B | `UNVERIFIED` | 原版为 Windows-only，本机无法运行（见 `../../ORIGINAL_GODOT_PARITY_AUDIT.md` P-002）。目标客户端文件已在 NAS 可取（§0.1），如需 A/B 需 Windows 主机。 |
 | — | 行会/任务修复的**联机**验收 | `UNVERIFIED` | 本轮验收在真实 Godot 进程里跑真实控件（`LegacyHudLayoutLab --legacy-audit` + `--legacy-guild-sample` + Xvfb 截图 + 三组交互自检），但**未连服务端**：文档端口 7000 当前无实例（机器上只有一个并行的隔离测试实例监听 7001/3001，未接入以免干扰），因此「服务端下发行会数据 → 窗口渲染」的联机链路未跑。不影响控件级结论，但联机复验仍待补。 |
 
 ## 10. 验证方法（可复现）

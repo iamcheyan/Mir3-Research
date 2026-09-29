@@ -13776,3 +13776,35 @@ HUD cap2「技能图鉴」flag 消费者；任务详情面板 `detail_geometry` 
 **〔结论〕** `ObjBase.pas` 全部函数范围已逐段读毕，**coverage-ledger 状态 `partial` → `covered`**。未读的仅剩跨文件 helper（`SqlEngine`/`GuildAgit*Man`/`UserEngine`/`MagicMan` 等）与全部 `*` 常量值。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`ledger.py --summary` 应无 partial；`git diff --check` 通过。
+
+
+## Round UI-2 — 2026-09-29：目标 EI 客户端身份闭合（NAS）+ 背包图标映射判定
+
+**〔NAS 可达〕** `/home/tetsuya/NAS` 是指向 `/tmp/nas_mnt/NAS` 的**失效 symlink**；
+NAS 实际挂在 `/data/NAS`（cifs `//192.168.3.10/NAS`）。目标 EI 客户端在
+`/data/NAS/TMP/EI传奇3.0客户端/`。
+
+**〔身份闭合〕** 逐文件 MD5 对照 NAS 与本地：
+`Mir3.exe` `264d848da377c2172ffe1444bf31e7d0`、`mir3.dat` `a6a842a71e73…`、
+`Mir3.ini`、`Magic.exp`、`MInfo.dat`、`Weapon.ord`，
+以及 `Data/{GameInter,Interface1c,inventory,Storeitem}.wil/.wix` —— **全部 SAME**。
+→ 此前所有「目标 EXE/WIL/WIX 身份未闭合」的版本门禁**解除**；
+`inventory-window-render-evidence.json` 等证据的 primary-static 结论可直接采信。
+
+**〔C-3 裁决〕** 研究摘要「Interface1c F268 当前导出为空」与目标客户端自身的
+`Interface1c.wil` 矛盾（F267 76×88、F268 60×106 均有内容，且本机文件与目标逐字节相同）。
+现代 `Data/Interface1c.Zl` 的 F267/268 blank 是 Zircon 转换产物。
+
+**〔背包图标映射 I-1 判定〕** 取目标 EI 服务端物品表
+`/data/NAS/TMP/Mud3/Envir/stditem.dat`（已解码 `mud3-dat-decoded/stditem.json`，
+`Looks`=外观图 ID）与 Zircon `ItemInfo.Image` 对照：
+帧号空间同一（Gold 0=金币 0、Iron Sword 1043=铁剑 1043、Candle 290=蜡烛 290；
+(Price,Weight) 配对的 533 件中 364 件数值相等，其余多为同价同重的不同物品误配）；
+图标库内容同一（`Data/Inventory.Zl` 0..1439 帧 vs 目标 `inventory.wil`：496/499
+可解码项尺寸一致、肉眼一致、平均 RGB 差 ≈5，BC7 重编码）。
+→ **客户端机制正确，无需修改**；残余是「本机服务端物品库=Zircon 上游英文 1078 件
+vs 目标 EI 中文 1143 件」的**部署数据**差异。
+待查（不影响实现）：`Commoner Outfit` Image=941 vs `布衣（男）` Looks=940 的 1 之差。
+
+**〔工具〕** `zlsdk.py` 的 BC7 解码需要 `texture2ddecoder`（系统 python 无，
+用 `/home/tetsuya/mir3-venv/bin/python`）。
