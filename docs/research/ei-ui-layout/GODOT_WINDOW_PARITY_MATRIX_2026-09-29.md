@@ -258,8 +258,13 @@ godot-mono --path GodotClient --scene Scenes/LegacyHudLayoutLab.tscn -- --legacy
 | Zircon | `master` | `10cb0511` | test(ui审计)：UIHudAudit 改用 EI HUD 坐标，恢复回归有效性 |
 | Zircon | `master` | `2855e0ac` | fix(ei任务)：详情正文改用原版 0x7D0000 深蓝 |
 | Mir3-Research | `ei-ui-audit-2026-09-24` | `b29f8645` | 本矩阵 + C-1 文档纠错（C-2 为证据文件 1px 偏差，已在 §8 记录） |
+| Mir3-Research | `ei-ui-audit-2026-09-24` | `1991d074` | 矩阵补窗口 id 空间/交互行为两节 + 交叉引用修正 |
+| Mir3-Research | `ei-ui-audit-2026-09-24` | `40474946` | `quest-window-render-evidence.json` 补 `detail_geometry`/`list_row_geometry` + 矩阵更新 |
 | Mir3-Research | `ei-ui-audit-2026-09-24` | `effa3171`（随源码精读 Round 958 入库） | RESEARCH_LOG Round UI-1 |
 
-远端核对（`git ls-remote`）：
+远端核对（`git ls-remote` + `git merge-base --is-ancestor`，2026-09-29 收尾时）：
 - `iamcheyan/Zircon` `refs/heads/master` = `2855e0acbcadaec230168b1f25c90d1ed41a8612`
-- `iamcheyan/Mir3-Research` `refs/heads/ei-ui-audit-2026-09-24` = `b29f864553a52aea46e8e348738c3394769a71f2`
+  （`b8c26340` / `10cb0511` / `2855e0ac` 均为其祖先，已逐一验证）
+- `iamcheyan/Mir3-Research` `refs/heads/ei-ui-audit-2026-09-24` 在收尾时已被并行的
+  「源码精读」goal 推进到 `e2f9bb245916754a09b93799a4191360c4bdbcb9`；
+  本 goal 的 `b29f8645` / `1991d074` / `40474946` 均验证为其祖先。
