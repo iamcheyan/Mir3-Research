@@ -13326,3 +13326,18 @@ staged paths 仅为本轮授权的三个文档。
 **〔未闭合〕** 所有 `*_SHAPE` 常量值与 EI `StdItem` 数据行未解析；`AntiMagic:=1` 百分比语义未核实；ObjBase 其余大段（`_Attack`/`HitHit`、`PickUp`/`EatItem`、`TUserHuman` 命令与商店/市场处理器、fame/gift boxes）仍未逐行读。**ObjBase.pas 保持 partial**。
 
 **〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。
+
+
+## Round 947 — 2026-09-29：`ObjBase.pas` 伤害计算与近战攻击链
+
+**〔范围〕** 经授权 source reader 读取 `ObjBase.pas:6442-6760`、`10694-11164`（CP949+mixed）。未运行 Delphi/GameServer。
+
+**〔减伤/扣血〕** `GetHitStruckDamage`/`GetMagStruckDamage`：区间随机减伤 `Lobyte + Random(Hibyte-Lobyte+1)`；`LA_UNDEAD` 受击加 hitter `UndeadPower`；`BoAbilMagBubbleDefence` 按 `(level+2)*8` 缩放。`DamageHealth`：`BoMagicShield` 先用 MP 抵（×1.5），HP 保底 `minimum`。`DamageSpell` 扣/回 MP。
+
+**〔StruckDamage〕** 闪避门 `MissProbability`；`SetLastHiter`；**装备耐久**：衣服每次掉、其余 `1..11` 槽 `Random(8)=0` 掉（左臂 `StdMode=25` 与 `U_BUJUK` 不掉），归零重算能力；`POISON_DAMAGEARMOR` 按 `(10+RedPoisonLevel)/10` 放大、`POISON_STUN` ×1.2；分身按 `damage div 5` 抽主人 MP；`FeedbackProbability` 反伤 3×3。
+
+**〔`_Attack`〕** 命中门 `Random(SpeedPoint) < AccuracyPoint`；安全区放弃；剑法：`DirectAttack`、`SwordLongAttack`(前 2 格)、`SwordWideAttack`(3 方向)、`SwordCrossAttack`(7 方向，人类 ×0.8)、`StoneAttack`(5×5 麻痹，等级 <self+4 且 <60)；`HM_POWERHIT/FIREHIT/TWINHIT` 加伤；命中附加 `POISON_SLOW`/`POISON_DECHEALTH`（含 `Gap`/`MoC`/`AntiMagic` 门）；`SuckupEnemyHealthRate`（밀화）回血；**8 种剑法各自 `TrainSkill` + `CheckMagicLevelup`**；`DoDamageWeapon` 扣武器耐久（强度高则掉得少）。
+
+**〔未闭合〕** `GetAttackPower`/`DoDamageWeapon`/`TrainSkill`/`CheckMagicLevelup`/`MakePoison` 未逐一读；命中率/反伤率的设置点未核实；ObjBase 其余大段（`PickUp`/`EatItem`/`UseScroll`、`TUserHuman` 命令与商店/市场处理器、fame/gift boxes、`TUserHuman.Operate`）仍未逐行读。**ObjBase.pas 保持 partial**。
+
+**〔验证〕** `verify_all.py` ALL VERIFY PASS；`git diff --check` 通过。

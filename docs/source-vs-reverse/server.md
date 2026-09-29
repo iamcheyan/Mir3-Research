@@ -362,7 +362,7 @@ for p in ('Map/0.map','Map/0_002.map'):
 
 ---
 
-## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946）
+## 10. `ObjBase.pas` 方法实现精读（Round 810 / 926 / 927 / 928 / 929 / 930 / 931 / 946 / 947）
 
 > 31,768 行，前序阶段只读了类声明与字段（§2）。本节读实现段。
 > 函数索引：`grep -anE '^(procedure|function|constructor|destructor) ' ObjBase.pas`
@@ -920,6 +920,75 @@ Zircon 装备属性精读只覆盖 `PlayerObject.RefreshStats`；本轮另选读
 
 **未验证**：所有 `*_SHAPE` 常量值与其对应的 EI `StdItem` 数据行未解析；
 `AntiMagic := 1` 的百分比语义（注释自相矛盾）未核实；套装加成顺序/叠加关系未运行验证。
+
+### 10.14 伤害计算与近战攻击链（Round 947；`ObjBase.pas:6442-6760/10694-11164`）
+
+#### 10.14.1 伤害减免与扣血（`:6442-6760`）
+
+- **`GetHitStruckDamage`（`:6442`）/`GetMagStruckDamage`（`:6462`）**：
+  `armor := Lobyte(AC|MAC) + Random(Hibyte(AC|MAC) - Lobyte(...) + 1)`（**区间随机减伤**，旧版用
+  `ShortInt` 已被 `Integer` 版替换，注释保留）；`damage := _MAX(0, damage - armor)`；
+  若受击者 `LifeAttrib=LA_UNDEAD` 且 hitter 非 nil → `damage += hiter.AddAbil.UndeadPower`；
+  若 `BoAbilMagBubbleDefence` → `damage := Round(damage/100 * (MagBubbleDefenceLevel+2) * 8)` + `DamageBubbleDefence`。
+- **`DamageHealth(damage, minimum)`（`:6713`）**：`BoMagicShield` 时**先用 MP 抵**（`spdam := Round(damage*1.5)`，
+  MP 不足则扣完转回 HP）；`damage>0` 且 HP-damage>0 直接扣，否则 `Result := HP-minimum`、
+  `HP := _MAX(minimum,0)`（**保底 minimum，防一次打死**）；`damage<0` 为治疗，钳到 `MaxHP`。
+- **`DamageSpell(val)`（`:6751`）**：`val>0` 扣 MP、`val<0` 回 MP，均钳制。
+
+#### 10.14.2 `StruckDamage`（`:6481-6709`）—— 受击总入口
+
+1. **闪避**：`MissProbability > Random(100)` 直接 `exit`。
+2. `SetLastHiter(hiter)`（记录最后一击）。
+3. **装备耐久**：`wdam := Random(10)+5`；`POISON_DAMAGEARMOR` 时 `wdam`/`damage` 按
+   `(10+RedPoisonLevel)/10` 放大；`POISON_STUN` 时 `damage × 1.2`。
+   衣服**每次都掉耐久**；其余 `1..11` 槽在 `Random(8)=0` 时掉，**左臂的 `StdMode=25`（符/毒粉）不掉**、
+   `U_BUJUK` 不掉。耐久归零时 `SysMsg` + `RM_DURACHANGE` + `bocalc:=TRUE` →
+   重算 `RecalcAbilitys` 并发 `RM_ABILITY`/`RM_SUBABILITY`。
+4. **分身（`RC_CLONE`）**：主人 `MP` 按 `damage div 5` 扣除（不足则清零）。
+5. 非人类且 `POISON_DONTMOVE > 1` → 降为 1（被打解石化）。
+6. `realdam := DamageHealth(damage, 0)`；`FeedbackProbability > Random(100)` 时
+   `AroundAttack(realdam * FeedbackRatio div 100)`（**反伤**，只打 3×3 内非人类）。
+   整段包 `try..except` 打 `'EXCEPTION CLON HP CACULATE'`。
+
+#### 10.14.3 `_Attack`（`:10694-11164`）—— 近战/剑法总入口
+
+内部函数：
+- `DirectAttack`：安全区（双方人类且任一在安全区）直接放弃；`IsProperTarget` +
+  `Random(target.SpeedPoint) < AccuracyPoint` 命中判定；`target.StruckDamage` + `RM_STRUCK`（500 ms），
+  **非人类目标额外直发 `RM_STRUCK`**（注释「몬스터한테는 직접전달해야 함」）。
+- `DirectStoneAttack`：`damage>0` 且 `target.Level < self.Level+4` 且 `< 60` → `POISON_DONTMOVE`（麻痹）。
+- `StoneAttack`：5×5 内对非人类逐个 `DirectStoneAttack`。
+- `SwordLongAttack`（어검）：正前 **2 格**；`SwordWideAttack`（반월）：`(Dir+{7,1,2}) mod 8` 3 方向 1 格；
+  `SwordCrossAttack`（광풍참）：`(Dir+{7,1,2,3,4,5,6}) mod 8` **7 方向**，对人类目标伤害 ×0.8。
+
+主流程：
+- 基础伤害 `GetAttackPower(Lobyte(DC), Hibyte(DC)-Lobyte(DC))`；`MultiplyTargetLevelMin/Max>0` 时
+  按目标等级缩放。
+- `HM_POWERHIT`+`BoAllowPowerHit` → `dam += HitPowerPlus`；`HM_FIREHIT`+`BoAllowFireHit` →
+  `dam += Round(dam/100 * (HitDouble*10))`。
+- **命中附加减速/中毒**（`IsProperTarget` 且 `target.Level<60`）：`AddAbil.Slowdown`/`Poison` 概率门
+  + `Random(50) > targ.AntiMagic`；等级差 `Gap` 钳 ±10；人类 `MoC=2`；满足则
+  `MakePoison(POISON_SLOW, Dur+1, 1)`（`Dur=(900*Slowdown+3300) div 1000`）或
+  延迟 `RM_MAKEPOISON`（`POISON_DECHEALTH`，5 s）。
+- **剑法第二段**：`HM_LONGHIT`/`HM_WIDEHIT`/`HM_CROSSHIT` 的 `seconddam` 按对应技能
+  `Round(dam / (MaxTrainLevel+2|+10|+11) * (Level+2|+2|+3))`，非人类 `seconddam := dam`；
+  分别调 `SwordLongAttack`/`SwordWideAttack`/`SwordCrossAttack`。
+- `HM_TWINHIT`（쌍룡참）：`dam += HitPowerPlus` + `DirectAttack`；`Random(50) > AntiMagic` 且
+  概率 `5*(Level+1)`（怪）/`2*(Level+1)`（人）→ `POISON_STUN`（`Dur = 1.5 + 0.8*Level`）；
+  `BoAllowTwinHit` 从 1 变 2（**只能用一次**）。
+- `HM_STONEHIT`（사자후）：按 `PStoneHitSkill.Level` 0/1/2/3 → `seconddam := 5/6/7/8` 秒，
+  `StoneAttack(seconddam)`，命中则 `dam := 0`。
+- 最终 `dam := targ.GetHitStruckDamage(self, dam)`；`PlusFinalDamage` 叠加；
+  `weapondamage := Random(5)+2 - AddAbil.WeaponStrong`（**强度高的武器耐久掉得少**）。
+- 命中后：`SuckupEnemyHealthRate>0`（밀화）累积 `dam/100*rate`，≥2 时转 `DamageHealth(-n,0)` 回血；
+  **8 种剑法各自训练**（`TrainSkill` + `CheckMagicLevelup`，未升级发 `RM_MAGIC_LVEXP`）：
+  剑术/예도검법/어검술/반월검법/염화결/광풍참/쌍룡참/사자후；
+  `DoDamageWeapon(weapondamage)` 扣武器耐久。
+- 整体 `try..except` 打 `'[Exception] TCreature._Attack:<test>'`。
+
+**未验证**：`GetAttackPower`/`DoDamageWeapon`/`TrainSkill`/`CheckMagicLevelup`/`MakePoison` 实现未逐一读；
+`Random(target.SpeedPoint)` 与 `AccuracyPoint` 的实战命中率、`MissProbability`/`FeedbackProbability` 设置点未核实；
+无运行期验证。
 
 ---
 
