@@ -117,9 +117,24 @@
 
 已闭合部分：F280 源帧 16×424、填充区 12×218、构造参数 (6,12,218,12,vertical)、
 `(x+0xF8, y-0xA5)`、value=`[bag+0x58]`、max=94（= 100 行占位表 − 6 可视行）。
-未闭合：原版 `0x4179B0` 把 (x,y) 当**相对父对象**的起点，其最终屏幕矩形与
-「94 是行数还是定点尺度」仍标 candidate（见 `trade-window-closure-evidence.json`
-的 split 量纲 tension）。
+
+**2026-09-30 反汇编补充（量纲悬案已闭合）**：`0x4300F0` 的 F280 gauge 命中分支
+（`0x430681 lea ecx,[esi+0x278]; call 0x417C80` 返回非 0，即拖柄被拖动）执行
+
+```
+fld  [esi+0x284]        ; gauge 位置（0..1）
+fmul [0x476650]         ; = 94.0f
+call 0x468520           ; 取整
+mov  [esi+0x58], eax    ; 背包滚动字段 = round/截断(gauge 位置 × 94)
+```
+
+→ **`[bag+0x58]` 与 gauge 位置成正比、上界恰为 94**，即 94 是**行单位**的滚动上界
+（100 行占位 − 6 可视行），不是定点尺度；`0x476650 = 94.0f` 就是 gauge→行的换算常数。
+拖柄的屏幕几何仍依赖 `0x4179B0` 的相对父对象换算（未闭合部分保留）。
+
+未闭合：原版 `0x4179B0` 把 (x,y) 当**相对父对象**的起点，其最终屏幕矩形尚未确定
+（见 `trade-window-closure-evidence.json` 的 split 量纲 tension；「94 是行数还是定点尺度」
+一节已由上面的 `×94.0` 公式闭合）。
 
 **需要**：运行时捕获一次原版 gauge 的屏幕矩形（本机无原版运行环境 → 需 Windows 主机）。
 **在那之前**：Godot 自绘轨道 + 拖柄保留。
@@ -221,50 +236,38 @@ Godot legacy 仍渲染现代分组列表（x=8/18/28、金色/白色、分组标
 → 结论：**原版任务列表的数据来源仍未闭合**；已排除「消息处理器按窗口偏移填充」、
   「客户端本地文件读取」两条路径。下一步需要从 `0x42C4D4` 的注册表/回调反查。
 
-### B-8 目标框 / 悬停名牌（`CONFIRMED_DIFFERENCE`，未实现）
+### B-8 目标框 / 悬停名牌（`CONFIRMED_DIFFERENCE`，**名字牌已实现，HP 条仍缺**）
 
 **原版**（`target-box-evidence.json`，5 个组件，全部锚定 `HUD+0xE4/+0xE8`）：
 
 | 组件 | VA | 原版行为 |
 |---|---|---|
-| 名字牌框 | `0x0040B850` | **代码绘制**（无 WIL 帧）：`0xA0A0A` 边框 + 名字文本；框宽贴文字宽 w，高 15px，位于锚点**上方** (anchor_y-0x1E .. anchor_y-0xF)，水平居中 `anchor_x+(48-w)/2` |
+| 名字牌框 | `0x0040B850` | **对当前目标**（`[ROOT+0x364444]`，调用点 `0x41C063`）画名字：**同一段文本画 3 次**（rect ±1 偏移）形成 1px 描边，三次颜色都是 `0xA0A0A`（`0x00BBGGRR` → RGB(10,10,10)）；矩形 = `(anchor_x+(48-w)/2, anchor_y-0x1E) … (anchor_x+(w+48)/2, anchor_y-0xF)`，即宽 w+48、高 15px、水平中心 `anchor_x+24`、位于 `anchor_y` 上方 15~30px。**不是矩形边框**（2026-09-30 反汇编定案） |
 | 悬浮名字 | `0x0040B750` | 选择器 `0x566DD4`（ProgUse.wil）帧 2/3 |
 | 悬停名牌 | `0x0040BB00` | 带 **3000ms** 保持门（`byte[HUD+0x620A0]`） |
-| HP 条 | `0x0040A8A0` | 选择器元素 `0x5600FC + [HUD+0x8D]*0x144`，**帧号 = HP 值**（预渲染逐值条），400/300 中心公式 |
+| HP 条 | `0x0040A8A0` | 选择器元素 `0x5600FC + [HUD+0x8D]*0x144`，**帧号 = HP 值**，400/300 中心公式 |
+| 悬停实体重绘 | `0x00437DF0` | `word[this+0x13C]` vs `[this+0xE4]` |
 
-**Godot 现状**：
-- `ObjectRenderer.Focused`（`ObjectRenderer.cs:40`）**只被 `GameScene.cs:9164` 赋值，全仓无任何读取** → **没有常驻目标框**。
-- `ObjectRenderer.DrawName()`（`:573`）只在 `NameHovered` 时画名字 → 没有「目标名字牌框」，也没有 3000ms 悬停保持（Godot 是即时悬停）。
-- 唯一的血条是 `MapObjectNode.DrawHealthBar()`（`:316`）：受击后 5 秒临时显示，用 **Interface 80 底 / 79 填充 + 裁剪**（源自 Zircon C# `MonsterObject.DrawHealth`），**与 EI 的「帧号 = HP 值」机制不同**。
-- Godot 另有 `TargetOutlineColour` 圆点标记（移植版自加，原版无）。
+**Godot 现状（修复前）**：`ObjectRenderer.Focused` 只被赋值从未被读取 → 无目标框；
+`DrawName` 只在 `NameHovered` 时画名字 → 目标的名字**鼠标一移开就消失**；
+唯一的血条是受击 5 秒的 Interface 80/79 裁剪（源自 Zircon C# 客户端）。
 
-**结论**：原版的目标框（名字牌框 + 逐值 HP 条 + 3000ms 悬停名牌）在 Godot **整体缺失**，
-现有实现是另一套（hover 即时名字 + 受击临时血条）。
+**本轮已实现**（`IsTarget` 状态 + `RenderPrimitives.DrawTargetNamePlate`）：
+- GameScene 每帧把 `ob.IsTarget = (ob == _combatController.TargetObject)`（其它玩家同理）；
+- `ObjectRenderer` / `PlayerRenderer` 对当前目标画名字牌：名字画 3 次（`(-1,-1)`/`(+1,+1)`/`(0,0)`），
+  颜色 RGB(10,10,10)，水平居中于 `x=24`，垂直居中于 y 带 **-30..-15**（= 原版矩形换算到
+  Godot 节点坐标；Godot 节点原点 == 原版 anchor，见下）。
 
-**真机验证（2026-09-30）**：进游戏后左键点选「鸡」（`[Combat] 选中目标: 鸡 ObjectID=334`），
-截图 `docs/evidence/godot-runtime-acceptance-2026-09-30/06-target-indicator-no-targetbox.png`
-显示：目标上方只有 **悬停态名字「鸡」** + **绿色标记点**（`TargetOutlineColour` 圆点，
-移植版自加）+ **受击触发的临时绿 HP 条**（Interface 80/79 裁剪）；
-**没有**原版的 `0xA0A0A` 名字牌框，也**没有**「帧号 = HP 值」的常驻 HP 条。
-→ B-8 由静态推断升级为**真机确认的 CONFIRMED_DIFFERENCE**。
+**仍未实现（记录）**：
+- HP 条：`0x5600FC` 元素的 WIL 文件名在原版是**运行时绑定**（candidate），无法忠实实现；
+- 悬停名牌的 **3000ms 保持**（Godot 目前是即时 hover）；
+- 悬浮名字的 ProgUse 帧 2/3 底板。
 
-**修复方案**：按证据实现 —— 名字牌框（`0xA0A0A` 边框、贴文字宽、锚上方 15px）、
-HP 条（`0x5600FC` 元素 + 帧号 = HP）、悬停 3000ms 门。属**新功能实现**，
-建议单独一个 goal（需要逐类型选择器绑定 + 运行截图对照）。
-**推荐**：纳入下一轮，不在本轮擅自半实现。
-
-**2026-09-30 补充：锚点/坐标已可落地**（降低下一轮成本）
-- 原版 box 几何：`left = anchor_x + (48-w)/2`、`right = anchor_x + (w+48)/2`、
-  `top = anchor_y - 0x1E`、`bottom = anchor_y - 0xF`。
-  → box **中心 = anchor_x + 24**（即 48 宽瓦片的**中心**），高度 15px，
-  位于 `anchor_y - 30 .. anchor_y - 15`（瓦片**顶边上方** 15~30px）。
-- Godot 侧同一约定：`ObjectRenderer.DrawName` 用 `new Vector2(24f, y)` 画名字
-  （即节点原点 + 24 = 瓦片中心）→ **Godot 的节点原点 = 原版 anchor（瓦片左边）**，
-  于是 box 应画在 `(origin.x + 24 - (w+48)/2, origin.y - 30) .. (+w+48, +15)`。
-- 名字基线参考：`RenderPrimitives.OriginalNameBaseline` 注释给出原版
-  `name_top = DrawY - (32 - labelH)/2 - 6`；box 内名字用 `0x45DE50` 另画一次。
-- **仍未闭合**：HP 条的 `0x5600FC` 元素 WIL 文件名（原版运行时绑定，candidate）
-  → HP 条暂不能忠实实现；名字牌框可独立先做。
+**锚点推导（2026-09-30，已可直接落地）**
+- 原版 box：`left = anchor_x + (48-w)/2`、`right = anchor_x + (w+48)/2`、
+  `top = anchor_y - 0x1E`、`bottom = anchor_y - 0xF` → 中心 = `anchor_x + 24`（48 宽瓦片的中心）。
+- Godot `DrawName` 用 `new Vector2(24f, y)` 画名字 → **Godot 节点原点 == 原版 anchor（瓦片左边）**，
+  故 box 直接落到 `origin.x + 24`（水平居中）、`origin.y - 30 .. -15`。
 
 ### B-9 原版客户端运行 A/B 与联机验收
 

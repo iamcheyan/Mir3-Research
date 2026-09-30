@@ -120,7 +120,45 @@ godot-mono --path GodotClient -- --server 127.0.0.1 --port 7002 \
 ## 5. 仍未覆盖（本轮真机范围之外）
 
 - **原版客户端 A/B**：无 Windows 环境（`../../ORIGINAL_GODOT_PARITY_AUDIT.md` P-002）。
-- **目标框/悬停名牌**：Godot 侧整体缺失（见待决台账 B-8）。
+- **目标框/悬停名牌**：Godot 侧原本整体缺失；本轮已实现其中**名字牌**（见 §6），
+  HP 条（`0x5600FC` 元素）与悬停 3000ms 保持仍未实现（B-8）。
 - **背包 F280 gauge 拖柄几何**：真机只看清轨道位置，拖柄比例仍需原版运行时对照（B-4）。
 - **多角色/多职业/装备外观**：本副本库只有 1 个角色，未跑逐职业矩阵。
 - **封包级验收**：本轮只验证客户端表现，未抓包比对「相同操作 → 相同封包」。
+
+## 6. 续轮补充：B-8 目标名字牌已实现并验证
+
+### 6.1 原版行为（反汇编定案，2026-09-30）
+
+`0x0040B850` 对**当前目标**（调用点 `0x41C063` 传入 `[ROOT+0x364444]`）画名字（文本位于对象 +8）：
+
+- **不是矩形边框**。此前文档把「`0xA0A0A` 边框 + 文本」当成框，实际是**同一段文本画多次**：
+  `0x40B8E7`、`0x40B93C`、`0x40B991`、`0x40B9E6` … 每处都是 `push 0xa0a0a` 后 `call 0x45DE50`，
+  rect 每笔 ±1 偏移（`SetRect` 调用点 `0x40B8AB`/`0x40B8DC`/`0x40B931`/`0x40B986`/`0x40B9DB`…），
+  即「近黑名字 + 1px 描边」。
+- 几何：`left = anchor_x+(48-w)/2`、`right = anchor_x+(w+48)/2`、`top = anchor_y-0x1E`、`bottom = anchor_y-0xF`
+  → 宽 w+48、高 15px、中心 = `anchor_x+24`（48 宽瓦片中心）、位于 `anchor_y` 上方 15~30px。
+- 颜色 `0xA0A0A`（`0x00BBGGRR`）→ **RGB(10,10,10) 近黑**（同一约定见 `0x96C8FF` = RGB(255,200,150) 的职业文本）。
+
+### 6.2 Godot 实现
+
+- `RenderPrimitives.DrawTargetNamePlate(canvas, text)`：名字画 3 次（`(-1,-1)`/`(+1,+1)`/`(0,0)`），
+  颜色 RGB(10,10,10)，水平居中 `x=24`、垂直居中于 y 带 **-30..-15**（Godot 节点原点 == 原版 anchor）。
+- `ObjectRenderer.IsTarget` / `PlayerRenderer.IsTarget` + `GameScene._Process` 每帧
+  `IsTarget = ReferenceEquals(ob, _combatController.TargetObject)`（怪物/NPC/物品对象与其它玩家都设）。
+- 与 hover 名字是两个独立组件：hover 名字基线更低（`NameAboveHealthBarBaseline`/`OriginalNameBaseline`），
+  与原版一致（原版目标名字牌同样独立于悬浮名字）。
+
+### 6.3 真机验证（2026-09-30）
+
+因原版颜色近黑、在暗色林地上肉眼不可见，验证分两步：
+
+1. **仪表化验证（几何/门控）**：临时把名字牌颜色改成品红后进游戏，基线无名字牌；
+   左键点选「牛」（`[Combat] 选中目标: 牛 ObjectID=522`）后，牛瓦片上方 y -30~-15 带
+   出现品红「牛」，中心与瓦片对齐，且连续两帧（间隔 1s）持续存在。
+   证据：`docs/evidence/godot-runtime-acceptance-2026-09-30/08-target-nameplate-instrumented-magenta.png`
+2. **出厂颜色复核**：恢复 `0xA0A0A` 后与基线一致（近黑在暗底不可见，与原版行为一致）。
+   证据：`.../09-target-nameplate-as-shipped-dark.png`
+
+**判定**：B-8 的「名字牌」子项 = **已修复并有真机证据**；HP 条、悬停 3000ms 保持、
+悬浮名字 ProgUse 帧 2/3（实测 32×4 小条）仍未实现，见待决台账 B-8。
