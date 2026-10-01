@@ -537,3 +537,17 @@ xdotool type "@move 0 402 356"      ← Mr. Kang（map 0，原版坐标 402,356�
 **结论**：NPC 对话窗的"布局（实验室）+ 服务端文本/按钮渲染（联机）"两级验收均通过；
 按钮点击后的服务端分支行为（买卖/修理/仓库入口）未逐项验证，列为 `UNVERIFIED`（下一步：逐个按钮点击 + 观察服务端回包）。
 **前置条件**：map 0 贴图缺库导致背景全黑（§10.11），但 NPC 作为**对象**仍正常渲染并可交互——说明该缺库只影响地图地形层。
+
+#### 10.12.1 NPC 对话窗按钮点击（`UNVERIFIED`）
+
+按 §10.12 的联机环境，逐个点击窗口底部 6 个选项按钮（窗口 (0,0)，按钮行 `LegacyTextX+10 = 160`、
+行距 22，屏幕命中区约 x∈[282,552]、首行 y≈499），两次坐标校准后仍**看不到可见变化**。
+
+- **代码侧已确认接线**：`NPCDialog` 创建按钮时 `button.MouseClick += (o,e) => GameScene.Game?.SendNPCButton(id)`，
+  而 `GameScene.SendNPCButton(int)` = `_net.Connection.Enqueue(new C.NPCButton { ButtonID = buttonId })` —— 发包链路完整；
+- **未观察到服务端回包导致的文本变化**；服务端日志无 NPC 相关行，客户端也未打印发包日志；
+- **可能解释**：该 NPC（`npc_manifest` 中 map 0 (402,356) 的 `02Weapon_Bichon1`）在角色为 GM 时展示的是
+  GM 工具型菜单（文本含「当前在线人数: 1」），其选项可能是**纯副作用**（传送/开关等），不改变文本。
+
+**判定**：`UNVERIFIED`（不是 `CONFIRMED_DIFFERENCE`）—— 需要下一步：在 `SendNPCButton` 加临时打印，
+或查服务端 NPC 脚本分支，确认按钮是否真的触发服务端逻辑；以及用一个**普通商人 NPC**（非 GM 菜单）复测买卖/修理分支。
