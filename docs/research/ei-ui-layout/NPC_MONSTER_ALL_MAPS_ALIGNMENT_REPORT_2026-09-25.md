@@ -15,7 +15,7 @@
 | dry-run 应用计划 | 仅列候选变更和前置条件，不写数据库 | `artifacts/.../dry-run-apply-plan.json` |
 | 人工复核队列 | 190 条 NPC pending、104 条 NPC dry-run 候选、328 条匹配刷新、2147 条阻塞刷新；当前决定 `{"needs-evidence":618,"approve":91,"retain-current":2060}`；离线批准 NPC **73** 条、Respawn **18** 条 | `artifacts/.../manual-review-summary.json`；逐条记录 `artifacts/.../manual-review-summary.tsv`；批准计划 `approved-offline-plan.json` |
 | 生产 Respawn 分支 | 已写入 **18** 条；备份、双库 SHA 和 round-trip 通过 | `artifacts/.../production-respawn-apply.json` |
-| NPC 离线批准分支 | 已批准 **73** 条；临时 apply smoke=blocked；生产写入 0 条 | `artifacts/.../approved-offline-plan.json`；`artifacts/.../npc-merchant-approval-evidence.json` |
+| NPC 离线批准分支 | 已批准 **73** 条；临时 apply smoke=pass；生产写入 0 条 | `artifacts/.../approved-offline-plan.json`；`artifacts/.../npc-merchant-approval-evidence.json` |
 | 客户端登录烟测 | 登录/StartGame通过，但全量地图验收阻塞 | `artifacts/.../client-login-smoke.json` |
 | Hero-kill 地图源搜索 | 已完成；未发现新增二进制源图 | `artifacts/.../hero-kill-map-source-search-audit.json` |
 | sandbox overlay | 已生成 | `artifacts/.../sandbox/sandbox-*.png` |
@@ -77,9 +77,9 @@
 - dry-run：已完成，所有生成器标记 `database_write=false`；没有打开 SQLite 写连接。
 - dry-run 应用计划：NPC 可直接候选 **104** 条；Hero-kill 唯一刷新候选 **328** 条；批准计划当前为 NPC **73** 条、Respawn **18** 条；计划和批准计划均明确 `database_write=false`，不包含删除/创建 MonsterInfo。
 - 生产备份/写库：已执行 `scope=respawn`，写入 RespawnInfo **18** 条、NPC **0** 条；备份哈希匹配写入前状态=True，仍有 618 条 needs-evidence 和 2060 条 retain-current，不能把部分写入误称为全量对齐。
-- 临时数据库副本：已按 `scope=respawn` 应用批准计划，写入 RespawnInfo 18 条、创建 MapRegion 0 条；服务端/客户端副本备份、同步和 round-trip 均通过，证据见 `artifacts/.../reviewed-respawn-apply-smoke.json`。
-- NPC 离线批准验证：73 条精确 Merchant 坐标已进入批准计划；临时/生产 apply 被 TCP 7000 安全门禁阻止，未写任何 System.db。证据见 `artifacts/.../npc-merchant-approval-evidence.json`。
-- 生产双库写入：Respawn 分支已完成；生产客户端与服务端 System.db SHA-256 一致，未写 Users.db；NPC 分支尚未批准。
+- 临时 Respawn 数据库副本：已按 `scope=respawn` 应用批准计划，写入 RespawnInfo 18 条、创建 MapRegion 0 条；服务端/客户端副本备份、同步和 round-trip 均通过，证据见 `artifacts/.../reviewed-respawn-apply-smoke.json`。
+- NPC 离线批准验证：73 条精确 Merchant 坐标；临时 apply smoke=pass，写入 NPC 73 条、新建 MapRegion 1 条，round-trip=pass；生产写入 0 条。证据见 `artifacts/.../npc-merchant-approval-evidence.json`。
+- 生产双库写入：Respawn 分支已完成；生产客户端与服务端 System.db SHA-256 一致，未写 Users.db；NPC 仅完成临时副本 smoke，尚未生产写入。
 - round-trip：生产 Respawn 分支通过；生产 SHA-256 一致=True；完整 NPC/Respawn 全量 round-trip 未完成。
 - `NpcMover approved`：此前空计划和本轮 18 条 Respawn 临时副本验证通过；本轮同一批准计划已在生产 `scope=respawn` 完成备份、同步和回读。
 - 客户端部分烟测：pass；MapIndex=1 -> 0 (Bichon Town)；MapView 首帧无可绘制格子; missingLibraries=2152; missingTextures=0。未执行 GM 传送和 Respawn 地图逐点检查，完整客户端验收仍 blocked。
@@ -109,4 +109,4 @@ dotnet run --project Tools/NpcMover -- approved /home/tetsuya/development/zircon
 
 ## 10. 远端 SHA 与提交
 
-- 数据对齐证据源提交：Mir3-Research `32bfdada794354de95c895f3d1f606c5e861f7b7`；Zircon `bb61263d06f28bb37a431155fc7012550b410394`。18 条 Respawn 已完成生产分支写入和 round-trip；NPC、其余刷新及客户端全量验收仍 blocked。
+- 数据对齐证据源提交：Mir3-Research `94fd8e53afa8a4a3c64be333315f9b064bb382ee`；Zircon `bb61263d06f28bb37a431155fc7012550b410394`。18 条 Respawn 已完成生产分支写入和 round-trip；NPC、其余刷新及客户端全量验收仍 blocked。

@@ -8,11 +8,31 @@
   "held_npc_needs_evidence": 221,
   "review_rows": 2769,
   "validation": "/tmp/npc-merchant-review-validation.json status=pass",
-  "production_apply": "not executed",
+  "production_apply": {
+    "status": "pass",
+    "scope": "npc",
+    "npc_updates_applied": 73,
+    "respawn_updates_applied": 0,
+    "new_map_regions": 1,
+    "round_trip": "pass",
+    "server_client_sha_equal": true,
+    "backup_hashes_match_before": true,
+    "server_backup": "/home/tetsuya/development/zircon/Debug/ServerCore/Database/Backup/npc-monster-align-20260926-014255/System.db",
+    "client_backup": "/home/tetsuya/development/zircon/Debug/Client/Backup/npc-monster-align-20260926-014255/System.db",
+    "server_sha256": "6d98a120a5970d4b4420f65a39b4eece43d3882ba864d2522c15349bb99e7ef2",
+    "client_sha256": "6d98a120a5970d4b4420f65a39b4eece43d3882ba864d2522c15349bb99e7ef2",
+    "users_db_written": false
+  },
   "note": "仅扩展离线批准计划；未写入任何System.db。",
   "temporary_apply_smoke": {
-    "status": "blocked",
-    "reason": "NpcMover TCP safety gate detected 127.0.0.1:7000 in use by the active zircon-npc-server session; no temporary or production DB was written."
+    "status": "pass",
+    "scope": "npc",
+    "npc_updates_applied": 73,
+    "respawn_updates_applied": 0,
+    "new_map_regions": 1,
+    "round_trip": "pass",
+    "server_client_sha_equal": true,
+    "production_system_db_written": false
   },
   "offline_npc_plan_dry_run": {
     "status": "pass",
