@@ -73,23 +73,50 @@ class PE:
         return out
 
     def find_xref(self, target, limit=40):
-        """在 .text 里找对某绝对地址的引用（push imm32 / mov reg, imm32 / cmp）。
+        """在 .text 里找对某绝对地址的引用（立即数或绝对内存位移）。
 
-        只匹配「立即数 == target」的指令，够用来定位全局量的读取点。
+        注意：**不能用** md.disasm(code, va) 一次性扫全段 —— 它遇到第一个无法解码的
+        字节就停止，而 477 KB 的代码段必然夹着数据/对齐填充，会漏掉后面所有引用。
+        （这是本工具第一版的 bug：FCOLOR 调色板 0x47C4A8 明明在用却扫出 0 命中。）
+        这里改为：解码成功就前进一条指令长度；失败就前进 1 字节重同步。
         """
         md = Cs(CS_ARCH_X86, CS_MODE_32)
+        md.detail = True  # 不开 detail 时 ins.operands 会抛 CS_ERR_DETAIL
         hits = []
         for nm, sva, vs, ra, rs in self.secs:
             if nm != ".text":
                 continue
             code = self.d[ra:ra + min(vs, rs)]
-            for ins in md.disasm(code, sva):
-                for op in ins.operands:
+            va = sva
+            off = 0
+            while off < len(code):
+                got = None
+                for ins in md.disasm(code[off:off + 16], va):
+                    got = ins
+                    break
+                if got is None:
+                    off += 1
+                    va += 1
+                    continue
+                hit = False
+                for op in got.operands:
                     if op.type == 2 and op.imm == target:  # X86_OP_IMM
-                        hits.append("0x%08X  %-10s %s" % (ins.address, ins.mnemonic, ins.op_str))
+                        hit = True
+                    if op.type == 3:  # X86_OP_MEM
+                        # 绝对寻址的两种形式都要收：
+                        #   mov reg, [0xADDR]            （base=0, index=0）
+                        #   mov reg, [eax*4 + 0xADDR]    （base=0, index!=0）
+                        # 第二版曾漏掉带索引的形式，导致 FCOLOR 调色板 0x47C4A8
+                        # 明明在用却扫不到（它在 0x43FFD4 是 [eax*4 + 0x47c4a8]）。
+                        if op.mem.disp == target and op.mem.base == 0:
+                            hit = True
+                    if hit:
+                        hits.append("0x%08X  %-10s %s" % (got.address, got.mnemonic, got.op_str))
                         break
                 if len(hits) >= limit:
                     return hits
+                off += got.size
+                va += got.size
         return hits
 
 
