@@ -1043,3 +1043,33 @@ Zircon 服务端 `NPCDialogType` 不含仓库类型，仅在"仓库扩容道具"
 与预测位置**仅差 2px**，即**腰带背景帧与位置均正确**（差额来自 6 个可见格内的药水图标）。
 
 **窗口级 parity 已验证项更新为 13 项**（新增腰带 24.2）。
+
+### 10.23 **真实缺陷修复**：登录公告窗残留使游戏内全局快捷键永久失效（Alt+X / Alt+Q）
+
+**症状**（联机实测）：进入游戏后按 `Alt+X`（EI「注销人物」）**无任何反应**；`Alt+Q`（退出游戏）同理。
+
+**定位链（全部有运行证据）**：
+1. 键事件**确实到达**客户端：日志 `[MagicLegacy] key-event key=X ... alt=True`；
+2. 绑定存在：`KeyBindManager.cs:136 new KeyBindInfo(KeyBindAction.LogoutCharacter, Key.X, alt1: true)`；
+3. 但 `IsWindowShortcut`（`GameScene.cs:11165`）**不含** `LogoutCharacter`/`ExitGameWindow`，
+   于是落到紧随其后的"**有可见窗口则早退**"分支（`GameScene.cs:11108`）；
+4. 加诊断后直接打印出元凶：
+   `[LegacyKeys] LogoutCharacter 被可见窗口早退拦下: LegacyEiNoticeDialog`；
+5. 该窗由 **SelectScene** 创建（`SelectScene.cs:2069-2072` `WindowManager.Open(...)`），
+   确认回调 `OnLegacyStartNoticeConfirmed()`（`SelectScene.cs:2079`）**只解绑事件、未从 WindowManager 注销**，
+   切到游戏场景后仍以"可见窗口"身份残留在 `WindowManager.OpenWindows` 中。
+
+**影响面**：所有**非窗口类**全局快捷键（Alt+X 注销、Alt+Q 退出等）在进入游戏后**永久失效**。
+
+**修复**（最小、可逆）：`OnLegacyStartNoticeConfirmed()` 中补 `WindowManager.Close(_legacyStartNoticeDialog);`。
+
+**验证**（联机，修复前后对照）：
+
+| | 修复前 | 修复后 |
+|---|---|---|
+| 早退诊断 | `[LegacyKeys] LogoutCharacter 被可见窗口早退拦下: LegacyEiNoticeDialog` | **`earlyExit=0`**（不再触发） |
+| F950 注销确认框 | 全图模板搜索**无匹配**（最佳 31.5 属 HUD 巧合） | **命中 (348,246)、差 17.5**（证据 32） |
+
+**顺带闭合**：F950 注销确认框的运行期几何/素材也由此验证 —— 预测位置 = UI 原点 (128,96) + 实验室记录的
+`loc=(220,151)` = **(348,247)**，与实测最佳 **(348,246)** **仅差 1px**。§10.18.4 中"注销确认未命中"**更正为已验证**。
+**窗口级 parity 已验证项 → 14 项**（新增 F950）。
