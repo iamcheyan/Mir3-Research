@@ -1004,3 +1004,22 @@ Zircon 服务端 `NPCDialogType` 不含仓库类型，仅在"仓库扩容道具"
 
 **结论**：背包格子的**数量（36）、尺寸（36×36）、步距（36，无间隙）、起点（25,41）**四项
 均由"原版证据 + 运行期画面 + 审计断言"三方一致确认 —— 满足 goal 对背包格子的特别要求。
+
+#### 10.18.5 腰带（`Z`）**运行期未打开**——代码路径正确，记为待查项
+
+**两次独立实测**（联机，干净会话，仅按 `Z`）：
+- 第一次（`parity2-belt.png`）：画面显示的是**行会窗**（前一键 `F` 未关掉的残留），非腰带；
+- 第二次（干净会话 `belt-alone.png`，只按 `Z`）：**画面只有游戏世界**，无腰带窗；
+- F51（腰带背景帧，248×45）在预测点 (128,96) 差 **35.8**；全图最佳 (112,120) 差 28.1 —— 经裁剪目视确认该处是**地面/树**，属巧合匹配。
+
+**代码路径核对（正确）**：`GameScene.cs:11099-11104` → `KeyBindManager.GetAction(Z)=BeltWindow` →
+`IsWindowShortcut(BeltWindow)`（`GameScene.cs:11165-11190` 的列表**包含** BeltWindow）→
+`HandleKeyBind` → `GameScene.cs:2117 case BeltWindow: WindowManager.Toggle(_beltDialog, _uiLayer)`；
+窗口在 `GameScene.cs:4581-4582` 创建并 `ApplyLegacyEiPotionBeltLayout()`（`Size=248×46`、`_background.Index=51 @ (0,0)`）。
+
+**判定**：`LIKELY_DIFFERENCE`（**待查，不下结论**）——代码路径完整但运行期无窗口，可能原因：
+①`Z` 键事件未到达 `_UnhandledKeyInput`（同批次 `Q/W/E/D/G/F` 均正常，故此因存疑）；
+②`WindowManager.Toggle` 对该窗未生效（如 `OpenWindows` 状态或 `Visible` 门控）；
+③窗口创建后被其它逻辑隐藏。
+**下一步**：在 `HandleKeyBind(BeltWindow)` 与 `WindowManager.Toggle` 加诊断日志复跑（低成本、可判定）。
+**注**：本项**不影响**已完成的窗口级 parity 结论（腰带从未成功显示，故无画面可比）。
