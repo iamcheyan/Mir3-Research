@@ -518,8 +518,20 @@ F400→(454,381)、F850→(359,382)——**全部与各窗口的关闭钮位置�
 ```
 
 画面上地图区域几乎全黑，仅少量墙体边缘可见。地图文件位于 `/home/tetsuya/mir2ei/Map/0.map`。
-**判定**：`LIKELY_DIFFERENCE`（资源部署缺口，非 UI 布局问题）；缺失库名未定位（诊断只输出计数），
-归入"资源完整性"独立排查项，不阻塞本轮 UI 验收（本轮所有验收均在渲染正常的地图 4 完成）。
+**判定**：`LIKELY_DIFFERENCE`（资源部署/路径问题，非 UI 布局问题），不阻塞本轮 UI 验收
+（本轮所有验收均在渲染正常的地图 4 完成）。
+
+**定位（2026-10-01，已缩小范围）**：按 `LibraryCore/Libraries.cs::KROrder`（63 条）逐条核对磁盘：
+- 现代数据根 `/home/tetsuya/mir2ei/Data/Map Data/` **63/63 全部存在**（`Wood/` `Sand/` `Snow/` `Forest/`
+  四个子目录各含 `Tilesc.Zl` 等变体，库名 `Wood_Tilesc` 对应文件 `Map Data/Wood/Tilesc.Zl`）；
+- 但 **legacy UI 数据根 `/home/tetsuya/mir2ei/LegacyEI/Data/` 下没有 `Map Data/` 目录**，
+  只有扁平 WIL/WIX（`Tilesc.wil`、`Animationsc.wil`、`Dungeonsc.wil`…）→ **不含 Wood/Sand/Snow 变体**；
+- 客户端日志同时显示 `[MirSkin] UI 库 Interface 在 legacy 目录缺失，回退到 /home/tetsuya/mir2ei/Data/: Interface.Zl`
+  —— 即 legacy 根优先、缺失时回退现代根。
+
+**结论**：地图 0 缺失的那 1 个库，最可能是它引用的 **Wood/Sand/Snow/Forest 地形变体**在 legacy 根下不存在
+且未触发回退（`LIKELY`，未逐字节解析 .map 的 file 字段最终确认）。这属**资源路径/完整性**问题，
+与 UI 布局无关；若要彻底定位，需解析 `0.map` 单元格的 file 字节并与两级数据根比对。
 
 ### 10.12 NPC 对话窗**联机**验证（首次：服务端文本驱动）
 
