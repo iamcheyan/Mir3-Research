@@ -54,6 +54,16 @@ godot-mono --path GodotClient -- --server 127.0.0.1 --port 7002 \
 
 → **背包可视几何与标签在真实运行中与原版一致**（矩阵 §6.4 由静态+lab 升级为真机）。
 
+**补充（2026-10-01）：总槽数 46(EI) vs 48(Zircon)，但可视行为一致**
+- 原版背包窗（窗口 id 9，对象 `+0x6554`）构造 `0x42E810`：
+  `push 0x2E; lea ecx,[esi+0x774]; push 0xC2C; …call 0x4686C4`
+  → **槽记录数组 = 0x2E(46) 条 × 0xC2C(3116) 字节**，与 `bag-tooltip-verification-evidence.json`
+  的「46 槽 · bag+0x774+i*0xC2C」完全一致（本次由二进制直接确认）。
+- Zircon 侧 `Globals.InventorySize = 48`（`LibraryCore/Globals.cs:304`）→ 数据模型多 2 槽。
+- 两侧的**可视网格都是 6 列**、可见 6 行、用 F280 gauge 滚动；`ceil(46/6)=ceil(48/6)=8` 行，
+  **滚动行数相同** → 只要玩家物品不超过 46 件，渲染与滚动范围逐像素一致；差异仅在数据模型
+  （由服务端协议决定，非客户端 UI 缺陷）。
+
 ### 3.2 行会（本轮修复的回归）
 
 `02-guild-window-after-F.png`：F600 背景 + `문파` 烘焙标题 + 底部 8 个韩文动作控件
