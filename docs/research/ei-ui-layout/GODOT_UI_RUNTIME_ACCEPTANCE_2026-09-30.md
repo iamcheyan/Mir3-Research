@@ -506,3 +506,17 @@ F400→(454,381)、F850→(359,382)——**全部与各窗口的关闭钮位置�
 - 隔离服务端 `/tmp/ei-flow-review` 的账号 `test@test.com` 在服务端日志中为 **`Admin: False`**，
   但 `@level` 等命令可用（服务端对单机 dev 账号放行）；角色名 **TestHero**，登录时被注入满级数据；
 - 聊天命令往返正常（实测 `@giveSkills` 返回 `Invalid Parameters for command @GIVESKILLS`，该命令实需 `@giveSkills <角色名>`）。
+
+### 10.11 观察（非 UI 范围）：`@move 0` 后地图渲染为黑，`missingLibraries=1`
+
+用 GM 命令 `@move 0` 传送到地图 0（800×800）后，客户端日志：
+
+```
+[MapView] 加载 0: 800x800
+[MapView] 贴图诊断: missingLibraries=1, missingTextures=0, emptyImageEntries=0   ← 地图 0 缺 1 个贴图库
+[MapView] 贴图诊断: missingLibraries=0, missingTextures=0, emptyImageEntries=21  ← 对照：地图 4 无缺失
+```
+
+画面上地图区域几乎全黑，仅少量墙体边缘可见。地图文件位于 `/home/tetsuya/mir2ei/Map/0.map`。
+**判定**：`LIKELY_DIFFERENCE`（资源部署缺口，非 UI 布局问题）；缺失库名未定位（诊断只输出计数），
+归入"资源完整性"独立排查项，不阻塞本轮 UI 验收（本轮所有验收均在渲染正常的地图 4 完成）。
