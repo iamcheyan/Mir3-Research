@@ -282,3 +282,21 @@ goal 的验收条款含「相同用户操作产生相同的**数据请求/封包
   客户端可见状态变化**（后者已用服务端结果间接核对，如装备/技能/交易）。
 - 反过来说：凡是「原版行为」依赖**原版协议/服务端数据**的项（B-6 行会解散、B-7 任务列表文本、
   HP 条资源集合），都以 `BLOCKED-协议` 记录，而非客户端缺陷。
+
+## 9. 项目自带 legacy 自检套件（2026-10-01 全量复跑）
+
+这些自检是仓库自身携带的验收断言（断言控件属性/几何/状态，而非像素），复跑一遍即是一次强回归：
+
+| 自检 | 命令 | 结果 |
+|---|---|---|
+| 创建界面按钮帧 | `res://Scenes/SelectScene.tscn -- --legacy-select-selftest` | **PASS（本轮由 FAIL 修复后转 PASS，见矩阵 §9 S-2）**：9 钮 Index/HoverIndex/Location/Size 全匹配；职业三钮 91/94/97→Warrior/Wizard/Taoist ✓ |
+| 人物属性格式 | `res://Scenes/LegacyHudLayoutLab.tscn -- --legacy-character-selftest` | **PASS** 14 项全匹配（准确=+9% 敏捷=+10% 等） |
+| 关闭框键盘链 | `... --legacy-keychain-selftest` | **PASS** Tab 循环/回绕/跳过 disabled；帧表 150/153/156 与 44×20/44×20/64×20 ✓ |
+| NPC 对话窗 | `... --legacy-npc-selftest` | **全部 ok**（几何 552×176/F1100、maxScroll=18、选项命中/悬停、行级上下滚动、`offsetY=-21*18`） |
+| 悬停提示矩形 | `... --legacy-tooltip-selftest` | **PASS** 背包=(105,205)/(70,47) 商店=(105,205)/(112,47) 裁切=(775,95)/(25,17) |
+| WIL 直读 vs 回退 | `res://Scenes/UITestScene.tscn -- --legacy-wil-audit` | **PASS** Interface1c 直读 F50 640×480 + MirSkin WIL 回退 F51 96×26；导出 PNG sha256 已记录 |
+| 技能书右页段落 | `... --legacy-magic-selftest` | **不可判定（lab 内无角色技能）**：`selectedSkillId=-1 paragraph=null` → 需联机角色，记 `UNVERIFIED` |
+
+**本轮由自检直接抓到并修复的真实缺陷**：选角屏 5 个按钮的**悬停帧与按下帧互换**
+（`41cd2543`）。这说明该自检套件有效，也说明"期望表"必须由原版**绘制状态机**定性，
+而不是按 ctor 实参顺序想当然（本轮已把判据注释写进代码）。
