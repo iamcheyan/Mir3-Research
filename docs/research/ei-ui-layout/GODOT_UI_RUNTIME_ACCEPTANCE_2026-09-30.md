@@ -625,3 +625,37 @@ xdotool type "@move 0 402 356"      ← Mr. Kang（map 0，原版坐标 402,356�
 **未做**：原版 EI 的仓库**入口**仍未定位（HUD caption 16 项里没有 → 更可能由 NPC/道具触发）；
 服务端 `S.StorageSize` 的触发路径未追踪。**本项保持待裁决，不下结论。**
 **风险**：不下结论——本项已按"证据不足不猜"原则登记为待裁决，不影响本轮已完成的验收结论。
+
+### 10.14 修复 Q-2：任务窗 legacy 列表行几何/配色（原版扁平行列表）
+
+**原版证据**（`quest-window-render-evidence.json::list_row_geometry`，primary-bytes 反汇编）：
+
+| 项 | 值 | 指令依据 |
+|---|---|---|
+| 行 x | `win.x + 0x41 = 65` | `0x0044761F add ecx,0x41` |
+| 行 y | `win.y + 0x5A + 15·line = 90 + 15·line` | `0x00447618 lea eax,[ecx+ecx*2+0x12]`（=line*3+0x12）+ `0x00447622 lea eax,[eax+eax*4]`（**×5**）+ `0x00447625 add eax,edx` |
+| 行距 | 15 | 同上 |
+| 可见行上限 | 19 | `0x004475DE cmp ecx,0x13` |
+| 选中色 / 普通色 | `0x1919C8` = RGB(25,25,200) / `0x19197D` = RGB(25,25,125) | `0x004475F7` `and al,0x51`+`add eax,0x1919C8` / `0x00447604` `and al,0xCE`+`add eax,0x19197D`（0x00BBGGRR） |
+
+**修复前差异**：Godot legacy 仍走**现代分组列表** —— 分组标题 `▾ <地图名>`（x=8、金色）、任务行（x=18、金色）、
+行下任务描述（x=28、白色），与 F700 该区域的**空白羊皮纸**不符（证据 28：EI `GameInter.wil` F700 在窗口
+(65,90)-(265,375) 内只有龙云纹羊皮纸，无任何烘焙行/装饰）。
+
+**修复**（`QuestDialog.RefreshPage` 增加 legacy 分支）：扁平列表、无分组标题与行下描述，
+几何/配色按上表；现代路径完全不改。
+
+**验证**：
+- `--legacy-quest-rows-selftest` **PASS**（新增实验室自检：用客户端 DB 的 **38 个真实 `QuestInfo`**
+  渲染 3 行 → `pos=(65,90)/(65,105)/(65,120)`、普通色 RGB(25,25,125)、选中行 RGB(25,25,200)）；
+- `--legacy-audit` **PASS**（窗口几何无回归）；
+- **端口实机 vs 原版素材逐像素对齐**（证据 27）：同一区域裁剪并排，羊皮纸/页签/流苏/滚动钮位置一致，
+  F705 详情框为端口正确叠加的独立帧（原图不含）。
+
+**过程记录（两处失败，均已定位）**：实验室自检最初用 `new QuestInfo{...}` 合成数据 → 在
+`DBObject.OnChanged`（`DBObject.cs:322`）抛 NRE（独立 MirDB 对象无集合）；改用真实 DB 对象后又在
+`ClientUserQuest.IsComplete`（`Globals.cs:1035`，解引用 `Tasks`/`Quest.Tasks`）抛 NRE → 补空 `Tasks` 列表后通过。
+**该失败同时说明**：`IsComplete` 对 `Tasks == null` 不安全，但服务端下发始终带 `Tasks`，故非用户可见缺陷（仅记录）。
+
+**遗留观察（未改）**：legacy 行文本仍带端口既有后缀「（左键追踪，右键放弃）」（`Lang.QuestUi156/157Label`）；
+原版行是否带同类提示未取证 → 记为 `UNVERIFIED`，不在本次已确认差异范围内。
