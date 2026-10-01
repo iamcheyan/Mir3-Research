@@ -1,0 +1,35 @@
+{
+ "evidence_id": "ei-window-slot-arrays-2026-10-01",
+ "source": "/data/NAS/TMP/EI传奇3.0客户端/Mir3.exe",
+ "method": "capstone 反汇编 + 全 .text 寻址扫描；窗口 id 取自 0x42ADB0(this=UI, id) 的跳转表 0x42B3E4（cmp eax,0xF; jmp [eax*4+…]）",
+ "evidence_level": "primary-static",
+ "id_to_window_offset": {
+  "0": "0x6554 / flag 0x6584",
+  "1": "0x29CE4 / flag 0x29D14",
+  "2": "0x33188 / flag 0x331B8",
+  "3": "0x3399C / flag 0x339CC",
+  "4": "0x4707C / flag 0x470AC",
+  "6": "0x47834 / flag 0x47864",
+  "7": "0x47C58",
+  "8": "0x5081C",
+  "9": "0x51180",
+  "11": "0x51718",
+  "12": "0x51910",
+  "13": "0x52148",
+  "14": "0x52520",
+  "15": "0x52E8C"
+ },
+ "window_ctor_slot_arrays": {
+  "0x42E810 (id0, bag)": "slot records: count 0x2E(46) x stride 0xC2C at +0x774；另 +0x5C: 3 x 0xB4（子控件表，几乎所有窗口都有）",
+  "0x44AF50 (id1)": "slot records: count 0xB(11) x stride 0xC24 at +?；ctor 内另调用 0x44B0B0（与 quest 窗同基类方法）",
+  "0x44CFC0 (id2)": "list items: count 8 x stride 0xB4 at +0x54；+0x648/0x64C 列表对象（vtable 0x476AB8，节点 0x476AD4/0x476AD8）",
+  "0x415650 (id3)": "slot records: count 0x18(24) x stride 0xC2C at +?；另 count 0x4C(76) 数组"
+ },
+ "notes": [
+  "背包 46 槽与 bag-tooltip-verification-evidence.json 的 F293 证据一致（本次二进制直接确认）",
+  "0xB4 步长数组 = 窗口的子控件表（每个窗口构造里都有，非物品槽）",
+  "id1 的 11 槽数组与 Mir3 装备槽数量吻合（11），但**尚未**把 id1 与「人物状态窗」身份绑定（背景帧号未在 ctor 内出现）",
+  "Godot 侧 CharacterDialog 建 17 槽（EquipmentSlot 0..16，跳过钓鱼 17..21），来自 Zircon 数据模型 EquipmentSize=22"
+ ],
+ "open_question": "EI 状态窗的可见装备槽数量：若为 11，则 Godot 的 17 槽属可见差异（LIKELY_DIFFERENCE，需先绑定 id1←→状态窗身份再判定）"
+}

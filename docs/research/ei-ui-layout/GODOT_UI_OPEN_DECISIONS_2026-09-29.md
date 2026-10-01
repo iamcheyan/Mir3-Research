@@ -345,6 +345,20 @@ Godot legacy 仍渲染现代分组列表（x=8/18/28、金色/白色、分组标
 - Godot `DrawName` 用 `new Vector2(24f, y)` 画名字 → **Godot 节点原点 == 原版 anchor（瓦片左边）**，
   故 box 直接落到 `origin.x + 24`（水平居中）、`origin.y - 30 .. -15`。
 
+### B-10 状态窗装备槽数量（`LIKELY_DIFFERENCE`，待身份绑定）
+
+- 原版各窗口构造里的**槽记录数组**（新证据 `ei-window-slot-arrays-2026-10-01.json`）：
+  - **背包（id0，`0x42E810`）**：`push 0x2E; +0x774; push 0xC2C` → **46 槽 × 3116B**（与 F293 证据一致，本次二进制确认）；
+  - **id1（`0x44AF50`）**：**11 槽 × 0xC24**；
+  - **id3（`0x415650`）**：**24 槽 × 0xC2C**（另 76 项数组）；
+  - `0xB4` 步长数组是**子控件表**（每窗都有），不是物品槽。
+- Godot 侧 `CharacterDialog` 建 **17 槽**（`EquipmentSlot 0..16`，钓鱼 17..21 不建格），
+  源自 Zircon 数据模型 `Globals.EquipmentSize = 22`（`LibraryCore/Globals.cs:305`）。
+- **未判定**：id1 的 11 槽是否就是"人物状态窗"的装备槽（ctor 内未出现背景帧号，
+  身份尚未绑定）。若绑定成功且原版确为 11 槽，则 Godot 的 17 槽属**可见差异**。
+- **处理**：先记 `LIKELY_DIFFERENCE`，下一轮用「装备变更封包处理器引用的窗口偏移」绑定身份后再判；
+  本轮不改（避免按猜测删槽）。
+
 ### B-9 原版客户端运行 A/B 与联机验收
 
 - 原版为 Windows-only，本机无法运行 → 所有像素级结论保留版本门禁。
