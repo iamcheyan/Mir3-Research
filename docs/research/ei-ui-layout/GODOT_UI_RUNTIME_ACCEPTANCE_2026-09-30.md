@@ -622,8 +622,19 @@ xdotool type "@move 0 402 356"      ← Mr. Kang（map 0，原版坐标 402,356�
   **不是窗口或按钮**；
 - 但 EI 确实存在仓库**功能**（`0x420B31` 存入成功文案「%s 被放置到仓库里了!」、`0x420B80` 满、`0x420BB4` 拒绝）。
 
-**未做**：原版 EI 的仓库**入口**仍未定位（HUD caption 16 项里没有 → 更可能由 NPC/道具触发）；
-服务端 `S.StorageSize` 的触发路径未追踪。**本项保持待裁决，不下结论。**
+**2026-10-01 追加证据（窗口目录）**：EI 的 `layout.json` 共 **58 条 record**，其窗口目录为
+`window.inventory(0) / status(1) / store(2) / exchange(3) / guild(4) / group(6) / status-right(7) /
+chat-pop(8) / npc(9) / quest(11) / option(12) / horse(13) / skill-book(14) / notice(15)` ——
+**没有独立的"仓库窗"**；而矩阵早已记录 `仓库（state2）| 38 stride 38`，即**仓库 = store 窗（id 2）的 state 2**。
+端口把 store 建模为"NPC 商品面板（BuySell 购买区）+ `InventoryDialog` 的 Sell/Storage 模式"，
+与证据一致；端口另有独立的 `StorageDialog` 是 **Zircon 现代窗**，legacy 下由 `ApplyLegacyEiLayout`
+套用同一几何（矩阵已核对）。
+
+**结论收窄**：EI 的仓库**不是独立窗口**，而是 store 窗的一个状态；其**入口**（谁把 store 切到 state 2）
+在 EI 侧仍未定位（HUD 16 caption 无此项），Zircon 服务端的 `NPCDialogType` 枚举亦**不含仓库类型**
+（`LibraryCore/Enum.cs:567`），服务端只在"仓库扩容道具"时发 `S.StorageSize`
+（`ServerLibrary/Models/PlayerObject.cs:6924`，case 17）。→ **客户端 UI 侧无缺口**；
+若原版入口确由 NPC/服务端功能提供，则属**服务端功能差异**，非客户端移植缺陷。**本项保持待裁决（客户端侧已排除）。**
 **风险**：不下结论——本项已按"证据不足不猜"原则登记为待裁决，不影响本轮已完成的验收结论。
 
 ### 10.14 修复 Q-2：任务窗 legacy 列表行几何/配色（原版扁平行列表）
