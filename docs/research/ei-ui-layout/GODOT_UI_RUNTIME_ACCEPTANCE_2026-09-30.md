@@ -919,3 +919,25 @@ NPC 窗的 legacy 控件只有 close(7,141) 与 scrollUp(290,145)/scrollDown(306
 端口实现位置：`RenderPrimitives.HoverNameHoldMs`（`RenderPrimitives.cs:217`）+
 `PlayerRenderer.cs:64/67/756-760/987`、`MapObjectNode.cs:46/49/206-208`、`ObjectRenderer.cs:589`。
 **本项从"代码级"升级为"运行期已验证"**（§11 #6 相应更新）。
+
+### 10.21 商店（goods）面板**联机验收通过**（F1000 位置与素材均一致）
+
+**做法**：把自检钩子 `RunLegacyNpcResponseSelfTest` 的取页策略改为**优先取带商品的 BuySell 页**
+（`page.DialogType == BuySell && Goods.Count > 0`，取不到才退回任意有 `Say` 的页），并加一行
+`page=/type=/goods=` 诊断；这样一次运行即可同时覆盖 NPC 对话窗与**商店面板**的 legacy 布局。
+
+**观测**（联机，TestHero，map 1）：
+
+```
+[LegacyNpcResponseSelfTest] page=2 type=BuySell goods=47
+F1000（300×307，EI GameInter.wil alpha bbox）模板搜索：最佳 =(128,280)，差 27.3
+```
+
+- **位置精确吻合**：`PlaceGoodsPanel()` 用证据常量 `LegacyStoreScreen=(0,184)` 反推相对坐标，
+  屏幕位置 = UI 原点 (128,96) + (0,184) = **(128,280)** —— 与模板搜索最优**完全一致**
+  （注：预测时若误用现代 `_goods.Location=(0,204)` 会得到 300，是错的；已用证据常量核对）。
+- **素材与框体逐像素吻合**（证据 30 并排比对）：F1000 的图标列、5 个行框、底部对勾与 ✕ 全部重合，
+  端口在其上叠加真实商品（金创药 小/中/大、强效金创药、魔法药）与价格、标题「商品」、滚动条。
+- 差额 27.3 来自这些**正常叠加内容**。
+
+**结论**：商店面板的 legacy 几何（位置/尺寸/背景帧/行框/按钮）**已验证**。
