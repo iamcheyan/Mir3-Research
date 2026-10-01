@@ -1080,9 +1080,19 @@ Zircon 服务端 `NPCDialogType` 不含仓库类型，仅在"仓库扩容道具"
 按 §11 的收尾项尝试运行端口自带的多阶段端到端操作审计（`AutoLoginArgs.OperationAuditExt`，
 `GameScene.cs:1125/1481/2834` 等处按 `_operationAuditExtStage` 推进）：
 
-- 完整走完登录 → 公告确认 → 进入游戏（日志 `[Game] 进入游戏! 玩家: TestHero, 位置: (402,356), 地图: 1`）；
-- 但**全程未出现任何 `[OperationAuditExt]` 输出**，也无异常（异常计数 0）→ 该审计的前置条件
-  （疑为可见 NPC / 伙伴 / 特定物品等）在本环境未满足。
+- 首次运行因脚本误匹配 `PASS|FAIL` 提前结束（35s），未跑到审计；**修正等待条件后重跑**；
+- 重跑结果：审计**确实被触发并执行**（`GameScene.cs:9164` 的 `_startGameShown` 门控满足），
+  但在第 2 个前置检查处终止：
 
-**判定**：`UNVERIFIED`（工具未触发，非客户端缺陷）；**未做**：阅读 `_operationAuditExtStage` 的推进条件
-并构造前置状态。**不影响**本轮已完成的 14 项窗口 parity 与交互验收结论。
+```
+[OperationAuditExt] FAIL no empty inventory slot
+```
+
+  即**自动药水消耗品检查通过**（未打印 `no auto-potion consumable`），
+  但 `InventoryCells.FirstOrDefault(c => c.Item == null && !c.Locked && c.Enabled)` 为空 →
+  本副本角色（满级注入数据）背包**无可用空位**，审计无法继续。
+
+**判定**：`UNVERIFIED`（工具可运行、前置条件未满足，**非客户端缺陷**）。
+**未做**：为测试角色腾出空位后重跑（涉及改动测试角色物品，按纪律需先确认）；
+阅读 `_operationAuditExtStage` 全部阶段的前置要求。
+**不影响**本轮已完成的 14 项窗口 parity 与交互验收结论。
