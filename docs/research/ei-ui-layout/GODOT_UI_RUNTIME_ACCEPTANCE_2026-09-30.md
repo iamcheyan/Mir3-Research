@@ -707,3 +707,45 @@ xdotool type "@move 0 402 356"      ← Mr. Kang（map 0，原版坐标 402,356�
 
 **本轮（2026-10-01）已关闭**：S-11（角色窗切换视图钮叠画，`92a58841`）、S-12（技能书右页按名匹配，`650fe5bb`）、
 **Q-2（任务窗 legacy 扁平行列表，`5767fe7c`）**；另有 `059cad7a`（NPC 发包诊断日志）。
+
+### 10.16 更正 §10.11 与 §10.12.2（新证据）
+
+#### (a) §10.11「地图 0 渲染为黑」——**更正：渲染正常**，`missingLibraries` 的真因是 KROrder 键缺口
+
+按 `GodotClient/Formats/MapReader.cs` 的单元格布局（14 字节/格：`flag,midAnim,value,frontFile,middleFile,midImage(2),frontImage(2),skip3,light,skip1`；
+背景层 3 字节/格：`backFile(1)+backImage(2)`）直接解析 `/home/tetsuya/mir2ei/Map/0.map`：
+
+| 地图 | 尺寸 | 用到的 file 字节 | 含 255 | 客户端诊断 |
+|---|---|---|---|---|
+| **0** | 800×800 | 0,1,2,3,4,5,8,9,10,11,12,13,**15,25**,**255** | **是**（背景层 3/160000 格） | `missingLibraries=1` |
+| **4** | 800×800 | 0,1,2,3,4,5,7,10,11,15,30,40 | 否 | `missingLibraries=0` |
+
+- `Libraries.KROrder` 共 63 条，**键 255 不存在**（键缺口），而地图 0 的背景层确有 3 格 `backFile=255`；
+  `MapView.DrawCell` 的 `KROrder.TryGetValue` 失败即 `MissingLibraryCount++` → 这就是那"1"。
+- 地图 0 用到的 14 个库（Tilesc/Tiles30c/Tiles5c/SmTilesc/Housesc/Cliffsc/Furnituresc/Wallsc/SmObjectsc/
+  Animationsc/Object1c/Object2c/Wood_Tilesc/Wood_SmObjectsc）**全部存在**于 `Data/Map Data/`（含 `Wood/` 子目录）。
+- **地图 0 的世界渲染正常**（截图 `npc-pos.png` 可见屋顶/石墙/草地/树木；世界区平均亮度 49.6，
+  地图 4 同区域 92.0 —— 两者都不是黑屏）。**§10.11 的"几乎全黑"是误判**：当时看到的深色大块是
+  **NPC 对话窗自身的深色面板**，不是地图。
+
+**结论修正**：本项由 `LIKELY_DIFFERENCE` 降级为 **非差异（诊断假阳性）**——
+"missingLibraries" 把背景层哨兵值 255 计入了缺失库。**是否需要修**：可选（仅影响诊断输出，不影响渲染，
+因为 `TryGetValue` 失败即跳过绘制，与原版行为一致）；若要修，应在 `DrawCell` 里对 `fileByte == 255`
+（或无映射的背景哨兵）不计数。
+
+#### (b) §10.12.2「6 个图标是游戏世界层 sprite」——**更正：在窗口复合区域内**
+
+放大截图（`npc-pos.png` 屏幕 (250,505)-(600,560)）可见 **6 个方形图标按钮**（深色底 + 白色符号），
+其下方紧接**对话框的金属下边框**——即图标在**窗口复合区域之内**，不是世界层 sprite。
+该区域对应 NPC 窗的子面板 **goods（商店）面板**：`ApplyLegacyEiLayout` 后 `_goods.Location = (0,204)`、
+尺寸 300×304（背景 `GameInter F1000`，实测 alpha bbox (106,102)-(406,409) = 300×307，
+与端口 `Location=(-106,-102)` 吻合）；联机截图里该面板可见，说明该 NPC 页为 `NPCDialogType.BuySell`
+且 `Page.Goods` 非空（`NPCDialog.cs:429`）。
+
+**§10.12.1 的"点击 0 次到达 `SendNPCButton`"因此不能作为结论**：goods 面板的按钮走
+`BuySelected()`/`SellSelected()`（`NPCGoodsPanel.cs:72/81` → `SendNPCBuy/SendNPCSell`），
+**不经过 `SendNPCButton`**，我的 grep 只覆盖了后者。
+
+**仍未确定**：这 6 个图标的**确切来源**（F1000 的烘焙图标是**左侧竖排 5 个**，与观测到的**横排 6 个**不符；
+NPC 窗的 legacy 控件只有 close(7,141) 与 scrollUp(290,145)/scrollDown(306,136)，位置也不符）→
+记为 `UNVERIFIED`（待模板搜索定位所属帧/控件）。**本项不下结论。**
