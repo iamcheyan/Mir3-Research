@@ -363,3 +363,25 @@ F400→(454,381)、F850→(359,382)——**全部与各窗口的关闭钮位置�
 
 → 结论：`arg8=-1` 的窗口**大多已正确处理**；本轮补齐了漏掉的两处（聊天频道键、HUD 键位条），
 并明确了唯一未闭合项（坐骑窗）。后续若新增按钮，必须同时核对"背景是否已有该美术"。
+
+### 10.3 `--legacy-audit` 全量自检（2026-10-01）
+
+本轮把"按钮三态帧"的修正推广到行会动作钮与商店购买钮后，跑了一遍**实验室全量审计**：
+
+```
+[LegacyAudit] PASS character=True inventory=True magic=True horse=True npc=True chat=True quest=True
+  trade=True guild=True storage=True config=True notice=True minimap=True lifecycle=True orb=True
+  hud=True roots=True goods=True guildList=True
+```
+
+**过程中发现并修正的方法学问题**：审计里有两处断言**编码的是旧（叠画）行为**，
+与证据（`arg8=-1` + 背景烘焙）冲突，导致 `--legacy-audit` 报 `npc=False`/`guild=False`：
+
+| 断言位置 | 旧断言 | 更正后 |
+|---|---|---|
+| `NPCDialog.AuditLegacyEiLayout` | `close.Index == 161` | `Index == -1 && HoverIndex == -1 && PressedIndex == 162` |
+| `GuildDialog.AuditLegacyEiLayout` | `actions[i].Index == arg2` | `Index == -1 && HoverIndex == -1 && PressedIndex == arg2+1` |
+| `NPCGoodsPanel.AuditLegacyEiLayout` | `_buy.Index == 1012` | `Index == -1 && HoverIndex == -1 && PressedIndex == 1013` |
+
+→ **规则**：当按证据更正实现语义时，必须同步更正"编码了旧行为"的验收断言（并在断言处写明证据来源），
+否则自检会以"FAIL"形式把正确的实现挡住（本轮即如此）。
