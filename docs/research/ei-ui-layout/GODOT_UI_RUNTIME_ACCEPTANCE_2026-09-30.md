@@ -846,3 +846,27 @@ NPC 窗的 legacy 控件只有 close(7,141) 与 scrollUp(290,145)/scrollDown(306
   （本次点击落在玩家自身格，可能被玩家优先命中）、以及服务端是否回包。
 - **结论**：`UNVERIFIED`（既不确认端口缺陷，也不确认已打开）；下次需从相邻格点击 NPC 并观察
   `S.NPCResponse` 是否到达。**§10.12 的"NPC 对话窗联机验证"确认作废**（那是聊天窗 F350）。
+
+### 10.19 NPC 对话窗**联机验收通过**（用端口自带的 `--legacy-npc-response-selftest`）
+
+**为何改用该钩子**：直接合成鼠标点击 NPC（5 次尝试：传送到 NPC 格、相邻格点击、分离 mousemove/click 等）
+**均未触发** `TrySendNpcCall`（新增的 `[NPCLegacy] call` 诊断日志计数为 0）——说明无头 xdotool 事件
+没能让 `_combatController.MouseObject` 命中 NPC 精灵。改用端口自带的
+`RunLegacyNpcResponseSelfTest`（`GameScene.cs:7332`）：它取一个已绑定的 `NPCPage`，把 `Say` 置为
+含内嵌选项标记的 13 行文本（`[购买物品:1]`/`[出售物品:2]`/`[修理装备:3]`/`[升级武器:4]`）并派发
+`S.NPCResponse`，从而**真实走完"服务端页 → 窗口打开 → 正文与内嵌按钮渲染"链路**。
+
+**验收结果**（联机，TestHero，map 1）：
+
+| 项 | 观测 | 判定 |
+|---|---|---|
+| 窗口打开 | `[LegacyNpcResponseSelfTest] state ok=True line=0/11 offsetY=0 optionIds=4 glyphHitAreas=16` | ✓ 打开，**4 个选项 id**、**16 个字形命中区** |
+| 背景素材 | F1100 模板搜索：预测 **(128,96)** = 搜索最优，**差 15.4** | ✓ **位置与素材均正确**（差额来自其上叠加的正文/按钮） |
+| legacy 文本布局 | `[LegacyNPC] lines=17 pitch=21 twoColumn=True col1=(150,40)/(149,136) col2=(305,40)/(149,136)` | ✓ 行距 21、≥7 行切第二列（与 `dialogue_text_layout_contract` 证据一致） |
+| **选项点击** | 在选项行（窗口 y≈103/124/145/166）各点 3 处 → `[NPCLegacy] button id=1` ×2、`id=2` ×2，`observer=False` | ✓ **内嵌选项可点且发出 `C.NPCButton`，id 与标记一致** |
+
+**结论**：NPC 对话窗的 **§10.12 系列全部结论作废并由本节取代**；本项从 `UNVERIFIED` 转为
+**已验证（窗口定位 + 素材 + 文本布局 + 选项点击发包）**。
+
+**仍未验证（NPC 相关）**：真实 NPC 的"点击精灵打开对话"路径（无头事件无法驱动 `MouseObject` 命中）；
+以及选项点击后**服务端**的业务分支（买卖/修理的实际结果）——需真实交互或服务端侧观察。
