@@ -598,3 +598,21 @@ xdotool type "@move 0 402 356"      ← Mr. Kang（map 0，原版坐标 402,356�
 **结论与边界**：客户端侧行为**符合实现约定**（无选项则无可点区域）；"商人是否应该有菜单"
 取决于**服务端 NPC 页面数据/脚本**，属服务端范围，本次未判定（`UNVERIFIED`，非客户端差异）。
 客户端侧可判定的部分是：**对话窗能正确显示服务端下发的任意页面文本**（已两次验证）。
+
+### 10.13 发现（待裁决）：legacy UI 下**仓库窗（StorageDialog）无入口**
+
+**事实链**（全部来自当前 checkout 的源码检索，非推测）：
+
+| 环节 | 证据 |
+|---|---|
+| 窗口存在 | `GodotClient/Controls/StorageDialog.cs`；实验室日志 `[LegacyWindowLoc] sto=StorageDialog@(0, 0)` |
+| 唯一打开函数 | `GameScene.ToggleStorageWindow()`（`Scripts/GameScene.cs:277`）→ `WindowManager.Toggle(_storageDialog, _uiLayer)` |
+| 调用者仅两处 | ① `Controls/MenuDialog.cs:65` 的 `StorageButton`（**现代**菜单窗）；② 键位表 `KeyBindManager.StorageWindow = Key.S`（`Controls/KeyBindManager.cs:117`） |
+| legacy 模式下 `S` 被覆盖 | `GameScene.cs:11012-11016`：`AutoLoginArgs.LegacyUi && Key.S` → `ToggleHorseWindow()`（依据 EI 键位表，坐骑）→ **legacy 下走不到仓库** |
+| 服务端无仓库 NPC 类型 | `LibraryCore/Enum.cs:567 NPCDialogType` 全部成员（BuySell/Repair/Refine/…/SocketCombine）**不含仓库**；NPC 清单 294 条 identity 前缀亦无仓库类（`02Weapon/04Potion/07Grocer/10ChestnutMarket/13Move_/14Quest_/15Magic_`…） |
+| 客户端仅处理 `S.StorageSize` | `GodotClient/Network/ServerConnection.cs:886`（无 `S.StorageOpen`/列表包处理） |
+
+**判定**：`LIKELY_DIFFERENCE`（legacy UI 下仓库不可达），**但需先确认原版 EI 是否提供 legacy 仓库入口**
+（若原版 EI 的仓库同样由 NPC/服务端功能提供，而 Zircon 服务端本就无该功能，则属**服务端功能缺失**而非客户端 UI 差异）。
+**未做**：原版 EI 的仓库入口取证（HUD 按钮 or NPC）、服务端 `S.StorageSize` 的触发路径追踪。
+**风险**：不下结论——本项已按"证据不足不猜"原则登记为待裁决，不影响本轮已完成的验收结论。
