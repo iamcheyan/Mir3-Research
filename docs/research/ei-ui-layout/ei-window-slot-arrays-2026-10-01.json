@@ -31,5 +31,9 @@
   "id1 的 11 槽数组与 Mir3 装备槽数量吻合（11），但**尚未**把 id1 与「人物状态窗」身份绑定（背景帧号未在 ctor 内出现）",
   "Godot 侧 CharacterDialog 建 17 槽（EquipmentSlot 0..16，跳过钓鱼 17..21），来自 Zircon 数据模型 EquipmentSize=22"
  ],
- "open_question": "EI 状态窗的可见装备槽数量：若为 11，则 Godot 的 17 槽属可见差异（LIKELY_DIFFERENCE，需先绑定 id1←→状态窗身份再判定）"
+ "open_question": null,
+ "resolution_2026_10_01": {
+  "question": "id1 的 11 槽数组是否就是人物状态窗的装备槽？",
+  "answer": "是（MATCH）。矩阵 §3 第 1 行给出 EI 权威值「F200；8 个 38×38 装备格 + 3 非方格区 = 11 记录」；Godot CharacterDialog.AuditLegacyEiLayout 的 expectedSlots 恰为 11 项（Weapon/Armour/Necklace 为非 38×38 区），并要求 visibleSlots == 11 且位置/尺寸与 EI 一致。创建的 17 个 cell 只是池子。原 B-10 的 LIKELY_DIFFERENCE 作废。"
+ }
 }
