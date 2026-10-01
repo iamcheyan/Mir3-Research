@@ -28,6 +28,22 @@
 
 ### B-1 窗口「点击背景」的语义 —— **降级为 `UNVERIFIED`（我上轮的判定未经验证）**
 
+**2026-09-30 补充证据（机制更清晰，结论仍不闭合）**：
+- `0x0042BF85`（`0x42C4D4` 跳转表的 case 0 目标）是一个**3 参调用点**：
+  `push ebp; lea edx,[esi+0x20]; push ebx; push edx; lea ecx,[esi+0x6554]; call 0x4300F0`
+  → arg1=`esi+0x20`（消息结构：`[edi]`/`[edi+4]`/`[edi+8]`/`[edi+0xC]` 全 0 判定 + `byte[edi+0x3A]`
+  + `word[edi+0x40]` 键码，含 0x14/0x15/0x46 特判）、arg2=ebx、arg3=ebp；
+  与 `0x4300F0` 末尾的 **`ret 0xC`** 自洽（此前误把 `0x4306AE/0x4306B8` 的 `ret 8` 当成它的返回——那两个属同段内另一个 5-pop 函数）。
+- `0x4300F0` 语义 = **窗口消息分发器**：先做 300ms 去抖（`[esi+0x23788]`）与 2000ms/1000ms
+  键码过滤（`[esi+0x23784]`），随后 `0x417E60`（F280 gauge）、再沿 `[esi+0x5C]` 的
+  `vtable+0x10` 逐个把消息交给子控件；**任一子控件返回非 0 → 本函数返回 1（已消费）**，
+  全部返回 0 则继续下一个子控件。
+- `0x42ADB0(this=UI, id)` = **按窗口 id 的显示/隐藏切换**（`cmp eax,0xF; jmp [eax*4+0x42B3E4]`；
+  id 0 分支读 `[esi+0x6584]` 标志决定 `[bag].vtable+0x10(0/1)`）。
+- 组合起来「子控件消费 → 调用方 toggle」在语意上仍不能解释为「点背景关窗」，
+  且该路径更可能是**热键/焦点消息**而非鼠标点击 → **结论保持 `UNVERIFIED`**：
+  实现侧仍不引入「点窗口背景关窗」。
+
 **2026-09-30 复核更正**：上一轮我据 `0x42BF85` 的
 `call 0x4300F0(bag, 鼠标); test eax,eax; je 0x42C198(尾部); … 0x42ADB0(hud,0)`
 判定「handler 返回 0 → 关窗」，并把这条推广成「点窗口背景 = 关闭该窗口」。
@@ -205,7 +221,34 @@ Godot `MagicBar` 用 `MagicInfo.Icon`（36×36，步距 37/组间隔 5）→ 图
 里只有 GuildLeave/GuildTransferLeader 等）。
 **需要**：是否新增 `C.GuildDisband` + 服务端处理？这是**协议/持久化改动**，超出审计范围。
 
-### B-7 任务列表 legacy 渲染（`Q-2`）
+### B-7 任务列表 legacy 渲染（`Q-2`）—— **数据源已闭合；Godot 侧受协议约束（`BLOCKED-协议`）**
+
+**2026-09-30 第五轮：找到数据源（前四轮的缺口是查错了窗口基址）**
+
+- 前几轮扫描的是 `winmgr(=ROOT+0x2A548C)+0x516E8` —— 那是 winmgr 里该窗口的**槽位**；
+  **封包处理器直接用 `ebx + 0x2D8614`**（ebx = 客户端根对象），所以按 `0x516E8` 找不到数据路径。
+- 处理器在 `0x41F92B`（同一 switch 的兄弟分支见 `0x41F96C`）：
+  ```
+  lea  ecx,[esp+0x171C]        ; 栈上缓冲
+  add  esi,0x10                ; 跳过包内 16 字节
+  push 0x2800 ; push ecx ; push esi ; call 0x452810   ; 拷贝字符串
+  mov  edx,[esp+0x16] ; and edx,0xFFFF               ; 16 位条目 id
+  mov  byte [esp+eax+0x171C],0                       ; NUL 结尾
+  push edx ; push eax                                ; (id, text)
+  lea  ecx,[ebx+0x2D8614]                            ; ← 任务窗
+  call 0x44F480                                      ; AddEntry / 重建列表
+  ```
+- `0x44F480`：先释放既有节点（文本用 `0x4680F8` 释放 ✓），空文本直接返回；
+  否则 `push 0x2F`（`'/'`）**按 '/' 切分服务端字符串**后逐条追加到 `+0x648` 的列表
+  （列表节点 16B：vtable `0x476AD4/0x476AD8`、文本 `@+4`、prev `@+8`、next `@+0xC`；
+  列表对象 `@+0x648`，vtable `0x476AB8`，Add 在槽 3 = `0x44FEF0`）。`+0x64C` 是头指针，
+  全 `.text` 仅 6 处引用（2 处构造 + 窗口自身方法）→ 外部只经窗口方法写入。
+- **结论**：原版每个条目的文本 = **服务端下发的字符串**（16 位 id + 文本，'/' 分隔），
+  客户端不做本地拼装；渲染仍是已记录的扁平行（x=65、y=90+15·line、19 行、>160px 换行、
+  `0x1919C8`/`0x19197D` 交替色）。
+- **对 Godot 的影响**：要 1:1 需要同样的服务端数据；Zircon 协议是否下发等价的任务字符串
+  属**协议/数据决策**（并可能改动持久化行为）→ 按既定纪律**标 `BLOCKED-协议` 并跳过**，
+  不改渲染层（避免用本地拼装伪造 entry 文本）。
 
 原版列表行：x=65、y=90+15·line、行距 15、可见 19 行、色 `0x1919C8`/`0x19197D`
 （0x00BBGGRR → RGB(200,25,25)/RGB(125,25,25)），条目文本 >160px（`0x004475B8 cmp eax,0xa0`）
@@ -258,10 +301,43 @@ Godot legacy 仍渲染现代分组列表（x=8/18/28、金色/白色、分组标
   颜色 RGB(10,10,10)，水平居中于 `x=24`，垂直居中于 y 带 **-30..-15**（= 原版矩形换算到
   Godot 节点坐标；Godot 节点原点 == 原版 anchor，见下）。
 
+**本轮（续）已实现 —— 悬停名字 3000ms 保留**
+- `0x0040BA60`（设置悬停名字）= `0x45E200(lib 0x8AB7A8, 0x90, &HUD+0x61C8C, &HUD+0x620A0, buf)`
+  + `sprintf(HUD+0x621A4, "%[^`]%*c %[^`]%*c …", HUD+0x621A4, 0x622A8, 0x623AC, 0x624B0,
+  0x625B4, 0x626B8, 0x627BC, 0x628C0)`（8 个反引号分隔字段，缓冲步长 0x104）
+  + 结尾 `mov dword ptr [esi+0x6209C], 0` → **重置计时器**；
+- `0x0040BB00` 每帧 `[HUD+0x6209C] += 帧间隔`，`> 0xBB8 (3000)` 时
+  `memset(HUD+0x620A0, 0, 0x104)` + `memset(HUD+0x621A4, 0, 0x820)` 清名；
+- 绘制锚点：`(anchor_x-0x2C, anchor_y-0x37)` 起，文本水平居中。
+- Godot 实现：`MapObjectNode.NameHoldUntilMs` / `RefreshNameHold()` / `NameHoldActive`
+  （`PlayerRenderer` 因不继承 MapObjectNode 各存一份），
+  `RenderPrimitives.HoverNameHoldMs = 3000`；GameScene 每帧对悬停对象调 `RefreshNameHold()`，
+  节点 `_Process` 到期清标记并重绘；`ObjectRenderer.DrawName` 与 `PlayerRenderer` 的
+  名字/公会/聊天行都改用 `NameHovered || NameHoldActive`。
+
 **仍未实现（记录）**：
-- HP 条：`0x5600FC` 元素的 WIL 文件名在原版是**运行时绑定**（candidate），无法忠实实现；
-- 悬停名牌的 **3000ms 保持**（Godot 目前是即时 hover）；
-- 悬浮名字的 ProgUse 帧 2/3 底板。
+- **目标 HP 条 —— 记为 `BLOCKED`（库身份不可静态确定）**。2026-09-30 补充反汇编：
+  - `0x0040A8A0` 经 `0x4542A0`（ecx=`0x5600FC`，`type=byte[HUD+0x8D]`）取库，再 `0x466130(lib, frame)` 取帧；
+  - **帧号 = `0x2710 (10000) + (A % 0x190 (400))`**（`0x40F6D2-0x40F6E5`：
+    `A = [HUD+0x629C8]*400 − byte[HUD+0x8A]*3000 + [HUD+0xC4] − 0xAA0`，只存 `A` 到 `+0x62A20`）；
+  - 矩形 = `SetRect(anchor_x+frame.offX, anchor_y+frame.offY, …+frame.w, …+frame.h)`
+    （帧自带的 offset/size，与其它精灵同一规则）；
+  - 每类型的 9 个配置字节（`HUD+0x61BAA…61BB6`）含 RGB 与 alpha，`×0.003922f`（即 /255）
+    → **该条是可按类型染色的单通道图**；
+  - 库来自 `0x5600FC + type*0x144`（**静态数组 140 槽，按 14 一组**：
+    `0x43B770` 起始槽 = `(byte[ebx+0x124]+1)*14`，加载走 `0x4660E0(slot, 0x56B22C+idx*0x104, 1)`）；
+  - `type` 来自运行时类型库 `0x8AA5A8`（记录步长 0x30，匹配 `word[rec+0xC] == type`），
+    而 `0x5600FC`/`0x56B22C`/`0x8AA5A8` 全在 `.data` 的**零填充区**（rsize 仅 0x5000，vsize 0x49EFD4）
+    → **路径表与类型库均在运行时由服务端数据构建，二进制里没有静态文件名**；
+  - 资源侧核对：EI `Data/` 内 86 个 WIL 中 **无 ≥10400 帧的库**（`Mon-1.wil`/`MonS-1.wil` 恰为
+    10000 帧，正好卡在 10000 之前）；客户端根的 `MInfo.dat`(42152B) 是编码/压缩数据，无明文路径。
+  - **结论**：忠实实现需要运行时取得该库，当前环境（无 Windows）不可得 → `BLOCKED`。
+    下一轮可选路径：在 Windows 上抓 `0x5600FC+type*0x144` 的库指针/文件名；
+    或从服务端（Mud3 Envir）的怪物类型配置反查类型→库映射。
+- **悬浮名字底板（`0x0040B750`）**：反汇编显示它用选择器 `0x566DD4` 逐帧取
+  `0x466130(sel, 2)` / `0x466130(sel, 3)`，命中则用 `0x45FD50` 画在
+  `(anchor_x+7, anchor_y-0x38)`；两帧实际尺寸为 **32×4**（WIL 头 offsetX=-24/-24, offsetY=-16），
+  即很小的横条，与「名字底板」不符 → **语义仍不确定，标 `LIKELY`，暂不实现**（避免猜测性硬编码）。
 
 **锚点推导（2026-09-30，已可直接落地）**
 - 原版 box：`left = anchor_x + (48-w)/2`、`right = anchor_x + (w+48)/2`、
