@@ -29,11 +29,34 @@
   "背包 46 槽与 bag-tooltip-verification-evidence.json 的 F293 证据一致（本次二进制直接确认）",
   "0xB4 步长数组 = 窗口的子控件表（每个窗口构造里都有，非物品槽）",
   "id1 的 11 槽数组与 Mir3 装备槽数量吻合（11），但**尚未**把 id1 与「人物状态窗」身份绑定（背景帧号未在 ctor 内出现）",
-  "Godot 侧 CharacterDialog 建 17 槽（EquipmentSlot 0..16，跳过钓鱼 17..21），来自 Zircon 数据模型 EquipmentSize=22"
+  "Godot 侧 CharacterDialog 建 17 槽（EquipmentSlot 0..16，跳过钓鱼 17..21），来自 Zircon 数据模型 EquipmentSize=22",
+  "id2/id3 的身份由 trade-window-render-evidence.json 的 prector/ctor_va 反查确认；交易窗「可视 30 格/侧 vs 24 条记录数组」是数据层细节，不影响矩阵 §3 的 5x6 结论（MATCH）"
  ],
  "open_question": null,
  "resolution_2026_10_01": {
   "question": "id1 的 11 槽数组是否就是人物状态窗的装备槽？",
   "answer": "是（MATCH）。矩阵 §3 第 1 行给出 EI 权威值「F200；8 个 38×38 装备格 + 3 非方格区 = 11 记录」；Godot CharacterDialog.AuditLegacyEiLayout 的 expectedSlots 恰为 11 项（Weapon/Armour/Necklace 为非 38×38 区），并要求 visibleSlots == 11 且位置/尺寸与 EI 一致。创建的 17 个 cell 只是池子。原 B-10 的 LIKELY_DIFFERENCE 作废。"
+ },
+ "id_identity_binding_2026_10_01": {
+  "id0": {
+   "offset": "0x6554",
+   "window": "背包",
+   "evidence": "46 x 0xC2C @+0x774 与 bag-tooltip-evidence/F293 一致"
+  },
+  "id1": {
+   "offset": "0x29CE4",
+   "window": "人物状态",
+   "evidence": "11 x 0xC24；与矩阵 §3「8 个 38x38 格 + 3 非方格区 = 11 记录」及 CharacterDialog.visibleSlots=11 吻合"
+  },
+  "id2": {
+   "offset": "0x33188",
+   "window": "商店/仓库",
+   "evidence": "ctor 0x44CFC0：8 x 0xB4 列表项 + +0x648/0x64C 列表对象（vtable 0x476AB8）"
+  },
+  "id3": {
+   "offset": "0x3399C",
+   "window": "交易",
+   "evidence": "trade-window-render-evidence.json 记 prector 0x415650；该 ctor 建 24 x 0xC2C（= +0x5B8 的 24 条记录数组，与「24 slot records at +0x5B8 stride 0xC2C」一致）；可视网格仍是每侧 5 列 x 6 行"
+  }
  }
 }
