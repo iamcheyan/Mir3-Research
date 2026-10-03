@@ -210,10 +210,30 @@ mov  [esi+0x58], eax    ; 背包滚动字段 = round/截断(gauge 位置 × 94)
 2. legacy 下 `B`/Ctrl+B → toggle `_magicBar`（大地图仍可由小地图按钮打开）；
 3. legacy 下 `_magicBar` **默认隐藏**（对应 flag 初值 0），由 cap2/B 显示。
 
-**残余（记录）**：EI 用 MIcon 帧 `999+槽ID`（64×64 缩放 ≈0.588，步距 40/分组间隔 40），
-Godot `MagicBar` 用 `MagicInfo.Icon`（36×36，步距 37/组间隔 5）→ 图标**帧号空间与尺寸不同**
-（同 Inventory 的情况：现代 MIcon.Zl 是 1773 帧的重编码库，EI 是 1106 帧/138 非空）。
-逐图标像素一致需 EI 的槽→图标映射证据，未闭合。
+**残余（2026-10-03 已闭合）**：EI 用 MIcon 帧 `999+技能ID`（64×64 画布 / 40×40 内容），
+Godot `MagicBar` 原来用 `MagicInfo.Icon`（40×40 书页帧）+ GameInter2 现代边框 →
+图标**帧号空间与尺寸不同**。本轮把三段证据补齐：
+1. **`0x466800` 不是缩放矩阵**：它 `rep stosd` 清零 `0x44`(68) 字节后只写 8 个 float
+   （`[0]=[4]=[0x10]=[0x14]=arg2`、`[8]=[0x18]=arg3`、`[0xC]=[0x1C]=arg4`），
+   68 字节 = **D3DMATERIAL9**（4×D3DCOLORVALUE 16B + Power 4B），且该指针最终进
+   `0x4542F0` 的 `[surface+0x40](this, material)`。同一槽位在 `0x402DC9` 被用于
+   **纯色矩形填充** → 是颜色/alpha，不是缩放。
+   数值也自洽：`0x3EC8C8C9=100/255`、`0x3F169697=150/255`、`0x3F48C8C9=200/255`。
+2. **帧按原生尺寸 1:1 绘制**：MIcon 64×64 帧的实心内容只有左上 **40×40**
+   （alpha bbox 实测 45/46 帧 = `(0,0,40,40)`），与 `0x28`(40) 步距**正好对齐**；
+   原先「0.588 缩放 → 37.6px」与 40px 步距自相矛盾。
+3. **EI 技能ID ↔ Zircon `MagicInfo.Icon`**：技能书帧 = `2*ID-2`，即 `Icon` 本身就是
+   EI 书页帧号 → `ID = Icon/2 + 1`，技能条帧 = `999 + ID = 1000 + Icon/2`。
+   逐条名称交叉验证全部一致：Swordsmanship↔#3 基本剑术、Slaying↔#7 攻杀剑术、
+   Thrusting↔#12 刺杀剑术、HalfMoon↔#25 半月弯刀、FlamingSword↔#26 烈火剑法、
+   ShoulderDash↔#27 野蛮冲撞、DragonRise↔#35 翔空剑法、FireBall↔#1 火球术 …；
+   `Magic.exp` 的 50 条 ID 与 MIcon 帧 1000..1105 一一对应
+   （EI 无 28 号技能 ⇔ MIcon 无 1027 帧）。
+4. **空槽底板 = `GameInter.wil` 帧 20..31**：12 帧 64×64（内容 40×40），画面里已烘焙
+   `F1`..`F12` 字样；`LegacyEI/Data/*.wil` 全库只有 GameInter 满足「20 起连续 12 帧 64×64」。
+   `0x42A9A4` 的 `edi+esi` = `0x14+i` 即帧 `20+i`，取不到时（`0x42A8C3`）同样退回该底板。
+
+Godot 实现：`GodotClient/Controls/MagicBar.cs::DrawLegacyEi`（仅 legacy 模式）。
 
 ### B-6 行会解散（`G-1`）
 

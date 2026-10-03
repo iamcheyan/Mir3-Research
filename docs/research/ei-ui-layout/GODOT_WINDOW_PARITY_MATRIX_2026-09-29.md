@@ -290,6 +290,31 @@ Godot 差异：cap2 打开技能书（与 cap8 重复）、B 打开大地图、�
 **真机验证**：默认无技能条 → 按 B 出现 12 槽 → 再按 B 隐藏
 （`docs/evidence/godot-runtime-acceptance-2026-09-30/07-skillbar-toggle-by-B.png`）。
 
+**2026-10-03 渲染对齐（`684a6e67` 只修了 toggle，外观仍是 Zircon）**：
+此前 legacy 下的技能条仍画 `DXWindow` 底框 + `GameInter2` 学派边框 + 自绘 `1..12`
+编号 + 栏组上下按钮（`GameInter2` 在 `LegacyEI/Data` 里根本不存在 → `MirSkin`
+回退到现代 `GameInter2.Zl`，即「技能栏用的是 Zircon 的 UI」）。
+本轮按 `0x42A850` 重写 legacy 绘制（`GodotClient/Controls/MagicBar.cs::DrawLegacyEi`）：
+
+| 项 | EI 原版 | Godot legacy 现状 |
+|---|---|---|
+| 空槽 | `GameInter.wil` 帧 `20+i`（画面自带 `F1`..`F12`） | 同 |
+| 有绑定 | `MIcon.wil` 帧 `999+技能ID` = `1000 + MagicInfo.Icon/2` | 同 |
+| 步距 | `0x28`(40)，索引 4/8 前各额外 +40 | 同（560×40） |
+| 尺寸 | 帧内容 40×40，1:1 原生尺寸 | 同 |
+| 窗口底框 / 编号 / 冷却数字 / 栏组按钮 | 无 | 无（栏组仍由 Ctrl+F1..F4 切） |
+
+**更正上文「缩放 `0x3F169697≈0.588`」**：该常量是 `0x466800` 写入的 **D3DMATERIAL9**
+颜色/alpha（150/255；有绑定槽位用 100/255），不是缩放 —— 依据：结构体 68 字节
+= D3DMATERIAL9，且同一槽位在 `0x402DC9` 用于纯色矩形填充。帧因此按 40×40 内容
+1:1 绘制，与 40px 步距自洽。技能ID 映射与逐条名称交叉验证见
+[`GODOT_UI_OPEN_DECISIONS_2026-09-29.md`](GODOT_UI_OPEN_DECISIONS_2026-09-29.md) §B-5。
+
+**真机验证（2026-10-03）**：800×600 legacy 登录 `TestHero` → 按 `B` 出栏
+（1/2/3 与 11/12 为金色技能图标，其余为 `F4`..`F10` 底板，4/8 前有分组空隙）→
+点第 1 格发出 `[Magic] 发包 Fire Ball Magic=FireBall Set=1 Slot=1` + `ObjectMagic`。
+`--ui-audit` 在 legacy 与 `--zircon-ui` 两种模式下均 `PASS`。
+
 ### 6.6 交易 close 热区改为「只播音不关窗」（`131a3514`）
 
 原版 F1050 的 close 热区行为是「命中 → 播音 + 消费点击，窗口保持打开」
