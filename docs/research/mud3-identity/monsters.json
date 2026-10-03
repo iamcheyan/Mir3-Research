@@ -1,0 +1,6467 @@
+{
+  "kind": "monster",
+  "generated_at": "2026-10-03",
+  "sources": [
+    "/home/tetsuya/development/Mir3-Research/docs/research/mud3-dat-decoded/monster.json (records[].Name = GBK 官方中文名; 433 条)",
+    "/tmp/sysdb_probe.json/MonsterInfo.json (SystemDbProbe --json, 当前双库快照; 434 行)",
+    "/home/tetsuya/development/Mir3-Research/Tools/NpcMover/website_alignment.py (WEBSITE_MONSTER_TO_INDEXES / WEBSITE_RESOURCE_ALIASES, 仅候选)",
+    "Mir3-Research/docs/research/ei-ui-layout/artifacts/npc-monster-alignment-2026-09-25/monster_identity_manifest.json (既有已审锚点 41 条)",
+    "Mir3-Research/docs/research/mud3-dat-decoded/build_comparison.py (MONSTER_MAP 起点)",
+    "Mir3-Research/docs/terminology/08-怪物.md (仅作候选语境, 非主证据)"
+  ],
+  "entries": [
+    {
+      "mud3_index": 8,
+      "mud3_name": "赤月恶魔",
+      "kind": "monster",
+      "zircon_index": 75,
+      "zircon_en": "Red Moon The Fallen",
+      "confidence": "closed",
+      "evidence": "已审锚点 Red Moon The Fallen（manifest verified-alias）"
+    },
+    {
+      "mud3_index": 9,
+      "mud3_name": "火焰狮子",
+      "kind": "monster",
+      "zircon_index": 448,
+      "zircon_en": "Flame Lion",
+      "confidence": "closed",
+      "evidence": "已审锚点 Flame Lion（manifest high）"
+    },
+    {
+      "mud3_index": 12,
+      "mud3_name": "祖玛教主",
+      "kind": "monster",
+      "zircon_index": 81,
+      "zircon_en": "Zuma King",
+      "confidence": "closed",
+      "evidence": "强制锚点 Zuma King（README 不得违反）"
+    },
+    {
+      "mud3_index": 13,
+      "mud3_name": "蝎蛇",
+      "kind": "monster",
+      "zircon_index": 126,
+      "zircon_en": "Claw Serpent",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 30=30"
+    },
+    {
+      "mud3_index": 17,
+      "mud3_name": "食人花",
+      "kind": "monster",
+      "zircon_index": 17,
+      "zircon_en": "Carnivorous Plant",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 10=10；HP 21=21"
+    },
+    {
+      "mud3_index": 23,
+      "mud3_name": "霸王教主",
+      "kind": "monster",
+      "zircon_index": 115,
+      "zircon_en": "Emperor Sa'Woo",
+      "confidence": "closed",
+      "evidence": "已审锚点 Emperor Sa'Woo（manifest verified, 老版 20000→21000 最近）"
+    },
+    {
+      "mud3_index": 28,
+      "mud3_name": "半兽人",
+      "kind": "monster",
+      "zircon_index": 22,
+      "zircon_en": "Oma",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 13=13；强制锚点 Oma（README 不得违反）"
+    },
+    {
+      "mud3_index": 35,
+      "mud3_name": "半兽战士",
+      "kind": "monster",
+      "zircon_index": 18,
+      "zircon_en": "Oma Warrior",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 13=13；HP 50=50"
+    },
+    {
+      "mud3_index": 56,
+      "mud3_name": "触角神魔",
+      "kind": "monster",
+      "zircon_index": 421,
+      "zircon_en": "Otherworld Tentacle Demon",
+      "confidence": "closed",
+      "evidence": "已审锚点 Otherworld Tentacle Demon（manifest medium, 异界触手族）"
+    },
+    {
+      "mud3_index": 61,
+      "mud3_name": "大法老",
+      "kind": "monster",
+      "zircon_index": 399,
+      "zircon_en": "Great Pharaoh",
+      "confidence": "closed",
+      "evidence": "已审锚点 Great Pharaoh（manifest high, 名=Great Pharaoh）"
+    },
+    {
+      "mud3_index": 62,
+      "mud3_name": "大老鼠",
+      "kind": "monster",
+      "zircon_index": 79,
+      "zircon_en": "Vicious Rat",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 45=45"
+    },
+    {
+      "mud3_index": 65,
+      "mud3_name": "稻草人",
+      "kind": "monster",
+      "zircon_index": 21,
+      "zircon_en": "Scarecrow",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 10=10"
+    },
+    {
+      "mud3_index": 67,
+      "mud3_name": "地牢女神1",
+      "kind": "monster",
+      "zircon_index": 395,
+      "zircon_en": "Dungeon Goddess 1",
+      "confidence": "closed",
+      "evidence": "已审锚点 Dungeon Goddess 1（manifest high）"
+    },
+    {
+      "mud3_index": 69,
+      "mud3_name": "地牢女神2",
+      "kind": "monster",
+      "zircon_index": 396,
+      "zircon_en": "Dungeon Goddess 2",
+      "confidence": "closed",
+      "evidence": "已审锚点 Dungeon Goddess 2（manifest high）"
+    },
+    {
+      "mud3_index": 73,
+      "mud3_name": "洞蛆",
+      "kind": "monster",
+      "zircon_index": 31,
+      "zircon_en": "Cave Maggot",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 20=20"
+    },
+    {
+      "mud3_index": 75,
+      "mud3_name": "毒蜘蛛",
+      "kind": "monster",
+      "zircon_index": 20,
+      "zircon_en": "Spitting Spider",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 10=10；HP 22=22"
+    },
+    {
+      "mud3_index": 80,
+      "mud3_name": "多钩猫",
+      "kind": "monster",
+      "zircon_index": 13,
+      "zircon_en": "Claw Cat",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 10=10；HP 20=20"
+    },
+    {
+      "mud3_index": 97,
+      "mud3_name": "骨鬼将",
+      "kind": "monster",
+      "zircon_index": 404,
+      "zircon_en": "Corpse Bone Spirit",
+      "confidence": "closed",
+      "evidence": "已审锚点 Corpse Bone Spirit（manifest high）"
+    },
+    {
+      "mud3_index": 106,
+      "mud3_name": "黑野猪",
+      "kind": "monster",
+      "zircon_index": 127,
+      "zircon_en": "Black Boar",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 30=30；已审锚点 Black Boar（manifest high）"
+    },
+    {
+      "mud3_index": 111,
+      "mud3_name": "红野猪",
+      "kind": "monster",
+      "zircon_index": 125,
+      "zircon_en": "Red Boar",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 30=30；已审锚点 Red Boar（manifest high）"
+    },
+    {
+      "mud3_index": 117,
+      "mud3_name": "虎蛇",
+      "kind": "monster",
+      "zircon_index": 19,
+      "zircon_en": "Tiger Snake",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 15=15；HP 70=70"
+    },
+    {
+      "mud3_index": 132,
+      "mud3_name": "鸡",
+      "kind": "monster",
+      "zircon_index": 8,
+      "zircon_en": "Chicken",
+      "confidence": "closed",
+      "evidence": "已审锚点 Chicken（manifest high）"
+    },
+    {
+      "mud3_index": 150,
+      "mud3_name": "角蝇",
+      "kind": "monster",
+      "zircon_index": 472,
+      "zircon_en": "Fly",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 30=30；已审锚点 Fly（manifest high）"
+    },
+    {
+      "mud3_index": 159,
+      "mud3_name": "骷髅",
+      "kind": "monster",
+      "zircon_index": 27,
+      "zircon_en": "Skeleton",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 18=18；HP 100=100"
+    },
+    {
+      "mud3_index": 165,
+      "mud3_name": "骷髅教主",
+      "kind": "monster",
+      "zircon_index": 121,
+      "zircon_en": "Arch Lich Taedu",
+      "confidence": "closed",
+      "evidence": "已审锚点 Arch Lich Taedu（manifest medium, 老版 10000→15000）"
+    },
+    {
+      "mud3_index": 176,
+      "mud3_name": "骷髅战将",
+      "kind": "monster",
+      "zircon_index": 26,
+      "zircon_en": "Skeleton Axeman",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 18=18"
+    },
+    {
+      "mud3_index": 180,
+      "mud3_name": "骷髅战士",
+      "kind": "monster",
+      "zircon_index": 29,
+      "zircon_en": "Skeleton Warrior",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 18=18"
+    },
+    {
+      "mud3_index": 183,
+      "mud3_name": "盔甲虫",
+      "kind": "monster",
+      "zircon_index": 43,
+      "zircon_en": "Beetle",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 13=13"
+    },
+    {
+      "mud3_index": 198,
+      "mud3_name": "掷斧骷髅",
+      "kind": "monster",
+      "zircon_index": 28,
+      "zircon_en": "Skeleton Axe Thrower",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 18=18；HP 100=100"
+    },
+    {
+      "mud3_index": 202,
+      "mud3_name": "猪",
+      "kind": "monster",
+      "zircon_index": 9,
+      "zircon_en": "Pig",
+      "confidence": "closed",
+      "evidence": "已审锚点 Pig（manifest high；Zircon 另有 Lv0 宠物版 189）"
+    },
+    {
+      "mud3_index": 209,
+      "mud3_name": "祖玛卫士",
+      "kind": "monster",
+      "zircon_index": 78,
+      "zircon_en": "Zuma Guardian",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 45=45"
+    },
+    {
+      "mud3_index": 216,
+      "mud3_name": "巨象兽",
+      "kind": "monster",
+      "zircon_index": 85,
+      "zircon_en": "Evil Elephant",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 47=47"
+    },
+    {
+      "mud3_index": 219,
+      "mud3_name": "火焰沃玛",
+      "kind": "monster",
+      "zircon_index": 63,
+      "zircon_en": "Uma Flame Thrower",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 25=25"
+    },
+    {
+      "mud3_index": 222,
+      "mud3_name": "狼",
+      "kind": "monster",
+      "zircon_index": 14,
+      "zircon_en": "Wolf",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 15=15；HP 60=60"
+    },
+    {
+      "mud3_index": 229,
+      "mud3_name": "栗子树",
+      "kind": "monster",
+      "zircon_index": 16,
+      "zircon_en": "Chestnut Tree",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 10=10"
+    },
+    {
+      "mud3_index": 277,
+      "mud3_name": "诺玛斧兵",
+      "kind": "monster",
+      "zircon_index": 89,
+      "zircon_en": "Numa Grunt",
+      "confidence": "closed",
+      "evidence": "已审锚点 Numa Grunt（manifest medium）"
+    },
+    {
+      "mud3_index": 284,
+      "mud3_name": "诺玛抛石兵",
+      "kind": "monster",
+      "zircon_index": 163,
+      "zircon_en": "Numa Stone Thrower",
+      "confidence": "closed",
+      "evidence": "已审锚点 Numa Stone Thrower（manifest high）"
+    },
+    {
+      "mud3_index": 287,
+      "mud3_name": "诺玛突击队长",
+      "kind": "monster",
+      "zircon_index": 166,
+      "zircon_en": "Numa Assault Captain",
+      "confidence": "closed",
+      "evidence": "已审锚点 Numa Assault Captain（manifest high；与 286 同候选取此条）"
+    },
+    {
+      "mud3_index": 290,
+      "mud3_name": "诺玛装甲兵",
+      "kind": "monster",
+      "zircon_index": 165,
+      "zircon_en": "Numa Armored Soldier",
+      "confidence": "closed",
+      "evidence": "已审锚点 Numa Armored Soldier（manifest high）"
+    },
+    {
+      "mud3_index": 299,
+      "mud3_name": "潘夜牛魔王",
+      "kind": "monster",
+      "zircon_index": 113,
+      "zircon_en": "Flame Minotaur",
+      "confidence": "closed",
+      "evidence": "已审锚点 Flame Minotaur（manifest verified, 潘夜系）"
+    },
+    {
+      "mud3_index": 304,
+      "mud3_name": "潘夜战士",
+      "kind": "monster",
+      "zircon_index": 186,
+      "zircon_en": "Banyo Warrior",
+      "confidence": "closed",
+      "evidence": "已审锚点 Banyo Warrior（manifest high）"
+    },
+    {
+      "mud3_index": 315,
+      "mud3_name": "森林雪人",
+      "kind": "monster",
+      "zircon_index": 15,
+      "zircon_en": "Forest Yeti",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 13=13；HP 40=40"
+    },
+    {
+      "mud3_index": 323,
+      "mud3_name": "沙鬼",
+      "kind": "monster",
+      "zircon_index": 93,
+      "zircon_en": "Stone Golem",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 35=35"
+    },
+    {
+      "mud3_index": 331,
+      "mud3_name": "沙漠树魔",
+      "kind": "monster",
+      "zircon_index": 95,
+      "zircon_en": "Cursed Cactus",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 35=35"
+    },
+    {
+      "mud3_index": 339,
+      "mud3_name": "山洞蝙蝠",
+      "kind": "monster",
+      "zircon_index": 24,
+      "zircon_en": "Cave Bat",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 18=18；HP 90=90"
+    },
+    {
+      "mud3_index": 350,
+      "mud3_name": "石像狮子",
+      "kind": "monster",
+      "zircon_index": 484,
+      "zircon_en": "Stone Lion",
+      "confidence": "closed",
+      "evidence": "已审锚点 Stone Lion（manifest high）"
+    },
+    {
+      "mud3_index": 370,
+      "mud3_name": "沃玛教主",
+      "kind": "monster",
+      "zircon_index": 65,
+      "zircon_en": "Uma King",
+      "confidence": "closed",
+      "evidence": "强制锚点 Uma King（README 不得违反）"
+    },
+    {
+      "mud3_index": 388,
+      "mud3_name": "楔蛾",
+      "kind": "monster",
+      "zircon_index": 124,
+      "zircon_en": "Wedge Moth",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 30=30；已审锚点 Wedge Moth（manifest high；Level 30 同）"
+    },
+    {
+      "mud3_index": 391,
+      "mud3_name": "蝎子",
+      "kind": "monster",
+      "zircon_index": 25,
+      "zircon_en": "Scorpion",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 18=18；HP 95=95"
+    },
+    {
+      "mud3_index": 402,
+      "mud3_name": "羊",
+      "kind": "monster",
+      "zircon_index": 12,
+      "zircon_en": "Sheep",
+      "confidence": "closed",
+      "evidence": "已审锚点 Sheep（manifest high；Zircon 另有 Lv0 宠物版 195）"
+    },
+    {
+      "mud3_index": 405,
+      "mud3_name": "祖玛弓箭手",
+      "kind": "monster",
+      "zircon_index": 76,
+      "zircon_en": "Zuma Sharpshooter",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 45=45"
+    },
+    {
+      "mud3_index": 408,
+      "mud3_name": "牛",
+      "kind": "monster",
+      "zircon_index": 11,
+      "zircon_en": "Cow",
+      "confidence": "closed",
+      "evidence": "已审锚点 Cow（manifest high）"
+    },
+    {
+      "mud3_index": 420,
+      "mud3_name": "冰宫射手",
+      "kind": "monster",
+      "zircon_index": 374,
+      "zircon_en": "Ice Palace Archer",
+      "confidence": "closed",
+      "evidence": "已审锚点 Ice Palace Archer（manifest high，名一一对应）"
+    },
+    {
+      "mud3_index": 421,
+      "mud3_name": "冰城帝王",
+      "kind": "monster",
+      "zircon_index": 372,
+      "zircon_en": "Ice City Emperor",
+      "confidence": "closed",
+      "evidence": "已审锚点 Ice City Emperor（manifest high）"
+    },
+    {
+      "mud3_index": 422,
+      "mud3_name": "冰宫巫师",
+      "kind": "monster",
+      "zircon_index": 375,
+      "zircon_en": "Ice Palace Wizard",
+      "confidence": "closed",
+      "evidence": "已审锚点 Ice Palace Wizard（manifest high）"
+    },
+    {
+      "mud3_index": 423,
+      "mud3_name": "冰原勇士",
+      "kind": "monster",
+      "zircon_index": 485,
+      "zircon_en": "Ice Plain Warrior",
+      "confidence": "closed",
+      "evidence": "已审锚点 Ice Plain Warrior（manifest high）"
+    },
+    {
+      "mud3_index": 424,
+      "mud3_name": "冰宫骑士",
+      "kind": "monster",
+      "zircon_index": 377,
+      "zircon_en": "Ice Palace Knight",
+      "confidence": "closed",
+      "evidence": "数值锚点：Level 80=80；已审锚点 Ice Palace Knight（manifest high）"
+    },
+    {
+      "mud3_index": 425,
+      "mud3_name": "冰原狼王",
+      "kind": "monster",
+      "zircon_index": 369,
+      "zircon_en": "Ice Plain Wolf King",
+      "confidence": "closed",
+      "evidence": "已审锚点 Ice Plain Wolf King（manifest high）"
+    },
+    {
+      "mud3_index": 426,
+      "mud3_name": "冰原雪狼",
+      "kind": "monster",
+      "zircon_index": 371,
+      "zircon_en": "Ice Plain Snow Wolf",
+      "confidence": "closed",
+      "evidence": "已审锚点 Ice Plain Snow Wolf（manifest high）"
+    },
+    {
+      "mud3_index": 427,
+      "mud3_name": "冰原战士",
+      "kind": "monster",
+      "zircon_index": 486,
+      "zircon_en": "Ice Plain Soldier",
+      "confidence": "closed",
+      "evidence": "已审锚点 Ice Plain Soldier（manifest high）"
+    },
+    {
+      "mud3_index": 428,
+      "mud3_name": "冰宫法师",
+      "kind": "monster",
+      "zircon_index": 376,
+      "zircon_en": "Ice Palace Mage",
+      "confidence": "closed",
+      "evidence": "已审锚点 Ice Palace Mage（manifest high）"
+    },
+    {
+      "mud3_index": 429,
+      "mud3_name": "冰宫守卫",
+      "kind": "monster",
+      "zircon_index": 373,
+      "zircon_en": "Ice Palace Guard",
+      "confidence": "closed",
+      "evidence": "已审锚点 Ice Palace Guard（manifest high）"
+    },
+    {
+      "mud3_index": 430,
+      "mud3_name": "冰原豪猪",
+      "kind": "monster",
+      "zircon_index": 370,
+      "zircon_en": "Ice Plain Boar",
+      "confidence": "closed",
+      "evidence": "已审锚点 Ice Plain Boar（manifest high）"
+    },
+    {
+      "mud3_index": 431,
+      "mud3_name": "寒冰守护神",
+      "kind": "monster",
+      "zircon_index": 403,
+      "zircon_en": "Frost Guardian God",
+      "confidence": "closed",
+      "evidence": "已审锚点 Frost Guardian God（manifest high）"
+    },
+    {
+      "mud3_index": 15,
+      "mud3_name": "潘夜云魔",
+      "kind": "monster",
+      "zircon_index": 252,
+      "zircon_en": "Sama Wind Guardian",
+      "confidence": "pending",
+      "evidence": "资源图别名 SamaWindGuardian→Image 反查（仅候选）；候选 [252]（未定案，禁止据此写库）；当前列首位 Sama Wind Guardian(252)"
+    },
+    {
+      "mud3_index": 18,
+      "mud3_name": "暗黑战士",
+      "kind": "monster",
+      "zircon_index": 62,
+      "zircon_en": "Uma Infidel",
+      "confidence": "pending",
+      "evidence": "website alignment 候选（仅候选）；候选 [62]（未定案，禁止据此写库）；当前列首位 Uma Infidel(62)"
+    },
+    {
+      "mud3_index": 21,
+      "mud3_name": "八脚首领",
+      "kind": "monster",
+      "zircon_index": 73,
+      "zircon_en": "Arachnid Broodmother",
+      "confidence": "pending",
+      "evidence": "蛛形首领（Arachnid Broodmother 73）；候选 [73, 67]（未定案，禁止据此写库）；当前列首位 Arachnid Broodmother(73)"
+    },
+    {
+      "mud3_index": 24,
+      "mud3_name": "霸王守卫",
+      "kind": "monster",
+      "zircon_index": 147,
+      "zircon_en": "Infernal Soldier",
+      "confidence": "pending",
+      "evidence": "资源图别名 InfernalSoldier→Image 反查（仅候选）；候选 [147, 400, 416, 417]（未定案，禁止据此写库）；当前列首位 Infernal Soldier(147)"
+    },
+    {
+      "mud3_index": 27,
+      "mud3_name": "白野猪",
+      "kind": "monster",
+      "zircon_index": 128,
+      "zircon_en": "Tusk Lord",
+      "confidence": "pending",
+      "evidence": "石墓 Boss 系（Tusk Lord 128，资源图候选；Wild Boar 176 备选）；候选 [128, 176]（未定案，禁止据此写库）；当前列首位 Tusk Lord(128)"
+    },
+    {
+      "mud3_index": 32,
+      "mud3_name": "半兽勇士",
+      "kind": "monster",
+      "zircon_index": 23,
+      "zircon_en": "Oma Hero",
+      "confidence": "pending",
+      "evidence": "website alignment 候选（仅候选）；候选 [23]（未定案，禁止据此写库）；当前列首位 Oma Hero(23)"
+    },
+    {
+      "mud3_index": 43,
+      "mud3_name": "爆毒蚂蚁",
+      "kind": "monster",
+      "zircon_index": 40,
+      "zircon_en": "Ant Needler",
+      "confidence": "pending",
+      "evidence": "资源图别名 AntNeedler→Image 反查（仅候选）；候选 [40]（未定案，禁止据此写库）；当前列首位 Ant Needler(40)"
+    },
+    {
+      "mud3_index": 45,
+      "mud3_name": "爆毒神魔",
+      "kind": "monster",
+      "zircon_index": 412,
+      "zircon_en": "Otherworld Poison Demon",
+      "confidence": "pending",
+      "evidence": "website alignment 候选（仅候选）；候选 [412]（未定案，禁止据此写库）；当前列首位 Otherworld Poison Demon(412)"
+    },
+    {
+      "mud3_index": 48,
+      "mud3_name": "变异骷髅",
+      "kind": "monster",
+      "zircon_index": 30,
+      "zircon_en": "Skeleton Lord",
+      "confidence": "pending",
+      "evidence": "骷髅系强化（Skeleton Lord 30）；候选 [30, 120]（未定案，禁止据此写库）；当前列首位 Skeleton Lord(30)"
+    },
+    {
+      "mud3_index": 49,
+      "mud3_name": "不死雄狮",
+      "kind": "monster",
+      "zircon_index": 176,
+      "zircon_en": "Wild Boar",
+      "confidence": "pending",
+      "evidence": "狮子/野猪系，无唯一候选（Wild Boar 176）；候选 [176, 128]（未定案，禁止据此写库）；当前列首位 Wild Boar(176)"
+    },
+    {
+      "mud3_index": 52,
+      "mud3_name": "赤黄猪王",
+      "kind": "monster",
+      "zircon_index": 394,
+      "zircon_en": "Fierce Black Boar",
+      "confidence": "pending",
+      "evidence": "资源图别名 BlackBoar→Image 反查（仅候选）；候选 [127, 394]（未定案，禁止据此写库）；当前列首位 Fierce Black Boar(394)"
+    },
+    {
+      "mud3_index": 53,
+      "mud3_name": "赤血恶魔",
+      "kind": "monster",
+      "zircon_index": 70,
+      "zircon_en": "Red Moon Protector",
+      "confidence": "pending",
+      "evidence": "赤月系护卫（Red Moon Protector 70）；候选 [70, 69]（未定案，禁止据此写库）；当前列首位 Red Moon Protector(70)"
+    },
+    {
+      "mud3_index": 57,
+      "mud3_name": "触龙神",
+      "kind": "monster",
+      "zircon_index": 183,
+      "zircon_en": "Millipede",
+      "confidence": "pending",
+      "evidence": "资源图别名 Centipede→Image 反查（仅候选）；候选 [51, 183, 381]（未定案，禁止据此写库）；当前列首位 Millipede(183)"
+    },
+    {
+      "mud3_index": 58,
+      "mud3_name": "雌诺玛",
+      "kind": "monster",
+      "zircon_index": 91,
+      "zircon_en": "Numa Elite",
+      "confidence": "pending",
+      "evidence": "诺玛系（Numa Elite 91）；候选 [91, 90]（未定案，禁止据此写库）；当前列首位 Numa Elite(91)"
+    },
+    {
+      "mud3_index": 64,
+      "mud3_name": "单腿诺玛",
+      "kind": "monster",
+      "zircon_index": 90,
+      "zircon_en": "Numa Mage",
+      "confidence": "pending",
+      "evidence": "诺玛系（Numa Elite 91）；候选 [91, 90]（未定案，禁止据此写库）；当前列首位 Numa Mage(90)"
+    },
+    {
+      "mud3_index": 78,
+      "mud3_name": "独眼蜘蛛",
+      "kind": "monster",
+      "zircon_index": 66,
+      "zircon_en": "Spider Bat",
+      "confidence": "pending",
+      "evidence": "资源图别名 SpiderBat→Image 反查（仅候选）；候选 [66]（未定案，禁止据此写库）；当前列首位 Spider Bat(66)"
+    },
+    {
+      "mud3_index": 82,
+      "mud3_name": "多角虫",
+      "kind": "monster",
+      "zircon_index": 44,
+      "zircon_en": "Corpse Devourer",
+      "confidence": "pending",
+      "evidence": "资源图别名 ShellNipper→Image 反查（仅候选）；候选 [44]（未定案，禁止据此写库）；当前列首位 Corpse Devourer(44)"
+    },
+    {
+      "mud3_index": 88,
+      "mud3_name": "恶形鬼",
+      "kind": "monster",
+      "zircon_index": 105,
+      "zircon_en": "Death Lord Jichon",
+      "confidence": "pending",
+      "evidence": "鬼系 Boss（Death Lord Jichon 105，仅猜测）；候选 [105]（未定案，禁止据此写库）；当前列首位 Death Lord Jichon(105)"
+    },
+    {
+      "mud3_index": 89,
+      "mud3_name": "粪虫",
+      "kind": "monster",
+      "zircon_index": 61,
+      "zircon_en": "Spined Dark Lizard",
+      "confidence": "pending",
+      "evidence": "website alignment 候选（仅候选）；候选 [61]（未定案，禁止据此写库）；当前列首位 Spined Dark Lizard(61)"
+    },
+    {
+      "mud3_index": 90,
+      "mud3_name": "疯狂魔神盗",
+      "kind": "monster",
+      "zircon_index": 245,
+      "zircon_en": "Sama Cursed Bladesman",
+      "confidence": "pending",
+      "evidence": "萨玛系刀客（Sama Cursed Bladesman 245）；候选 [245, 246]（未定案，禁止据此写库）；当前列首位 Sama Cursed Bladesman(245)"
+    },
+    {
+      "mud3_index": 91,
+      "mud3_name": "腐蚀人鬼",
+      "kind": "monster",
+      "zircon_index": 185,
+      "zircon_en": "Banyo Soldier",
+      "confidence": "pending",
+      "evidence": "资源图别名 RottingGhoul→Image 反查（仅候选）；候选 [57, 185]（未定案，禁止据此写库）；当前列首位 Banyo Soldier(185)"
+    },
+    {
+      "mud3_index": 98,
+      "mud3_name": "海神将领",
+      "kind": "monster",
+      "zircon_index": 409,
+      "zircon_en": "Otherworld Sea General",
+      "confidence": "pending",
+      "evidence": "website alignment 候选（仅候选）；候选 [409]（未定案，禁止据此写库）；当前列首位 Otherworld Sea General(409)"
+    },
+    {
+      "mud3_index": 100,
+      "mud3_name": "黑角蜘蛛",
+      "kind": "monster",
+      "zircon_index": 72,
+      "zircon_en": "Dark Arachnid",
+      "confidence": "pending",
+      "evidence": "资源图别名 DarkArachnid→Image 反查（仅候选）；候选 [72, 73]（未定案，禁止据此写库）；当前列首位 Dark Arachnid(72)"
+    },
+    {
+      "mud3_index": 103,
+      "mud3_name": "黑色恶蛆",
+      "kind": "monster",
+      "zircon_index": 53,
+      "zircon_en": "Mutant Maggot",
+      "confidence": "pending",
+      "evidence": "资源图别名 MutantMaggot→Image 反查（仅候选）；候选 [53]（未定案，禁止据此写库）；当前列首位 Mutant Maggot(53)"
+    },
+    {
+      "mud3_index": 113,
+      "mud3_name": "红衣法师",
+      "kind": "monster",
+      "zircon_index": 418,
+      "zircon_en": "Otherworld Red Mage",
+      "confidence": "pending",
+      "evidence": "website alignment 候选（仅候选）；候选 [418]（未定案，禁止据此写库）；当前列首位 Otherworld Red Mage(418)"
+    },
+    {
+      "mud3_index": 114,
+      "mud3_name": "蝴蝶虫",
+      "kind": "monster",
+      "zircon_index": 52,
+      "zircon_en": "Butterfly Worm",
+      "confidence": "pending",
+      "evidence": "资源图别名 ButterflyWorm→Image 反查（仅候选）；候选 [52]（未定案，禁止据此写库）；当前列首位 Butterfly Worm(52)"
+    },
+    {
+      "mud3_index": 119,
+      "mud3_name": "护法天",
+      "kind": "monster",
+      "zircon_index": 80,
+      "zircon_en": "Zuma Keeper",
+      "confidence": "pending",
+      "evidence": "website alignment 候选（仅候选）；候选 [78, 80]（未定案，禁止据此写库）；当前列首位 Zuma Keeper(80)"
+    },
+    {
+      "mud3_index": 121,
+      "mud3_name": "花色蜘蛛",
+      "kind": "monster",
+      "zircon_index": 302,
+      "zircon_en": "Gang Spider",
+      "confidence": "pending",
+      "evidence": "资源图别名 GangSpider→Image 反查（仅候选）；候选 [302]（未定案，禁止据此写库）；当前列首位 Gang Spider(302)"
+    },
+    {
+      "mud3_index": 124,
+      "mud3_name": "灰血恶魔",
+      "kind": "monster",
+      "zircon_index": 69,
+      "zircon_en": "Red Moon Guardian",
+      "confidence": "pending",
+      "evidence": "赤月系守卫（Red Moon Guardian 69）；候选 [69, 70]（未定案，禁止据此写库）；当前列首位 Red Moon Guardian(69)"
+    },
+    {
+      "mud3_index": 149,
+      "mud3_name": "僵尸王",
+      "kind": "monster",
+      "zircon_index": 60,
+      "zircon_en": "Blood Thristy Zombie",
+      "confidence": "pending",
+      "evidence": "僵尸王（Blood Thirsty Zombie 60）；候选 [60, 57]（未定案，禁止据此写库）；当前列首位 Blood Thristy Zombie(60)"
+    },
+    {
+      "mud3_index": 163,
+      "mud3_name": "骷髅弓箭手",
+      "kind": "monster",
+      "zircon_index": 116,
+      "zircon_en": "Bone Archer",
+      "confidence": "pending",
+      "evidence": "骷髅弓手（Bone Archer 116）；候选 [116, 28]（未定案，禁止据此写库）；当前列首位 Bone Archer(116)"
+    },
+    {
+      "mud3_index": 166,
+      "mud3_name": "骷髅精灵",
+      "kind": "monster",
+      "zircon_index": 120,
+      "zircon_en": "Skeleton Enforcer",
+      "confidence": "pending",
+      "evidence": "骷髅系（Skeleton Lord 30）；候选 [30, 120]（未定案，禁止据此写库）；当前列首位 Skeleton Enforcer(120)"
+    },
+    {
+      "mud3_index": 170,
+      "mud3_name": "骷髅士兵",
+      "kind": "monster",
+      "zircon_index": 119,
+      "zircon_en": "Bone Soldier",
+      "confidence": "pending",
+      "evidence": "骷髅系（Bone Soldier 119）；候选 [119, 117]（未定案，禁止据此写库）；当前列首位 Bone Soldier(119)"
+    },
+    {
+      "mud3_index": 174,
+      "mud3_name": "骷髅武士",
+      "kind": "monster",
+      "zircon_index": 117,
+      "zircon_en": "Bone Bladesman",
+      "confidence": "pending",
+      "evidence": "骷髅系（Bone Bladesman 117）；候选 [117, 119]（未定案，禁止据此写库）；当前列首位 Bone Bladesman(117)"
+    },
+    {
+      "mud3_index": 185,
+      "mud3_name": "盔甲蚂蚁",
+      "kind": "monster",
+      "zircon_index": 41,
+      "zircon_en": "Armoured Ant",
+      "confidence": "pending",
+      "evidence": "资源图别名 ArmoredAnt→Image 反查（仅候选）；候选 [41, 42]（未定案，禁止据此写库）；当前列首位 Armoured Ant(41)"
+    },
+    {
+      "mud3_index": 187,
+      "mud3_name": "异界之门",
+      "kind": "monster",
+      "zircon_index": 96,
+      "zircon_en": "Netherworld Gate",
+      "confidence": "pending",
+      "evidence": "异界之门 = Netherworld Gate(96)，仅名称证据；候选 [96]（未定案，禁止据此写库）；当前列首位 Netherworld Gate(96)"
+    },
+    {
+      "mud3_index": 188,
+      "mud3_name": "猿猴战将",
+      "kind": "monster",
+      "zircon_index": 274,
+      "zircon_en": "Wild Monkey",
+      "confidence": "pending",
+      "evidence": "资源图别名 WildMonkey→Image 反查（仅候选）；候选 [274]（未定案，禁止据此写库）；当前列首位 Wild Monkey(274)"
+    },
+    {
+      "mud3_index": 192,
+      "mud3_name": "月魔蜘蛛",
+      "kind": "monster",
+      "zircon_index": 71,
+      "zircon_en": "Venomous Arachnid",
+      "confidence": "pending",
+      "evidence": "资源图别名 VenomousArachnid→Image 反查（仅候选）；候选 [71]（未定案，禁止据此写库）；当前列首位 Venomous Arachnid(71)"
+    },
+    {
+      "mud3_index": 193,
+      "mud3_name": "震天魔神",
+      "kind": "monster",
+      "zircon_index": 139,
+      "zircon_en": "Jinchon Warlord",
+      "confidence": "pending",
+      "evidence": "真天系（Jinchon Warlord 139）；候选 [139, 199]（未定案，禁止据此写库）；当前列首位 Jinchon Warlord(139)"
+    },
+    {
+      "mud3_index": 194,
+      "mud3_name": "震天神兵",
+      "kind": "monster",
+      "zircon_index": 199,
+      "zircon_en": "Jinchon Devil",
+      "confidence": "pending",
+      "evidence": "真天系（Jinchon Devil 199）；候选 [199, 139]（未定案，禁止据此写库）；当前列首位 Jinchon Devil(199)"
+    },
+    {
+      "mud3_index": 203,
+      "mud3_name": "祖玛雕像",
+      "kind": "monster",
+      "zircon_index": 77,
+      "zircon_en": "Zuma Fanatic",
+      "confidence": "pending",
+      "evidence": "website alignment 候选（仅候选）；候选 [77]（未定案，禁止据此写库）；当前列首位 Zuma Fanatic(77)"
+    },
+    {
+      "mud3_index": 223,
+      "mud3_name": "浪子人鬼",
+      "kind": "monster",
+      "zircon_index": 221,
+      "zircon_en": "Oyoung Beast",
+      "confidence": "pending",
+      "evidence": "资源图别名 OYoungBeast→Image 反查（仅候选）；候选 [221, 223, 362]（未定案，禁止据此写库）；当前列首位 Oyoung Beast(221)"
+    },
+    {
+      "mud3_index": 225,
+      "mud3_name": "劳动蚂蚁",
+      "kind": "monster",
+      "zircon_index": 38,
+      "zircon_en": "Ant Soldier",
+      "confidence": "pending",
+      "evidence": "资源图别名 AntSoldier→Image 反查（仅候选）；候选 [38]（未定案，禁止据此写库）；当前列首位 Ant Soldier(38)"
+    },
+    {
+      "mud3_index": 228,
+      "mud3_name": "雷电僵尸",
+      "kind": "monster",
+      "zircon_index": 58,
+      "zircon_en": "Decaying Ghoul",
+      "confidence": "pending",
+      "evidence": "僵尸系（Decaying Ghoul 58）；候选 [58, 57]（未定案，禁止据此写库）；当前列首位 Decaying Ghoul(58)"
+    },
+    {
+      "mud3_index": 234,
+      "mud3_name": "鹿",
+      "kind": "monster",
+      "zircon_index": 10,
+      "zircon_en": "Deer",
+      "confidence": "pending",
+      "evidence": "website alignment 候选（仅候选）；候选 [10]（未定案，禁止据此写库）；当前列首位 Deer(10)"
+    },
+    {
+      "mud3_index": 235,
+      "mud3_name": "蚂蚁道士",
+      "kind": "monster",
+      "zircon_index": 39,
+      "zircon_en": "Ant Healer",
+      "confidence": "pending",
+      "evidence": "资源图别名 AntHealer→Image 反查（仅候选）；候选 [39, 470]（未定案，禁止据此写库）；当前列首位 Ant Healer(39)"
+    },
+    {
+      "mud3_index": 237,
+      "mud3_name": "蚂蚁将军",
+      "kind": "monster",
+      "zircon_index": 42,
+      "zircon_en": "Ant Commander",
+      "confidence": "pending",
+      "evidence": "资源图别名 ArmoredAnt→Image 反查（仅候选）；候选 [41, 42]（未定案，禁止据此写库）；当前列首位 Ant Commander(42)"
+    },
+    {
+      "mud3_index": 240,
+      "mud3_name": "魔神怪1",
+      "kind": "monster",
+      "zircon_index": 248,
+      "zircon_en": "Sama Cursed Slave",
+      "confidence": "pending",
+      "evidence": "资源图别名 SamaCursedSlave→Image 反查（仅候选）；候选 [248]（未定案，禁止据此写库）；当前列首位 Sama Cursed Slave(248)"
+    },
+    {
+      "mud3_index": 247,
+      "mud3_name": "牛老道",
+      "kind": "monster",
+      "zircon_index": 57,
+      "zircon_en": "Rotting Ghoul",
+      "confidence": "pending",
+      "evidence": "僵尸系（Rotting Ghoul 57）；候选 [57, 58]（未定案，禁止据此写库）；当前列首位 Rotting Ghoul(57)"
+    },
+    {
+      "mud3_index": 249,
+      "mud3_name": "怒龙神",
+      "kind": "monster",
+      "zircon_index": 385,
+      "zircon_en": "Fierce Poison Dragon",
+      "confidence": "pending",
+      "evidence": "资源图别名 TigerSnake→Image 反查（仅候选）；候选 [19, 385]（未定案，禁止据此写库）；当前列首位 Fierce Poison Dragon(385)"
+    },
+    {
+      "mud3_index": 282,
+      "mud3_name": "诺玛教主",
+      "kind": "monster",
+      "zircon_index": 98,
+      "zircon_en": "Numa Elder Shaman",
+      "confidence": "pending",
+      "evidence": "诺玛系首领（Numa Elder Shaman 98）；候选 [98, 166]（未定案，禁止据此写库）；当前列首位 Numa Elder Shaman(98)"
+    },
+    {
+      "mud3_index": 285,
+      "mud3_name": "诺玛骑兵",
+      "kind": "monster",
+      "zircon_index": 161,
+      "zircon_en": "Numa Cavalry",
+      "confidence": "pending",
+      "evidence": "诺玛骑兵 = Numa Cavalry(161)；候选 [161, 165]（未定案，禁止据此写库）；当前列首位 Numa Cavalry(161)"
+    },
+    {
+      "mud3_index": 286,
+      "mud3_name": "诺玛司令",
+      "kind": "monster",
+      "zircon_index": 164,
+      "zircon_en": "Numa Royal Guard",
+      "confidence": "pending",
+      "evidence": "诺玛系（Numa Royal Guard 164；166 已被突击队长占用）；候选 [164, 166]（未定案，禁止据此写库）；当前列首位 Numa Royal Guard(164)"
+    },
+    {
+      "mud3_index": 292,
+      "mud3_name": "潘夜冰魔",
+      "kind": "monster",
+      "zircon_index": 458,
+      "zircon_en": "Ice Break Demon Soldier",
+      "confidence": "pending",
+      "evidence": "资源图别名 IceMob→Image 反查（仅候选）；候选 [458]（未定案，禁止据此写库）；当前列首位 Ice Break Demon Soldier(458)"
+    },
+    {
+      "mud3_index": 294,
+      "mud3_name": "潘夜风魔",
+      "kind": "monster",
+      "zircon_index": 390,
+      "zircon_en": "Fierce Wind Demon",
+      "confidence": "pending",
+      "evidence": "资源图别名 FierceWindDemon→Image 反查（仅候选）；候选 [390]（未定案，禁止据此写库）；当前列首位 Fierce Wind Demon(390)"
+    },
+    {
+      "mud3_index": 296,
+      "mud3_name": "潘夜鬼将",
+      "kind": "monster",
+      "zircon_index": 160,
+      "zircon_en": "Pachon The Chaos bringer",
+      "confidence": "pending",
+      "evidence": "资源图别名 PachonTheChaosBringer→Image 反查（仅候选）；候选 [160, 188]（未定案，禁止据此写库）；当前列首位 Pachon The Chaos bringer(160)"
+    },
+    {
+      "mud3_index": 297,
+      "mud3_name": "潘夜火魔",
+      "kind": "monster",
+      "zircon_index": 449,
+      "zircon_en": "Flame Demon Soldier",
+      "confidence": "pending",
+      "evidence": "资源图别名 FlameMob→Image 反查（仅候选）；候选 [449]（未定案，禁止据此写库）；当前列首位 Flame Demon Soldier(449)"
+    },
+    {
+      "mud3_index": 300,
+      "mud3_name": "潘夜右护卫",
+      "kind": "monster",
+      "zircon_index": 445,
+      "zircon_en": "Force God General 1",
+      "confidence": "pending",
+      "evidence": "资源图别名 LightArmedSoldier→Image 反查（仅候选）；候选 [152, 186, 445, 446]（未定案，禁止据此写库）；当前列首位 Force God General 1(445)"
+    },
+    {
+      "mud3_index": 306,
+      "mud3_name": "潘夜左护卫",
+      "kind": "monster",
+      "zircon_index": 446,
+      "zircon_en": "Force God General 2",
+      "confidence": "pending",
+      "evidence": "资源图别名 LightArmedSoldier→Image 反查（仅候选）；候选 [152, 186, 445, 446]（未定案，禁止据此写库）；当前列首位 Force God General 2(446)"
+    },
+    {
+      "mud3_index": 311,
+      "mud3_name": "钳虫",
+      "kind": "monster",
+      "zircon_index": 88,
+      "zircon_en": "Spiked Beetle",
+      "confidence": "pending",
+      "evidence": "资源图别名 SpikedBeetle→Image 反查（仅候选）；候选 [88, 179]（未定案，禁止据此写库）；当前列首位 Spiked Beetle(88)"
+    },
+    {
+      "mud3_index": 313,
+      "mud3_name": "轻甲守卫",
+      "kind": "monster",
+      "zircon_index": 425,
+      "zircon_en": "Otherworld Light Guard",
+      "confidence": "pending",
+      "evidence": "website alignment 候选（仅候选）；候选 [425]（未定案，禁止据此写库）；当前列首位 Otherworld Light Guard(425)"
+    },
+    {
+      "mud3_index": 314,
+      "mud3_name": "犬猴魔",
+      "kind": "monster",
+      "zircon_index": 223,
+      "zircon_en": "Ma Warden",
+      "confidence": "pending",
+      "evidence": "资源图别名 OYoungBeast→Image 反查（仅候选）；候选 [221, 223, 362]（未定案，禁止据此写库）；当前列首位 Ma Warden(223)"
+    },
+    {
+      "mud3_index": 327,
+      "mud3_name": "沙漠风魔",
+      "kind": "monster",
+      "zircon_index": 292,
+      "zircon_en": "Dust Devil",
+      "confidence": "pending",
+      "evidence": "资源图别名 DustDevil→Image 反查（仅候选）；候选 [292]（未定案，禁止据此写库）；当前列首位 Dust Devil(292)"
+    },
+    {
+      "mud3_index": 329,
+      "mud3_name": "沙漠石人",
+      "kind": "monster",
+      "zircon_index": 291,
+      "zircon_en": "Crystal Golem",
+      "confidence": "pending",
+      "evidence": "资源图别名 CrystalGolem→Image 反查（仅候选）；候选 [291]（未定案，禁止据此写库）；当前列首位 Crystal Golem(291)"
+    },
+    {
+      "mud3_index": 334,
+      "mud3_name": "沙漠威思而小虫",
+      "kind": "monster",
+      "zircon_index": 47,
+      "zircon_en": "Poisonous Mutant Flea",
+      "confidence": "pending",
+      "evidence": "小虫系（Poisonous Mutant Flea 47）；候选 [47, 46]（未定案，禁止据此写库）；当前列首位 Poisonous Mutant Flea(47)"
+    },
+    {
+      "mud3_index": 335,
+      "mud3_name": "沙漠蜥蜴",
+      "kind": "monster",
+      "zircon_index": 379,
+      "zircon_en": "Ice Soul General",
+      "confidence": "pending",
+      "evidence": "资源图别名 GiantLizard→Image 反查（仅候选）；候选 [102, 379, 485]（未定案，禁止据此写库）；当前列首位 Ice Soul General(379)"
+    },
+    {
+      "mud3_index": 337,
+      "mud3_name": "沙漠鱼魔",
+      "kind": "monster",
+      "zircon_index": 393,
+      "zircon_en": "Fierce Fish Demon",
+      "confidence": "pending",
+      "evidence": "资源图别名 ZumaGuardian→Image 反查（仅候选）；候选 [78, 80, 393]（未定案，禁止据此写库）；当前列首位 Fierce Fish Demon(393)"
+    },
+    {
+      "mud3_index": 338,
+      "mud3_name": "沙漠战士",
+      "kind": "monster",
+      "zircon_index": 152,
+      "zircon_en": "Light Armed Soldier",
+      "confidence": "pending",
+      "evidence": "沙漠/神舰系（Light Armed Soldier 152）；候选 [152, 147]（未定案，禁止据此写库）；当前列首位 Light Armed Soldier(152)"
+    },
+    {
+      "mud3_index": 343,
+      "mud3_name": "神舰守卫",
+      "kind": "monster",
+      "zircon_index": 416,
+      "zircon_en": "Otherworld Ship Guard",
+      "confidence": "pending",
+      "evidence": "website alignment 候选（仅候选）；候选 [416]（未定案，禁止据此写库）；当前列首位 Otherworld Ship Guard(416)"
+    },
+    {
+      "mud3_index": 344,
+      "mud3_name": "神兽",
+      "kind": "monster",
+      "zircon_index": 146,
+      "zircon_en": "Shinsu",
+      "confidence": "pending",
+      "evidence": "召唤兽（Shinsu 146）；候选 [146, 140]（未定案，禁止据此写库）；当前列首位 Shinsu(146)"
+    },
+    {
+      "mud3_index": 347,
+      "mud3_name": "尸王",
+      "kind": "monster",
+      "zircon_index": 56,
+      "zircon_en": "Lord Ji'Nae",
+      "confidence": "pending",
+      "evidence": "website alignment 候选（仅候选）；候选 [56, 59, 105]（未定案，禁止据此写库）；当前列首位 Lord Ji'Nae(56)"
+    },
+    {
+      "mud3_index": 355,
+      "mud3_name": "天狼蜘蛛",
+      "kind": "monster",
+      "zircon_index": 303,
+      "zircon_en": "Venom Spider",
+      "confidence": "pending",
+      "evidence": "资源图别名 VenomSpider→Image 反查（仅候选）；候选 [303]（未定案，禁止据此写库）；当前列首位 Venom Spider(303)"
+    },
+    {
+      "mud3_index": 357,
+      "mud3_name": "跳跳蜂",
+      "kind": "monster",
+      "zircon_index": 50,
+      "zircon_en": "Wasp Hatchling",
+      "confidence": "pending",
+      "evidence": "资源图别名 WaspHatchling→Image 反查（仅候选）；候选 [50]（未定案，禁止据此写库）；当前列首位 Wasp Hatchling(50)"
+    },
+    {
+      "mud3_index": 362,
+      "mud3_name": "陀大怪",
+      "kind": "monster",
+      "zircon_index": 231,
+      "zircon_en": "Dragon Queen Jin'Ru",
+      "confidence": "pending",
+      "evidence": "龙渊系（Dragon Queen 231，仅猜测）；候选 [231, 232]（未定案，禁止据此写库）；当前列首位 Dragon Queen Jin'Ru(231)"
+    },
+    {
+      "mud3_index": 363,
+      "mud3_name": "威思而小虫",
+      "kind": "monster",
+      "zircon_index": 46,
+      "zircon_en": "Mutant Flea",
+      "confidence": "pending",
+      "evidence": "website alignment 候选（仅候选）；候选 [46]（未定案，禁止据此写库）；当前列首位 Mutant Flea(46)"
+    },
+    {
+      "mud3_index": 364,
+      "mud3_name": "卫士",
+      "kind": "monster",
+      "zircon_index": 1,
+      "zircon_en": "Guard",
+      "confidence": "pending",
+      "evidence": "城镇守卫；Zircon 仅 Guard(1) 一条，体系已重做；候选 [1, 364]（未定案，禁止据此写库）；当前列首位 Guard(1)"
+    },
+    {
+      "mud3_index": 368,
+      "mud3_name": "沃玛护卫",
+      "kind": "monster",
+      "zircon_index": 64,
+      "zircon_en": "Uma Anguisher",
+      "confidence": "pending",
+      "evidence": "沃玛系（Uma Anguisher 64）；候选 [64, 62]（未定案，禁止据此写库）；当前列首位 Uma Anguisher(64)"
+    },
+    {
+      "mud3_index": 383,
+      "mud3_name": "蜈蚣",
+      "kind": "monster",
+      "zircon_index": 51,
+      "zircon_en": "Centipede",
+      "confidence": "pending",
+      "evidence": "蜈蚣 = Centipede(51)，仅名称证据；候选 [51, 183]（未定案，禁止据此写库）；当前列首位 Centipede(51)"
+    },
+    {
+      "mud3_index": 394,
+      "mud3_name": "邪恶钳虫",
+      "kind": "monster",
+      "zircon_index": 179,
+      "zircon_en": "Bloody Armed Beetle",
+      "confidence": "pending",
+      "evidence": "资源图别名 SpikedBeetle→Image 反查（仅候选）；候选 [88, 179]（未定案，禁止据此写库）；当前列首位 Bloody Armed Beetle(179)"
+    },
+    {
+      "mud3_index": 398,
+      "mud3_name": "雪人",
+      "kind": "monster",
+      "zircon_index": 276,
+      "zircon_en": "Frost Yeti",
+      "confidence": "pending",
+      "evidence": "雪人 = Frost Yeti(276)；候选 [276, 15]（未定案，禁止据此写库）；当前列首位 Frost Yeti(276)"
+    },
+    {
+      "mud3_index": 414,
+      "mud3_name": "变异刺骨蜥",
+      "kind": "monster",
+      "zircon_index": 97,
+      "zircon_en": "Raging Lizard",
+      "confidence": "pending",
+      "evidence": "变异蜥蜴系（Raging Lizard 97）；候选 [97, 106]（未定案，禁止据此写库）；当前列首位 Raging Lizard(97)"
+    },
+    {
+      "mud3_index": 415,
+      "mud3_name": "变异毒蜥",
+      "kind": "monster",
+      "zircon_index": 101,
+      "zircon_en": "Sonic Lizard",
+      "confidence": "pending",
+      "evidence": "变异蜥蜴系（Sonic Lizard 101）；候选 [101, 100]（未定案，禁止据此写库）；当前列首位 Sonic Lizard(101)"
+    },
+    {
+      "mud3_index": 416,
+      "mud3_name": "变异丑蜥",
+      "kind": "monster",
+      "zircon_index": 106,
+      "zircon_en": "Mutant Lizard",
+      "confidence": "pending",
+      "evidence": "变异蜥蜴系（Mutant Lizard 106）；候选 [106, 99]（未定案，禁止据此写库）；当前列首位 Mutant Lizard(106)"
+    },
+    {
+      "mud3_index": 417,
+      "mud3_name": "变异利爪蜥",
+      "kind": "monster",
+      "zircon_index": 99,
+      "zircon_en": "Saw Tooth Lizard",
+      "confidence": "pending",
+      "evidence": "变异蜥蜴系（Saw Tooth Lizard 99）；候选 [99, 106]（未定案，禁止据此写库）；当前列首位 Saw Tooth Lizard(99)"
+    },
+    {
+      "mud3_index": 418,
+      "mud3_name": "变异迅猛蜥",
+      "kind": "monster",
+      "zircon_index": 102,
+      "zircon_en": "Giant Lizard",
+      "confidence": "pending",
+      "evidence": "变异蜥蜴系（Giant/Crazed Lizard）；候选 [102, 103]（未定案，禁止据此写库）；当前列首位 Giant Lizard(102)"
+    },
+    {
+      "mud3_index": 419,
+      "mud3_name": "地天灭王",
+      "kind": "monster",
+      "zircon_index": 232,
+      "zircon_en": "Dragon Lord Jin'Ryung",
+      "confidence": "pending",
+      "evidence": "龙渊系 Boss（Dragon Queen/Lord）；候选 [231, 232]（未定案，禁止据此写库）；当前列首位 Dragon Lord Jin'Ryung(232)"
+    },
+    {
+      "mud3_index": 0,
+      "mud3_name": "",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "头部占位记录（raw 首 u32=433 明文，非怪物；无身份）"
+    },
+    {
+      "mud3_index": 1,
+      "mud3_name": "守卫武将",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "Zircon 城镇守卫体系重做，无直接对应（manifest 已审 old-only）"
+    },
+    {
+      "mud3_index": 2,
+      "mud3_name": "守卫狮子",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "Zircon 城镇守卫体系重做，无直接对应"
+    },
+    {
+      "mud3_index": 3,
+      "mud3_name": "守卫血魔",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "Zircon 城镇守卫体系重做，无直接对应"
+    },
+    {
+      "mud3_index": 4,
+      "mud3_name": "守卫沃玛",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "Zircon 城镇守卫体系重做，无直接对应"
+    },
+    {
+      "mud3_index": 5,
+      "mud3_name": "守卫右狮",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "Zircon 城镇守卫体系重做，无直接对应"
+    },
+    {
+      "mud3_index": 6,
+      "mud3_name": "署箭",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "任务/守卫类，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": 7,
+      "mud3_name": "沃玛战将61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沃玛战将」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 10,
+      "mud3_name": "血巨人",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [69, 70] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 11,
+      "mud3_name": "祖玛雕像0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「祖玛雕像」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 14,
+      "mud3_name": "七点白蛇",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "RedSnake 仅有资源图，无 MonsterInfo 身份行"
+    },
+    {
+      "mud3_index": 16,
+      "mud3_name": "石像狮子98",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「石像狮子」已闭合到 Zircon Index 484；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 19,
+      "mud3_name": "暗黑战士0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「暗黑战士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 20,
+      "mud3_name": "暗黑战士40",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「暗黑战士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 22,
+      "mud3_name": "霸群雕像",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "雕像物件，非怪物身份"
+    },
+    {
+      "mud3_index": 25,
+      "mud3_name": "霸王守卫9",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「霸王守卫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 26,
+      "mud3_name": "白马",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "坐骑在 Zircon 是物品，无怪物身份"
+    },
+    {
+      "mud3_index": 29,
+      "mud3_name": "半兽人0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「半兽人」已闭合到 Zircon Index 22；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 30,
+      "mud3_name": "半兽人61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「半兽人」已闭合到 Zircon Index 22；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 31,
+      "mud3_name": "半兽人9",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「半兽人」已闭合到 Zircon Index 22；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 33,
+      "mud3_name": "半兽勇士61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「半兽勇士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 34,
+      "mud3_name": "半兽勇士9",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「半兽勇士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 36,
+      "mud3_name": "半兽战士0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「半兽战士」已闭合到 Zircon Index 18；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 37,
+      "mud3_name": "半兽战士61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「半兽战士」已闭合到 Zircon Index 18；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 38,
+      "mud3_name": "半兽战士9",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「半兽战士」已闭合到 Zircon Index 18；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 39,
+      "mud3_name": "胞眼虫1",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「胞眼虫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 40,
+      "mud3_name": "胞眼虫10",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「胞眼虫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 41,
+      "mud3_name": "胞眼虫2",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「胞眼虫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 42,
+      "mud3_name": "胞眼虫20",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「胞眼虫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 44,
+      "mud3_name": "爆毒蚂蚁0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「爆毒蚂蚁」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 46,
+      "mud3_name": "爆裂蜘蛛",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [20] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 47,
+      "mud3_name": "蝙蝠",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "Mud3 独有 / 无 Zircon 对应身份"
+    },
+    {
+      "mud3_index": 50,
+      "mud3_name": "柴三郎",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "NPC/任务，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": 51,
+      "mud3_name": "超级圣诞树",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "节日活动怪，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": 54,
+      "mud3_name": "赤血恶魔0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「赤血恶魔」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 55,
+      "mud3_name": "赤血恶魔50",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「赤血恶魔」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 59,
+      "mud3_name": "丛林战士1",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「丛林战士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 60,
+      "mud3_name": "丛林战士2",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「丛林战士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 63,
+      "mud3_name": "大老鼠0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「大老鼠」已闭合到 Zircon Index 79；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 66,
+      "mud3_name": "稻草人0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「稻草人」已闭合到 Zircon Index 21；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 68,
+      "mud3_name": "地牢女神10",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「地牢女神」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 70,
+      "mud3_name": "地牢女神20",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「地牢女神」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 71,
+      "mud3_name": "钉耙猫",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "RakingCat 仅有资源图，无 MonsterInfo 身份行"
+    },
+    {
+      "mud3_index": 72,
+      "mud3_name": "钉耙猫0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「钉耙猫」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 74,
+      "mud3_name": "洞蛆61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「洞蛆」已闭合到 Zircon Index 31；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 76,
+      "mud3_name": "毒蜘蛛61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「毒蜘蛛」已闭合到 Zircon Index 20；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 77,
+      "mud3_name": "独臂诺玛",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [91, 90] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 79,
+      "mud3_name": "独眼蜘蛛0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「独眼蜘蛛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 81,
+      "mud3_name": "多钩猫0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「多钩猫」已闭合到 Zircon Index 13；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 83,
+      "mud3_name": "多角虫0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「多角虫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 84,
+      "mud3_name": "多脚虫1",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「多脚虫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 85,
+      "mud3_name": "多脚虫10",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「多脚虫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 86,
+      "mud3_name": "多脚虫2",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「多脚虫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 87,
+      "mud3_name": "多脚虫20",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「多脚虫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 92,
+      "mud3_name": "腐蚀人鬼0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「腐蚀人鬼」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 93,
+      "mud3_name": "蛤蟆",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "Zircon 无青蛙类身份行"
+    },
+    {
+      "mud3_index": 94,
+      "mud3_name": "蛤蟆0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「蛤蟆」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 95,
+      "mud3_name": "弓箭手",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "泛用弓手，Mud3 独有（Zircon 用 Bone/Goru Archer）"
+    },
+    {
+      "mud3_index": 96,
+      "mud3_name": "弓箭守卫",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "泛用弓卫，Mud3 独有"
+    },
+    {
+      "mud3_index": 99,
+      "mud3_name": "褐色马",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "坐骑在 Zircon 是物品，无怪物身份"
+    },
+    {
+      "mud3_index": 101,
+      "mud3_name": "黑角蜘蛛0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「黑角蜘蛛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 102,
+      "mud3_name": "黑马",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "坐骑在 Zircon 是物品，无怪物身份"
+    },
+    {
+      "mud3_index": 104,
+      "mud3_name": "黑色恶蛆0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「黑色恶蛆」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 105,
+      "mud3_name": "黑色恶蛆61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「黑色恶蛆」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 107,
+      "mud3_name": "黑野猪0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「黑野猪」已闭合到 Zircon Index 127；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 108,
+      "mud3_name": "红甲虫",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [72, 73] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 109,
+      "mud3_name": "红蛇",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "RedSnake/TigerSnake 均已被占用或仅资源图"
+    },
+    {
+      "mud3_index": 110,
+      "mud3_name": "红蛇0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「红蛇」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 112,
+      "mud3_name": "红野猪0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「红野猪」已闭合到 Zircon Index 125；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 115,
+      "mud3_name": "蝴蝶虫0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「蝴蝶虫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 116,
+      "mud3_name": "蝴蝶虫61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「蝴蝶虫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 118,
+      "mud3_name": "虎蛇0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「虎蛇」已闭合到 Zircon Index 19；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 120,
+      "mud3_name": "护卫武士",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "守卫类，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": 122,
+      "mud3_name": "花色蜘蛛0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「花色蜘蛛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 123,
+      "mud3_name": "幻影蜘蛛",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "Mud3 独有 / 无 Zircon 对应身份"
+    },
+    {
+      "mud3_index": 125,
+      "mud3_name": "灰血恶魔0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「灰血恶魔」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 126,
+      "mud3_name": "灰血恶魔60",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「灰血恶魔」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 127,
+      "mud3_name": "火焰狮子0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「火焰狮子」已闭合到 Zircon Index 448；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 128,
+      "mud3_name": "火焰狮子97",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「火焰狮子」已闭合到 Zircon Index 448；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 129,
+      "mud3_name": "火焰沃玛0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「火焰沃玛」已闭合到 Zircon Index 63；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 130,
+      "mud3_name": "火焰沃玛30",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「火焰沃玛」已闭合到 Zircon Index 63；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 131,
+      "mud3_name": "火焰沃玛62",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「火焰沃玛」已闭合到 Zircon Index 63；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 133,
+      "mud3_name": "记事本1",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「记事本」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 134,
+      "mud3_name": "记事本2",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「记事本」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 135,
+      "mud3_name": "记事本3",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「记事本」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 136,
+      "mud3_name": "记事本4",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「记事本」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 137,
+      "mud3_name": "僵尸1",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「僵尸」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 138,
+      "mud3_name": "僵尸10",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「僵尸」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 139,
+      "mud3_name": "僵尸2",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「僵尸」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 140,
+      "mud3_name": "僵尸20",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「僵尸」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 141,
+      "mud3_name": "僵尸261",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「僵尸」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 142,
+      "mud3_name": "僵尸3",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「僵尸」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 143,
+      "mud3_name": "僵尸30",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「僵尸」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 144,
+      "mud3_name": "僵尸4",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「僵尸」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 145,
+      "mud3_name": "僵尸40",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「僵尸」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 146,
+      "mud3_name": "僵尸461",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「僵尸」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 147,
+      "mud3_name": "僵尸5",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「僵尸」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 148,
+      "mud3_name": "僵尸50",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「僵尸」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 151,
+      "mud3_name": "角蝇80",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「角蝇」已闭合到 Zircon Index 472；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 152,
+      "mud3_name": "巨象兽0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「巨象兽」已闭合到 Zircon Index 85；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 153,
+      "mud3_name": "巨型多角虫",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [44] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 154,
+      "mud3_name": "聚宝箱1",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「聚宝箱」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 155,
+      "mud3_name": "聚宝箱2",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「聚宝箱」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 156,
+      "mud3_name": "聚宝箱3",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「聚宝箱」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 157,
+      "mud3_name": "聚宝箱4",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「聚宝箱」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 158,
+      "mud3_name": "聚宝箱5",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「聚宝箱」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 160,
+      "mud3_name": "骷髅0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「骷髅」已闭合到 Zircon Index 27；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 161,
+      "mud3_name": "骷髅61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「骷髅」已闭合到 Zircon Index 27；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 162,
+      "mud3_name": "骷髅9",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「骷髅」已闭合到 Zircon Index 27；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 164,
+      "mud3_name": "骷髅弓箭手0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「骷髅弓箭手」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 167,
+      "mud3_name": "骷髅精灵61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「骷髅精灵」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 168,
+      "mud3_name": "骷髅精灵62",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「骷髅精灵」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 169,
+      "mud3_name": "骷髅精灵9",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「骷髅精灵」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 171,
+      "mud3_name": "骷髅士兵0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「骷髅士兵」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 172,
+      "mud3_name": "骷髅武将",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [120, 30] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 173,
+      "mud3_name": "骷髅武将0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「骷髅武将」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 175,
+      "mud3_name": "骷髅武士0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「骷髅武士」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 177,
+      "mud3_name": "骷髅战将0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「骷髅战将」已闭合到 Zircon Index 26；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 178,
+      "mud3_name": "骷髅战将61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「骷髅战将」已闭合到 Zircon Index 26；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 179,
+      "mud3_name": "骷髅战将9",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「骷髅战将」已闭合到 Zircon Index 26；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 181,
+      "mud3_name": "骷髅战士0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「骷髅战士」已闭合到 Zircon Index 29；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 182,
+      "mud3_name": "骷髅战士61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「骷髅战士」已闭合到 Zircon Index 29；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 184,
+      "mud3_name": "盔甲虫0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「盔甲虫」已闭合到 Zircon Index 43；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 186,
+      "mud3_name": "夜行鬼09",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「夜行鬼」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 189,
+      "mud3_name": "猿猴战将0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「猿猴战将」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 190,
+      "mud3_name": "猿猴战士",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [274] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 191,
+      "mud3_name": "猿猴战士0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「猿猴战士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 195,
+      "mud3_name": "震天首将",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [139, 199] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 196,
+      "mud3_name": "蜘蛛娃",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [72, 73] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 197,
+      "mud3_name": "蜘蛛娃0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「蜘蛛娃」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 199,
+      "mud3_name": "掷斧骷髅0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「掷斧骷髅」已闭合到 Zircon Index 28；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 200,
+      "mud3_name": "掷斧骷髅61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「掷斧骷髅」已闭合到 Zircon Index 28；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 201,
+      "mud3_name": "掷斧骷髅62",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「掷斧骷髅」已闭合到 Zircon Index 28；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 205,
+      "mud3_name": "祖玛雕像91",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「祖玛雕像」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 206,
+      "mud3_name": "祖玛弓箭手0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「祖玛弓箭手」已闭合到 Zircon Index 76；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 207,
+      "mud3_name": "祖玛弓箭手92",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「祖玛弓箭手」已闭合到 Zircon Index 76；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 208,
+      "mud3_name": "祖玛教主62",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「祖玛教主」已闭合到 Zircon Index 81；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 210,
+      "mud3_name": "祖玛卫士0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「祖玛卫士」已闭合到 Zircon Index 78；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 211,
+      "mud3_name": "祖玛卫士90",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「祖玛卫士」已闭合到 Zircon Index 78；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 212,
+      "mud3_name": "守卫神将",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "Zircon 城镇守卫体系重做，无直接对应"
+    },
+    {
+      "mud3_index": 213,
+      "mud3_name": "沃玛勇士60",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沃玛勇士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 214,
+      "mud3_name": "火焰沃玛61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「火焰沃玛」已闭合到 Zircon Index 63；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 215,
+      "mud3_name": "暗黑战士61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「暗黑战士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 217,
+      "mud3_name": "魔石狂热者",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "魔石系，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": 218,
+      "mud3_name": "火焰狮子99",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「火焰狮子」已闭合到 Zircon Index 448；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 220,
+      "mud3_name": "小诺玛",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [91, 90] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 221,
+      "mud3_name": "盔甲蚂蚁0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「盔甲蚂蚁」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 224,
+      "mud3_name": "浪子人鬼0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「浪子人鬼」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 226,
+      "mud3_name": "劳动蚂蚁0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「劳动蚂蚁」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 227,
+      "mud3_name": "老道僵尸61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「老道僵尸」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 230,
+      "mud3_name": "练功师",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "练功假人，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": 231,
+      "mud3_name": "猎鹰",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "SkyStinger 仅有资源图，无 MonsterInfo 身份行"
+    },
+    {
+      "mud3_index": 232,
+      "mud3_name": "猎鹰0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「猎鹰」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 233,
+      "mud3_name": "玲花",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "NPC/任务，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": 236,
+      "mud3_name": "蚂蚁道士0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「蚂蚁道士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 238,
+      "mud3_name": "蚂蚁战士",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [41, 42] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 239,
+      "mud3_name": "蚂蚁战士0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「蚂蚁战士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 241,
+      "mud3_name": "武力神将81",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「武力神将」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 242,
+      "mud3_name": "魔神怪10",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「魔神怪」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 243,
+      "mud3_name": "魔神怪2",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [245] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 244,
+      "mud3_name": "魔神怪20",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「魔神怪」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 245,
+      "mud3_name": "木障",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "地图障碍物，非怪物身份"
+    },
+    {
+      "mud3_index": 246,
+      "mud3_name": "震天兽",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [199, 139] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 248,
+      "mud3_name": "弩车",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "守城器械，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": 250,
+      "mud3_name": "诺玛0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 251,
+      "mud3_name": "诺玛将士",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [165] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 252,
+      "mud3_name": "诺玛00",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 253,
+      "mud3_name": "诺玛07",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 254,
+      "mud3_name": "诺玛08",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 255,
+      "mud3_name": "诺玛09",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 256,
+      "mud3_name": "诺玛1",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 257,
+      "mud3_name": "诺玛10",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 258,
+      "mud3_name": "诺玛17",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 259,
+      "mud3_name": "诺玛18",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 260,
+      "mud3_name": "诺玛19",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 261,
+      "mud3_name": "诺玛2",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 262,
+      "mud3_name": "诺玛20",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 263,
+      "mud3_name": "诺玛27",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 264,
+      "mud3_name": "诺玛28",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 265,
+      "mud3_name": "诺玛29",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 266,
+      "mud3_name": "诺玛3",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 267,
+      "mud3_name": "诺玛30",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 268,
+      "mud3_name": "诺玛37",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 269,
+      "mud3_name": "诺玛38",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 270,
+      "mud3_name": "诺玛39",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 271,
+      "mud3_name": "诺玛城门",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "城门物件，非怪物身份"
+    },
+    {
+      "mud3_index": 272,
+      "mud3_name": "诺玛法老",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [166] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 273,
+      "mud3_name": "诺玛法老0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛法老」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 274,
+      "mud3_name": "诺玛法老7",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛法老」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 275,
+      "mud3_name": "诺玛法老8",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛法老」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 276,
+      "mud3_name": "诺玛法老9",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛法老」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 278,
+      "mud3_name": "诺玛将士0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛将士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 279,
+      "mud3_name": "诺玛将士7",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛将士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 280,
+      "mud3_name": "诺玛将士8",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛将士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 281,
+      "mud3_name": "诺玛将士9",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛将士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 283,
+      "mud3_name": "诺玛王",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [98] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 288,
+      "mud3_name": "诺玛卫士",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "诺玛守卫，Zircon 诺玛系无对应名"
+    },
+    {
+      "mud3_index": 289,
+      "mud3_name": "诺玛巡逻队长",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [164, 161] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 291,
+      "mud3_name": "诺玛阻力军1",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛阻力军」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 293,
+      "mud3_name": "潘夜冰魔0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「潘夜冰魔」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 295,
+      "mud3_name": "潘夜风魔0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「潘夜风魔」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 298,
+      "mud3_name": "潘夜火魔0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「潘夜火魔」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 301,
+      "mud3_name": "潘夜右护卫0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「潘夜右护卫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 302,
+      "mud3_name": "潘夜右护卫95",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「潘夜右护卫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 303,
+      "mud3_name": "潘夜云魔0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「潘夜云魔」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 305,
+      "mud3_name": "潘夜战士0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「潘夜战士」已闭合到 Zircon Index 186；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 307,
+      "mud3_name": "潘夜左护卫0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「潘夜左护卫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 308,
+      "mud3_name": "潘夜左护卫94",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「潘夜左护卫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 309,
+      "mud3_name": "千年毒蛇",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "RedSnake 仅有资源图，无 MonsterInfo 身份行"
+    },
+    {
+      "mud3_index": 310,
+      "mud3_name": "千年毒蛇0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「千年毒蛇」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 312,
+      "mud3_name": "钳虫0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「钳虫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 316,
+      "mud3_name": "森林雪人0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「森林雪人」已闭合到 Zircon Index 15；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 317,
+      "mud3_name": "僧侣僵尸",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [58, 57] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 318,
+      "mud3_name": "僧侣僵尸61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「僧侣僵尸」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 319,
+      "mud3_name": "沙巴克城门1",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沙巴克城门」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 320,
+      "mud3_name": "沙巴克城门2",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沙巴克城门」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 321,
+      "mud3_name": "沙巴克城门3",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沙巴克城门」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 322,
+      "mud3_name": "沙巴克城门4",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沙巴克城门」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 324,
+      "mud3_name": "沙鬼0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沙鬼」已闭合到 Zircon Index 93；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 325,
+      "mud3_name": "沙魔树魔0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沙魔树魔」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 326,
+      "mud3_name": "沙魔鱼魔0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沙魔鱼魔」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 328,
+      "mud3_name": "沙漠风魔0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沙漠风魔」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 330,
+      "mud3_name": "沙漠石人0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沙漠石人」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 332,
+      "mud3_name": "沙漠树魔61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沙漠树魔」已闭合到 Zircon Index 95；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 333,
+      "mud3_name": "沙漠树魔62",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沙漠树魔」已闭合到 Zircon Index 95；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 336,
+      "mud3_name": "沙漠蜥蜴0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沙漠蜥蜴」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 340,
+      "mud3_name": "山洞蝙蝠0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「山洞蝙蝠」已闭合到 Zircon Index 24；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 341,
+      "mud3_name": "山洞蝙蝠61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「山洞蝙蝠」已闭合到 Zircon Index 24；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 342,
+      "mud3_name": "神鬼王",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [70] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 345,
+      "mud3_name": "神兽1",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「神兽」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 346,
+      "mud3_name": "圣诞树",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "节日活动怪，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": 348,
+      "mud3_name": "尸王2",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「尸王」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 349,
+      "mud3_name": "尸王61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「尸王」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 351,
+      "mud3_name": "石像狮子0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「石像狮子」已闭合到 Zircon Index 484；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 352,
+      "mud3_name": "石像狮子96",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「石像狮子」已闭合到 Zircon Index 484；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 353,
+      "mud3_name": "食人花61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「食人花」已闭合到 Zircon Index 17；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 354,
+      "mud3_name": "守卫虫",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "守卫类，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": 356,
+      "mud3_name": "天狼蜘蛛0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「天狼蜘蛛」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 358,
+      "mud3_name": "跳跳蜂0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「跳跳蜂」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 359,
+      "mud3_name": "跳跳蜂61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「跳跳蜂」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 360,
+      "mud3_name": "投石车",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "守城器械，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": 361,
+      "mud3_name": "图书馆护卫",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "任务守卫，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": 365,
+      "mud3_name": "卫士1",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「卫士」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 366,
+      "mud3_name": "沃毒蜈蚣61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沃毒蜈蚣」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 367,
+      "mud3_name": "沃毒蜈蚣62",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沃毒蜈蚣」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 369,
+      "mud3_name": "沃玛护卫61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沃玛护卫」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 371,
+      "mud3_name": "沃玛教主62",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沃玛教主」已闭合到 Zircon Index 65；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 372,
+      "mud3_name": "沃玛卫士",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [65] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 373,
+      "mud3_name": "沃玛勇士",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [64] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 374,
+      "mud3_name": "沃玛勇士0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沃玛勇士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 375,
+      "mud3_name": "沃玛勇士10",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沃玛勇士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 376,
+      "mud3_name": "沃玛勇士61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沃玛勇士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 377,
+      "mud3_name": "沃玛战将",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [64] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 378,
+      "mud3_name": "沃玛战将0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沃玛战将」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 379,
+      "mud3_name": "沃玛战将20",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沃玛战将」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 380,
+      "mud3_name": "沃玛战士",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [63] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 381,
+      "mud3_name": "沃玛战士0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沃玛战士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 382,
+      "mud3_name": "沃玛战士61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「沃玛战士」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 384,
+      "mud3_name": "蜈蚣0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「蜈蚣」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 385,
+      "mud3_name": "蜈蚣61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「蜈蚣」在本表中为 pending 或有说明；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 386,
+      "mud3_name": "武力神将",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [164, 166] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 387,
+      "mud3_name": "武力神将0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「武力神将」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 389,
+      "mud3_name": "楔蛾93",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「楔蛾」已闭合到 Zircon Index 124；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 390,
+      "mud3_name": "蝎蛇0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「蝎蛇」已闭合到 Zircon Index 126；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 392,
+      "mud3_name": "蝎子61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「蝎子」已闭合到 Zircon Index 25；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 393,
+      "mud3_name": "邪恶毒蛇",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "Mud3 独有 / 无 Zircon 对应身份"
+    },
+    {
+      "mud3_index": 395,
+      "mud3_name": "邪恶钳虫62",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「邪恶钳虫」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 396,
+      "mud3_name": "邪恶蜈蚣61",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「邪恶蜈蚣」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 397,
+      "mud3_name": "雄诺玛",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [91, 90] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 399,
+      "mud3_name": "血金刚0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「血金刚」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 400,
+      "mud3_name": "血金刚70",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「血金刚」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 401,
+      "mud3_name": "血巨人0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「血巨人」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 403,
+      "mud3_name": "夜行鬼",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "Mud3 独有 / 无 Zircon 对应身份"
+    },
+    {
+      "mud3_index": 404,
+      "mud3_name": "夜行鬼0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「夜行鬼」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 406,
+      "mud3_name": "超强骷髅",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "召唤兽强化版，Zircon 无独立身份"
+    },
+    {
+      "mud3_index": 407,
+      "mud3_name": "血金刚",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [70] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 409,
+      "mud3_name": "诺玛阻力军0",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "变体记录（后缀）；基础物种「诺玛阻力军」在本表中未闭合；Zircon 无独立变体条目，按 handoff 不建新怪"
+    },
+    {
+      "mud3_index": 410,
+      "mud3_name": "阿龙怪",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "候选 [128, 176] 均已被其它条目占用，Zircon 无独立条目可分配；按一对多处理但无空闲候选 → missing（需人工决定合并或新增）"
+    },
+    {
+      "mud3_index": 411,
+      "mud3_name": "魔石咆哮者",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "魔石系，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": 412,
+      "mud3_name": "魔石狂热者",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "魔石系，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": 413,
+      "mud3_name": "魔石守护神",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "魔石系，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": 432,
+      "mud3_name": "圣诞树",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "节日活动怪，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": 433,
+      "mud3_name": "圣诞鹿",
+      "kind": "monster",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "节日活动怪，Zircon 无对应身份"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 32,
+      "zircon_en": "GhostSorcerer",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 33,
+      "zircon_en": "Ghost Mage",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 34,
+      "zircon_en": "Voracious Ghost",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 35,
+      "zircon_en": "Devouring Ghost",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 36,
+      "zircon_en": "Corpse Raising Ghost",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 37,
+      "zircon_en": "Ghoul Champion",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 45,
+      "zircon_en": "Visceral Worm",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 48,
+      "zircon_en": "Blaster Mutant Flea",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 49,
+      "zircon_en": "Terror Spike",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 54,
+      "zircon_en": "Earwig",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 55,
+      "zircon_en": "Iron Lance",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 59,
+      "zircon_en": "Blood Thristy Ghoul",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 67,
+      "zircon_en": "Arachnid Gazer",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 68,
+      "zircon_en": "Larva",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 74,
+      "zircon_en": "Red Moon Royal Guard",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 82,
+      "zircon_en": "Evil Fanatic",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 83,
+      "zircon_en": "Monkey",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 84,
+      "zircon_en": "Evil Monkey",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 86,
+      "zircon_en": "Cannibal Fanatic",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 87,
+      "zircon_en": "Crazed Warrior",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 92,
+      "zircon_en": "Sand Shark",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 94,
+      "zircon_en": "Windfury Sorceress",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 100,
+      "zircon_en": "Venom Spitter",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 103,
+      "zircon_en": "Crazed Lizard",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 104,
+      "zircon_en": "Tainted Terror",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 107,
+      "zircon_en": "Minotaur",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 108,
+      "zircon_en": "Frost Minotaur",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 109,
+      "zircon_en": "Banya Right Guard",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 110,
+      "zircon_en": "Shock Minotaur",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 111,
+      "zircon_en": "Banya Left Guard",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 112,
+      "zircon_en": "Fury Minotaur",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 114,
+      "zircon_en": "Banya Guardian",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 118,
+      "zircon_en": "Bone Captain",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 122,
+      "zircon_en": "Wedge Moth Larva",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 123,
+      "zircon_en": "Lesser Wedge Moth",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 129,
+      "zircon_en": "Razor Tusk",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 130,
+      "zircon_en": "Pink Goddess Of Black Palace",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 131,
+      "zircon_en": "Green Goddess Of Black Palace",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 132,
+      "zircon_en": "Mutant Captain",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 133,
+      "zircon_en": "Stone Griffin",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 134,
+      "zircon_en": "Flame Griffin",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 135,
+      "zircon_en": "Black Palace Warlord",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 136,
+      "zircon_en": "Pink Goddess Of Underground",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 137,
+      "zircon_en": "Vicious Mutant Captain",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 138,
+      "zircon_en": "Green Goddess Of Underground",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 140,
+      "zircon_en": "SummonPuppet",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 141,
+      "zircon_en": "Apparition Archer",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 142,
+      "zircon_en": "Apparition Bladesman",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 143,
+      "zircon_en": "Apparition Soldier",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 144,
+      "zircon_en": "Skeleton",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 145,
+      "zircon_en": "Jin Skeleton",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 150,
+      "zircon_en": "MirrorImage",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 151,
+      "zircon_en": "Corpse Stalker",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 153,
+      "zircon_en": "Corrosive Poison Spitter",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 154,
+      "zircon_en": "Phantom Soldier",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 155,
+      "zircon_en": "Mutated Octopus",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 156,
+      "zircon_en": "Aqua Lizard",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 157,
+      "zircon_en": "Stomper",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 158,
+      "zircon_en": "Crimson Necromancer",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 159,
+      "zircon_en": "Chaos Knight",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 162,
+      "zircon_en": "Numa High Mage",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 167,
+      "zircon_en": "Icy Ranger",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 168,
+      "zircon_en": "Icy Goddess",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 169,
+      "zircon_en": "Icy Spirit Warrior",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 170,
+      "zircon_en": "Icy Spirit General",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 171,
+      "zircon_en": "Ghost Knight",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 172,
+      "zircon_en": "Icy Spirit Spearman",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 173,
+      "zircon_en": "Werewolf",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 174,
+      "zircon_en": "Whitefang",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 175,
+      "zircon_en": "Icy Spirit Solider",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 177,
+      "zircon_en": "Jinam Stone Gate",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 178,
+      "zircon_en": "Frost Lord Hwa",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 180,
+      "zircon_en": "Golden Armored Beetle",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 181,
+      "zircon_en": "Earwig King",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 182,
+      "zircon_en": "Mature Earwig",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 184,
+      "zircon_en": "Enraged Lord Ji'Nae",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 187,
+      "zircon_en": "Banyo Captain",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 188,
+      "zircon_en": "Banyo Lord Guzak",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 189,
+      "zircon_en": "Pig",
+      "confidence": "zircon-only",
+      "evidence": "宠物/坐骑伴随兽（Level 0，AI=-2），Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 190,
+      "zircon_en": "Tusk Lord",
+      "confidence": "zircon-only",
+      "evidence": "宠物/坐骑伴随兽（Level 0，AI=-2），Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 191,
+      "zircon_en": "Skeleton Lord",
+      "confidence": "zircon-only",
+      "evidence": "宠物/坐骑伴随兽（Level 0，AI=-2），Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 192,
+      "zircon_en": "Griffin",
+      "confidence": "zircon-only",
+      "evidence": "宠物/坐骑伴随兽（Level 0，AI=-2），Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 193,
+      "zircon_en": "Dragon",
+      "confidence": "zircon-only",
+      "evidence": "宠物/坐骑伴随兽（Level 0，AI=-2），Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 194,
+      "zircon_en": "Donkey",
+      "confidence": "zircon-only",
+      "evidence": "宠物/坐骑伴随兽（Level 0，AI=-2），Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 195,
+      "zircon_en": "Sheep",
+      "confidence": "zircon-only",
+      "evidence": "宠物/坐骑伴随兽（Level 0，AI=-2），Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 196,
+      "zircon_en": "Pachon ",
+      "confidence": "zircon-only",
+      "evidence": "宠物/坐骑伴随兽（Level 0，AI=-2），Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 197,
+      "zircon_en": "Panda",
+      "confidence": "zircon-only",
+      "evidence": "宠物/坐骑伴随兽（Level 0，AI=-2），Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 198,
+      "zircon_en": "Rabbit",
+      "confidence": "zircon-only",
+      "evidence": "宠物/坐骑伴随兽（Level 0，AI=-2），Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 200,
+      "zircon_en": "Black Palace Demon",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 201,
+      "zircon_en": "Brass Feral Warrior",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 202,
+      "zircon_en": "Obsidian Feral Warrior",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 203,
+      "zircon_en": "Sun Feral Warrior",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 204,
+      "zircon_en": "Moon Feral Warrior",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 205,
+      "zircon_en": "Ox Feral General",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 206,
+      "zircon_en": "Flame Demon",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 207,
+      "zircon_en": "Winged Horror",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 208,
+      "zircon_en": "Enraged Emperor Sa'Woo",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 209,
+      "zircon_en": "Ferocious Flame Demon",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 210,
+      "zircon_en": "Oma Warlord",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 211,
+      "zircon_en": "Goru Spearman",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 212,
+      "zircon_en": "Goru Archer",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 213,
+      "zircon_en": "Goru General",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 215,
+      "zircon_en": "Enraged Arch Lich Taedu",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 216,
+      "zircon_en": "Escort Commander",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 217,
+      "zircon_en": "Fiery Dancer",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 218,
+      "zircon_en": "Emerald Dancer",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 219,
+      "zircon_en": "Queen Of Dawn",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 220,
+      "zircon_en": "Sabuk Lord",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 222,
+      "zircon_en": "Yumgon Witch",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 224,
+      "zircon_en": "Ma Warlord",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 225,
+      "zircon_en": "Jinhwan Spirit",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 226,
+      "zircon_en": "Jinhwan Guardian",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 227,
+      "zircon_en": "Oyoung General",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 228,
+      "zircon_en": "Yumgon General",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 229,
+      "zircon_en": "Chiwoo General Of East",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 230,
+      "zircon_en": "Chiwoo General Of West",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 233,
+      "zircon_en": "Ferocious Ice Tiger",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 244,
+      "zircon_en": "Escort Commander",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 246,
+      "zircon_en": "Sama Cursed Flame Mage",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 249,
+      "zircon_en": "Sama Fire Guardian",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 250,
+      "zircon_en": "Sama Ice Guardian",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 251,
+      "zircon_en": "Sama Lightning Guardian",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 253,
+      "zircon_en": "Black Sama",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 254,
+      "zircon_en": "Blue Sama",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 255,
+      "zircon_en": "Phoenix Sama",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 256,
+      "zircon_en": "White Tiger Sama",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 258,
+      "zircon_en": "Enshrinement Box",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 259,
+      "zircon_en": "Sama Prophet",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 260,
+      "zircon_en": "Sama Sorcerer",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 261,
+      "zircon_en": "Blood Stone",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 262,
+      "zircon_en": "Life Stone",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 263,
+      "zircon_en": "Dark Stone",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 264,
+      "zircon_en": "Young Tiger",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 265,
+      "zircon_en": "Tiger",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 266,
+      "zircon_en": "Blood Tiger",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 267,
+      "zircon_en": "Blizzard Tiger",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 268,
+      "zircon_en": "Dark Tiger",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 269,
+      "zircon_en": "Elder Dark Tiger",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 270,
+      "zircon_en": "Elder White Tiger",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 271,
+      "zircon_en": "Tiger General",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 272,
+      "zircon_en": "Tiger War Lord",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 273,
+      "zircon_en": "Wild Elephant",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 275,
+      "zircon_en": "Wild Fanatic",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 277,
+      "zircon_en": "Evil Snake",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 278,
+      "zircon_en": "Salamander",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 279,
+      "zircon_en": "Sand Golem",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 284,
+      "zircon_en": "Oma Mage",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 293,
+      "zircon_en": "Twin Tail Scorpion",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 294,
+      "zircon_en": "Bloody Mole",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 295,
+      "zircon_en": "Imp",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 296,
+      "zircon_en": "Ettin",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 297,
+      "zircon_en": "Centurion",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 298,
+      "zircon_en": "Rot Wraith",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 299,
+      "zircon_en": "Cotoblepas",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 300,
+      "zircon_en": "Azog",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 301,
+      "zircon_en": "Urukhia",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 304,
+      "zircon_en": "Chubarak",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 305,
+      "zircon_en": "Doom Claw",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 307,
+      "zircon_en": "Zauhk Spawn",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 308,
+      "zircon_en": "Shell Spliter",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 309,
+      "zircon_en": "Ember Mage",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 310,
+      "zircon_en": "Bobbit Worm",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 311,
+      "zircon_en": "Cobalt Golum",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 312,
+      "zircon_en": "Shimmer Wings",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 313,
+      "zircon_en": "Vex Wings",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 314,
+      "zircon_en": "Rot Wraith",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 331,
+      "zircon_en": "Rot Wraith",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 332,
+      "zircon_en": "Ember SpearMan",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 333,
+      "zircon_en": "Kongeegen",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 334,
+      "zircon_en": "Adamantoise",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 335,
+      "zircon_en": "Zauhk",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 336,
+      "zircon_en": "MonasteryRaisingGhost",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 337,
+      "zircon_en": "MonasteryGhoul",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 338,
+      "zircon_en": "MonasterySorcer",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 339,
+      "zircon_en": "MonasteryVoracious",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 341,
+      "zircon_en": "MonasteryDevour",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 342,
+      "zircon_en": "Sumerian",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 343,
+      "zircon_en": "Sacrifice",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 344,
+      "zircon_en": "Enheduanna",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 345,
+      "zircon_en": "Quadishtu",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 347,
+      "zircon_en": "Sumerian King",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 348,
+      "zircon_en": "Puabi",
+      "confidence": "zircon-only",
+      "evidence": "萨玛/苏美尔私服原创，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 349,
+      "zircon_en": "Bobbit Bobbit",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 350,
+      "zircon_en": "Sabuk Flag",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 351,
+      "zircon_en": "Tornado",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 352,
+      "zircon_en": "Undead Soul",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 353,
+      "zircon_en": "Cursed Doll",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 354,
+      "zircon_en": "Terracotta1",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 355,
+      "zircon_en": "Terracotta2",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 356,
+      "zircon_en": "Terracotta3",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 357,
+      "zircon_en": "Terracotta4",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 358,
+      "zircon_en": "TerracottaSub",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 359,
+      "zircon_en": "TerracottaBoss",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 360,
+      "zircon_en": "Dharma Protector",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 361,
+      "zircon_en": "Jungle Mammoth",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 362,
+      "zircon_en": "Centaur Warrior",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 363,
+      "zircon_en": "Wounded Soul Corpse",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 364,
+      "zircon_en": "Xiuluo Warrior",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 365,
+      "zircon_en": "Xiuluo Mage",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 366,
+      "zircon_en": "Xiuluo Taoist",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 378,
+      "zircon_en": "Ice Soul Warrior",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 380,
+      "zircon_en": "Fierce Monk",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 381,
+      "zircon_en": "Fierce Centipede",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 382,
+      "zircon_en": "Fierce Corpse King",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 383,
+      "zircon_en": "Fierce Demon",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 384,
+      "zircon_en": "Fierce Tree Demon",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 386,
+      "zircon_en": "Fierce Woma",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 387,
+      "zircon_en": "Fierce Mad Bull",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 388,
+      "zircon_en": "Fierce Falcon",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 389,
+      "zircon_en": "Fierce Stone Man",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 391,
+      "zircon_en": "Fierce Skeleton",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 392,
+      "zircon_en": "Fierce Demon God",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 397,
+      "zircon_en": "Dungeon Goddess 3",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 398,
+      "zircon_en": "Dungeon Goddess 4",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 400,
+      "zircon_en": "Guardian Sword Disciple",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 401,
+      "zircon_en": "Guardian Spell Disciple",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 402,
+      "zircon_en": "Guardian Fire Disciple",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 405,
+      "zircon_en": "Otherworld Guardian",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 406,
+      "zircon_en": "Otherworld Guardian 1",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 407,
+      "zircon_en": "Otherworld Guardian 2",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 408,
+      "zircon_en": "Otherworld Guardian 3",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 410,
+      "zircon_en": "Otherworld Sea General 1",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 411,
+      "zircon_en": "Otherworld Sea General 3",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 413,
+      "zircon_en": "Otherworld Poison Demon 1",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 414,
+      "zircon_en": "Otherworld Poison Demon 2",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 415,
+      "zircon_en": "Otherworld Poison Demon 3",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 417,
+      "zircon_en": "Otherworld Ship Guard 1",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 419,
+      "zircon_en": "Otherworld Red Mage 1",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 420,
+      "zircon_en": "Otherworld Red Mage 2",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 422,
+      "zircon_en": "Otherworld Tentacle Demon 1",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 423,
+      "zircon_en": "Otherworld Tentacle Demon 2",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 424,
+      "zircon_en": "Otherworld Tentacle Demon 3",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 426,
+      "zircon_en": "Otherworld Light Guard 1",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 427,
+      "zircon_en": "Otherworld Light Guard 3",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 428,
+      "zircon_en": "Evil Spirit Soldier",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 429,
+      "zircon_en": "Evil Spirit Archer",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 430,
+      "zircon_en": "Evil Spirit Warrior",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 431,
+      "zircon_en": "War Horse General",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 432,
+      "zircon_en": "Whirlwind Demon Soldier",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 433,
+      "zircon_en": "Moon River Ghost",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 434,
+      "zircon_en": "Moon River Phantom",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 435,
+      "zircon_en": "Moon River Arhat",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 436,
+      "zircon_en": "Moon River Rat Immortal",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 437,
+      "zircon_en": "Suzaku Heavenly King",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 438,
+      "zircon_en": "Tree Elf",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 439,
+      "zircon_en": "Taoyuan Ice Phoenix",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 440,
+      "zircon_en": "Taoyuan Ice Flower",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 441,
+      "zircon_en": "Taoyuan Infantry",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 442,
+      "zircon_en": "Taoyuan Fire Phoenix",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 443,
+      "zircon_en": "Taoyuan Fire Flower",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 444,
+      "zircon_en": "Taoyuan Cavalry",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 447,
+      "zircon_en": "Deep Mud Man",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 450,
+      "zircon_en": "Unicorn Rhino",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 451,
+      "zircon_en": "Xuanwu Heavenly King",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 452,
+      "zircon_en": "Mafa General",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 453,
+      "zircon_en": "Mafa Wizard",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 454,
+      "zircon_en": "Mafa Warrior",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 455,
+      "zircon_en": "Mafa Mage",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 456,
+      "zircon_en": "Mafa Taoist",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 457,
+      "zircon_en": "Baihu Heavenly King",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 459,
+      "zircon_en": "Qin Sword Infantry",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 460,
+      "zircon_en": "Qin Spear Infantry",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 461,
+      "zircon_en": "Qin Sword Cavalry",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 462,
+      "zircon_en": "Qin Spear Cavalry",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 463,
+      "zircon_en": "Desolation Corpse",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 464,
+      "zircon_en": "Heartless Guard",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 465,
+      "zircon_en": "Heartless Palace Master",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 466,
+      "zircon_en": "Heartless Red Lady",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 467,
+      "zircon_en": "Heartless Green Lady",
+      "confidence": "zircon-only",
+      "evidence": "后期/强化系列，Mud3 DAT 无独立条目"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 468,
+      "zircon_en": "Demon Horde Cook",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 469,
+      "zircon_en": "Demon Horde Warrior",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 470,
+      "zircon_en": "Demon Horde Healer",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 471,
+      "zircon_en": "Demon Horde Overlord",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 473,
+      "zircon_en": "Evil Thunderer",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 474,
+      "zircon_en": "Evil Fallen",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 475,
+      "zircon_en": "Evil Avenger",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 476,
+      "zircon_en": "Evil Judge",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 477,
+      "zircon_en": "Evil Punisher",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 478,
+      "zircon_en": "Evil Soul Sealer",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 479,
+      "zircon_en": "Zuan Ka Tree",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 480,
+      "zircon_en": "Thunder Demon Soldier",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 481,
+      "zircon_en": "Frost Stone Beast",
+      "confidence": "zircon-only",
+      "evidence": "Zircon 后期/强化行，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 482,
+      "zircon_en": "Qinglong Heavenly King",
+      "confidence": "zircon-only",
+      "evidence": "后期扩展地图怪，Mud3 EI2.0 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "monster",
+      "zircon_index": 483,
+      "zircon_en": "Otherworld Light Guard 2",
+      "confidence": "zircon-only",
+      "evidence": "异界/后期地图怪，Mud3 EI2.0 DAT 无"
+    }
+  ]
+}

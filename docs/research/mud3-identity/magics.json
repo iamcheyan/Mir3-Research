@@ -1,0 +1,1956 @@
+{
+  "kind": "magic",
+  "generated_at": "2026-10-03",
+  "sources": [
+    "/home/tetsuya/development/Mir3-Research/docs/research/mud3-dat-decoded/magic.json (records[].Name = GBK 官方中文名)",
+    "/tmp/sysdb_probe.json/MagicInfo.json (SystemDbProbe --json, 当前双库快照)",
+    "Mir3-Research/docs/research/mud3-dat-decoded/build_comparison.py (SKILL_MAP 起点)",
+    "Mir3-Research/docs/terminology/02-技能.md (仅作候选语境，非主证据)"
+  ],
+  "entries": [
+    {
+      "mud3_index": 1,
+      "mud3_name": "火球术",
+      "kind": "magic",
+      "zircon_index": 23,
+      "zircon_en": "Fire Ball",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 7/9/11 与 Zircon Fire Ball(23) 完全一致；Mud3 sch0 → Zircon Wizard/Fire"
+    },
+    {
+      "mud3_index": 2,
+      "mud3_name": "治愈术",
+      "kind": "magic",
+      "zircon_index": 59,
+      "zircon_en": "Heal",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 7/9/11 与 Zircon Heal(59) 完全一致；Mud3 sch4 → Zircon Taoist/Holy"
+    },
+    {
+      "mud3_index": 3,
+      "mud3_name": "基本剑术",
+      "kind": "magic",
+      "zircon_index": 1,
+      "zircon_en": "Swordsmanship",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 7/9/11 与 Zircon Swordsmanship(1) 完全一致；Mud3 sch7 → Zircon Warrior/Passive"
+    },
+    {
+      "mud3_index": 4,
+      "mud3_name": "精神力战法",
+      "kind": "magic",
+      "zircon_index": 60,
+      "zircon_en": "Spirit Sword",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 8/10/12 与 Zircon Spirit Sword(60) 完全一致；Mud3 sch7 → Zircon Taoist/Physical；Mud3 归战技系，Zircon 归道士 Spirit Sword；跨职业重归类，三元组仍一致"
+    },
+    {
+      "mud3_index": 5,
+      "mud3_name": "大火球",
+      "kind": "magic",
+      "zircon_index": 30,
+      "zircon_en": "Adamantine Fire Ball",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 15/17/19 与 Zircon Adamantine Fire Ball(30) 完全一致；Mud3 sch0 → Zircon Wizard/Fire；Zircon 英文 Adamantine Fire Ball 旧显示名误作金刚火球，官方名为大火球"
+    },
+    {
+      "mud3_index": 6,
+      "mud3_name": "施毒术",
+      "kind": "magic",
+      "zircon_index": 61,
+      "zircon_en": "Poison Dust",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 12/14/16 与 Zircon Poison Dust(61) 完全一致；Mud3 sch5 → Zircon Taoist/Dark"
+    },
+    {
+      "mud3_index": 7,
+      "mud3_name": "攻杀剑术",
+      "kind": "magic",
+      "zircon_index": 3,
+      "zircon_en": "Slaying",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 14/16/18 与 Zircon Slaying(3) 完全一致；Mud3 sch7 → Zircon Warrior/Passive"
+    },
+    {
+      "mud3_index": 8,
+      "mud3_name": "抗拒火环",
+      "kind": "magic",
+      "zircon_index": 27,
+      "zircon_en": "Repulsion",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 12/14/16 与 Zircon Repulsion(27) 完全一致；Mud3 sch3 → Zircon Wizard/Wind"
+    },
+    {
+      "mud3_index": 9,
+      "mud3_name": "地狱火",
+      "kind": "magic",
+      "zircon_index": 34,
+      "zircon_en": "Scorched Earth",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 20/22/24 与 Zircon Scorched Earth(34) 完全一致；Mud3 sch0 → Zircon Wizard/Fire"
+    },
+    {
+      "mud3_index": 10,
+      "mud3_name": "疾光电影",
+      "kind": "magic",
+      "zircon_index": 35,
+      "zircon_en": "Lightning Beam",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 21/23/25 与 Zircon Lightning Beam(35) 完全一致；Mud3 sch2 → Zircon Wizard/Lightning"
+    },
+    {
+      "mud3_index": 11,
+      "mud3_name": "雷电术",
+      "kind": "magic",
+      "zircon_index": 31,
+      "zircon_en": "Thunder Bolt",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 16/18/20 与 Zircon Thunder Bolt(31) 完全一致；Mud3 sch2 → Zircon Wizard/Lightning"
+    },
+    {
+      "mud3_index": 12,
+      "mud3_name": "刺杀剑术",
+      "kind": "magic",
+      "zircon_index": 4,
+      "zircon_en": "Thrusting",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 19/21/23 与 Zircon Thrusting(4) 完全一致；Mud3 sch7 → Zircon Warrior/Toggle"
+    },
+    {
+      "mud3_index": 13,
+      "mud3_name": "灵魂火符",
+      "kind": "magic",
+      "zircon_index": 62,
+      "zircon_en": "Explosive Talisman",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 13/15/17 与 Zircon Explosive Talisman(62) 完全一致；Mud3 sch5 → Zircon Taoist/Dark"
+    },
+    {
+      "mud3_index": 14,
+      "mud3_name": "幽灵盾",
+      "kind": "magic",
+      "zircon_index": 65,
+      "zircon_en": "Magic Resistance",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 21/23/25 与 Zircon Magic Resistance(65) 完全一致；Mud3 sch5 → Zircon Taoist/Dark"
+    },
+    {
+      "mud3_index": 15,
+      "mud3_name": "神圣战甲术",
+      "kind": "magic",
+      "zircon_index": 68,
+      "zircon_en": "Resilience",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 25/27/29 与 Zircon Resilience(68) 完全一致；Mud3 sch5 → Zircon Taoist/Dark"
+    },
+    {
+      "mud3_index": 16,
+      "mud3_name": "困魔咒",
+      "kind": "magic",
+      "zircon_index": 69,
+      "zircon_en": "Trap Octagon",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 27/29/31 与 Zircon Trap Octagon(69) 完全一致；Mud3 sch5 → Zircon Taoist/Dark"
+    },
+    {
+      "mud3_index": 17,
+      "mud3_name": "召唤骷髅",
+      "kind": "magic",
+      "zircon_index": 130,
+      "zircon_en": "Summon Skeleton",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 17/19/21 与 Zircon Summon Skeleton(130) 完全一致；Mud3 sch6 → Zircon Taoist/Phantom"
+    },
+    {
+      "mud3_index": 18,
+      "mud3_name": "隐身术",
+      "kind": "magic",
+      "zircon_index": 64,
+      "zircon_en": "Invisibility",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 20/22/24 与 Zircon Invisibility(64) 完全一致；Mud3 sch5 → Zircon Taoist/Dark"
+    },
+    {
+      "mud3_index": 19,
+      "mud3_name": "集体隐身术",
+      "kind": "magic",
+      "zircon_index": 66,
+      "zircon_en": "Mass Invisibility",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 23/25/27 与 Zircon Mass Invisibility(66) 完全一致；Mud3 sch5 → Zircon Taoist/Dark"
+    },
+    {
+      "mud3_index": 21,
+      "mud3_name": "瞬息移动",
+      "kind": "magic",
+      "zircon_index": 29,
+      "zircon_en": "Teleportation",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 14/16/18 与 Zircon Teleportation(29) 完全一致；Mud3 sch6 → Zircon Wizard/Phantom"
+    },
+    {
+      "mud3_index": 22,
+      "mud3_name": "火墙",
+      "kind": "magic",
+      "zircon_index": 38,
+      "zircon_en": "Fire Wall",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 24/26/28 与 Zircon Fire Wall(38) 完全一致；Mud3 sch0 → Zircon Wizard/Fire"
+    },
+    {
+      "mud3_index": 23,
+      "mud3_name": "爆裂火焰",
+      "kind": "magic",
+      "zircon_index": 42,
+      "zircon_en": "Fire Storm",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 32/34/36 与 Zircon Fire Storm(42) 完全一致；Mud3 sch0 → Zircon Wizard/Fire"
+    },
+    {
+      "mud3_index": 24,
+      "mud3_name": "地狱雷光",
+      "kind": "magic",
+      "zircon_index": 43,
+      "zircon_en": "Lightning Wave",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 33/35/37 与 Zircon Lightning Wave(43) 完全一致；Mud3 sch2 → Zircon Wizard/Lightning"
+    },
+    {
+      "mud3_index": 25,
+      "mud3_name": "半月弯刀",
+      "kind": "magic",
+      "zircon_index": 5,
+      "zircon_en": "Half Moon",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 24/26/28 与 Zircon Half Moon(5) 完全一致；Mud3 sch7 → Zircon Warrior/Toggle"
+    },
+    {
+      "mud3_index": 26,
+      "mud3_name": "烈火剑法",
+      "kind": "magic",
+      "zircon_index": 7,
+      "zircon_en": "Flaming Sword",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 32/34/36 与 Zircon Flaming Sword(7) 完全一致；Mud3 sch7 → Zircon Warrior/Active"
+    },
+    {
+      "mud3_index": 27,
+      "mud3_name": "野蛮冲撞",
+      "kind": "magic",
+      "zircon_index": 6,
+      "zircon_en": "Shoulder Dash",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 27/29/31 与 Zircon Shoulder Dash(6) 完全一致；Mud3 sch7 → Zircon Warrior/Active"
+    },
+    {
+      "mud3_index": 29,
+      "mud3_name": "群体治愈术",
+      "kind": "magic",
+      "zircon_index": 72,
+      "zircon_en": "Mass Heal",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 31/33/35 与 Zircon Mass Heal(72) 完全一致；Mud3 sch4 → Zircon Taoist/Holy"
+    },
+    {
+      "mud3_index": 30,
+      "mud3_name": "召唤神兽",
+      "kind": "magic",
+      "zircon_index": 133,
+      "zircon_en": "Summon Shinsu",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 30/32/34 与 Zircon Summon Shinsu(133) 完全一致；Mud3 sch6 → Zircon Taoist/Phantom"
+    },
+    {
+      "mud3_index": 31,
+      "mud3_name": "魔法盾",
+      "kind": "magic",
+      "zircon_index": 41,
+      "zircon_en": "Magic Shield",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 29/31/33 与 Zircon Magic Shield(41) 完全一致；Mud3 sch3 → Zircon Wizard/Phantom"
+    },
+    {
+      "mud3_index": 33,
+      "mud3_name": "冰咆哮",
+      "kind": "magic",
+      "zircon_index": 44,
+      "zircon_en": "Ice Storm",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 34/36/38 与 Zircon Ice Storm(44) 完全一致；Mud3 sch1 → Zircon Wizard/Ice"
+    },
+    {
+      "mud3_index": 34,
+      "mud3_name": "莲月剑法",
+      "kind": "magic",
+      "zircon_index": 9,
+      "zircon_en": "Blade Storm",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 38/40/42 与 Zircon Blade Storm(9) 完全一致；Mud3 sch7 → Zircon Warrior/Active"
+    },
+    {
+      "mud3_index": 35,
+      "mud3_name": "翔空剑法",
+      "kind": "magic",
+      "zircon_index": 8,
+      "zircon_en": "Dragon Rise",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 35/37/39 与 Zircon Dragon Rise(8) 完全一致；Mud3 sch7 → Zircon Warrior/Active；Zircon 英文 Dragon Rise 旧显示名误作龙影剑法，官方名为翔空剑法"
+    },
+    {
+      "mud3_index": 36,
+      "mud3_name": "空拳刀法",
+      "kind": "magic",
+      "zircon_index": 70,
+      "zircon_en": "Combat Kick",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 28/30/32 与 Zircon Combat Kick(70) 完全一致；Mud3 sch7 → Zircon Taoist/Physical；Mud3 归战技系，Zircon 归道士 Combat Kick；跨职业重归类，三元组仍一致"
+    },
+    {
+      "mud3_index": 37,
+      "mud3_name": "月魂断玉",
+      "kind": "magic",
+      "zircon_index": 63,
+      "zircon_en": "Evil Slayer",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 14/16/18 与 Zircon Evil Slayer(63) 完全一致；Mud3 sch4 → Zircon Taoist/Holy"
+    },
+    {
+      "mud3_index": 38,
+      "mud3_name": "月魂灵波",
+      "kind": "magic",
+      "zircon_index": 67,
+      "zircon_en": "Greater Evil Slayer",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 24/26/28 与 Zircon Greater Evil Slayer(67) 完全一致；Mud3 sch4 → Zircon Taoist/Holy"
+    },
+    {
+      "mud3_index": 39,
+      "mud3_name": "冰月神掌",
+      "kind": "magic",
+      "zircon_index": 25,
+      "zircon_en": "Ice Bolt",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 9/11/13 与 Zircon Ice Bolt(25) 完全一致；Mud3 sch1 → Zircon Wizard/Ice"
+    },
+    {
+      "mud3_index": 40,
+      "mud3_name": "冰月震天",
+      "kind": "magic",
+      "zircon_index": 32,
+      "zircon_en": "Ice Blades",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 17/19/21 与 Zircon Ice Blades(32) 完全一致；Mud3 sch1 → Zircon Wizard/Ice"
+    },
+    {
+      "mud3_index": 41,
+      "mud3_name": "霹雳掌",
+      "kind": "magic",
+      "zircon_index": 24,
+      "zircon_en": "Lightning Ball",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 8/10/12 与 Zircon Lightning Ball(24) 完全一致；Mud3 sch2 → Zircon Wizard/Lightning"
+    },
+    {
+      "mud3_index": 53,
+      "mud3_name": "冰沙掌",
+      "kind": "magic",
+      "zircon_index": 36,
+      "zircon_en": "Frozen Earth",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 22/24/26 与 Zircon Frozen Earth(36) 完全一致；Mud3 sch1 → Zircon Wizard/Ice"
+    },
+    {
+      "mud3_index": 67,
+      "mud3_name": "风掌",
+      "kind": "magic",
+      "zircon_index": 26,
+      "zircon_en": "Gust Blast",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 10/12/14 与 Zircon Gust Blast(26) 完全一致；Mud3 sch3 → Zircon Wizard/Wind"
+    },
+    {
+      "mud3_index": 72,
+      "mud3_name": "龙卷风",
+      "kind": "magic",
+      "zircon_index": 45,
+      "zircon_en": "Dragon Tornado",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 35/37/39 与 Zircon Dragon Tornado(45) 完全一致；Mud3 sch3 → Zircon Wizard/Wind"
+    },
+    {
+      "mud3_index": 73,
+      "mud3_name": "风震天",
+      "kind": "magic",
+      "zircon_index": 37,
+      "zircon_en": "Blow Earth",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 23/25/27 与 Zircon Blow Earth(37) 完全一致；Mud3 sch3 → Zircon Wizard/Wind"
+    },
+    {
+      "mud3_index": 74,
+      "mud3_name": "击风",
+      "kind": "magic",
+      "zircon_index": 33,
+      "zircon_en": "Cyclone",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 18/20/22 与 Zircon Cyclone(33) 完全一致；Mud3 sch3 → Zircon Wizard/Wind"
+    },
+    {
+      "mud3_index": 77,
+      "mud3_name": "回生术",
+      "kind": "magic",
+      "zircon_index": 74,
+      "zircon_en": "Resurrection",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 35/37/39 与 Zircon Resurrection(74) 完全一致；Mud3 sch4 → Zircon Taoist/Holy"
+    },
+    {
+      "mud3_index": 89,
+      "mud3_name": "强魔震法",
+      "kind": "magic",
+      "zircon_index": 71,
+      "zircon_en": "Elemental Superiority",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 29/31/33 与 Zircon Elemental Superiority(71) 完全一致；Mud3 sch5 → Zircon Taoist/Dark"
+    },
+    {
+      "mud3_index": 94,
+      "mud3_name": "猛虎强势",
+      "kind": "magic",
+      "zircon_index": 73,
+      "zircon_en": "Blood Lust",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 34/36/38 与 Zircon Blood Lust(73) 完全一致；Mud3 sch5 → Zircon Taoist/Dark"
+    },
+    {
+      "mud3_index": 102,
+      "mud3_name": "铁布衫",
+      "kind": "magic",
+      "zircon_index": 12,
+      "zircon_en": "Defiance",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 44/47/50 与 Zircon Defiance(12) 完全一致；Mud3 sch7 → Zircon Warrior/Active"
+    },
+    {
+      "mud3_index": 103,
+      "mud3_name": "十方斩",
+      "kind": "magic",
+      "zircon_index": 10,
+      "zircon_en": "Destructive Surge",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 40/43/46 与 Zircon Destructive Surge(10) 完全一致；Mud3 sch7 → Zircon Warrior/Toggle；Zircon 英文 Destructive Surge 旧显示名误作破血狂杀，官方名为十方斩"
+    },
+    {
+      "mud3_index": 105,
+      "mud3_name": "超强召唤骷髅",
+      "kind": "magic",
+      "zircon_index": 132,
+      "zircon_en": "Summon Jin Skeleton",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 33/35/37 与 Zircon Summon Jin Skeleton(132) 完全一致；Mud3 sch6 → Zircon Taoist/Phantom"
+    },
+    {
+      "mud3_index": 106,
+      "mud3_name": "破血狂杀",
+      "kind": "magic",
+      "zircon_index": 14,
+      "zircon_en": "Might",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 48/51/54 与 Zircon Might(14) 完全一致；Mud3 sch7 → Zircon Warrior/Active；Zircon 英文 Might 旧显示名误作蛮力，官方名为破血狂杀"
+    },
+    {
+      "mud3_index": 107,
+      "mud3_name": "乾坤大挪移",
+      "kind": "magic",
+      "zircon_index": 11,
+      "zircon_en": "Interchange",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 42/45/48 与 Zircon Interchange(11) 完全一致；Mud3 sch7 → Zircon Warrior/Active"
+    },
+    {
+      "mud3_index": 108,
+      "mud3_name": "斗转星移",
+      "kind": "magic",
+      "zircon_index": 13,
+      "zircon_en": "Beckon",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 46/49/52 与 Zircon Beckon(13) 完全一致；Mud3 sch7 → Zircon Warrior/Active；Zircon 英文 Beckon 旧显示名误作召唤，官方名为斗转星移"
+    },
+    {
+      "mud3_index": 110,
+      "mud3_name": "魄冰刺",
+      "kind": "magic",
+      "zircon_index": 46,
+      "zircon_en": "Greater Frozen Earth",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 38/41/44 与 Zircon Greater Frozen Earth(46) 完全一致；Mud3 sch1 → Zircon Wizard/Ice"
+    },
+    {
+      "mud3_index": 111,
+      "mud3_name": "怒神霹雳",
+      "kind": "magic",
+      "zircon_index": 47,
+      "zircon_en": "Chain Lightning",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 40/42/44 与 Zircon Chain Lightning(47) 完全一致；Mud3 sch2 → Zircon Wizard/Lightning"
+    },
+    {
+      "mud3_index": 113,
+      "mud3_name": "焰天火雨",
+      "kind": "magic",
+      "zircon_index": 48,
+      "zircon_en": "Meteor Shower",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 43/45/47 与 Zircon Meteor Shower(48) 完全一致；Mud3 sch0 → Zircon Wizard/Fire"
+    },
+    {
+      "mud3_index": 120,
+      "mud3_name": "云寂术",
+      "kind": "magic",
+      "zircon_index": 75,
+      "zircon_en": "Purification",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 38/41/44 与 Zircon Purification(75) 完全一致；Mud3 sch4 → Zircon Taoist/Holy"
+    },
+    {
+      "mud3_index": 121,
+      "mud3_name": "妙影无踪",
+      "kind": "magic",
+      "zircon_index": 76,
+      "zircon_en": "Transparency",
+      "confidence": "closed",
+      "evidence": "NeedLevel 三元组 43/45/47 与 Zircon Transparency(76) 完全一致；Mud3 sch5 → Zircon Taoist/Dark"
+    },
+    {
+      "mud3_index": 20,
+      "mud3_name": "诱惑之光",
+      "kind": "magic",
+      "zircon_index": 28,
+      "zircon_en": "Electric Shock",
+      "confidence": "pending",
+      "evidence": "三元组 13/15/17 与 Electric Shock(28) 一致，但语义不确定（Mud3 诱惑之光疑为魅惑系，Zircon Electric Shock 为闪电麻痹）；同一三元组另有 Explosive Talisman(62)"
+    },
+    {
+      "mud3_index": 32,
+      "mud3_name": "圣言术",
+      "kind": "magic",
+      "zircon_index": 39,
+      "zircon_en": "Expel Undead",
+      "confidence": "pending",
+      "evidence": "三元组 26/28/30 与 Expel Undead(39) 一致，但语义不确定（超度亡灵 vs 圣言术）；Zircon 侧另有译名亦作「圣言术」的 Celestial Light(77)"
+    },
+    {
+      "mud3_index": 104,
+      "mud3_name": "异形换位",
+      "kind": "magic",
+      "zircon_index": 40,
+      "zircon_en": "Geo Manipulation",
+      "confidence": "pending",
+      "evidence": "三元组 27/29/31 与 Geo Manipulation(40) 一致，但语义不确定（缩地术 vs 异形换位）"
+    },
+    {
+      "mud3_index": 112,
+      "mud3_name": "凝血离魂",
+      "kind": "magic",
+      "zircon_index": 77,
+      "zircon_en": "Celestial Light",
+      "confidence": "pending",
+      "evidence": "三元组 46/48/50 与 Celestial Light(77) 一致；该三元组 Mud3 两条 vs Zircon 两条，无法唯一定位（另一条为阴阳法环），语义亦不确定"
+    },
+    {
+      "mud3_index": 122,
+      "mud3_name": "阴阳法环",
+      "kind": "magic",
+      "zircon_index": 49,
+      "zircon_en": "Renounce",
+      "confidence": "pending",
+      "evidence": "三元组 46/48/50 与 Renounce(49) 一致，但语义不确定（迷魂咒 vs 阴阳法环）；同一三元组另有 Celestial Light(77)"
+    },
+    {
+      "mud3_index": 123,
+      "mud3_name": "移花接玉",
+      "kind": "magic",
+      "zircon_index": 18,
+      "zircon_en": "Reflect Damage",
+      "confidence": "pending",
+      "evidence": "无三元组锚点（Mud3 38/41/44 vs Zircon 53/58/63）；Zircon Reflect Damage(18) 的既定中文译名为移花接玉且同为道士系，但仅有术语证据、非主证据，故 pending"
+    },
+    {
+      "mud3_index": 28,
+      "mud3_name": "心灵启示",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "MagicSchool=99 特殊/未开放条目；Zircon 当前库无对应技能"
+    },
+    {
+      "mud3_index": 42,
+      "mud3_name": "聚集火球",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 44,
+      "mud3_name": "通天大火球",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 45,
+      "mud3_name": "连锁大火球",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 46,
+      "mud3_name": "火焰壁",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "MagicSchool=99 特殊/未开放条目；Zircon 当前库无对应技能"
+    },
+    {
+      "mud3_index": 48,
+      "mud3_name": "云石召唤",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "MagicSchool=99 特殊/未开放条目；Zircon 当前库无对应技能"
+    },
+    {
+      "mud3_index": 49,
+      "mud3_name": "聚集冰月神掌",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 51,
+      "mud3_name": "通天冰月神掌",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 52,
+      "mud3_name": "连锁冰月神掌",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 57,
+      "mud3_name": "聚集霹雳掌",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 58,
+      "mud3_name": "分散霹雳掌",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 59,
+      "mud3_name": "通天霹雳掌",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 60,
+      "mud3_name": "连锁霹雳掌",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 61,
+      "mud3_name": "聚集雷电术",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 62,
+      "mud3_name": "乱降雷电术",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "MagicSchool=99 特殊/未开放条目；Zircon 当前库无对应技能"
+    },
+    {
+      "mud3_index": 63,
+      "mud3_name": "霹雳壁",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "MagicSchool=99 特殊/未开放条目；Zircon 当前库无对应技能"
+    },
+    {
+      "mud3_index": 66,
+      "mud3_name": "霹雳圈",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "MagicSchool=99 特殊/未开放条目；Zircon 当前库无对应技能"
+    },
+    {
+      "mud3_index": 68,
+      "mud3_name": "聚集风掌",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 70,
+      "mud3_name": "通天风掌",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 71,
+      "mud3_name": "连锁风掌",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 78,
+      "mud3_name": "移花术",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "MagicSchool=99 特殊/未开放条目；Zircon 当前库无对应技能"
+    },
+    {
+      "mud3_index": 79,
+      "mud3_name": "聚集月魂断玉",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 80,
+      "mud3_name": "分散月魂断玉",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 81,
+      "mud3_name": "通天月魂断波",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 82,
+      "mud3_name": "连锁月魂断波",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 83,
+      "mud3_name": "聚集灵魂火符",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 84,
+      "mud3_name": "分散灵魂火符",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 85,
+      "mud3_name": "幽灵盾（火）",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 86,
+      "mud3_name": "幽灵盾（冰）",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 87,
+      "mud3_name": "幽灵盾（雷）",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 88,
+      "mud3_name": "幽灵盾（风）",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 90,
+      "mud3_name": "强魔震法（火）",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 91,
+      "mud3_name": "强魔震法（冰）",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 92,
+      "mud3_name": "强魔震法（雷）",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 93,
+      "mud3_name": "强魔震法（风）",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 95,
+      "mud3_name": "分身术",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "Mud3 独有，Zircon 当前库无对应技能"
+    },
+    {
+      "mud3_index": 96,
+      "mud3_name": "魔防系术",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 97,
+      "mud3_name": "魔防系术（火）",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 98,
+      "mud3_name": "魔防系术（冰）",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 99,
+      "mud3_name": "魔防系术（雷）",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 100,
+      "mud3_name": "魔防系术（风）",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": 101,
+      "mud3_name": "防御系术",
+      "kind": "magic",
+      "zircon_index": null,
+      "zircon_en": null,
+      "confidence": "missing",
+      "evidence": "装备附魔变体（MagicSchool=99，聚集/连锁/通天/分散/属性盾系）；Zircon 以装备词缀实现，无 1:1 技能"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 2,
+      "zircon_en": "Potion Mastery",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Passive；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 15,
+      "zircon_en": "Swift Blade",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Active；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 16,
+      "zircon_en": "Assault",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Active；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 17,
+      "zircon_en": "Endurance",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Active；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 19,
+      "zircon_en": "Fetter",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Active；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 20,
+      "zircon_en": "Advanced Destructive Surge",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Toggle；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 21,
+      "zircon_en": "Advanced Defiance",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Passive；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 22,
+      "zircon_en": "Advanced Reflect Damage",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Passive；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 50,
+      "zircon_en": "Tempest",
+      "confidence": "zircon-only",
+      "evidence": "Wizard/Wind；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 51,
+      "zircon_en": "Judgement Of Heaven",
+      "confidence": "zircon-only",
+      "evidence": "Wizard/Lightning；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 52,
+      "zircon_en": "Thunder Storm",
+      "confidence": "zircon-only",
+      "evidence": "Wizard/Lightning；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 53,
+      "zircon_en": "Fire Bounce",
+      "confidence": "zircon-only",
+      "evidence": "Wizard/None；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 54,
+      "zircon_en": "Elemental Hurricane",
+      "confidence": "zircon-only",
+      "evidence": "Wizard/Wind；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 55,
+      "zircon_en": "Superior Magic Shield",
+      "confidence": "zircon-only",
+      "evidence": "Wizard/Phantom；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 56,
+      "zircon_en": "Burning",
+      "confidence": "zircon-only",
+      "evidence": "Wizard/Fire；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 57,
+      "zircon_en": "Shock",
+      "confidence": "zircon-only",
+      "evidence": "Wizard/Lightning；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 58,
+      "zircon_en": "Lightning Strike",
+      "confidence": "zircon-only",
+      "evidence": "Wizard/Lightning；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 78,
+      "zircon_en": "Empowered Healing",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Holy；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 79,
+      "zircon_en": "Life Steal",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Holy；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 80,
+      "zircon_en": "Improved Explosive Talisman",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Dark；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 81,
+      "zircon_en": "Empowered Poison Dust",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Dark；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 82,
+      "zircon_en": "Cursed Doll",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Phantom；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 83,
+      "zircon_en": "Thunder Kick",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Physical；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 84,
+      "zircon_en": "Soul Resonance",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Holy；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 85,
+      "zircon_en": "Parasite",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Dark；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 86,
+      "zircon_en": "Spiritualism",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Dark；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 87,
+      "zircon_en": "Willow Dance",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 88,
+      "zircon_en": "Vine Tree Dance",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 89,
+      "zircon_en": "Discipline",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 90,
+      "zircon_en": "Poisonous Cloud",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 91,
+      "zircon_en": "Full Bloom",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Kill；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 92,
+      "zircon_en": "Cloak",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Assassination；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 93,
+      "zircon_en": "White Lotus",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Kill；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 94,
+      "zircon_en": "Calamity Of Full Moon",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Kill；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 95,
+      "zircon_en": "Wraith Grip",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 96,
+      "zircon_en": "Red Lotus",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Kill；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 97,
+      "zircon_en": "Hell Fire",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Kill；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 98,
+      "zircon_en": "Pledge Of Blood",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Assassination；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 99,
+      "zircon_en": "Rake",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Assassination；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 100,
+      "zircon_en": "Sweetbrier",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Kill；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 101,
+      "zircon_en": "Summon Puppet",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Assassination；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 102,
+      "zircon_en": "Karma",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Assassination；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 103,
+      "zircon_en": "Touch Of The Departed",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 104,
+      "zircon_en": "Waning Moon",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Assassination；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 105,
+      "zircon_en": "Ghost Walk",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Assassination；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 106,
+      "zircon_en": "Elemental Puppet",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Assassination；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 107,
+      "zircon_en": "Rejuvenation",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 108,
+      "zircon_en": "Resolution",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Assassination；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 109,
+      "zircon_en": "Change Of Seasons",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/None；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 110,
+      "zircon_en": "Release",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Assassination；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 111,
+      "zircon_en": "Flame Splash",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Kill；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 112,
+      "zircon_en": "Bloody Flower",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Kill；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 113,
+      "zircon_en": "The New Beginning",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 114,
+      "zircon_en": "Dance Of Swallow",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Kill；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 115,
+      "zircon_en": "Dark Conversion",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 116,
+      "zircon_en": "Dragon Repulse",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 117,
+      "zircon_en": "Advent Of Demon",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Kill；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 118,
+      "zircon_en": "Advent Of Devil",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Assassination；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 119,
+      "zircon_en": "Abyss",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 120,
+      "zircon_en": "Flash Of Light",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Kill；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 121,
+      "zircon_en": "Stealth",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Assassination；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 122,
+      "zircon_en": "Evasion",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 123,
+      "zircon_en": "Raging Wind",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 124,
+      "zircon_en": "Empowered Explosive Talisman",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/None；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 125,
+      "zircon_en": "Empowered Evil Slayer",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/None；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 126,
+      "zircon_en": "Empowered Purification",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/None；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 127,
+      "zircon_en": "Empowered Resurrection",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/None；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 128,
+      "zircon_en": "Demon Explosion",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Phantom；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 129,
+      "zircon_en": "Strength Of Faith",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Phantom；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 131,
+      "zircon_en": "Mirror Image",
+      "confidence": "zircon-only",
+      "evidence": "Wizard/None；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 134,
+      "zircon_en": "Summon Demonic Creature",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Phantom；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 135,
+      "zircon_en": "Advanced Potion Mastery",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/None；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 136,
+      "zircon_en": "_Blank_",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/None；占位条目 _Blank_（未使用）"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 137,
+      "zircon_en": "Ice Rain",
+      "confidence": "zircon-only",
+      "evidence": "Wizard/Ice；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 138,
+      "zircon_en": "Mass Beckon",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Active；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 139,
+      "zircon_en": "Frost Bite",
+      "confidence": "zircon-only",
+      "evidence": "Wizard/Ice；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 140,
+      "zircon_en": "Infection",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Dark；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 141,
+      "zircon_en": "Massacre",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/None；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 142,
+      "zircon_en": "Seismic Slam",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Active；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 143,
+      "zircon_en": "Demonic Recovery",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Phantom；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 144,
+      "zircon_en": "Asteroid",
+      "confidence": "zircon-only",
+      "evidence": "Wizard/Fire；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 145,
+      "zircon_en": "Art of Shadows",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/None；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 146,
+      "zircon_en": "Invincibility",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Active；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 147,
+      "zircon_en": "Crushing Wave",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Active；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 148,
+      "zircon_en": "Neutralize",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Dark；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 149,
+      "zircon_en": "Empowered Neutralize",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/None；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 150,
+      "zircon_en": "Dark Soul Prison",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Dark；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 151,
+      "zircon_en": "Searing Light",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Holy；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 152,
+      "zircon_en": "Defensive Mastery",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Passive；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 153,
+      "zircon_en": "Physical Immunity",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Passive；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 154,
+      "zircon_en": "Magic Immunity",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Passive；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 155,
+      "zircon_en": "Defensive Blow",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Active；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 156,
+      "zircon_en": "Elemental Swords",
+      "confidence": "zircon-only",
+      "evidence": "Warrior/Active；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 157,
+      "zircon_en": "Storm",
+      "confidence": "zircon-only",
+      "evidence": "Wizard/None；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 158,
+      "zircon_en": "Tornado",
+      "confidence": "zircon-only",
+      "evidence": "Wizard/Wind；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 159,
+      "zircon_en": "Empowered Celestial Light",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Holy；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 160,
+      "zircon_en": "Corpse Exploder",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Dark；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 161,
+      "zircon_en": "Summon Dead",
+      "confidence": "zircon-only",
+      "evidence": "Taoist/Phantom；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 162,
+      "zircon_en": "Dragon Blood",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Kill；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 163,
+      "zircon_en": "Fatal Blow",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Kill；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 164,
+      "zircon_en": "Last Stand",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 165,
+      "zircon_en": "Magic Combustion",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 166,
+      "zircon_en": "Vitality",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 167,
+      "zircon_en": "Chain",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 168,
+      "zircon_en": "Concentration",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 169,
+      "zircon_en": "Dual Weapon Skills",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 170,
+      "zircon_en": "Containment",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 171,
+      "zircon_en": "Dragon Wave",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Kill；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 172,
+      "zircon_en": "Hemorrhage",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Kill；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 173,
+      "zircon_en": "Burning Fire",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Kill；Zircon 后期/强化技能，Mud3 DAT 无"
+    },
+    {
+      "mud3_index": null,
+      "mud3_name": null,
+      "kind": "magic",
+      "zircon_index": 174,
+      "zircon_en": "Chain Of Fire",
+      "confidence": "zircon-only",
+      "evidence": "Assassin/Atrocity；Zircon 后期/强化技能，Mud3 DAT 无"
+    }
+  ]
+}
