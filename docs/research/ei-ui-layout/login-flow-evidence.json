@@ -61,6 +61,7 @@
         {"expression": "owner+0x5B0", "path": "Data/Interface1c.wil", "load_va": "0x40273E"}
       ],
       "background_dat": {"va": "0x40278A-0x4027BD", "detail": "load .\\Data\\wemade.dat (0x47AA8C) into busy-object +0x6F4; SetRect(+0x740, 0, 0x3C, 0x280, 0x1A4)", "evidence_level": "primary-static"},
+      "login_background_dat": {"va": "0x402D02-0x402D42", "detail": "load .\\Data\\ei_login.dat (0x47AAD0) into the SAME busy-object +0x6F4 as wemade.dat via 0x45BF30 + 0x45C4C0; SetRect(+0x740, 0, 0x3C, 0x280, 0x1A4) = (0,60)-(640,420) -> 640x360 1:1 in the 640x480 screen area, identical rect to wemade.dat (the two share the player slot: logo first, then the long login flyover)", "evidence_level": "primary-static"},
       "edit_control": {
         "va": "0x402884",
         "detail": "0x4511D0(0x8AA488, 0x14) creates the child EDIT (class 0x47C438 'EDIT'); account rect SetRect(+0xF44, 0x80, 0x1B8, 0xE3, 0x1C6)=(128,440,227,454), password rect SetRect(+0xF54, 0x146, 0x1B8, 0x1A9, 0x1C6)=(326,440,425,454); edit repositioned by login submit via MoveWindow + [0x8AB7F0]/[0x8AB7F4]",
@@ -197,6 +198,7 @@
     {"va": "0x47D7E0", "text": ".\\Data\\CreateChr.dat", "encoding": "ascii", "use": "create-char dialog data (0x45BF30 arg; phase-1 and case 0x209)", "evidence_level": "primary-static"},
     {"va": "0x47D7C8", "text": ".\\Data\\StartGame.dat", "encoding": "ascii", "use": "enter-game dialog data (case 0x20D, phase 4)", "evidence_level": "primary-static"},
     {"va": "0x47AA8C", "text": ".\\Data\\wemade.dat", "encoding": "ascii", "use": "char-select background animation (ctor +0x6F4)", "evidence_level": "primary-static"},
+    {"va": "0x47AAD0", "text": ".\\Data\\ei_login.dat", "encoding": "ascii", "use": "login background animation (0x45BF30 arg at 0x402D17; same +0x6F4 slot and rect as wemade.dat)", "evidence_level": "primary-static"},
     {"va": "0x47D60C", "text": "CreateChr.wav", "encoding": "ascii", "use": "sound string -> +0x113C (ctor 0x45B6D0)", "evidence_level": "primary-static"},
     {"va": "0x47D5F8", "text": "SelChr.wav", "encoding": "ascii", "use": "sound string -> +0x1140", "evidence_level": "primary-static"},
     {"va": "0x47D5E0", "text": "StartGame.wav", "encoding": "ascii", "use": "sound string -> +0x1144", "evidence_level": "primary-static"},

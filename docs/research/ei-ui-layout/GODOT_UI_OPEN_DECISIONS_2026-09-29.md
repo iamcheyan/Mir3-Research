@@ -23,6 +23,39 @@
 | A-11 | legacy 行会窗去掉「创建行会」页 | **去掉了**（`752a41cc`） | 原版 id4 的 9 个控件里没有建会入口；**原版建会是 GM 指令** `AddGuild <gname> <mastername>`（`ObjBase.pas:24263-24266` → `CmdCreateGuild`，`:19835`），普通玩家从 UI 也建不了会。Zircon 侧等价物是 `@createGuild`（`ServerLibrary/Envir/Commands/Command/Admin/CreateGuild.cs`）→ **能力未被移除**（与原版同）。故 legacy 隐藏现代建会页属 1:1 修复，非功能回归。真机截图佐证（`02-guild-window-after-F.png`） | `752a41cc` |
 | A-12 | `WindowManager` 对已释放窗口崩溃 | 加 `IsAlive` 守卫（`Open/Close/Toggle/CloseTop/BringToFront/RefreshZOrder`） | 真机复现：按 R 关聊天窗时 `OpenWindows` 残留一个已释放窗口 → `RefreshZOrder` 写 `ZIndex` 抛 `ObjectDisposedException`（`WindowManager.cs:79`），整轮 Z 序刷新中断。属健壮性缺陷，非 UI 布局差异 | `607418c1` |
 | A-13 | F350 聊天窗位置 | 改为 EI 构造实参 **(114,76)** | `layout.json` / main-init 实参 `0x427839` 给 `window.chat-pop` (114,76)；`LayoutHud` 末尾的既有约定就是「旧版窗口坐标来自 exe 构造参数、**不是居中布局**」，而 `LegacyChatDialog` 是**唯一漏掉**的一个（构造期用屏幕居中 → (114,106)）。x 巧合同为 114；y 差 30：居中值使窗口底边 106+388=494 压进 HUD 顶边 465 约 29px，原值 76 时底边 464 正好贴在 HUD 之上。真机截图量到 (114,~104)，与居中值一致、与证据不符 | 见 §11 |
+| A-14 | StartGame 过场窗口尺寸 | 窗口切换点从「过场开始前」挪到**过场播完之后**（`SelectScene.OnLegacyStartGameCutsceneFinished`） | StartGame.dat 是 640×480 全屏过场，属于 **mode 2**（预游戏屏幕区 640×480，`0x45D270(&0x8AB7A8,0x280,0x1E0,...)`）；原版顺序是「phase 4 播过场 → `0x4570A0` enter-game → mode 3 = 800×600」。提前切导致 640×480 过场画进 800×600 窗口左上角，右侧 160px / 下方 120px 全黑（真机截图内容 bbox `(0,0)-(639,479)`）。改后过场整幅铺满窗口（bbox `(0,0)-(639,479)` 窗口 640×480） | 见 §本轮分辨率 |
+| A-15 | legacy 启动窗口尺寸抖动 | ① 新增 autoload `Scripts/BootWindow.cs`（排在 `NetworkManager` 之前）：第一帧前把窗口设成预游戏屏幕区 640×480；② `ClientSettings.ApplyDisplaySettings` 在 legacy 下**不再**按 `GameSize` 设窗口；③ `WindowSetMode` 仅在模式真的变化时才调 | 实测（1920×1200 显示、裸 `--window`）：窗口 1024×768（project.godot）→ 1440×900（`--window` = 屏幕 75%）→ 640×480，`[UiScaler]` 在 20ms 内连打四行；开机 splash 也一直停在 1024×768。`WindowSetMode(Windowed)` 会把窗口恢复成「进入该模式时记录的尺寸」（1024×768），是残留 2ms 抖动的来源 | 见 §本轮分辨率 |
+
+### 本轮分辨率闭合（2026-10-03）：原版屏幕区 + 4 段启动动画的落点
+
+原版屏幕区**分 mode 两档**（`login-flow-evidence.json::mode_state_machine`，均由 `0x45D270` 设定）：
+
+| mode | 阶段 | 屏幕区 | 证据 |
+|---|---|---|---|
+| 0 / 2 | 登录 / 服务器列表 / 选角 / 建角 / CreateChr / StartGame 过场 | **640×480** | `0x419BF9 → 0x45D270(&0x8AB7A8, 0x280, 0x1E0, 0x10, 1\|2)` |
+| 3 | 进游戏 | **800×600** | `0x419377 → 0x45D270(..., 0x320, 0x258, 0x10)` |
+
+启动动画**全部 1:1、按原生尺寸绘制，原版不做任何缩放**（`Indeo5` 原文件 `ffprobe` 实测尺寸与
+`.ogv` 转换件一致）：
+
+| 动画 | 原生尺寸 | 原版落点 | 证据 |
+|---|---|---|---|
+| `wemade.dat` | 640×360 | (0,60)，与 ei_login 共用 `+0x6F4` 播放槽 | `SetRect(+0x740, 0, 0x3C, 0x280, 0x1A4)` @`0x4027BD` |
+| `ei_login.dat` | 640×360 | (0,60)，同上（**本轮新解出加载点** `0x402D02-0x402D42`） | 同上 rect；字符串 `0x47AAD0` |
+| `CreateChr.dat` | 640×480 | 全屏 (0,0)，选角屏 phase 1 | `0x45BF30(&+0x780,...,0x47D7E0,1)` |
+| `StartGame.dat` | 640×480 | 全屏 (0,0)，选角屏 phase 4 | `0x459465` → `0x45BF30(...,0x47D7C8,1)` |
+
+**640×360 在 640×480 里的上下黑带是原版行为，不是 bug**：用户提供的原版登录屏截图
+`docs/research/ei2-research/images/iamcheyan/SCREEN0001.jpg` 逐行采样显示 y≈0–20（≈0–62 原像素）与
+y≈132–153（≈411–480）为纯黑、中间才是画面，宽度方向铺满 → 正是 640×360 @ y=60。
+
+真机验收（800×600 窗口 + Xvfb `:101`，xwd 精确抓窗）：启动到进游戏逐帧采样，窗口尺寸序列
+**只有 640×480 → 800×600**；WeMade logo / ei_Login / 选角 / StartGame 过场全部在 640×480 全宽铺满，
+过场 bbox `(0,0)-(639,479)`；无 1024×768、无 1440×900、无「640×480 内容落在 800×600 窗口」的中间帧。
+`--ui-audit` legacy `PASS`；`--zircon-ui` 窗口仍 1440×900、正常进游戏（未受影响）。
+**残余（非阻塞）**：`[UiScaler]` 仍会打出一条 `viewport=(1024,768)` 的 2ms 内部抖动
+（Godot 根 Window 与 X11 ConfigureNotify 的同步竞态）；同一时段 `xwd` 逐帧采样窗口尺寸**始终**是
+640×480，窗口本身没有被改回 1024×768。
 
 ## B. 待决（需要用户决策或需要目标资源/协议，本轮不擅自改）
 
