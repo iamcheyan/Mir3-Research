@@ -57,6 +57,16 @@ y≈132–153（≈411–480）为纯黑、中间才是画面，宽度方向铺�
 （Godot 根 Window 与 X11 ConfigureNotify 的同步竞态）；同一时段 `xwd` 逐帧采样窗口尺寸**始终**是
 640×480，窗口本身没有被改回 1024×768。
 
+**放大倍率路径（`ZIRCON_UI_SCALE` / `./login_game.sh 2x` / HiDPI）**：倍率由
+`UiScaler.EffectiveScale` 统一给出（视口推算值，被 `ZIRCON_UI_SCALE` 覆盖），
+`ApplyLegacyPregameWindow` 也按同一倍率开窗（`ResolveLegacyDisplayScale`），
+挂在**根 Viewport**、不经过 `_uiLayer` 的 StartGame 过场自己套
+`ApplyUiScalerTransform`（缩放 + 居中偏移）。修前实测两种不一致：
+窗口仍按 1x 开 → 2 倍内容画进 640×480 再裁掉（登录视频 (0,60) 变 (0,120)-(1280,840)）；
+过场用 `ComputeScale`（1280×960 视图算 1.6）而内容用强制 2 → 过场只有 `(0,0)-(1023,767)`。
+修后 `ZIRCON_UI_SCALE=2`：窗口 1280×960、登录视频落 `(0,120)`、过场 bbox `(0,0)-(1279,959)`
+铺满、游戏窗口 1600×1200；`scale=1` 路径回归不变（640×480 → 800×600）。
+
 ## B. 待决（需要用户决策或需要目标资源/协议，本轮不擅自改）
 
 ### B-1 窗口「点击背景」的语义 —— **降级为 `UNVERIFIED`（我上轮的判定未经验证）**
