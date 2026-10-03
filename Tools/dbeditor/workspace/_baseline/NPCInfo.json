@@ -1787,10 +1787,10 @@
     },
     {
       "Index": 142,
-      "_Identity": "01 / 肉店金老板 / 01Meet_Kugkyung",
+      "_Identity": "01 / 01 / 肉店金老板 / 01Meet_Kugkyung",
       "Region": {
         "Index": 1752,
-        "Name": "01 / 肉店金老板"
+        "Name": "01 / 01 / 肉店金老板"
       },
       "NPCName": "01Meet_Kugkyung",
       "Image": 11,
@@ -1815,10 +1815,10 @@
     },
     {
       "Index": 144,
-      "_Identity": "01 / 顺子 / 03Armor_Kugkyung",
+      "_Identity": "01 / 01 / 顺子 / 03Armor_Kugkyung",
       "Region": {
         "Index": 1754,
-        "Name": "01 / 顺子"
+        "Name": "01 / 01 / 顺子"
       },
       "NPCName": "03Armor_Kugkyung",
       "Image": 7,
@@ -1829,10 +1829,10 @@
     },
     {
       "Index": 145,
-      "_Identity": "01 / 尹老人 / 04Potion_Kugkyung",
+      "_Identity": "01 / 01 / 尹老人 / 04Potion_Kugkyung",
       "Region": {
         "Index": 1755,
-        "Name": "01 / 尹老人"
+        "Name": "01 / 01 / 尹老人"
       },
       "NPCName": "04Potion_Kugkyung",
       "Image": 1,
@@ -1857,10 +1857,10 @@
     },
     {
       "Index": 147,
-      "_Identity": "01 / 赵老头 / 06Inn_Kugkyung",
+      "_Identity": "01 / 01 / 赵老头 / 06Inn_Kugkyung",
       "Region": {
         "Index": 1757,
-        "Name": "01 / 赵老头"
+        "Name": "01 / 01 / 赵老头"
       },
       "NPCName": "06Inn_Kugkyung",
       "Image": 9,
@@ -1885,10 +1885,10 @@
     },
     {
       "Index": 149,
-      "_Identity": "01 / 晓丽 / 08Accessory_Kugkyung",
+      "_Identity": "01 / 01 / 晓丽 / 08Accessory_Kugkyung",
       "Region": {
         "Index": 1759,
-        "Name": "01 / 晓丽"
+        "Name": "01 / 01 / 晓丽"
       },
       "NPCName": "08Accessory_Kugkyung",
       "Image": 4,
@@ -1913,10 +1913,10 @@
     },
     {
       "Index": 151,
-      "_Identity": "01 / 栗子商人 / 10ChestnutMarket_Kugkyung",
+      "_Identity": "01 / 01 / 栗子商人 / 10ChestnutMarket_Kugkyung",
       "Region": {
         "Index": 1761,
-        "Name": "01 / 栗子商人"
+        "Name": "01 / 01 / 栗子商人"
       },
       "NPCName": "10ChestnutMarket_Kugkyung",
       "Image": 3,
@@ -1941,10 +1941,10 @@
     },
     {
       "Index": 153,
-      "_Identity": "01 / 六面神石 / 13Move_Kugkyung2",
+      "_Identity": "01 / 01 / 六面神石 / 13Move_Kugkyung2",
       "Region": {
         "Index": 1763,
-        "Name": "01 / 六面神石"
+        "Name": "01 / 01 / 六面神石"
       },
       "NPCName": "13Move_Kugkyung2",
       "Image": 56,
@@ -1969,10 +1969,10 @@
     },
     {
       "Index": 155,
-      "_Identity": "01 / 万事通 / 14Doctor_Kugkyung",
+      "_Identity": "01 / 01 / 万事通 / 14Doctor_Kugkyung",
       "Region": {
         "Index": 1765,
-        "Name": "01 / 万事通"
+        "Name": "01 / 01 / 万事通"
       },
       "NPCName": "14Doctor_Kugkyung",
       "Image": 2,
@@ -1981,15 +1981,44 @@
       "GoodsIndex": 0,
       "MapIcon": "None",
       "EntryPage": {
-        "Index": 339
-      }
+        "Index": 339,
+        "Name": "万事通·接取页"
+      },
+      "StartQuests": [
+        {
+          "Index": 63,
+          "Name": "望海楼之约（战士）"
+        },
+        {
+          "Index": 64,
+          "Name": "望海楼之约（法师）"
+        },
+        {
+          "Index": 65,
+          "Name": "望海楼之约（道士）"
+        }
+      ],
+      "FinishQuests": [
+        {
+          "Index": 63,
+          "Name": "望海楼之约（战士）"
+        },
+        {
+          "Index": 64,
+          "Name": "望海楼之约（法师）"
+        },
+        {
+          "Index": 65,
+          "Name": "望海楼之约（道士）"
+        }
+      ]
     },
     {
       "Index": 156,
-      "_Identity": "01 / 上官小姐 / 14Quest_KugKyung1",
+      "_Identity": "01 / 01 / 上官小姐 / 14Quest_KugKyung1",
       "Region": {
-        "Index": 1766,
-        "Name": "01 / 上官小姐"
+        "Index": 6306,
+        "Name": "01 / 01 / 上官小姐"
       },
       "NPCName": "14Quest_KugKyung1",
       "Image": 12,
@@ -2028,10 +2057,10 @@
     },
     {
       "Index": 159,
-      "_Identity": "01_001 / 云发 / 14Quest_KugKyung",
+      "_Identity": "01_001 / 01_001 / 云发 / 14Quest_KugKyung",
       "Region": {
         "Index": 1769,
-        "Name": "01_001 / 云发"
+        "Name": "01_001 / 01_001 / 云发"
       },
       "NPCName": "14Quest_KugKyung",
       "Image": 18,
@@ -2042,10 +2071,10 @@
     },
     {
       "Index": 160,
-      "_Identity": "01 / 龙血先生 / 15Magic_Kugkyung1",
+      "_Identity": "01 / 01 / 龙血先生 / 15Magic_Kugkyung1",
       "Region": {
         "Index": 1770,
-        "Name": "01 / 龙血先生"
+        "Name": "01 / 01 / 龙血先生"
       },
       "NPCName": "15Magic_Kugkyung1",
       "Image": 46,
@@ -2054,15 +2083,28 @@
       "GoodsIndex": 0,
       "MapIcon": "None",
       "EntryPage": {
-        "Index": 340
-      }
+        "Index": 340,
+        "Name": "龙血先生·接取页"
+      },
+      "StartQuests": [
+        {
+          "Index": 66,
+          "Name": "刺杀剑术觉醒"
+        }
+      ],
+      "FinishQuests": [
+        {
+          "Index": 66,
+          "Name": "刺杀剑术觉醒"
+        }
+      ]
     },
     {
       "Index": 161,
-      "_Identity": "01_003 / 龙血先生 / 15Magic_KugKyung",
+      "_Identity": "01_003 / 01_003 / 龙血先生 / 15Magic_KugKyung",
       "Region": {
         "Index": 1771,
-        "Name": "01_003 / 龙血先生"
+        "Name": "01_003 / 01_003 / 龙血先生"
       },
       "NPCName": "15Magic_KugKyung",
       "Image": 46,
@@ -2073,10 +2115,10 @@
     },
     {
       "Index": 162,
-      "_Identity": "01 / 黄河大侠 / 15Magic_Kugkyung2",
+      "_Identity": "01 / 01 / 黄河大侠 / 15Magic_Kugkyung2",
       "Region": {
         "Index": 1772,
-        "Name": "01 / 黄河大侠"
+        "Name": "01 / 01 / 黄河大侠"
       },
       "NPCName": "15Magic_Kugkyung2",
       "Image": 46,
@@ -2087,10 +2129,10 @@
     },
     {
       "Index": 163,
-      "_Identity": "01 / 满多 / 17MobRush_kugkyung",
+      "_Identity": "01 / 01 / 满多 / 17MobRush_kugkyung",
       "Region": {
         "Index": 1773,
-        "Name": "01 / 满多"
+        "Name": "01 / 01 / 满多"
       },
       "NPCName": "17MobRush_kugkyung",
       "Image": 2,
@@ -2101,10 +2143,10 @@
     },
     {
       "Index": 164,
-      "_Identity": "01 / 啊彬 / 09CancleWeapon",
+      "_Identity": "01 / 01 / 啊彬 / 09CancleWeapon",
       "Region": {
         "Index": 1774,
-        "Name": "01 / 啊彬"
+        "Name": "01 / 01 / 啊彬"
       },
       "NPCName": "09CancleWeapon",
       "Image": 28,
@@ -2129,10 +2171,10 @@
     },
     {
       "Index": 166,
-      "_Identity": "02 / 铁匠师傅 / 02Weapon_Eunhang",
+      "_Identity": "02 / 02 / 铁匠师傅 / 02Weapon_Eunhang",
       "Region": {
         "Index": 1776,
-        "Name": "02 / 铁匠师傅"
+        "Name": "02 / 02 / 铁匠师傅"
       },
       "NPCName": "02Weapon_Eunhang",
       "Image": 0,
@@ -2143,10 +2185,10 @@
     },
     {
       "Index": 167,
-      "_Identity": "02 / 布店晓芙 / 03Armor_Eunhang",
+      "_Identity": "02 / 02 / 布店晓芙 / 03Armor_Eunhang",
       "Region": {
         "Index": 1777,
-        "Name": "02 / 布店晓芙"
+        "Name": "02 / 02 / 布店晓芙"
       },
       "NPCName": "03Armor_Eunhang",
       "Image": 7,
@@ -2157,10 +2199,10 @@
     },
     {
       "Index": 168,
-      "_Identity": "02 / 许中医 / 04Potion_Eunhang",
+      "_Identity": "02 / 02 / 许中医 / 04Potion_Eunhang",
       "Region": {
         "Index": 1778,
-        "Name": "02 / 许中医"
+        "Name": "02 / 02 / 许中医"
       },
       "NPCName": "04Potion_Eunhang",
       "Image": 1,
@@ -2171,10 +2213,10 @@
     },
     {
       "Index": 169,
-      "_Identity": "02 / 药剂师 / 04PotionMake_Euhang",
+      "_Identity": "02 / 02 / 药剂师 / 04PotionMake_Euhang",
       "Region": {
         "Index": 1779,
-        "Name": "02 / 药剂师"
+        "Name": "02 / 02 / 药剂师"
       },
       "NPCName": "04PotionMake_Euhang",
       "Image": 9,
@@ -2185,10 +2227,10 @@
     },
     {
       "Index": 170,
-      "_Identity": "02 / 才石 / 05Book_Eunhang",
+      "_Identity": "02 / 02 / 才石 / 05Book_Eunhang",
       "Region": {
         "Index": 1780,
-        "Name": "02 / 才石"
+        "Name": "02 / 02 / 才石"
       },
       "NPCName": "05Book_Eunhang",
       "Image": 2,
@@ -2199,10 +2241,10 @@
     },
     {
       "Index": 171,
-      "_Identity": "02 / 啊雯 / 06Inn_Eunhang",
+      "_Identity": "02 / 02 / 啊雯 / 06Inn_Eunhang",
       "Region": {
         "Index": 1781,
-        "Name": "02 / 啊雯"
+        "Name": "02 / 02 / 啊雯"
       },
       "NPCName": "06Inn_Eunhang",
       "Image": 6,
@@ -2213,10 +2255,10 @@
     },
     {
       "Index": 172,
-      "_Identity": "02 / 地摊老周 / 07Grocery_Eunhang",
+      "_Identity": "02 / 02 / 地摊老周 / 07Grocery_Eunhang",
       "Region": {
         "Index": 1782,
-        "Name": "02 / 地摊老周"
+        "Name": "02 / 02 / 地摊老周"
       },
       "NPCName": "07Grocery_Eunhang",
       "Image": 3,
@@ -2227,10 +2269,10 @@
     },
     {
       "Index": 173,
-      "_Identity": "02 / 晓兰 / 08Accessory_Eunhang",
+      "_Identity": "02 / 02 / 晓兰 / 08Accessory_Eunhang",
       "Region": {
         "Index": 1783,
-        "Name": "02 / 晓兰"
+        "Name": "02 / 02 / 晓兰"
       },
       "NPCName": "08Accessory_Eunhang",
       "Image": 4,
@@ -2241,10 +2283,10 @@
     },
     {
       "Index": 174,
-      "_Identity": "02 / 啊勋 / 10Material_Eunhang",
+      "_Identity": "02 / 02 / 啊勋 / 10Material_Eunhang",
       "Region": {
         "Index": 1784,
-        "Name": "02 / 啊勋"
+        "Name": "02 / 02 / 啊勋"
       },
       "NPCName": "10Material_Eunhang",
       "Image": 34,
@@ -2255,10 +2297,10 @@
     },
     {
       "Index": 175,
-      "_Identity": "02 / 栗子商人 / 10ChestnutMarket_Eunhang",
+      "_Identity": "02 / 02 / 栗子商人 / 10ChestnutMarket_Eunhang",
       "Region": {
         "Index": 1785,
-        "Name": "02 / 栗子商人"
+        "Name": "02 / 02 / 栗子商人"
       },
       "NPCName": "10ChestnutMarket_Eunhang",
       "Image": 3,
@@ -2269,10 +2311,10 @@
     },
     {
       "Index": 176,
-      "_Identity": "02 / 六面神石 / 13Move_Eunhang",
+      "_Identity": "02 / 02 / 六面神石 / 13Move_Eunhang",
       "Region": {
         "Index": 1786,
-        "Name": "02 / 六面神石"
+        "Name": "02 / 02 / 六面神石"
       },
       "NPCName": "13Move_Eunhang",
       "Image": 56,
@@ -2311,10 +2353,10 @@
     },
     {
       "Index": 179,
-      "_Identity": "02 / 霹雳尊者 / 15Magic_Eunhang1",
+      "_Identity": "02 / 02 / 霹雳尊者 / 15Magic_Eunhang1",
       "Region": {
         "Index": 1789,
-        "Name": "02 / 霹雳尊者"
+        "Name": "02 / 02 / 霹雳尊者"
       },
       "NPCName": "15Magic_Eunhang1",
       "Image": 48,
@@ -2339,10 +2381,10 @@
     },
     {
       "Index": 181,
-      "_Identity": "02_001 / 霹雳尊者 / 15Magic_Euhang",
+      "_Identity": "02_001 / 02_001 / 霹雳尊者 / 15Magic_Euhang",
       "Region": {
         "Index": 1791,
-        "Name": "02_001 / 霹雳尊者"
+        "Name": "02_001 / 02_001 / 霹雳尊者"
       },
       "NPCName": "15Magic_Euhang",
       "Image": 48,
@@ -2395,10 +2437,10 @@
     },
     {
       "Index": 185,
-      "_Identity": "02 / 智善大师 / 09Bonus_Euhang",
+      "_Identity": "02 / 02 / 智善大师 / 09Bonus_Euhang",
       "Region": {
         "Index": 1795,
-        "Name": "02 / 智善大师"
+        "Name": "02 / 02 / 智善大师"
       },
       "NPCName": "09Bonus_Euhang",
       "Image": 37,
@@ -2409,10 +2451,10 @@
     },
     {
       "Index": 186,
-      "_Identity": "1_001 / 啊潘 / 02Weapon_DoGwan",
+      "_Identity": "1_001 / 1_001 / 啊潘 / 02Weapon_DoGwan",
       "Region": {
         "Index": 1796,
-        "Name": "1_001 / 啊潘"
+        "Name": "1_001 / 1_001 / 啊潘"
       },
       "NPCName": "02Weapon_DoGwan",
       "Image": 15,
@@ -2437,10 +2479,10 @@
     },
     {
       "Index": 188,
-      "_Identity": "1_006 / 禄英 / 04PotionMake_DoGwan",
+      "_Identity": "1_006 / 1_006 / 禄英 / 04PotionMake_DoGwan",
       "Region": {
         "Index": 1798,
-        "Name": "1_006 / 禄英"
+        "Name": "1_006 / 1_006 / 禄英"
       },
       "NPCName": "04PotionMake_DoGwan",
       "Image": 22,
@@ -2451,10 +2493,10 @@
     },
     {
       "Index": 189,
-      "_Identity": "1_006 / 老药 / 04Potion_DoGwan",
+      "_Identity": "1_006 / 1_006 / 老药 / 04Potion_DoGwan",
       "Region": {
         "Index": 1799,
-        "Name": "1_006 / 老药"
+        "Name": "1_006 / 1_006 / 老药"
       },
       "NPCName": "04Potion_DoGwan",
       "Image": 25,
@@ -2465,10 +2507,10 @@
     },
     {
       "Index": 190,
-      "_Identity": "1_004 / 书神 / 05Book_DoGwan",
+      "_Identity": "1_004 / 1_004 / 书神 / 05Book_DoGwan",
       "Region": {
         "Index": 1800,
-        "Name": "1_004 / 书神"
+        "Name": "1_004 / 1_004 / 书神"
       },
       "NPCName": "05Book_DoGwan",
       "Image": 18,
@@ -2479,10 +2521,10 @@
     },
     {
       "Index": 191,
-      "_Identity": "1_007 / 大老板 / 07Grocery_DoGwan",
+      "_Identity": "1_007 / 1_007 / 大老板 / 07Grocery_DoGwan",
       "Region": {
         "Index": 1801,
-        "Name": "1_007 / 大老板"
+        "Name": "1_007 / 1_007 / 大老板"
       },
       "NPCName": "07Grocery_DoGwan",
       "Image": 17,
@@ -2493,10 +2535,10 @@
     },
     {
       "Index": 192,
-      "_Identity": "1_005 / 峰儿 / 08Accessory_DoGwan",
+      "_Identity": "1_005 / 1_005 / 峰儿 / 08Accessory_DoGwan",
       "Region": {
         "Index": 1802,
-        "Name": "1_005 / 峰儿"
+        "Name": "1_005 / 1_005 / 峰儿"
       },
       "NPCName": "08Accessory_DoGwan",
       "Image": 20,
@@ -2507,10 +2549,10 @@
     },
     {
       "Index": 193,
-      "_Identity": "1_009 / 无名老人 / 14Quest_DoGwan",
+      "_Identity": "1_009 / 1_009 / 无名老人 / 14Quest_DoGwan",
       "Region": {
         "Index": 1803,
-        "Name": "1_009 / 无名老人"
+        "Name": "1_009 / 1_009 / 无名老人"
       },
       "NPCName": "14Quest_DoGwan",
       "Image": 9,
@@ -2521,10 +2563,10 @@
     },
     {
       "Index": 194,
-      "_Identity": "1_002 / 清明子 / 15Magic_DoGwan",
+      "_Identity": "1_002 / 1_002 / 清明子 / 15Magic_DoGwan",
       "Region": {
         "Index": 1804,
-        "Name": "1_002 / 清明子"
+        "Name": "1_002 / 1_002 / 清明子"
       },
       "NPCName": "15Magic_DoGwan",
       "Image": 14,
@@ -2535,10 +2577,10 @@
     },
     {
       "Index": 195,
-      "_Identity": "1_008 / 清明子 / 15Magic_DoGwan",
+      "_Identity": "1_008 / 1_008 / 清明子 / 15Magic_DoGwan",
       "Region": {
         "Index": 1805,
-        "Name": "1_008 / 清明子"
+        "Name": "1_008 / 1_008 / 清明子"
       },
       "NPCName": "15Magic_DoGwan",
       "Image": 16,
@@ -2563,10 +2605,10 @@
     },
     {
       "Index": 197,
-      "_Identity": "1_013 / 变异骷髅 / 15Magic_DoGwan0",
+      "_Identity": "1_013 / 1_013 / 变异骷髅 / 15Magic_DoGwan0",
       "Region": {
         "Index": 1807,
-        "Name": "1_013 / 变异骷髅"
+        "Name": "1_013 / 1_013 / 变异骷髅"
       },
       "NPCName": "15Magic_DoGwan0",
       "Image": 58,
@@ -2605,10 +2647,10 @@
     },
     {
       "Index": 200,
-      "_Identity": "1_013 / 变异骷髅 / 15Magic_DoGwan3",
+      "_Identity": "1_013 / 1_013 / 变异骷髅 / 15Magic_DoGwan3",
       "Region": {
         "Index": 1810,
-        "Name": "1_013 / 变异骷髅"
+        "Name": "1_013 / 1_013 / 变异骷髅"
       },
       "NPCName": "15Magic_DoGwan3",
       "Image": 58,
@@ -2633,10 +2675,10 @@
     },
     {
       "Index": 202,
-      "_Identity": "1_013 / 变异骷髅 / 15Magic_DoGwan5",
+      "_Identity": "1_013 / 1_013 / 变异骷髅 / 15Magic_DoGwan5",
       "Region": {
         "Index": 1812,
-        "Name": "1_013 / 变异骷髅"
+        "Name": "1_013 / 1_013 / 变异骷髅"
       },
       "NPCName": "15Magic_DoGwan5",
       "Image": 58,
@@ -2661,10 +2703,10 @@
     },
     {
       "Index": 204,
-      "_Identity": "1_013 / 变异骷髅 / 15Magic_DoGwan7",
+      "_Identity": "1_013 / 1_013 / 变异骷髅 / 15Magic_DoGwan7",
       "Region": {
         "Index": 1814,
-        "Name": "1_013 / 变异骷髅"
+        "Name": "1_013 / 1_013 / 变异骷髅"
       },
       "NPCName": "15Magic_DoGwan7",
       "Image": 58,
@@ -2675,10 +2717,10 @@
     },
     {
       "Index": 205,
-      "_Identity": "4_001 / 王铁匠 / 02Weapon_Oasis",
+      "_Identity": "4_001 / 4_001 / 王铁匠 / 02Weapon_Oasis",
       "Region": {
         "Index": 1815,
-        "Name": "4_001 / 王铁匠"
+        "Name": "4_001 / 4_001 / 王铁匠"
       },
       "NPCName": "02Weapon_Oasis",
       "Image": 0,
@@ -2689,10 +2731,10 @@
     },
     {
       "Index": 206,
-      "_Identity": "4_004 / 织女 / 03Armor_Oasis",
+      "_Identity": "4_004 / 4_004 / 织女 / 03Armor_Oasis",
       "Region": {
         "Index": 1816,
-        "Name": "4_004 / 织女"
+        "Name": "4_004 / 4_004 / 织女"
       },
       "NPCName": "03Armor_Oasis",
       "Image": 35,
@@ -2703,10 +2745,10 @@
     },
     {
       "Index": 207,
-      "_Identity": "4_003 / 白老中医 / 04Potion_Oasis",
+      "_Identity": "4_003 / 4_003 / 白老中医 / 04Potion_Oasis",
       "Region": {
         "Index": 1817,
-        "Name": "4_003 / 白老中医"
+        "Name": "4_003 / 4_003 / 白老中医"
       },
       "NPCName": "04Potion_Oasis",
       "Image": 10,
@@ -2717,10 +2759,10 @@
     },
     {
       "Index": 208,
-      "_Identity": "4_003 / 绿洲仓库管家 / 06Inn_Oasis",
+      "_Identity": "4_003 / 4_003 / 绿洲仓库管家 / 06Inn_Oasis",
       "Region": {
         "Index": 1818,
-        "Name": "4_003 / 绿洲仓库管家"
+        "Name": "4_003 / 4_003 / 绿洲仓库管家"
       },
       "NPCName": "06Inn_Oasis",
       "Image": 39,
@@ -2815,10 +2857,10 @@
     },
     {
       "Index": 215,
-      "_Identity": "5_006 / 沙漠仓库管家 / 06Inn_Samak",
+      "_Identity": "5_006 / 5_006 / 沙漠仓库管家 / 06Inn_Samak",
       "Region": {
         "Index": 1825,
-        "Name": "5_006 / 沙漠仓库管家"
+        "Name": "5_006 / 5_006 / 沙漠仓库管家"
       },
       "NPCName": "06Inn_Samak",
       "Image": 39,
@@ -2843,10 +2885,10 @@
     },
     {
       "Index": 217,
-      "_Identity": "5_006 / 啊俊 / 09ChangeMoney_Samak",
+      "_Identity": "5_006 / 5_006 / 啊俊 / 09ChangeMoney_Samak",
       "Region": {
         "Index": 1827,
-        "Name": "5_006 / 啊俊"
+        "Name": "5_006 / 5_006 / 啊俊"
       },
       "NPCName": "09ChangeMoney_Samak",
       "Image": 9,
@@ -2899,10 +2941,10 @@
     },
     {
       "Index": 221,
-      "_Identity": "74 / 晓薇 / 03Armor_Mongchon",
+      "_Identity": "74 / 74 / 晓薇 / 03Armor_Mongchon",
       "Region": {
         "Index": 1831,
-        "Name": "74 / 晓薇"
+        "Name": "74 / 74 / 晓薇"
       },
       "NPCName": "03Armor_Mongchon",
       "Image": 35,
@@ -2927,10 +2969,10 @@
     },
     {
       "Index": 223,
-      "_Identity": "74 / 丘叔 / 06Inn_Mongchon",
+      "_Identity": "74 / 74 / 丘叔 / 06Inn_Mongchon",
       "Region": {
         "Index": 1833,
-        "Name": "74 / 丘叔"
+        "Name": "74 / 74 / 丘叔"
       },
       "NPCName": "06Inn_Mongchon",
       "Image": 39,
@@ -2969,10 +3011,10 @@
     },
     {
       "Index": 226,
-      "_Identity": "74 / 啊贵 / 10Material_Mongchon",
+      "_Identity": "74 / 74 / 啊贵 / 10Material_Mongchon",
       "Region": {
         "Index": 1836,
-        "Name": "74 / 啊贵"
+        "Name": "74 / 74 / 啊贵"
       },
       "NPCName": "10Material_Mongchon",
       "Image": 34,
@@ -2983,10 +3025,10 @@
     },
     {
       "Index": 227,
-      "_Identity": "74 / 六面神石 / 13Move_Mongchon1",
+      "_Identity": "74 / 74 / 六面神石 / 13Move_Mongchon1",
       "Region": {
         "Index": 1837,
-        "Name": "74 / 六面神石"
+        "Name": "74 / 74 / 六面神石"
       },
       "NPCName": "13Move_Mongchon1",
       "Image": 56,
@@ -3011,10 +3053,10 @@
     },
     {
       "Index": 229,
-      "_Identity": "74 / 武术教头 / 15Magic_Mongchon1",
+      "_Identity": "74 / 74 / 武术教头 / 15Magic_Mongchon1",
       "Region": {
         "Index": 1839,
-        "Name": "74 / 武术教头"
+        "Name": "74 / 74 / 武术教头"
       },
       "NPCName": "15Magic_Mongchon1",
       "Image": 15,
@@ -3025,10 +3067,10 @@
     },
     {
       "Index": 230,
-      "_Identity": "74 / 雷翁断珠 / 15Magic_Mongchon2",
+      "_Identity": "74 / 74 / 雷翁断珠 / 15Magic_Mongchon2",
       "Region": {
         "Index": 1840,
-        "Name": "74 / 雷翁断珠"
+        "Name": "74 / 74 / 雷翁断珠"
       },
       "NPCName": "15Magic_Mongchon2",
       "Image": 18,
@@ -3053,10 +3095,10 @@
     },
     {
       "Index": 232,
-      "_Identity": "74 / 泼皮路白 / 15Magic_Mongchon4",
+      "_Identity": "74 / 74 / 泼皮路白 / 15Magic_Mongchon4",
       "Region": {
         "Index": 1842,
-        "Name": "74 / 泼皮路白"
+        "Name": "74 / 74 / 泼皮路白"
       },
       "NPCName": "15Magic_Mongchon4",
       "Image": 9,
@@ -3067,10 +3109,10 @@
     },
     {
       "Index": 233,
-      "_Identity": "75 / 六面神石 / 13Move_SukGak",
+      "_Identity": "75 / 75 / 六面神石 / 13Move_SukGak",
       "Region": {
         "Index": 1843,
-        "Name": "75 / 六面神石"
+        "Name": "75 / 75 / 六面神石"
       },
       "NPCName": "13Move_SukGak",
       "Image": 56,
@@ -3123,10 +3165,10 @@
     },
     {
       "Index": 237,
-      "_Identity": "DM001 / 奸商欧阳 / 07Grocery_SkeletonCave",
+      "_Identity": "DM001 / DM001 / 奸商欧阳 / 07Grocery_SkeletonCave",
       "Region": {
         "Index": 1847,
-        "Name": "DM001 / 奸商欧阳"
+        "Name": "DM001 / DM001 / 奸商欧阳"
       },
       "NPCName": "07Grocery_SkeletonCave",
       "Image": 9,
@@ -3151,10 +3193,10 @@
     },
     {
       "Index": 239,
-      "_Identity": "E002_001 / 云发 / 14Quest_SkeletonCave",
+      "_Identity": "E002_001 / E002_001 / 云发 / 14Quest_SkeletonCave",
       "Region": {
         "Index": 1849,
-        "Name": "E002_001 / 云发"
+        "Name": "E002_001 / E002_001 / 云发"
       },
       "NPCName": "14Quest_SkeletonCave",
       "Image": 18,
@@ -3179,10 +3221,10 @@
     },
     {
       "Index": 241,
-      "_Identity": "DM002 / 无理的道士 / 14Quest_SkeletonCave",
+      "_Identity": "DM002 / DM002 / 无理的道士 / 14Quest_SkeletonCave",
       "Region": {
         "Index": 1851,
-        "Name": "DM002 / 无理的道士"
+        "Name": "DM002 / DM002 / 无理的道士"
       },
       "NPCName": "14Quest_SkeletonCave",
       "Image": 48,
@@ -3193,10 +3235,10 @@
     },
     {
       "Index": 242,
-      "_Identity": "D431 / 矿山老人 / 09NotBlocker_ZombieCave",
+      "_Identity": "D431 / D431 / 矿山老人 / 09NotBlocker_ZombieCave",
       "Region": {
         "Index": 1852,
-        "Name": "D431 / 矿山老人"
+        "Name": "D431 / D431 / 矿山老人"
       },
       "NPCName": "09NotBlocker_ZombieCave",
       "Image": 1,
@@ -3305,10 +3347,10 @@
     },
     {
       "Index": 250,
-      "_Identity": "D1110 / 司马武林 / 09WideUse_HalfTemple",
+      "_Identity": "D1110 / D1110 / 司马武林 / 09WideUse_HalfTemple",
       "Region": {
         "Index": 1860,
-        "Name": "D1110 / 司马武林"
+        "Name": "D1110 / D1110 / 司马武林"
       },
       "NPCName": "09WideUse_HalfTemple",
       "Image": 40,
@@ -3319,10 +3361,10 @@
     },
     {
       "Index": 251,
-      "_Identity": "D1110 / 司马化林 / 09Repair_HalfTemple",
+      "_Identity": "D1110 / D1110 / 司马化林 / 09Repair_HalfTemple",
       "Region": {
         "Index": 1861,
-        "Name": "D1110 / 司马化林"
+        "Name": "D1110 / D1110 / 司马化林"
       },
       "NPCName": "09Repair_HalfTemple",
       "Image": 37,
@@ -3333,10 +3375,10 @@
     },
     {
       "Index": 252,
-      "_Identity": "D1110 / 六面神石 / 13Move_HalfTemple1",
+      "_Identity": "D1110 / D1110 / 六面神石 / 13Move_HalfTemple1",
       "Region": {
         "Index": 1862,
-        "Name": "D1110 / 六面神石"
+        "Name": "D1110 / D1110 / 六面神石"
       },
       "NPCName": "13Move_HalfTemple1",
       "Image": 57,
@@ -3389,10 +3431,10 @@
     },
     {
       "Index": 260,
-      "_Identity": "D900 / 霸王幽灵 / 14Quest_SinGiSun",
+      "_Identity": "D900 / D900 / 霸王幽灵 / 14Quest_SinGiSun",
       "Region": {
         "Index": 1870,
-        "Name": "D900 / 霸王幽灵"
+        "Name": "D900 / D900 / 霸王幽灵"
       },
       "NPCName": "14Quest_SinGiSun",
       "Image": 76,
@@ -3431,10 +3473,10 @@
     },
     {
       "Index": 263,
-      "_Identity": "41 / 图木勒 / 02Weapon_Numa",
+      "_Identity": "41 / 41 / 图木勒 / 02Weapon_Numa",
       "Region": {
         "Index": 1873,
-        "Name": "41 / 图木勒"
+        "Name": "41 / 41 / 图木勒"
       },
       "NPCName": "02Weapon_Numa",
       "Image": 77,
@@ -3459,10 +3501,10 @@
     },
     {
       "Index": 265,
-      "_Identity": "41 / 啊莫 / 04Potion_Numa",
+      "_Identity": "41 / 41 / 啊莫 / 04Potion_Numa",
       "Region": {
         "Index": 1875,
-        "Name": "41 / 啊莫"
+        "Name": "41 / 41 / 啊莫"
       },
       "NPCName": "04Potion_Numa",
       "Image": 80,
@@ -3473,10 +3515,10 @@
     },
     {
       "Index": 266,
-      "_Identity": "41 / 啊勒 / 06Inn_Numa",
+      "_Identity": "41 / 41 / 啊勒 / 06Inn_Numa",
       "Region": {
         "Index": 1876,
-        "Name": "41 / 啊勒"
+        "Name": "41 / 41 / 啊勒"
       },
       "NPCName": "06Inn_Numa",
       "Image": 79,
@@ -3487,10 +3529,10 @@
     },
     {
       "Index": 267,
-      "_Identity": "41 / 肃良佳 / 07Grocery_Numa",
+      "_Identity": "41 / 41 / 肃良佳 / 07Grocery_Numa",
       "Region": {
         "Index": 1877,
-        "Name": "41 / 肃良佳"
+        "Name": "41 / 41 / 肃良佳"
       },
       "NPCName": "07Grocery_Numa",
       "Image": 81,
@@ -3515,10 +3557,10 @@
     },
     {
       "Index": 269,
-      "_Identity": "41 / 禹老 / 10Material_Numa",
+      "_Identity": "41 / 41 / 禹老 / 10Material_Numa",
       "Region": {
         "Index": 1879,
-        "Name": "41 / 禹老"
+        "Name": "41 / 41 / 禹老"
       },
       "NPCName": "10Material_Numa",
       "Image": 81,
@@ -3543,10 +3585,10 @@
     },
     {
       "Index": 271,
-      "_Identity": "41 / 六面神石 / 13Move_Numa",
+      "_Identity": "41 / 41 / 六面神石 / 13Move_Numa",
       "Region": {
         "Index": 1881,
-        "Name": "41 / 六面神石"
+        "Name": "41 / 41 / 六面神石"
       },
       "NPCName": "13Move_Numa",
       "Image": 56,
@@ -3557,10 +3599,10 @@
     },
     {
       "Index": 272,
-      "_Identity": "41 / 夏柯 / 17NuMaSahaka_Numa",
+      "_Identity": "41 / 41 / 夏柯 / 17NuMaSahaka_Numa",
       "Region": {
         "Index": 1882,
-        "Name": "41 / 夏柯"
+        "Name": "41 / 41 / 夏柯"
       },
       "NPCName": "17NuMaSahaka_Numa",
       "Image": 86,
@@ -3571,10 +3613,10 @@
     },
     {
       "Index": 273,
-      "_Identity": "41 / 紫霞神女 / 17Zaha_Numa",
+      "_Identity": "41 / 41 / 紫霞神女 / 17Zaha_Numa",
       "Region": {
         "Index": 1883,
-        "Name": "41 / 紫霞神女"
+        "Name": "41 / 41 / 紫霞神女"
       },
       "NPCName": "17Zaha_Numa",
       "Image": 35,
@@ -3585,10 +3627,10 @@
     },
     {
       "Index": 274,
-      "_Identity": "02 / 云中子 / 20Gmatch",
+      "_Identity": "02 / 02 / 云中子 / 20Gmatch",
       "Region": {
         "Index": 1884,
-        "Name": "02 / 云中子"
+        "Name": "02 / 02 / 云中子"
       },
       "NPCName": "20Gmatch",
       "Image": 31,

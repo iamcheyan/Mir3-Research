@@ -57,13 +57,7 @@
         "Name": "Spider Curare"
       },
       "MobDescription": "",
-      "Amount": 20,
-      "MonsterDetails": [
-        {
-          "Index": 27,
-          "Name": null
-        }
-      ]
+      "Amount": 20
     },
     {
       "Index": 17,
@@ -105,13 +99,7 @@
       },
       "Task": "KillMonster",
       "MobDescription": "",
-      "Amount": 50,
-      "MonsterDetails": [
-        {
-          "Index": 31,
-          "Name": null
-        }
-      ]
+      "Amount": 50
     },
     {
       "Index": 21,
@@ -121,13 +109,7 @@
       },
       "Task": "KillMonster",
       "MobDescription": "",
-      "Amount": 50,
-      "MonsterDetails": [
-        {
-          "Index": 34,
-          "Name": null
-        }
-      ]
+      "Amount": 50
     },
     {
       "Index": 22,
@@ -137,13 +119,7 @@
       },
       "Task": "KillMonster",
       "MobDescription": "",
-      "Amount": 50,
-      "MonsterDetails": [
-        {
-          "Index": 33,
-          "Name": null
-        }
-      ]
+      "Amount": 50
     },
     {
       "Index": 23,
@@ -153,13 +129,7 @@
       },
       "Task": "KillMonster",
       "MobDescription": "",
-      "Amount": 1,
-      "MonsterDetails": [
-        {
-          "Index": 32,
-          "Name": null
-        }
-      ]
+      "Amount": 1
     },
     {
       "Index": 35,
@@ -255,13 +225,7 @@
       },
       "Task": "KillMonster",
       "MobDescription": "",
-      "Amount": 20,
-      "MonsterDetails": [
-        {
-          "Index": 56,
-          "Name": null
-        }
-      ]
+      "Amount": 20
     },
     {
       "Index": 47,
@@ -271,13 +235,7 @@
       },
       "Task": "KillMonster",
       "MobDescription": "",
-      "Amount": 1,
-      "MonsterDetails": [
-        {
-          "Index": 57,
-          "Name": null
-        }
-      ]
+      "Amount": 1
     },
     {
       "Index": 49,
@@ -303,10 +261,6 @@
         },
         {
           "Index": 61,
-          "Name": null
-        },
-        {
-          "Index": 62,
           "Name": null
         }
       ]
@@ -547,13 +501,7 @@
         "Name": "Edible Chestnut"
       },
       "MobDescription": "",
-      "Amount": 25,
-      "MonsterDetails": [
-        {
-          "Index": 80,
-          "Name": null
-        }
-      ]
+      "Amount": 25
     },
     {
       "Index": 63,
@@ -567,13 +515,7 @@
         "Name": "Edible Chestnut"
       },
       "MobDescription": "",
-      "Amount": 25,
-      "MonsterDetails": [
-        {
-          "Index": 81,
-          "Name": null
-        }
-      ]
+      "Amount": 25
     },
     {
       "Index": 64,
@@ -587,13 +529,7 @@
         "Name": "Edible Chestnut"
       },
       "MobDescription": "",
-      "Amount": 25,
-      "MonsterDetails": [
-        {
-          "Index": 82,
-          "Name": null
-        }
-      ]
+      "Amount": 25
     },
     {
       "Index": 65,
@@ -619,13 +555,7 @@
       },
       "Task": "KillMonster",
       "MobDescription": "",
-      "Amount": 40,
-      "MonsterDetails": [
-        {
-          "Index": 85,
-          "Name": null
-        }
-      ]
+      "Amount": 40
     },
     {
       "Index": 67,
@@ -635,13 +565,7 @@
       },
       "Task": "KillMonster",
       "MobDescription": "",
-      "Amount": 50,
-      "MonsterDetails": [
-        {
-          "Index": 87,
-          "Name": null
-        }
-      ]
+      "Amount": 50
     },
     {
       "Index": 68,
@@ -670,19 +594,11 @@
       "Amount": 200,
       "MonsterDetails": [
         {
-          "Index": 88,
-          "Name": null
-        },
-        {
           "Index": 89,
           "Name": null
         },
         {
           "Index": 90,
-          "Name": null
-        },
-        {
-          "Index": 91,
           "Name": null
         },
         {
@@ -778,14 +694,12 @@
         "Name": "望海楼之约（战士）"
       },
       "Task": "VisitRegion",
-      "ItemParameter": null,
       "RegionParameter": {
         "Index": 1766,
         "Name": "01 / 上官小姐"
       },
       "MobDescription": "赴望海楼之约（样板占位：边境城市·上官小姐处）",
-      "Amount": 1,
-      "MonsterDetails": []
+      "Amount": 1
     },
     {
       "Index": 76,
@@ -794,14 +708,12 @@
         "Name": "望海楼之约（法师）"
       },
       "Task": "VisitRegion",
-      "ItemParameter": null,
       "RegionParameter": {
         "Index": 1766,
         "Name": "01 / 上官小姐"
       },
       "MobDescription": "赴望海楼之约（样板占位：边境城市·上官小姐处）",
-      "Amount": 1,
-      "MonsterDetails": []
+      "Amount": 1
     },
     {
       "Index": 77,
@@ -810,14 +722,12 @@
         "Name": "望海楼之约（道士）"
       },
       "Task": "VisitRegion",
-      "ItemParameter": null,
       "RegionParameter": {
         "Index": 1766,
         "Name": "01 / 上官小姐"
       },
       "MobDescription": "赴望海楼之约（样板占位：边境城市·上官小姐处）",
-      "Amount": 1,
-      "MonsterDetails": []
+      "Amount": 1
     },
     {
       "Index": 78,
@@ -826,8 +736,6 @@
         "Name": "刺杀剑术觉醒"
       },
       "Task": "KillMonster",
-      "ItemParameter": null,
-      "RegionParameter": null,
       "MobDescription": "击杀骷髅战将（Skeleton Warrior 骷髅战士）×6",
       "Amount": 6,
       "MonsterDetails": [

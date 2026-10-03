@@ -191,7 +191,7 @@ int applied = 0;
 foreach (var (table, op, index, _) in changes.Where(c => c.op == "del").OrderBy(c => c.index))
 {
     var target = ByIndex(Col(table), index);
-    if (target == null) { errors.Add($"删除 {table}#{index}: 目标不存在"); continue; }
+    if (target == null) { /* 已被父级 Aggregate 级联删除，无需重复删除 */ continue; }
     target.Delete();
     applied++; Log($"[-] {table}#{index}");
 }

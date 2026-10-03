@@ -711,7 +711,7 @@ static void GenerateViews(Session session, string viewDir)
     sb.AppendLine();
     foreach (MirClass cls in new[] { MirClass.Warrior, MirClass.Wizard, MirClass.Taoist, MirClass.Assassin })
     {
-        List<MagicInfo> list = magics.Where(m => m.Class == cls).OrderBy(m => m.NeedLevel1).ToList();
+        List<MagicInfo> list = magics.Where(m => m.MatchesClass(cls)).OrderBy(m => m.NeedLevel1).ToList();
         sb.AppendLine($"## {MirClassZh(cls)}（{list.Count} 个）");
         sb.AppendLine();
         sb.AppendLine("| # | 名称 | 类型 | 属性 | 威力 | 耗蓝 | 延迟 | 等级门槛 |");

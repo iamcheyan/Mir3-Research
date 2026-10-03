@@ -475,10 +475,10 @@
         "type": "enum",
         "to": "MagicType"
       },
-      "Class": {
-        "zh": "职业",
+      "RequiredClass": {
+        "zh": "职业要求",
         "type": "enum",
-        "to": "MirClass"
+        "to": "RequiredClass"
       },
       "School": {
         "zh": "派系",
@@ -2155,6 +2155,113 @@
       "Amount": {
         "zh": "数量",
         "type": "int"
+      }
+    }
+  },
+  "CraftingIngredientInfo": {
+    "zh": "CraftingIngredientInfo",
+    "identity": [],
+    "fields": {
+      "Design1Recipe": {
+        "zh": "Design1Recipe",
+        "type": "ref",
+        "to": "CraftingRecipeInfo"
+      },
+      "Design2Recipe": {
+        "zh": "Design2Recipe",
+        "type": "ref",
+        "to": "CraftingRecipeInfo"
+      },
+      "Design3Recipe": {
+        "zh": "Design3Recipe",
+        "type": "ref",
+        "to": "CraftingRecipeInfo"
+      },
+      "Item": {
+        "zh": "物品",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      }
+    }
+  },
+  "CraftingLevelInfo": {
+    "zh": "CraftingLevelInfo",
+    "identity": [
+      "Level"
+    ],
+    "fields": {
+      "Level": {
+        "zh": "等级",
+        "type": "int"
+      },
+      "RequiredExperience": {
+        "zh": "需求经验",
+        "type": "int"
+      }
+    }
+  },
+  "CraftingRecipeInfo": {
+    "zh": "CraftingRecipeInfo",
+    "identity": [
+      "Description"
+    ],
+    "fields": {
+      "Description": {
+        "zh": "说明",
+        "type": "string"
+      },
+      "Category": {
+        "zh": "分类",
+        "type": "enum",
+        "to": "CraftingCategory"
+      },
+      "Item": {
+        "zh": "物品",
+        "type": "ref",
+        "to": "ItemInfo"
+      },
+      "Amount": {
+        "zh": "数量",
+        "type": "int"
+      },
+      "RequiredLevel": {
+        "zh": "需求等级",
+        "type": "int"
+      },
+      "RequiredGold": {
+        "zh": "需求金币",
+        "type": "int"
+      },
+      "Experience": {
+        "zh": "经验",
+        "type": "int"
+      },
+      "Duration": {
+        "zh": "持续时间",
+        "type": "other"
+      },
+      "SuccessRate": {
+        "zh": "SuccessRate",
+        "type": "int"
+      },
+      "Design1Ingredients": {
+        "zh": "Design1Ingredients",
+        "type": "reflist",
+        "to": "CraftingIngredientInfo"
+      },
+      "Design2Ingredients": {
+        "zh": "Design2Ingredients",
+        "type": "reflist",
+        "to": "CraftingIngredientInfo"
+      },
+      "Design3Ingredients": {
+        "zh": "Design3Ingredients",
+        "type": "reflist",
+        "to": "CraftingIngredientInfo"
       }
     }
   },
