@@ -101,6 +101,17 @@ y≈132–153（≈411–480）为纯黑、中间才是画面，宽度方向铺�
 → 配置为 1100×800、游戏不再改回 → 重启沿用 1100×800（内容铺满，bbox `(0,0)-(1099,780)`）；
 跑 `UITestScene --ui-audit` 不再污染配置；`--zircon-ui` 仍 1440×900 并正常进游戏。
 
+**字号同步（同日第四轮）**：预游戏路径不能只改画布 Transform —— `DXLabel.DrawControl`
+先抵消自身所在画布倍率（`DrawSetTransform(..., 1/canvasScale)`），再按
+`MirSkin.PhysicalSize(FontSize)` 绘制，而 `PhysicalSize = base × _uiScale`；
+`_uiScale` 只在 `UiScaler.UpdateScale` 里由 `SetUiScale` 更新。预游戏路径不再走
+`UpdateScale`，所以画面放大了字仍是 12px（实测 800×600 拖到 1200×900：视频/表单等比
+放大，ID 字母仍是小字）。新增 `UiScaler.ApplyPregameScale(layer, viewport)`：
+先 `SetUiScale(PregameScale(viewport))` 再套 Transform，登录/选角都改用它；
+过场（挂根 Viewport 的 `VideoStreamPlayer`）仍走 `ApplyPregameTransform`（`_uiScale` 已同步）。
+实测 1200×900 时 pregame scale=1.875，视频/表单/字三档同步放大；800×600 默认
+（scale=1.25）与原版 1:1 一致。Modern(`--zircon-ui`) 走 `UpdateScale` 不变。
+
 ## B. 待决（需要用户决策或需要目标资源/协议，本轮不擅自改）
 
 ### B-1 窗口「点击背景」的语义 —— **降级为 `UNVERIFIED`（我上轮的判定未经验证）**
