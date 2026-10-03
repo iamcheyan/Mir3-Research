@@ -310,6 +310,16 @@ Godot 差异：cap2 打开技能书（与 cap8 重复）、B 打开大地图、�
 1:1 绘制，与 40px 步距自洽。技能ID 映射与逐条名称交叉验证见
 [`GODOT_UI_OPEN_DECISIONS_2026-09-29.md`](GODOT_UI_OPEN_DECISIONS_2026-09-29.md) §B-5。
 
+**未闭合（记录，非阻塞）**：该 material 的**颜色/alpha 是否真的作用到精灵**尚未证明。
+`0x466800` 把三参写成 `(r=g=arg2, b=arg3, a=arg4)`（白态就是 `(1,1,1,1)`），
+技能条拿到的是灰色 100/255（有绑定）/150/255（空槽）；若它真被用作 diffuse+alpha，
+原版该行会是**半透明且偏灰**的。固定管线在 `D3DRS_LIGHTING=FALSE` 时忽略 material，
+而 `0x402DC9` 的同一槽位又只用于纯色填充（那里的填充色是单独传的 `0x646464`），
+故倾向「material 对这类 2D 精灵无效」。**Godot 侧按不透明渲染**（与已验收的 EI HUD
+其它 GameInter 元素一致），这也是上面 12 格能对源帧做到 0 像素差异的前提。
+若要证实/证伪，需要目标机运行时截取原版技能条，或解出 `0x8AB7BC` 渲染器的
+纹理阶段状态（`D3DTSS_ALPHAARG*` / `D3DRS_DIFFUSEMATERIALSOURCE`）。
+
 **真机验证（2026-10-03）**：800×600 legacy 登录 `TestHero` → 按 `B` 出栏
 （1/2/3 与 11/12 为金色技能图标，其余为 `F4`..`F10` 底板，4/8 前有分组空隙）→
 点第 1 格发出 `[Magic] 发包 Fire Ball Magic=FireBall Set=1 Slot=1` + `ObjectMagic`。
