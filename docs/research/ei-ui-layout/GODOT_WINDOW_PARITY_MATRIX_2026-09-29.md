@@ -315,6 +315,49 @@ Godot 差异：cap2 打开技能书（与 cap8 重复）、B 打开大地图、�
 点第 1 格发出 `[Magic] 发包 Fire Ball Magic=FireBall Set=1 Slot=1` + `ObjectMagic`。
 `--ui-audit` 在 legacy 与 `--zircon-ui` 两种模式下均 `PASS`。
 
+**位置：原版在屏幕左上角，不在主底栏旁（同日第二轮）**
+
+原版 `0x42A850` 给每格传的 pos 就是 `(runningX, 2|3)`（`0x42A8ED` 写 `0x40000000`=2.0，
+`0x42A9D8` 写 `0x40400000`=3.0）。`0x4542F0` 里的
+`pos[0] += size[0]*0.5 - 400`、`pos[1] = 300 - (pos[1] + size[1]*0.5)`
+（常量 `0x476474`=400.0、`0x476470`=**300.0**、`0x476364`=0.5）只是把**绝对屏幕坐标**
+换算到居中世界空间，**不是**把条子放到屏幕中部。
+
+反证（同一条绘制路径 `0x4542F0` 的另一个调用点 `0x428F80`）：该元素传
+`pos=(220,400)`、`size=(358,165)`，而它自己的屏幕矩形是 `(220,400)-(578,565)`
+（`[esp+0x10..0x1C]` 的 4 个整数与 float 参数一一对应）。按上式换算回来
+`x = 220 + 358/2 = 399`、`y = 400 + 165/2 = 482.5` 正好是那个矩形的**中心** ——
+即 `pos` 就是元素在屏幕上的左上角，投影是 `screen = world + (400, 300)`（1:1，y 轴翻转）。
+所以技能条的屏幕位置就是 `(0, 2)`（有绑定）/ `(0, 3)`（空槽底板）——**屏幕左上角固定行**。
+
+Godot 侧：legacy 下 `MagicBar.LegacyEiAnchor = (0,0)`，每格 y 直接用原版数值
+（`EiIconTop=2` / `EiPlateTop=3`），控件 560×44；现代模式仍锚在主底栏左上方。
+`RunUiLayoutAudit` 已按模式分支（`GameScene.cs` 常驻偏移断言）。
+
+**像素级验证（2026-10-03，800×600 legacy 真机截图 vs `LegacyEI/Data` 源帧）**：
+
+| 槽 | 期望 | 实测 |
+|---|---|---|
+| i=3..9（空槽，帧 23..29） | x = i·40 + 分组间隔，y=3 | **0 个像素不符**（7/7 帧全等，每帧 1588 个不透明像素） |
+| i=0,1,2,10,11（有绑定） | y=2 | **0 个像素不符**，且逐帧唯一匹配到 MIcon **1000/1004/1008/1029/1016** |
+
+MIcon 帧反查技能：1000→ID1 火球术、1004→ID5 大火球、1008→ID9 地域火、
+1029→ID30 召唤神兽、1016→ID17 召唤骷髅 —— 与 `MagicInfo.Icon` 的
+`1000 + Icon/2`（FireBall 0、AdamantineFireBall 8、ScorchedEarth 16、
+SummonShinsu 58、SummonSkeleton 32）逐条吻合，**图标映射第二次独立验证通过**。
+
+**补充负结果**：全 `.text` 中带 `cmp reg,4` + `cmp reg,8` 分组判断的代码只有
+`0x42A893` 这一处（即绘制本身）→ 原版没有用同一几何的**点击命中**逻辑，
+该行在原版应为**纯显示**；Godot 的「点格子施法」是 Zircon 侧既有能力，本次未改动。
+
+**审计口径**：`MagicBar` 的常驻锚点断言在 `RunUiLayoutAudit`
+（`GameScene.cs`，参数是 `--ui-layout-audit`，**不是** `--ui-audit`）里已按模式分支。
+legacy 真机实测输出 `magic=(0, 0)/(560, 44)` 与 `LegacyEiAnchor` 一致。
+**注意**：该审计当前恒为 `FAIL`，但失败项是**既有**的
+`chatScroll=True`（`_chatLog.IsScrollChromeVisible`），与技能栏无关 ——
+已在改动前的代码（`MagicBar` 仍锚 `(0,419)`）上复跑得到同样的 `FAIL ... chatScroll=True`。
+UITestScene 的 `--ui-audit` 在 legacy 与 `--zircon-ui` 下均 `PASS`。
+
 ### 6.6 交易 close 热区改为「只播音不关窗」（`131a3514`）
 
 原版 F1050 的 close 热区行为是「命中 → 播音 + 消费点击，窗口保持打开」
