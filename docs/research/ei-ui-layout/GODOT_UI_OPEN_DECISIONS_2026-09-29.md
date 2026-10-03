@@ -67,6 +67,40 @@ y≈132–153（≈411–480）为纯黑、中间才是画面，宽度方向铺�
 修后 `ZIRCON_UI_SCALE=2`：窗口 1280×960、登录视频落 `(0,120)`、过场 bbox `(0,0)-(1279,959)`
 铺满、游戏窗口 1600×1200；`scale=1` 路径回归不变（640×480 → 800×600）。
 
+> **以上「窗口随 mode 跳变」的做法已作废（同日第三轮，按用户要求改为「窗口只由用户决定」）**。
+> 原版按 mode 切屏幕区（0/2 = 640×480、3 = 800×600）确实是真实行为（`0x45D270` 两个调用点），
+> 但那等于**游戏自己改窗口大小**，启动到进游戏期间窗口会跳好几下；用户拖动指定的尺寸还会被覆盖。
+> 现改为下表的行为（Zircon `acffde73`），原版证据仍保留在上面供回溯，不再作为实现依据。
+
+### 本轮（第三轮）：窗口只由用户决定 + 内容等比 fit
+
+| 项 | 现行为 | 实现 |
+|---|---|---|
+| 窗口尺寸 | 启动时按 `ClientSettings.LegacyWindowSize` 设一次；用户拖边缘缩放后**延时 0.6s 去抖写盘**；下次启动沿用 | `Scripts/BootWindow.cs`（autoload，排在 `NetworkManager` 之前） |
+| 登录/选角/进游戏 | **都不再改窗口**（原三处 `ApplyLegacyPregameWindow` 调用全部移除） | LoginScene / SelectScene / GameScene |
+| 预游戏内容（640×480 画布） | 按窗口 `min(h/480, w/640)` **等比 fit**：宽 ≥4:3 时高度填满、两侧留黑、居中；**不做 [1,2] 钳制**，窗口拖大就等比放大填满 | `UiScaler.PregameTransform` |
+| 过场（挂根 Viewport） | 同样套 `PregameTransform`（不经过 `_uiLayer`，必须自己套） | `SelectScene.ApplyUiScalerTransform` |
+| 公告框 / 进游戏 HUD | 仍走 800×600 基准 + [1,2] 钳制 + 居中（与 `GameScene.RefreshUiScale` 一致） | `UiScaler.UpdateScale` |
+| 默认尺寸 | 800×600 × 显示缩放（含 `ZIRCON_UI_SCALE`） | `ClientSettings.DefaultLegacyWindowSize` |
+
+**为什么默认取 800×600 而不是 640×480**：窗口不再随阶段变化，必须取两档里较大的那个 ——
+进游戏 HUD 是 800×600 逻辑画布且 `RefreshUiScale` 下限为 1，窗口更小会把 HUD 裁掉；
+预游戏 640×480 会被等比放大 1.25 倍填满窗口（原版是 640×480 窗口 + 两侧留黑，这里按用户要求改为填满）。
+
+**两个实测出的坑（已修）**：
+1. `ClientSettings.ReadVector2I` 会把值钳到 ≥320×240（那是给 `GameSize` 用的），
+   把「未设置」哨兵 `(-1,-1)` 变成真实 **320×240** 窗口（实测启动日志 `Legacy window: 320x240 px`）。
+   → `LegacyWindowSize` 改用 `ReadPoint` 读。
+2. 审计/测试场景（`UITestScene` 等）会自己改窗口尺寸，若不排除就会把测试尺寸写进配置
+   （实测跑一次 `UITestScene --ui-audit` 后配置冒出 `(1022,739)`）。
+   → 只在真实流程场景落盘；且**不能**用 `CurrentScene` 判定：`EnterGameScene()` 是
+   `Root.AddChild(game)` + `QueueFree()`，没有 `ChangeSceneTo`，进游戏后 `CurrentScene` 为 null
+   （实测 `[BootWindow] persist scene=<null>`），改为遍历根节点子节点类型。
+
+**真机验收**（Xvfb `:101`，`xwd` 精确抓窗）：默认 800×600 → 游戏内缩放到 1100×800
+→ 配置为 1100×800、游戏不再改回 → 重启沿用 1100×800（内容铺满，bbox `(0,0)-(1099,780)`）；
+跑 `UITestScene --ui-audit` 不再污染配置；`--zircon-ui` 仍 1440×900 并正常进游戏。
+
 ## B. 待决（需要用户决策或需要目标资源/协议，本轮不擅自改）
 
 ### B-1 窗口「点击背景」的语义 —— **降级为 `UNVERIFIED`（我上轮的判定未经验证）**
