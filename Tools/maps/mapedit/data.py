@@ -168,6 +168,9 @@ def load_workspace_entities(workspace: str, db_names: dict | None = None) -> lis
             # （原版 NPCObject.BodyFrame = DrawFrame + Image*BodyOffSet(100)，
             #   库 = LibraryFile.NPC：ZL 客户端 NPC.Zl / EI 客户端 NPC.wil）
             "img": n.get("Image") or 0,
+            "entry_page": (n.get("EntryPage") or {}).get("Index"),
+            "entry_page_name": (n.get("EntryPage") or {}).get("Name"),
+            "disabled": False,
         })
     return out
 
@@ -840,6 +843,28 @@ def load_unknown_entities(workspace: str, source_dir: str | None = None,
             "source_manifest": os.path.join(source_dir, "npc-manifest.json"),
             "placement": placed,
         })
+    # 扫描 workspace 中所有无 Region 的 NPC（包括被禁用的 NPC、初始无坐标的 NPC）
+    for idx, row in npcs.items():
+        if idx in seen_npcs:
+            continue
+        if not row.get("Region"):
+            seen_npcs.add(idx)
+            current_name = row.get("NPCName") or (row.get("EntryPage") or {}).get("Name") or "未命名"
+            placed = active_npcs.get(idx)
+            unknown_npcs.append({
+                "kind": "npc-candidate", "npc_index": idx,
+                "name": npc_names.get(current_name, current_name) or current_name,
+                "name_en": current_name,
+                "current_map": "",
+                "current_xy": {"x": None, "y": None},
+                "target_map": None, "target_xy": None,
+                "status": "disabled" if not placed else "user-placed",
+                "previous_status": "disabled", "confidence": "high",
+                "reason": "已禁用或未分配地图区域 (可拖拽/定位启用)",
+                "image": row.get("Image") or 0, "face": row.get("FaceImage") or 0,
+                "source_manifest": "workspace/NPCInfo.json",
+                "placement": placed,
+            })
     unknown_npcs.sort(key=lambda r: (r["status"] == "user-placed", r["npc_index"]))
 
     monster_rows = []

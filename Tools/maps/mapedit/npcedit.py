@@ -396,6 +396,129 @@ class WorkspaceEditor:
         return {"npc": npc_index, "region": reg["Index"] if reg else None,
                 "region_deleted": drop_region}
 
+    def update_npc(self, npc_index: int, name: str | None = None,
+                   image: int | None = None, entry_page: int | None = None) -> dict:
+        """修改 NPC 的属性（NPCName, Image, EntryPage）。"""
+        npc = self._require("NPCInfo").get(npc_index)
+        if npc is None:
+            raise NpcEditError(f"NPCInfo#{npc_index} 不存在")
+        if name is not None:
+            name = str(name).strip()
+            if not name:
+                raise NpcEditError("NPCName 不能为空")
+            npc["NPCName"] = name
+        if image is not None:
+            npc["Image"] = int(image)
+        if entry_page is not None:
+            if entry_page not in self._require("NPCPage"):
+                raise NpcEditError(f"NPCPage#{entry_page} 不存在")
+            page = self._require("NPCPage")[entry_page]
+            npc["EntryPage"] = {"Index": entry_page, "Name": page.get("Description")}
+        recompute_identity(self.meta, "NPCInfo", npc)
+        self._persist("NPCInfo")
+        return {"npc": npc_index, "name": npc["NPCName"], "image": npc["Image"],
+                "entry_page": (npc.get("EntryPage") or {}).get("Index")}
+
+    def clone_npc(self, npc_index: int, target_map: str | None = None,
+                  x: int | None = None, y: int | None = None,
+                  force: bool = False) -> dict:
+        """克隆 NPC（就地生成或复制到指定位置/地图）。"""
+        src = self._require("NPCInfo").get(npc_index)
+        if src is None:
+            raise NpcEditError(f"NPCInfo#{npc_index} 不存在")
+        src_reg = self._require("MapRegion").get((src.get("Region") or {}).get("Index")) if src.get("Region") else None
+        cur_map = str((src_reg.get("Map") or {}).get("Name") or "") if src_reg else ""
+        dest_map = target_map or cur_map
+        if not dest_map:
+            raise NpcEditError("未指定目标地图且源 NPC 无地图")
+
+        pr = (src_reg.get("PointRegion") or {}) if src_reg else {}
+        dest_x = x if x is not None else (pr.get("CenterX", 0) + 1)
+        dest_y = y if y is not None else (pr.get("CenterY", 0) + 1)
+
+        ep = (src.get("EntryPage") or {}).get("Index")
+        res = self.create_npc(dest_map, dest_x, dest_y, src.get("NPCName") or "副本",
+                              image=src.get("Image", 0), entry_page=ep, force=force)
+        # 复制 FaceImage, Category 等额外属性
+        new_npc = self._require("NPCInfo").get(res["npc"])
+        if new_npc:
+            new_npc["FaceImage"] = src.get("FaceImage", 0)
+            new_npc["Category"] = src.get("Category", "None")
+            new_npc["GoodsIndex"] = src.get("GoodsIndex", 0)
+            new_npc["MapIcon"] = src.get("MapIcon", "None")
+            recompute_identity(self.meta, "NPCInfo", new_npc)
+            self._persist("NPCInfo")
+        return res
+
+    def disable_npc(self, npc_index: int) -> dict:
+        """禁用 NPC：将 NPC 移出地图（保留在待定位候选/禁用列表，游戏内不生成）。"""
+        npcs = self._require("NPCInfo")
+        npc = npcs.get(npc_index)
+        if npc is None:
+            raise NpcEditError(f"NPCInfo#{npc_index} 不存在")
+        if not npc.get("Region"):
+            return {"npc": npc_index, "disabled": True, "already": True}
+
+        reg_idx = npc["Region"]["Index"]
+        regions = self._require("MapRegion")
+        reg = regions.get(reg_idx)
+        cur_map = str((reg.get("Map") or {}).get("Name") or "") if reg else ""
+
+        # 接触 Region 关联
+        npc["Region"] = None
+        recompute_identity(self.meta, "NPCInfo", npc)
+        self._persist("NPCInfo")
+
+        # 检查 Region 是否可以清理
+        drop_region = False
+        if reg is not None:
+            reg["NPCs"] = [e for e in reg.get("NPCs") or [] if e.get("Index") != npc_index]
+            if not reg["NPCs"] and not any((reg.get(f) or []) for f in REGION_BACKREF_FIELDS):
+                drop_region = True
+                del regions[reg["Index"]]
+                self._persist("MapRegion")
+                if cur_map:
+                    try:
+                        mi = self._map_row(cur_map)
+                        mi["Regions"] = [e for e in mi.get("Regions") or [] if e.get("Index") != reg["Index"]]
+                        self._persist("MapInfo")
+                    except NpcEditError:
+                        pass
+        return {"npc": npc_index, "disabled": True, "region_dropped": drop_region}
+
+    def enable_npc(self, npc_index: int, map_stem: str, x: int, y: int, force: bool = False) -> dict:
+        """启用 NPC：为已禁用的 NPC 重新分配地图和坐标。"""
+        npcs = self._require("NPCInfo")
+        npc = npcs.get(npc_index)
+        if npc is None:
+            raise NpcEditError(f"NPCInfo#{npc_index} 不存在")
+        if npc.get("Region"):
+            # 已经有区域，相当于移动
+            return self.move_npc(npc_index, x, y, map_stem, force=force)
+
+        self._map_row(map_stem)
+        self._check_xy(map_stem, x, y, require_passable=not force)
+        mi = self._map_row(map_stem)
+
+        reg_idx = self._next_index("MapRegion")
+        reg = {"Index": reg_idx,
+               "Map": {"Index": mi["Index"], "Name": mi.get("FileName")},
+               "Description": f"{mi.get('FileName')} / {npc.get('NPCName')}",
+               "PointRegion": {"PointCount": 1, "CenterX": x, "CenterY": y},
+               "RegionType": "None", "Size": 1}
+        recompute_identity(self.meta, "MapRegion", reg)
+        npc["Region"] = {"Index": reg_idx, "Name": reg["_Identity"]}
+        recompute_identity(self.meta, "NPCInfo", npc)
+        reg["NPCs"] = [{"Index": npc_index, "Name": npc["_Identity"]}]
+
+        self.tables["MapRegion"][reg_idx] = reg
+        mi.setdefault("Regions", []).append({"Index": reg_idx, "Name": reg["_Identity"]})
+
+        self._persist("MapRegion")
+        self._persist("NPCInfo")
+        self._persist("MapInfo")
+        return {"npc": npc_index, "region": reg_idx, "map": map_stem, "x": x, "y": y, "enabled": True}
+
     def move_guard(self, guard_index: int, x: int, y: int,
                    map_stem: str | None = None, force: bool = False) -> dict:
         guards = self._require("GuardInfo")

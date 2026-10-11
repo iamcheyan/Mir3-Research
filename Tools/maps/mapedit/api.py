@@ -526,6 +526,24 @@ class ViewerHandler(BaseHTTPRequestHandler):
                 map_stem = payload["map"]
             elif op == "delete":
                 body = {"ok": True, "result": ed.delete_npc(int(payload["npc"]))}
+            elif op == "update":
+                body = {"ok": True, "result": ed.update_npc(
+                    int(payload["npc"]), name=payload.get("name"),
+                    image=(int(payload["image"]) if payload.get("image") is not None else None),
+                    entry_page=(int(payload["entry_page"]) if payload.get("entry_page") is not None else None))}
+            elif op == "clone":
+                body = {"ok": True, "result": ed.clone_npc(
+                    int(payload["npc"]), target_map=payload.get("map"),
+                    x=(int(payload["x"]) if payload.get("x") is not None else None),
+                    y=(int(payload["y"]) if payload.get("y") is not None else None),
+                    force=bool(payload.get("force")))}
+            elif op == "disable":
+                body = {"ok": True, "result": ed.disable_npc(int(payload["npc"]))}
+            elif op == "enable":
+                body = {"ok": True, "result": ed.enable_npc(
+                    int(payload["npc"]), str(payload["map"]),
+                    int(payload["x"]), int(payload["y"]),
+                    force=bool(payload.get("force")))}
             elif op == "guard_move":
                 body = {"ok": True, "result": ed.move_guard(
                     int(payload["guard"]), int(payload["x"]), int(payload["y"]),
@@ -567,18 +585,15 @@ class ViewerHandler(BaseHTTPRequestHandler):
         import subprocess
         from pathlib import Path
 
-        # 1. 检查服务端端口 7000
+        # 1. 检查服务端端口 7000（仅做状态标记与提示，不阻断写盘）
+        server_running = False
         try:
             with socket.create_connection(("127.0.0.1", 7000), timeout=0.4):
-                self._json_200(json.dumps({
-                    "ok": False,
-                    "error": "服务端正在运行（端口 7000 活跃中）。请先停止游戏服务端再执行同步！"
-                }, ensure_ascii=False).encode("utf-8"))
-                return
+                server_running = True
         except OSError:
             pass
 
-        sync_sh = Path(__file__).resolve().parent.parent / "dbeditor" / "sync.sh"
+        sync_sh = Path(__file__).resolve().parent.parent.parent / "dbeditor" / "sync.sh"
         if not sync_sh.exists():
             self._json_200(json.dumps({
                 "ok": False,
@@ -596,10 +611,14 @@ class ViewerHandler(BaseHTTPRequestHandler):
                 report = rp.read_text(encoding="utf-8")
             if r.returncode == 0:
                 self.refresh_workspace_entities()
+                msg = ("同步成功！已写入全部四处 System.db 数据库并重置基线。\n（提示：游戏服务端正在运行中，改动将在下一次重启服务端后正式生效）"
+                       if server_running else
+                       "同步成功！已安装更新到全部四处 System.db 数据库并重置基线。")
                 self._json_200(json.dumps({
                     "ok": True,
+                    "server_running": server_running,
                     "report": report or r.stdout,
-                    "message": "同步成功！已安装更新到全部四处 System.db 数据库并重置基线。"
+                    "message": msg
                 }, ensure_ascii=False).encode("utf-8"))
             else:
                 err_msg = r.stderr or r.stdout or report

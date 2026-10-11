@@ -994,15 +994,15 @@ def rollback(body: RollbackReq) -> dict:
 def sync_execute() -> dict:
     if not SYNC_SH.exists():
         raise HTTPException(500, f"缺少 {SYNC_SH}")
+    server_running = False
     try:
         with socket.create_connection(("127.0.0.1", SERVER_PORT), timeout=0.4):
-            return JSONResponse(status_code=409, content={
-                "ok": False, "error": "服务端正在运行（端口 7000 有监听）。请先停止服务端再同步。"})
+            server_running = True
     except OSError:
         pass
     diff = STORE.diff()
     if diff["summary"]["added"] + diff["summary"]["modified"] + diff["summary"]["deleted"] == 0:
-        return {"ok": True, "skipped": "工作区无改动"}
+        return {"ok": True, "skipped": "工作区无改动", "server_running": server_running}
     r = subprocess.run(["bash", str(SYNC_SH)], cwd=REPO, capture_output=True,
                        text=True, timeout=900)
     report = ""

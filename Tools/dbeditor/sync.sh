@@ -29,6 +29,7 @@ build_retry() {
 }
 
 # ---------- 1) 端口检测 ----------
+SERVER_RUNNING=0
 if python3 -c "
 import socket, sys
 try:
@@ -37,10 +38,11 @@ try:
 except OSError:
     sys.exit(1)
 "; then
-  echo "[X] 服务端正在运行（端口 7000）。停止服务端后再同步。"
-  exit 10
+  SERVER_RUNNING=1
+  echo "[!] 提示：服务端正在运行（端口 7000 活跃）。将同步磁盘数据库，新数据在下一次重启服务端后生效。"
+else
+  echo "[1/7] 端口检测通过（服务端未运行）"
 fi
-echo "[1/7] 端口检测通过（服务端已停止）"
 
 # ---------- 2) 导入器：校验 + 写临时副本 ----------
 build_retry "$DBEDITOR/importer/DBImporter.csproj"

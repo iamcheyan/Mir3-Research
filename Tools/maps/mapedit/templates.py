@@ -1043,6 +1043,43 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                         </div>
                     </div>
 
+                    <!-- 快捷操作栏 (剪切 / 复制 / 克隆 / 禁用) -->
+                    <div class="inspector-section" style="padding:6px 10px;">
+                        <div class="sec-title" style="margin-bottom:6px;">⚡ 对象操作 (快捷键支持)</div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
+                            <button id="insp-btn-copy" class="dock-btn" title="复制到剪贴板 (Ctrl+C)">📋 复制 (Ctrl+C)</button>
+                            <button id="insp-btn-cut" class="dock-btn" title="剪切此NPC (Ctrl+X)">✂️ 剪切 (Ctrl+X)</button>
+                            <button id="insp-btn-clone" class="dock-btn" title="原地克隆副本 (Ctrl+D)">🧬 克隆 (Ctrl+D)</button>
+                            <button id="insp-btn-toggle-active" class="dock-btn" title="临时禁用/启用此NPC">👁️ 禁用该NPC</button>
+                        </div>
+                        <div id="insp-paste-hint" style="font-size:10px;color:#a0aec0;display:none;background:#242c3d;padding:4px 6px;border-radius:3px;">
+                            <span>剪贴板就绪，点击目标地图按 <b>Ctrl+V</b> 粘贴</span>
+                            <button id="insp-btn-paste" class="dock-btn primary" style="padding:1px 6px;margin-left:6px;font-size:10px;">在此粘贴</button>
+                        </div>
+                    </div>
+
+                    <!-- 属性修改 (名称、Image、所属地图转移) -->
+                    <div class="inspector-section">
+                        <div class="sec-title">📝 实体属性编辑</div>
+                        <div style="display:flex;flex-direction:column;gap:6px;">
+                            <div style="display:flex;align-items:center;gap:6px;">
+                                <span style="font-size:11px;color:#a0aec0;width:55px;">名称:</span>
+                                <input id="insp-prop-name" type="text" class="dock-input" style="flex:1;padding:3px 6px;font-size:12px;">
+                            </div>
+                            <div style="display:flex;align-items:center;gap:6px;">
+                                <span style="font-size:11px;color:#a0aec0;width:55px;">外观编号:</span>
+                                <input id="insp-prop-img" type="number" class="dock-input" style="flex:1;padding:3px 6px;font-size:12px;" placeholder="NPC.wil Image序号">
+                            </div>
+                            <div style="display:flex;align-items:center;gap:6px;">
+                                <span style="font-size:11px;color:#a0aec0;width:55px;">迁移地图:</span>
+                                <select id="insp-prop-map" class="dock-input" style="flex:1;padding:3px 6px;font-size:12px;background:#11141c;color:#fff;">
+                                    <option value="">(保持当前地图)</option>
+                                </select>
+                            </div>
+                            <button id="insp-apply-props" class="dock-btn primary" style="width:100%;margin-top:2px;">💾 保存属性修改</button>
+                        </div>
+                    </div>
+
                     <!-- 坐标精确微调 -->
                     <div class="inspector-section">
                         <div class="sec-title">📍 坐标精确定位 (瓦片网格)</div>
@@ -1917,12 +1954,186 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 });
             }
 
-            // 全局键盘方向键监听
+            // 复制 (Ctrl+C)
+            const btnCopy = document.getElementById("insp-btn-copy");
+            const doCopy = () => {
+                if (!selectedEntity || selectedEntity.kind !== "npc") return;
+                npcClipboard = { mode: "copy", data: {...selectedEntity} };
+                showToast("已复制到剪贴板", `NPC ${selectedEntity.name} 已复制，可在任意地图按 Ctrl+V 或点【在此粘贴】`);
+                updateClipboardUI();
+            };
+            if (btnCopy) btnCopy.addEventListener("click", doCopy);
+
+            // 剪切 (Ctrl+X)
+            const btnCut = document.getElementById("insp-btn-cut");
+            const doCut = () => {
+                if (!selectedEntity || selectedEntity.kind !== "npc") return;
+                npcClipboard = { mode: "cut", data: {...selectedEntity} };
+                showToast("已剪切到剪贴板", `NPC ${selectedEntity.name} 已剪切，移至新地图后按 Ctrl+V 放置`);
+                updateClipboardUI();
+            };
+            if (btnCut) btnCut.addEventListener("click", doCut);
+
+            // 克隆 (Ctrl+D)
+            const btnClone = document.getElementById("insp-btn-clone");
+            const doClone = async () => {
+                if (!selectedEntity || selectedEntity.kind !== "npc") return;
+                const mi = curMap();
+                const stem = curName ? curName.replace(/\\.map$/i, "") : null;
+                if (!mi || !stem) return;
+                try {
+                    const r = await fetch("/npc/clone", {
+                        method: "POST", headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({npc: selectedEntity.index, x: selectedEntity.x + 1, y: selectedEntity.y + 1, map: stem})
+                    });
+                    const d = await r.json();
+                    if (d.ok) {
+                        showToast("克隆成功", `已创建副本 #${d.result.npc} ${d.result.name}`);
+                        await loadEntities(mi);
+                        updateSyncDiff();
+                        const newEnt = (entCache[mi.name] || []).find(e => e.npc_index === d.result.npc);
+                        if (newEnt) selectEntity(newEnt, true);
+                    } else {
+                        alert("克隆失败: " + (d.error || "?"));
+                    }
+                } catch (e) { alert("网络异常: " + e); }
+            };
+            if (btnClone) btnClone.addEventListener("click", doClone);
+
+            // 粘贴按钮
+            const btnPaste = document.getElementById("insp-btn-paste");
+            if (btnPaste) {
+                btnPaste.addEventListener("click", () => {
+                    const mi = curMap();
+                    if (!mi) return;
+                    const px = selectedEntity ? selectedEntity.x + 1 : Math.round(anchorX / 48);
+                    const py = selectedEntity ? selectedEntity.y + 1 : Math.round(anchorY / 32);
+                    pasteNpcFromClipboard(px, py);
+                });
+            }
+
+            // 禁用 / 启用 NPC
+            const btnToggle = document.getElementById("insp-btn-toggle-active");
+            if (btnToggle) {
+                btnToggle.addEventListener("click", async () => {
+                    if (!selectedEntity || selectedEntity.kind !== "npc") return;
+                    const mi = curMap();
+                    const stem = curName ? curName.replace(/\\.map$/i, "") : null;
+                    if (selectedEntity.disabled) {
+                        // 启用
+                        const r = await fetch("/npc/enable", {
+                            method: "POST", headers: {"Content-Type": "application/json"},
+                            body: JSON.stringify({npc: selectedEntity.index, map: stem, x: selectedEntity.x || 100, y: selectedEntity.y || 100})
+                        });
+                        const d = await r.json();
+                        if (d.ok) {
+                            showToast("已启用 NPC", `NPC #${selectedEntity.index} 已恢复到地图`);
+                            selectedEntity.disabled = false;
+                            await loadEntities(mi);
+                            updateSyncDiff();
+                            updateInspectorView();
+                        } else { alert("启用失败: " + (d.error || "?")); }
+                    } else {
+                        // 禁用
+                        if (!confirm(`确定要临时禁用 ${selectedEntity.name} (#${selectedEntity.index}) 吗？\n禁用后将保留在工作区候选列表中，游戏启动时不会生成到地图。`)) return;
+                        const r = await fetch("/npc/disable", {
+                            method: "POST", headers: {"Content-Type": "application/json"},
+                            body: JSON.stringify({npc: selectedEntity.index})
+                        });
+                        const d = await r.json();
+                        if (d.ok) {
+                            showToast("已禁用 NPC", `NPC #${selectedEntity.index} 已禁用并移入待定位列表`);
+                            selectedEntity = null;
+                            updateInspectorView();
+                            updateSelectionBox();
+                            if (mi) await loadEntities(mi);
+                            updateSyncDiff();
+                        } else { alert("禁用失败: " + (d.error || "?")); }
+                    }
+                });
+            }
+
+            // 保存实体属性修改
+            const btnApplyProps = document.getElementById("insp-apply-props");
+            if (btnApplyProps) {
+                btnApplyProps.addEventListener("click", async () => {
+                    if (!selectedEntity || selectedEntity.kind !== "npc") return;
+                    const newName = document.getElementById("insp-prop-name").value.trim();
+                    const newImg = parseInt(document.getElementById("insp-prop-img").value, 10);
+                    const targetMap = document.getElementById("insp-prop-map").value;
+                    const mi = curMap();
+                    const stem = curName ? curName.replace(/\\.map$/i, "") : null;
+
+                    try {
+                        // 1. 更新属性
+                        const r1 = await fetch("/npc/update", {
+                            method: "POST", headers: {"Content-Type": "application/json"},
+                            body: JSON.stringify({npc: selectedEntity.index, name: newName, image: isNaN(newImg) ? 0 : newImg})
+                        });
+                        const d1 = await r1.json();
+                        if (!d1.ok) { alert("更新属性失败: " + (d1.error || "?")); return; }
+
+                        // 2. 如果选择了跨地图迁移
+                        if (targetMap && targetMap !== stem) {
+                            const r2 = await fetch("/npc/move", {
+                                method: "POST", headers: {"Content-Type": "application/json"},
+                                body: JSON.stringify({npc: selectedEntity.index, map: targetMap, x: selectedEntity.x, y: selectedEntity.y, force: true})
+                            });
+                            const d2 = await r2.json();
+                            if (!d2.ok) { alert("迁移地图失败: " + (d2.error || "?")); return; }
+                            showToast("属性已更新并转移地图", `NPC 已重命名为 ${newName}，并转移至 ${targetMap}`);
+                            selectedEntity = null;
+                            updateInspectorView();
+                            if (mi) await loadEntities(mi);
+                            updateSyncDiff();
+                            return;
+                        }
+
+                        showToast("属性保存成功", `已更新 NPC #${selectedEntity.index}：名称 ${newName}，外观 ${newImg}`);
+                        selectedEntity.name = newName;
+                        selectedEntity.img = newImg;
+                        updateInspectorView();
+                        if (mi) await loadEntities(mi);
+                        drawEntities();
+                        updateSyncDiff();
+                    } catch (e) { alert("网络异常: " + e); }
+                });
+            }
+
+            // 全局快捷键监听 (方向键 / Ctrl+C / Ctrl+X / Ctrl+V / Ctrl+D)
             window.addEventListener("keydown", (e) => {
-                if (!selectedEntity) return;
-                // 如果当前正在 input / textarea 等输入框中打字，不拦截方向键
+                // 如果当前正在 input / textarea 等输入框中打字，不拦截操作
                 const tag = (document.activeElement && document.activeElement.tagName) || "";
                 if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+
+                // 快捷键组合 (Ctrl+C / Ctrl+X / Ctrl+V / Ctrl+D)
+                if (e.ctrlKey || e.metaKey) {
+                    const key = e.key.toLowerCase();
+                    if (key === "c" && selectedEntity && selectedEntity.kind === "npc") {
+                        e.preventDefault();
+                        doCopy();
+                        return;
+                    }
+                    if (key === "x" && selectedEntity && selectedEntity.kind === "npc") {
+                        e.preventDefault();
+                        doCut();
+                        return;
+                    }
+                    if (key === "d" && selectedEntity && selectedEntity.kind === "npc") {
+                        e.preventDefault();
+                        doClone();
+                        return;
+                    }
+                    if (key === "v" && npcClipboard) {
+                        e.preventDefault();
+                        const px = selectedEntity ? selectedEntity.x + 1 : Math.round(anchorX / 48);
+                        const py = selectedEntity ? selectedEntity.y + 1 : Math.round(anchorY / 32);
+                        pasteNpcFromClipboard(px, py);
+                        return;
+                    }
+                }
+
+                if (!selectedEntity) return;
 
                 const step = e.shiftKey ? 5 : 1;
                 let dx = 0, dy = 0;
@@ -1952,7 +2163,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                         const r = await fetch("/api/sync", {method: "POST"});
                         const d = await r.json();
                         if (d.ok) {
-                            showToast("数据库同步成功！", d.message || "已写入四处 System.db 并重置基线，重启游戏生效！", 6000);
+                            const title = d.server_running ? "数据库同步成功 (服务运行中)" : "数据库同步成功！";
+                            const msg = d.message || (d.server_running ? "已安全写入全部四处 System.db！服务端正在运行，本次改动将在下次重启服务后生效。" : "已写入全部四处 System.db 并重置基线！");
+                            showToast(title, msg, 7000);
                             await updateSyncDiff();
                         } else {
                             alert("同步失败：\\n" + (d.error || "未知错误"));
@@ -2058,6 +2271,71 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             }
         }
 
+        let npcClipboard = null; // { mode: 'copy' | 'cut', data: { npc_index, name, img, ... } }
+
+        function updateClipboardUI() {
+            const hint = document.getElementById("insp-paste-hint");
+            if (!hint) return;
+            if (npcClipboard) {
+                hint.style.display = "flex";
+                hint.style.alignItems = "center";
+                hint.style.justifyContent = "space-between";
+                const action = npcClipboard.mode === "cut" ? "剪切中" : "已复制";
+                hint.querySelector("span").innerHTML = `📋 <b>[${action}]</b> ${npcClipboard.data.name}，可到目标地图点【在此粘贴】或 <b>Ctrl+V</b>`;
+            } else {
+                hint.style.display = "none";
+            }
+        }
+
+        async function pasteNpcFromClipboard(targetX, targetY) {
+            if (!npcClipboard) return;
+            const mi = curMap();
+            if (!mi) { showToast("粘贴失败", "未选定当前地图"); return; }
+            const stem = curName ? curName.replace(/\\.map$/i, "") : null;
+            if (!stem) return;
+            const data = npcClipboard.data;
+
+            if (npcClipboard.mode === "cut") {
+                // 剪切模式：直接 move 到目标地图和坐标
+                try {
+                    const res = await fetch("/npc/move", {
+                        method: "POST", headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({npc: data.npc_index, x: targetX, y: targetY, map: stem})
+                    });
+                    const d = await res.json();
+                    if (d.ok) {
+                        showToast("剪切粘贴成功", `NPC ${data.name} 已移动至 ${stem} (${targetX}, ${targetY})`);
+                        npcClipboard = null;
+                        updateClipboardUI();
+                        await loadEntities(mi);
+                        updateSyncDiff();
+                        const newEnt = (entCache[mi.name] || []).find(e => e.npc_index === data.npc_index);
+                        if (newEnt) selectEntity(newEnt, true);
+                    } else {
+                        alert("粘贴失败: " + (d.error || "?"));
+                    }
+                } catch (e) { alert("网络错误: " + e); }
+            } else {
+                // 复制模式：创建新 NPC
+                try {
+                    const res = await fetch("/npc/clone", {
+                        method: "POST", headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({npc: data.npc_index, x: targetX, y: targetY, map: stem})
+                    });
+                    const d = await res.json();
+                    if (d.ok) {
+                        showToast("复制粘贴成功", `已在 ${stem} (${targetX}, ${targetY}) 创建副本 #${d.result.npc}`);
+                        await loadEntities(mi);
+                        updateSyncDiff();
+                        const newEnt = (entCache[mi.name] || []).find(e => e.npc_index === d.result.npc);
+                        if (newEnt) selectEntity(newEnt, true);
+                    } else {
+                        alert("复制失败: " + (d.error || "?"));
+                    }
+                } catch (e) { alert("网络错误: " + e); }
+            }
+        }
+
         function updateInspectorView() {
             const emptyEl = document.getElementById("inspector-empty");
             const contentEl = document.getElementById("inspector-content");
@@ -2087,8 +2365,34 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             if (xIn) xIn.value = selectedEntity.x;
             if (yIn) yIn.value = selectedEntity.y;
 
+            // 属性输入框填充
+            const propName = document.getElementById("insp-prop-name");
+            if (propName) propName.value = selectedEntity.name || "";
+            const propImg = document.getElementById("insp-prop-img");
+            if (propImg) propImg.value = selectedEntity.img !== undefined ? selectedEntity.img : 0;
+
+            // 地图下拉框选项更新
+            const propMap = document.getElementById("insp-prop-map");
+            if (propMap && maps && maps.length) {
+                const curStem = curName ? curName.replace(/\\.map$/i, "") : "";
+                let opts = '<option value="">(保持当前地图: ' + curStem + ')</option>';
+                for (const m of maps) {
+                    const st = m.name.replace(/\\.map$/i, "");
+                    const label = (m.cn ? m.cn + " (" + st + ")" : st);
+                    opts += `<option value="${st}">${label}</option>`;
+                }
+                propMap.innerHTML = opts;
+            }
+
             const btnDel = document.getElementById("insp-btn-del");
             if (btnDel) btnDel.style.display = selectedEntity.kind === "npc" ? "block" : "none";
+
+            const btnToggle = document.getElementById("insp-btn-toggle-active");
+            if (btnToggle) {
+                btnToggle.style.display = selectedEntity.kind === "npc" ? "block" : "none";
+                btnToggle.textContent = selectedEntity.disabled ? "✨ 启用该NPC" : "👁️ 禁用该NPC";
+            }
+            updateClipboardUI();
         }
 
         function updateSelectionBox() {
@@ -4185,7 +4489,7 @@ EDIT_UI_JS = r"""
             const cell = editScreenToCell(e);
             const mi = curMap();
             if (!mi || !name.trim()) { alert('先填 NPC 名称'); return; }
-            const mapStem = curName.replace(/\.map$/i, '');
+            const mapStem = curName.replace(/\\.map$/i, '');
             const d = await npcPost('create', {map: mapStem, x: cell.x, y: cell.y,
                 name: name.trim(), image: img, entry_page: Number.isFinite(pageIdx) ? pageIdx : null});
             if (!d.ok) { alert('创建失败: ' + (d.error || '?')); return; }
@@ -4207,7 +4511,7 @@ EDIT_UI_JS = r"""
 
         const unknownEsc = v => String(v == null ? "" : v).replace(/[&<>"]/g, c =>
             ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-        const unknownStem = () => String(curName || "").replace(/\.map$/i, "");
+        const unknownStem = () => String(curName || "").replace(/\\.map$/i, "");
         function unknownRows(kind) {
             const p = kind === "npc" ? document.getElementById("unknown-npc-panel")
                 : document.getElementById("unknown-monster-panel");
@@ -4296,7 +4600,7 @@ EDIT_UI_JS = r"""
                 const s = curScale();
                 const cx = Math.floor((vp.scrollLeft + vp.clientWidth / 2) * s / 48);
                 const cy = Math.floor((vp.scrollTop + vp.clientHeight / 2) * s / 32);
-                const stem = curName ? curName.replace(/\.map$/i, "") : "";
+                const stem = curName ? curName.replace(/\\.map$/i, "") : "";
                 if (!stem) { alert("请先选择一张地图"); return; }
                 if (k === "npc") {
                     const nm = item.name || item.website_name || item.internal_name || "未命名NPC";

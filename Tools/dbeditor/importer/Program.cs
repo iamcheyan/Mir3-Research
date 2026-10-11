@@ -46,9 +46,7 @@ if (!noPortCheck)
     {
         using var tcp = new TcpClient();
         tcp.Connect("127.0.0.1", 7000);
-        Log("[X] 端口 7000 有监听（服务端运行中）——拒绝写库。");
-        if (reportPath != null) File.WriteAllText(reportPath, log.ToString());
-        return 10;
+        Log("[!] 提示：端口 7000 有监听（服务端运行中）。修改将在下一次重启服务端后生效。");
     }
     catch (SocketException) { /* 未监听，继续 */ }
 }
