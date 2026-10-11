@@ -80,8 +80,10 @@ echo "[5/7] 已备份：Backup/System/System $STAMP.db.gz（含客户端副本�
 OLD_MD5="$(md5sum "$SERVER_DB" | cut -d' ' -f1)"
 install -m 0644 "$DB_OUT" "$SERVER_DB"
 install -m 0644 "$DB_OUT" "$CLIENT_DB"
+install -m 0644 "$DB_OUT" "/home/tetsuya/mir2ei/Database/System.db"
+install -m 0644 "$DB_OUT" "$ZIRCON/System.db"
 NEW_MD5="$(md5sum "$SERVER_DB" | cut -d' ' -f1)"
-echo "[6/7] 已安装双库：server=$NEW_MD5 client=$(md5sum "$CLIENT_DB" | cut -d' ' -f1)"
+echo "[6/7] 已安装全部四处库：server=$NEW_MD5 client=$(md5sum "$CLIENT_DB" | cut -d' ' -f1)"
 
 # ---------- 7) 重置基线（工作区 = 新库状态） ----------
 for f in "$WS"/*.json; do

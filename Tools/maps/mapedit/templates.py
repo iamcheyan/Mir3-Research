@@ -445,38 +445,211 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         #conn-panel .conn-file { color:#6a6a75; font-family:ui-monospace,monospace; font-size:11px; }
         #conn-panel .conn-empty { color:#6a6a75; }
         #conn-panel::-webkit-scrollbar { width:8px; } #conn-panel::-webkit-scrollbar-thumb { background:#3a3a44; border-radius:4px; }
-        /* 右侧面板列：小地图(#minimap) 与状态栏之间，NPC 面板贴底、刷新面板在其上 */
-        #right-panels { position:fixed; right:10px; bottom:44px; top:212px; display:flex; flex-direction:column;
-            justify-content:flex-end; gap:8px; z-index:70; pointer-events:none; }
-        #right-panels > div { pointer-events:auto; min-height:0; }
-        #npc-panel { position:static; width:280px; max-height:42vh; overflow:auto; flex-shrink:1;
-            background:rgba(10,12,16,.92); border:1px solid #3a3a46; border-radius:6px; padding:8px 10px;
-            font-size:12px; color:#c8c8d2; display:none; line-height:1.5; }
-        #npc-panel h4 { margin:0 0 6px; font-size:13px; color:#8cf; }
-        #npc-panel .npc-row { display:flex; gap:8px; align-items:baseline; padding:2px 0; cursor:pointer; }
-        #npc-panel .npc-row:hover { background:#2a2e38; border-radius:3px; }
-        #npc-panel .npc-name { color:#e8e8f0; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-        #npc-panel .npc-xy { color:#8cf; font-family:ui-monospace,monospace; font-size:11px; }
-        #npc-panel .npc-en { display:block; color:#6a6a75; font-size:10px; }
-        #npc-panel .npc-empty { color:#6a6a75; }
-        #npc-panel::-webkit-scrollbar { width:8px; } #npc-panel::-webkit-scrollbar-thumb { background:#3a3a44; border-radius:4px; }
-        #resp-panel { position:static; width:280px; max-height:42vh; overflow:auto; flex-shrink:1;
-            background:rgba(10,12,16,.92); border:1px solid #3a3a46; border-radius:6px; padding:8px 10px;
-            font-size:12px; color:#c8c8d2; display:none; line-height:1.5; }
-        #resp-panel h4 { margin:0 0 6px; font-size:13px; color:#ff9b6b; }
-        #resp-panel .resp-row { display:flex; gap:8px; align-items:baseline; padding:2px 0; cursor:pointer; }
-        #resp-panel .resp-row:hover { background:#2a2e38; border-radius:3px; }
+        /* ==================== 现代化专业实体工作台 (Inspector Dock) ==================== */
+        #inspector-dock {
+            position: fixed; right: 10px; top: 220px; bottom: 44px; width: 340px;
+            background: rgba(14, 18, 26, 0.96); border: 1px solid #2d3748; border-radius: 8px;
+            box-shadow: 0 12px 36px rgba(0,0,0,0.7); display: flex; flex-direction: column;
+            z-index: 85; pointer-events: auto; font-size: 12px; color: #e2e8f0;
+            backdrop-filter: blur(12px); overflow: hidden;
+            transition: height 0.25s ease, max-height 0.25s ease;
+        }
+        #inspector-dock.collapsed {
+            height: 38px !important; min-height: 38px !important; max-height: 38px !important;
+        }
+        #inspector-dock.collapsed .dock-tabs,
+        #inspector-dock.collapsed .dock-body,
+        #inspector-dock.collapsed .dock-footer {
+            display: none !important;
+        }
+        #inspector-dock .dock-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 12px; background: rgba(22, 27, 36, 0.98); border-bottom: 1px solid #2d3748;
+            user-select: none; flex-shrink: 0;
+        }
+        #inspector-dock .dock-title {
+            display: flex; align-items: center; gap: 7px; font-weight: 600; font-size: 13px; color: #f7fafc;
+        }
+        #inspector-dock .dock-badge {
+            background: #2b6cb0; color: #ebf8ff; font-size: 10px; padding: 1px 6px; border-radius: 10px;
+        }
+        #inspector-dock .dock-tool-btn {
+            background: transparent; border: none; color: #a0aec0; font-size: 14px; cursor: pointer;
+            padding: 2px 6px; border-radius: 4px; line-height: 1;
+        }
+        #inspector-dock .dock-tool-btn:hover { background: #2d3748; color: #fff; }
+        #inspector-dock .dock-tabs {
+            display: flex; background: #11141c; border-bottom: 1px solid #2d3748; flex-shrink: 0;
+        }
+        #inspector-dock .dock-tab {
+            flex: 1; padding: 7px 2px; background: transparent; border: none;
+            border-bottom: 2px solid transparent; color: #a0aec0; font-size: 11px;
+            cursor: pointer; text-align: center; transition: all 0.15s ease; white-space: nowrap;
+        }
+        #inspector-dock .dock-tab:hover { color: #edf2f7; background: rgba(255, 255, 255, 0.03); }
+        #inspector-dock .dock-tab.active {
+            color: #63b3ed; border-bottom-color: #63b3ed; background: rgba(99, 179, 237, 0.08); font-weight: 600;
+        }
+        #inspector-dock .dock-body {
+            flex: 1; overflow-y: auto; position: relative; padding: 10px; min-height: 0;
+        }
+        #inspector-dock .dock-tab-pane {
+            display: none; height: 100%; flex-direction: column;
+        }
+        #inspector-dock .dock-tab-pane.active {
+            display: flex;
+        }
+        #inspector-dock .dock-tab-pane::-webkit-scrollbar,
+        #inspector-dock .dock-body::-webkit-scrollbar,
+        #inspector-dock .dock-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        #inspector-dock .dock-tab-pane::-webkit-scrollbar-thumb,
+        #inspector-dock .dock-body::-webkit-scrollbar-thumb,
+        #inspector-dock .dock-list::-webkit-scrollbar-thumb {
+            background: #3a3a46; border-radius: 3px;
+        }
+        #inspector-dock .filter-bar {
+            margin-bottom: 8px; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0;
+        }
+        #inspector-dock .dock-input {
+            width: 100%; box-sizing: border-box; padding: 6px 8px; background: #1a202c;
+            border: 1px solid #4a5568; border-radius: 4px; color: #fff; font-size: 12px;
+        }
+        #inspector-dock .dock-input:focus { border-color: #63b3ed; outline: none; }
+        #inspector-dock .chip-group { display: flex; gap: 6px; }
+        #inspector-dock .filter-chip {
+            padding: 2px 8px; background: #2d3748; color: #cbd5e0; border-radius: 12px;
+            font-size: 11px; cursor: pointer; transition: background 0.15s; user-select: none;
+        }
+        #inspector-dock .filter-chip:hover { background: #4a5568; }
+        #inspector-dock .filter-chip.active { background: #3182ce; color: #fff; }
+        #inspector-dock .dock-list {
+            flex: 1; overflow-y: auto; margin-right: -4px; padding-right: 4px; min-height: 0;
+        }
+        #inspector-dock .ent-row {
+            display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 4px;
+            cursor: pointer; margin-bottom: 2px; border: 1px solid transparent; transition: all 0.12s;
+        }
+        #inspector-dock .ent-row:hover { background: #242c3d; }
+        #inspector-dock .ent-row.selected { background: #1a365d; border-color: #4299e1; }
+        #inspector-dock .ent-row-icon { font-size: 14px; flex-shrink: 0; }
+        #inspector-dock .ent-row-info { flex: 1; min-width: 0; }
+        #inspector-dock .ent-row-name {
+            color: #edf2f7; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        #inspector-dock .ent-row-sub { font-size: 10px; color: #718096; }
+        #inspector-dock .ent-row-xy {
+            font-family: ui-monospace, monospace; font-size: 11px; color: #63b3ed;
+            background: rgba(99, 179, 237, 0.12); padding: 2px 5px; border-radius: 3px; white-space: nowrap;
+        }
+        .inspector-hint {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100%; color: #a0aec0; text-align: center; padding: 20px;
+        }
+        .inspector-card {
+            background: #1a202c; border: 1px solid #2d3748; border-radius: 6px; padding: 10px; margin-bottom: 10px;
+        }
+        .inspector-card .card-head { display: flex; align-items: center; gap: 10px; }
+        .insp-avatar {
+            width: 34px; height: 34px; border-radius: 4px; background: #2d3748; display: flex;
+            align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
+        }
+        .insp-title { font-size: 13px; font-weight: 600; color: #f7fafc; word-break: break-all; }
+        .insp-sub { font-size: 11px; color: #a0aec0; margin-top: 2px; }
+        .inspector-section {
+            background: #1a202c; border: 1px solid #2d3748; border-radius: 6px; padding: 10px; margin-bottom: 10px;
+        }
+        .sec-title {
+            font-weight: 600; color: #e2e8f0; margin-bottom: 8px; font-size: 11px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .coord-inputs { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+        .coord-field {
+            flex: 1; display: flex; align-items: center; gap: 4px; background: #11141c;
+            border: 1px solid #4a5568; border-radius: 4px; padding: 3px 6px;
+        }
+        .coord-lbl { font-size: 11px; color: #a0aec0; font-weight: bold; }
+        .dock-num-input {
+            width: 100%; background: transparent; border: none; color: #63b3ed;
+            font-family: ui-monospace, monospace; font-size: 13px; font-weight: bold; outline: none;
+        }
+        .dpad-container {
+            background: #11141c; border-radius: 6px; padding: 8px; border: 1px solid #2d3748;
+        }
+        .dpad-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;
+            color: #a0aec0; font-size: 11px;
+        }
+        .step-toggle { display: flex; background: #1a202c; border-radius: 4px; padding: 2px; gap: 2px; }
+        .step-opt {
+            padding: 1px 6px; cursor: pointer; border-radius: 3px; font-size: 10px; user-select: none;
+        }
+        .step-opt.active { background: #3182ce; color: #fff; font-weight: bold; }
+        .dpad-grid {
+            display: grid; grid-template-columns: repeat(3, 42px); grid-template-rows: repeat(3, 32px);
+            gap: 4px; justify-content: center; margin: 6px 0;
+        }
+        .dpad-btn {
+            background: #242c3d; border: 1px solid #4a5568; border-radius: 4px; color: #e2e8f0;
+            cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;
+            transition: all 0.1s; user-select: none;
+        }
+        .dpad-btn:hover { background: #3182ce; border-color: #63b3ed; color: #fff; }
+        .dpad-btn:active { transform: scale(0.95); }
+        .dpad-btn.center { background: #1a202c; font-size: 13px; }
+        .hotkey-tip { font-size: 10px; color: #718096; text-align: center; margin-top: 4px; line-height: 1.3; }
+        .inspector-actions { display: flex; gap: 8px; }
+        #inspector-dock .dock-footer {
+            padding: 9px 12px; background: #11141c; border-top: 1px solid #2d3748;
+            display: flex; flex-direction: column; gap: 7px; flex-shrink: 0;
+        }
+        .sync-status-row {
+            display: flex; justify-content: space-between; align-items: center; font-size: 11px;
+        }
+        .sync-status { color: #ecc94b; font-weight: 500; }
+        .sync-btn {
+            width: 100%; padding: 8px 10px; background: linear-gradient(135deg, #2b6cb0 0%, #2f855a 100%);
+            border: 1px solid #38a169; border-radius: 5px; color: #fff; font-weight: 600; font-size: 12px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+            box-shadow: 0 4px 12px rgba(47, 133, 90, 0.35); transition: all 0.15s;
+        }
+        .sync-btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+        .sync-btn:active { transform: translateY(0); }
+        .dock-btn {
+            padding: 5px 10px; background: #2d3748; color: #e2e8f0; border: 1px solid #4a5568;
+            border-radius: 4px; cursor: pointer; font-size: 11px;
+        }
+        .dock-btn:hover { background: #4a5568; }
+        .dock-btn.primary { background: #3182ce; border-color: #63b3ed; color: #fff; }
+        .dock-btn.danger { background: #742a2a; border-color: #e53e3e; color: #fff; }
+        .dock-btn.text-btn { background: transparent; border: none; color: #a0aec0; text-decoration: underline; padding: 0; }
+        #ent-sel-box {
+            position: absolute; pointer-events: none; border: 2px solid #ffd700;
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.85), inset 0 0 8px rgba(255, 215, 0, 0.35);
+            border-radius: 2px; z-index: 15; box-sizing: border-box;
+            transition: left 0.05s ease, top 0.05s ease;
+        }
+        #ent-layer .ent.selected {
+            z-index: 25 !important;
+        }
+        #ent-layer .ent.selected .ent-sprite {
+            filter: drop-shadow(0 0 0 2px #ffd700) drop-shadow(0 0 10px #ffd700) !important;
+        }
+        #ent-layer .ent.selected .ent-label {
+            color: #ffd700 !important; background: rgba(30, 24, 0, 0.88) !important;
+            box-shadow: 0 0 6px #ffd700;
+        }
+        #npc-panel, #resp-panel, #unknown-npc-panel, #unknown-monster-panel {
+            position: static; width: 100%; box-sizing: border-box; background: transparent;
+            border: none; padding: 0; font-size: 12px; color: #c8c8d2; line-height: 1.5;
+        }
+        #resp-panel .resp-row { display:flex; gap:8px; align-items:baseline; padding:4px 6px; cursor:pointer; border-radius:4px; }
+        #resp-panel .resp-row:hover { background:#2a2e38; }
         #resp-panel .resp-name { color:#e8e8f0; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
         #resp-panel .resp-meta { color:#ffd54a; font-family:ui-monospace,monospace; font-size:11px; }
         #resp-panel .resp-xy { color:#6a6a75; font-family:ui-monospace,monospace; font-size:11px; }
-        #resp-panel .resp-empty { color:#6a6a75; }
-        #resp-panel::-webkit-scrollbar { width:8px; } #resp-panel::-webkit-scrollbar-thumb { background:#3a3a44; border-radius:4px; }
-        #unknown-npc-panel, #unknown-monster-panel { position:static; width:300px; max-height:30vh;
-            overflow:auto; flex-shrink:1; background:rgba(10,12,16,.95); border-radius:6px;
-            padding:8px 10px; font-size:12px; color:#c8c8d2; display:none; line-height:1.4; }
-        #unknown-npc-panel { border:1px solid #72d6ff; }
-        #unknown-monster-panel { border:1px solid #ff7caa; }
-        #unknown-npc-panel h4, #unknown-monster-panel h4 { margin:0 0 5px; font-size:13px; }
+        #unknown-npc-panel h4, #unknown-monster-panel h4 { margin:0 0 6px; font-size:12px; }
         #unknown-npc-panel h4 { color:#72d6ff; } #unknown-monster-panel h4 { color:#ff7caa; }
         .unknown-filter { width:100%; box-sizing:border-box; margin:3px 0; padding:4px 6px;
             background:#1b1d24; color:#eee; border:1px solid #424653; border-radius:3px; }
@@ -802,7 +975,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <button id="btn-clear-cache" class="tb-ico" style="background:#4a2e18; border-color:#e8a33d; color:#ffd899;" title="清除全部缓存并重新生成">🔄</button>
     </div>
     <div id="layer-backdrop" class="wu-backdrop"></div>
-    <div id="viewport"><img id="map-img" draggable="false" alt=""><div id="tile-layer"></div><svg id="route-svg" aria-hidden="true"></svg><canvas id="heat-canvas" width="0" height="0"></canvas><svg id="quest-svg" aria-hidden="true"></svg><svg id="pick-svg" aria-hidden="true"></svg><canvas id="grid-canvas" width="0" height="0"></canvas><div id="ent-layer"></div></div>
+    <div id="viewport"><img id="map-img" draggable="false" alt=""><div id="tile-layer"></div><svg id="route-svg" aria-hidden="true"></svg><canvas id="heat-canvas" width="0" height="0"></canvas><svg id="quest-svg" aria-hidden="true"></svg><svg id="pick-svg" aria-hidden="true"></svg><canvas id="grid-canvas" width="0" height="0"></canvas><div id="ent-layer"></div><div id="ent-sel-box" style="display:none"></div></div>
     <div id="overview-view">
         <div id="ov-filters">
             <span style="color:#8a8a98;">📋 全库地图总览</span>
@@ -819,11 +992,128 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </div>
     <div id="cat-panel"></div>
     <div id="conn-panel"></div>
-    <div id="right-panels">
-        <div id="unknown-monster-panel"></div>
-        <div id="unknown-npc-panel"></div>
-        <div id="resp-panel"></div>
-        <div id="npc-panel"></div>
+    <div id="inspector-dock">
+        <div class="dock-header">
+            <div class="dock-title">
+                <span style="font-size:15px">🏛️</span>
+                <span>实体与坐标工作台</span>
+                <span id="dock-target-badge" class="dock-badge" style="display:none"></span>
+            </div>
+            <div class="dock-actions">
+                <button id="btn-dock-collapse" class="dock-tool-btn" title="折叠/展开面板">−</button>
+            </div>
+        </div>
+        <div class="dock-tabs">
+            <button class="dock-tab active" data-tab="entities" type="button">📑 本图实体</button>
+            <button class="dock-tab" data-tab="inspector" type="button">🎯 属性微调</button>
+            <button class="dock-tab" data-tab="candidates" type="button">🧭 待定位候选</button>
+            <button class="dock-tab" data-tab="respawns" type="button">👾 刷怪分布</button>
+        </div>
+        <div class="dock-body">
+            <!-- Tab 1: 本图实体 -->
+            <div id="tab-entities" class="dock-tab-pane active">
+                <div class="filter-bar">
+                    <input id="dock-ent-search" class="dock-input" placeholder="🔍 搜索 NPC / 卫士 / 坐标..." autocomplete="off">
+                    <div class="chip-group">
+                        <span class="filter-chip active" data-filter="all">全部</span>
+                        <span class="filter-chip" data-filter="npc">NPC</span>
+                        <span class="filter-chip" data-filter="guard">卫士</span>
+                    </div>
+                </div>
+                <div id="dock-ent-list" class="dock-list"></div>
+                <div id="npc-panel" style="display:none"></div>
+            </div>
+
+            <!-- Tab 2: 属性与微调 (Inspector) -->
+            <div id="tab-inspector" class="dock-tab-pane">
+                <div id="inspector-empty" class="inspector-hint">
+                    <div style="font-size:28px;margin-bottom:8px">🎯</div>
+                    <div style="font-size:13px;font-weight:600;color:#e2e8f0">未选中实体</div>
+                    <div style="font-size:11px;color:#718096;margin-top:4px">在地图上直接点击 NPC，或在【本图实体】列表中选择项进行微调</div>
+                </div>
+                <div id="inspector-content" style="display:none">
+                    <!-- 实体卡片 -->
+                    <div class="inspector-card">
+                        <div class="card-head">
+                            <span id="insp-icon" class="insp-avatar">🏪</span>
+                            <div class="card-title-box">
+                                <div id="insp-name" class="insp-title">名称</div>
+                                <div id="insp-meta" class="insp-sub">#0 · Region #0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 坐标精确微调 -->
+                    <div class="inspector-section">
+                        <div class="sec-title">📍 坐标精确定位 (瓦片网格)</div>
+                        <div class="coord-inputs">
+                            <div class="coord-field">
+                                <span class="coord-lbl">X:</span>
+                                <input id="insp-coord-x" type="number" class="dock-num-input">
+                            </div>
+                            <div class="coord-field">
+                                <span class="coord-lbl">Y:</span>
+                                <input id="insp-coord-y" type="number" class="dock-num-input">
+                            </div>
+                            <button id="insp-apply-coord" class="dock-btn primary" title="应用坐标修改">应用</button>
+                        </div>
+
+                        <!-- 十字方向微调 D-Pad -->
+                        <div class="dpad-container">
+                            <div class="dpad-header">
+                                <span>方向微调</span>
+                                <div class="step-toggle">
+                                    <span class="step-opt active" data-step="1">1格</span>
+                                    <span class="step-opt" data-step="5">5格</span>
+                                </div>
+                            </div>
+                            <div class="dpad-grid">
+                                <div></div>
+                                <button class="dpad-btn" data-dir="up" title="向上 (北, Y-1)">▲</button>
+                                <div></div>
+                                <button class="dpad-btn" data-dir="left" title="向左 (西, X-1)">◀</button>
+                                <button id="insp-btn-recenter" class="dpad-btn center" title="居中到视口">🎯</button>
+                                <button class="dpad-btn" data-dir="right" title="向右 (东, X+1)">▶</button>
+                                <div></div>
+                                <button class="dpad-btn" data-dir="down" title="向下 (南, Y+1)">▼</button>
+                                <div></div>
+                            </div>
+                            <div class="hotkey-tip">💡 快捷键：方向键微调坐标 (Shift+方向键为5格步长)</div>
+                        </div>
+                    </div>
+
+                    <!-- 操作按钮 -->
+                    <div class="inspector-actions">
+                        <button id="insp-btn-center" class="dock-btn" style="flex:1">🎯 居中到此NPC</button>
+                        <button id="insp-btn-del" class="dock-btn danger" style="flex:1">🗑️ 删除该NPC</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: 待定位候选 -->
+            <div id="tab-candidates" class="dock-tab-pane">
+                <div style="font-size:11px;color:#a0aec0;margin-bottom:8px">拖拽候选到地图，或点击后放置到当前视图中心：</div>
+                <div id="unknown-npc-panel"></div>
+                <div id="unknown-monster-panel"></div>
+            </div>
+
+            <!-- Tab 4: 刷怪分布 -->
+            <div id="tab-respawns" class="dock-tab-pane">
+                <div id="resp-panel"></div>
+            </div>
+        </div>
+
+        <!-- 底部常驻同步与落库状态栏 -->
+        <div class="dock-footer">
+            <div class="sync-status-row">
+                <span id="sync-diff-text" class="sync-status">待同步: 无变更</span>
+                <button id="btn-sync-rollback" class="dock-btn text-btn" title="回滚所有工作区修改">撤销全部</button>
+            </div>
+            <button id="btn-sync-to-db" class="dock-btn sync-btn">
+                <span class="sync-icon">💾</span>
+                <span>保存并同步到游戏 (System.db)</span>
+            </button>
+        </div>
     </div>
     <div id="unknown-place-panel"></div>
     <div id="minimap">
@@ -1394,14 +1684,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             const sl = vp.scrollLeft, st = vp.scrollTop;
             const hlName = window.__hlName || null;
             entLayer.innerHTML = ents.map(e => {
-                const px = Number(e.x) * 48 / s;
-                const py = Number(e.y) * 32 / s;
+                const px = (Number(e.x) * 48 + 24) / s;
+                const py = (Number(e.y) * 32 + 32) / s;
                 if (px < sl - 200 || py < st - 200 || px > sl + vw + 200 || py > st + vh + 200) return "";
                 const kind = e.kind || "npc";
                 const color = entColor(kind, e.name);
                 const shape = entShape(kind);
                 const label = e.name || "";
-                const hlCls = (hlName && e.name === hlName) ? " target" : "";
+                const isSel = Boolean(selectedEntity &&
+                    ((e.npc_index != null && selectedEntity.index === e.npc_index) ||
+                     (e.guard_index != null && selectedEntity.index === e.guard_index)) &&
+                    ((e.kind || "npc") === selectedEntity.kind));
+                const hlCls = ((hlName && e.name === hlName) || isSel) ? " target" : "";
+                const selCls = isSel ? " selected" : "";
                 let icon = `<span class="ent-icon" style="background:${color};box-shadow:0 0 4px ${color};${shape}"></span>`;
                 if (kind === "npc" && e.img != null) {
                     const fr = Number(e.img) * 100;
@@ -1414,13 +1709,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                         ` onerror="this.style.display='none';this.nextElementSibling.classList.remove('hide')">` +
                         `<span class="ent-icon hide" style="background:${color};box-shadow:0 0 4px ${color};${shape}"></span>`;
                 }
-                return `<div class="ent ${kind}${hlCls}" data-name="${label.replace(/"/g, "&quot;")}" data-x="${e.x}" data-y="${e.y}" data-kind="${kind}"` +
+                return `<div class="ent ${kind}${hlCls}${selCls}" data-name="${label.replace(/"/g, "&quot;")}" data-x="${e.x}" data-y="${e.y}" data-kind="${kind}"` +
                     (e.npc_index != null ? ` data-npc="${e.npc_index}"` : '') +
                     (e.region != null ? ` data-region="${e.region}"` : '') +
                     (e.guard_index != null ? ` data-guard="${e.guard_index}"` : '') +
                     (e.placement_id ? ` data-placement="${e.placement_id}"` : '') +
                     ` style="left:${px}px;top:${py}px">${icon}<span class="ent-label">${label}</span></div>`;
             }).join("");
+            if (typeof updateSelectionBox === "function") updateSelectionBox();
         }
         // hover entity -> tooltip
         entLayer.addEventListener("mouseover", (e) => {
@@ -1444,7 +1740,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 const ur = await fetch("/api/unknown-entities");
                 const ud = await ur.json();
                 window.__unknownDoc = ud.ok ? ud : {unknown_npcs: [], unknown_monsters: [], placements: []};
-                setTimeout(() => { try { renderUnknownPanels(); } catch (e) { console.error("unknown panel render", e); } }, 0);
+                setTimeout(() => { try { if (typeof renderUnknownPanels === "function") renderUnknownPanels(); } catch (e) {} }, 50);
                 const stem = mi.name.replace(/\\.map$/i, "");
                 const placed = (window.__unknownDoc.placements || [])
                     .filter(p => p.status === "user-placed" && p.map === stem)
@@ -1490,49 +1786,469 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             drawRoutes(); drawEntities(); drawGrid(); drawMini();
             updateUrlHash();
         }
-        function renderNpcPanel(mi) {
-            const panel = document.getElementById("npc-panel");
-            if (!mi) { panel.style.display = "none"; return; }
-            const npcs = (entCache[mi.name] || []).filter(e => {
-                const k = e.kind || "npc";
-                return k === "npc" || k === "guard";   // NPC + 城镇卫士
-            });
-            const cn = st => MAP_CN[st] || st;
-            const stem = mi.name.replace(/\\.map$/i, "");
-            const nGuard = npcs.filter(e => e.kind === "guard").length;
-            let html = `<h4>🏪 ${cn(stem)} · NPC ${npcs.length - nGuard} · 卫士 ${nGuard}</h4>`;
-            if (!npcs.length) {
-                html += `<div class="npc-empty">本图无 NPC 数据</div>`;
-            } else {
-                npcs.sort((a, b) => String(a.name).localeCompare(String(b.name), "zh"));
-                for (const e of npcs) {
-                    const nm = String(e.name || "").replace(/"/g, "&quot;");
-                    const en = e.name_en && e.name_en !== e.name
-                        ? `<span class="npc-en">${String(e.name_en).replace(/</g, "&lt;")}</span>` : "";
-                    html += `<div class="npc-row" data-name="${nm}" data-x="${e.x}" data-y="${e.y}">` +
-                        `<span class="npc-name">${nm}${en}</span>` +
-                        `<span class="npc-xy">${e.x},${e.y}</span></div>`;
-                }
-            }
-            panel.innerHTML = html;
-            panel.style.display = "block";
-            panel.querySelectorAll(".npc-row").forEach(row => {
-                row.addEventListener("click", () => {
-                    jumpToCell(row.dataset.x, row.dataset.y, row.dataset.name);
+        // ============================ 现代化专业实体工作台交互 (Dock & Inspector) ============================
+        let dockActiveTab = "entities";
+        let dockFilterKind = "all"; // all | npc | guard
+        let dockSearchQuery = "";
+        let selectedEntity = null; // {kind, index, name, name_en, x, y, region, img}
+        let dockStep = 1; // 1 | 5
+        let dockInited = false;
+
+        function initInspectorDock() {
+            if (dockInited) return;
+            dockInited = true;
+
+            // Tab 切换
+            const tabs = document.querySelectorAll("#inspector-dock .dock-tab");
+            tabs.forEach(tab => {
+                tab.addEventListener("click", () => {
+                    switchDockTab(tab.dataset.tab);
                 });
             });
+
+            // 折叠/展开
+            const btnCollapse = document.getElementById("btn-dock-collapse");
+            const dock = document.getElementById("inspector-dock");
+            if (btnCollapse && dock) {
+                btnCollapse.addEventListener("click", () => {
+                    const isCollapsed = dock.classList.toggle("collapsed");
+                    btnCollapse.textContent = isCollapsed ? "＋" : "−";
+                    btnCollapse.title = isCollapsed ? "展开面板" : "折叠面板";
+                });
+            }
+
+            // 搜索过滤
+            const searchInput = document.getElementById("dock-ent-search");
+            if (searchInput) {
+                searchInput.addEventListener("input", (e) => {
+                    dockSearchQuery = e.target.value.trim().toLowerCase();
+                    renderDockEntities(curMap());
+                });
+            }
+
+            // 分类 Chips
+            const chips = document.querySelectorAll("#tab-entities .filter-chip");
+            chips.forEach(chip => {
+                chip.addEventListener("click", () => {
+                    chips.forEach(c => c.classList.remove("active"));
+                    chip.classList.add("active");
+                    dockFilterKind = chip.dataset.filter;
+                    renderDockEntities(curMap());
+                });
+            });
+
+            // 步长切换 (1格 / 5格)
+            const stepOpts = document.querySelectorAll(".step-opt");
+            stepOpts.forEach(opt => {
+                opt.addEventListener("click", () => {
+                    stepOpts.forEach(o => o.classList.remove("active"));
+                    opt.classList.add("active");
+                    dockStep = Number(opt.dataset.step) || 1;
+                });
+            });
+
+            // D-Pad 十字方向微调
+            const dpadBtns = document.querySelectorAll(".dpad-btn[data-dir]");
+            dpadBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    if (!selectedEntity) return;
+                    const dir = btn.dataset.dir;
+                    let dx = 0, dy = 0;
+                    if (dir === "up") dy = -dockStep;
+                    else if (dir === "down") dy = dockStep;
+                    else if (dir === "left") dx = -dockStep;
+                    else if (dir === "right") dx = dockStep;
+                    moveSelectedEntity(selectedEntity.x + dx, selectedEntity.y + dy);
+                });
+            });
+
+            // 居中按钮
+            const btnRecenter = document.getElementById("insp-btn-recenter");
+            const btnCenter = document.getElementById("insp-btn-center");
+            const doCenter = () => {
+                if (selectedEntity) jumpToCell(selectedEntity.x, selectedEntity.y, selectedEntity.name);
+            };
+            if (btnRecenter) btnRecenter.addEventListener("click", doCenter);
+            if (btnCenter) btnCenter.addEventListener("click", doCenter);
+
+            // 坐标数值输入与应用
+            const applyCoord = () => {
+                if (!selectedEntity) return;
+                const xInput = document.getElementById("insp-coord-x");
+                const yInput = document.getElementById("insp-coord-y");
+                const nx = parseInt(xInput.value, 10);
+                const ny = parseInt(yInput.value, 10);
+                if (Number.isFinite(nx) && Number.isFinite(ny)) {
+                    if (nx !== selectedEntity.x || ny !== selectedEntity.y) {
+                        moveSelectedEntity(nx, ny);
+                    }
+                }
+            };
+            const btnApply = document.getElementById("insp-apply-coord");
+            if (btnApply) btnApply.addEventListener("click", applyCoord);
+            const xIn = document.getElementById("insp-coord-x");
+            const yIn = document.getElementById("insp-coord-y");
+            if (xIn) xIn.addEventListener("keydown", (e) => { if (e.key === "Enter") applyCoord(); });
+            if (yIn) yIn.addEventListener("keydown", (e) => { if (e.key === "Enter") applyCoord(); });
+
+            // 删除 NPC
+            const btnDel = document.getElementById("insp-btn-del");
+            if (btnDel) {
+                btnDel.addEventListener("click", async () => {
+                    if (!selectedEntity) return;
+                    if (!confirm(`确定要删除 ${selectedEntity.name} (#${selectedEntity.index}) 吗？`)) return;
+                    const r = await fetch("/npc/delete", {
+                        method: "POST", headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({npc: selectedEntity.index})
+                    });
+                    const d = await r.json();
+                    if (d.ok) {
+                        showToast("已删除", `NPC #${selectedEntity.index} ${selectedEntity.name} 已从工作区删除`);
+                        selectedEntity = null;
+                        updateInspectorView();
+                        const mi = curMap();
+                        if (mi) await loadEntities(mi);
+                        drawEntities();
+                        updateSelectionBox();
+                        updateSyncDiff();
+                    } else {
+                        alert("删除失败: " + (d.error || "?"));
+                    }
+                });
+            }
+
+            // 全局键盘方向键监听
+            window.addEventListener("keydown", (e) => {
+                if (!selectedEntity) return;
+                // 如果当前正在 input / textarea 等输入框中打字，不拦截方向键
+                const tag = (document.activeElement && document.activeElement.tagName) || "";
+                if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+
+                const step = e.shiftKey ? 5 : 1;
+                let dx = 0, dy = 0;
+                if (e.key === "ArrowUp") dy = -step;
+                else if (e.key === "ArrowDown") dy = step;
+                else if (e.key === "ArrowLeft") dx = -step;
+                else if (e.key === "ArrowRight") dx = step;
+                else if (e.key === "Escape") {
+                    selectedEntity = null;
+                    updateInspectorView();
+                    updateSelectionBox();
+                    drawEntities();
+                    return;
+                } else return;
+
+                e.preventDefault();
+                moveSelectedEntity(selectedEntity.x + dx, selectedEntity.y + dy);
+            });
+
+            // 一键同步到游戏数据库 (System.db)
+            const btnSync = document.getElementById("btn-sync-to-db");
+            if (btnSync) {
+                btnSync.addEventListener("click", async () => {
+                    btnSync.disabled = true;
+                    btnSync.innerHTML = '<span>⏳</span> <span>正在同步到 System.db...</span>';
+                    try {
+                        const r = await fetch("/api/sync", {method: "POST"});
+                        const d = await r.json();
+                        if (d.ok) {
+                            showToast("数据库同步成功！", d.message || "已写入四处 System.db 并重置基线，重启游戏生效！", 6000);
+                            await updateSyncDiff();
+                        } else {
+                            alert("同步失败：\\n" + (d.error || "未知错误"));
+                        }
+                    } catch (err) {
+                        alert("同步异常: " + (err.message || err));
+                    } finally {
+                        btnSync.disabled = false;
+                        btnSync.innerHTML = '<span class="sync-icon">💾</span> <span>保存并同步到游戏 (System.db)</span>';
+                    }
+                });
+            }
+
+            // 回滚全部修改
+            const btnRollback = document.getElementById("btn-sync-rollback");
+            if (btnRollback) {
+                btnRollback.addEventListener("click", async () => {
+                    if (!confirm("确定要放弃所有未同步的工作区改动并回滚至基线吗？")) return;
+                    try {
+                        const r = await fetch("/npc/rollback", {
+                            method: "POST", headers: {"Content-Type": "application/json"},
+                            body: JSON.stringify({})
+                        });
+                        const d = await r.json();
+                        if (d.ok) {
+                            showToast("已回滚全部变更", "工作区已恢复至上一次数据库同步状态");
+                            selectedEntity = null;
+                            updateInspectorView();
+                            const mi = curMap();
+                            if (mi) await loadEntities(mi);
+                            drawEntities();
+                            updateSelectionBox();
+                            updateSyncDiff();
+                        } else {
+                            alert("回滚失败: " + (d.error || "?"));
+                        }
+                    } catch (e) {
+                        alert("回滚异常: " + e);
+                    }
+                });
+            }
+
+            // 地图实体点击选择事件委托
+            entLayer.addEventListener("click", (e) => {
+                const el = e.target.closest(".ent");
+                if (!el) return;
+                const kind = el.dataset.kind || "npc";
+                if (kind !== "npc" && kind !== "guard") return;
+                const name = el.dataset.name || "";
+                const x = Number(el.dataset.x);
+                const y = Number(el.dataset.y);
+                const idx = Number(el.dataset.npc || el.dataset.guard);
+                const reg = el.dataset.region ? Number(el.dataset.region) : null;
+                const mi = curMap();
+                const ent = (entCache[mi?.name] || []).find(it =>
+                    (it.npc_index === idx || it.guard_index === idx) && it.kind === kind) ||
+                    {kind, index: idx, name, x, y, region: reg};
+                selectEntity(ent, false);
+            });
+
+            updateSyncDiff();
+        }
+
+        function switchDockTab(tabId) {
+            dockActiveTab = tabId;
+            const tabs = document.querySelectorAll("#inspector-dock .dock-tab");
+            tabs.forEach(t => t.classList.toggle("active", t.dataset.tab === tabId));
+            const panes = document.querySelectorAll("#inspector-dock .dock-tab-pane");
+            panes.forEach(p => p.classList.toggle("active", p.id === "tab-" + tabId));
+            const dock = document.getElementById("inspector-dock");
+            if (dock && dock.classList.contains("collapsed")) {
+                dock.classList.remove("collapsed");
+                const btn = document.getElementById("btn-dock-collapse");
+                if (btn) btn.textContent = "−";
+            }
+        }
+
+        function selectEntity(e, shouldRecenter = false) {
+            if (!e) {
+                selectedEntity = null;
+                updateInspectorView();
+                updateSelectionBox();
+                drawEntities();
+                return;
+            }
+            selectedEntity = {
+                kind: e.kind || "npc",
+                index: e.npc_index || e.guard_index || e.index,
+                name: e.name || "",
+                name_en: e.name_en || "",
+                x: Number(e.x),
+                y: Number(e.y),
+                region: e.region,
+                img: e.img
+            };
+            switchDockTab("inspector");
+            updateInspectorView();
+            updateSelectionBox();
+            window.__hlName = selectedEntity.name;
+            drawEntities();
+            if (shouldRecenter) {
+                jumpToCell(selectedEntity.x, selectedEntity.y, selectedEntity.name);
+            }
+        }
+
+        function updateInspectorView() {
+            const emptyEl = document.getElementById("inspector-empty");
+            const contentEl = document.getElementById("inspector-content");
+            const badge = document.getElementById("dock-target-badge");
+            if (!selectedEntity) {
+                if (emptyEl) emptyEl.style.display = "flex";
+                if (contentEl) contentEl.style.display = "none";
+                if (badge) badge.style.display = "none";
+                return;
+            }
+            if (emptyEl) emptyEl.style.display = "none";
+            if (contentEl) contentEl.style.display = "block";
+            if (badge) {
+                badge.style.display = "inline-block";
+                badge.textContent = selectedEntity.name;
+            }
+
+            document.getElementById("insp-name").textContent = selectedEntity.name +
+                (selectedEntity.name_en ? ` (${selectedEntity.name_en})` : "");
+            const kindText = selectedEntity.kind === "guard" ? "城镇卫士" : "NPC";
+            document.getElementById("insp-meta").textContent =
+                `${kindText} #${selectedEntity.index}` + (selectedEntity.region ? ` · Region #${selectedEntity.region}` : "");
+            document.getElementById("insp-icon").textContent = selectedEntity.kind === "guard" ? "🛡️" : "🏪";
+
+            const xIn = document.getElementById("insp-coord-x");
+            const yIn = document.getElementById("insp-coord-y");
+            if (xIn) xIn.value = selectedEntity.x;
+            if (yIn) yIn.value = selectedEntity.y;
+
+            const btnDel = document.getElementById("insp-btn-del");
+            if (btnDel) btnDel.style.display = selectedEntity.kind === "npc" ? "block" : "none";
+        }
+
+        function updateSelectionBox() {
+            const box = document.getElementById("ent-sel-box");
+            if (!box) return;
+            if (!selectedEntity || curView !== "map") {
+                box.style.display = "none";
+                return;
+            }
+            const s = curScale();
+            const px = (selectedEntity.x * 48) / s;
+            const py = (selectedEntity.y * 32) / s;
+            const pw = 48 / s;
+            const ph = 32 / s;
+            box.style.left = px + "px";
+            box.style.top = py + "px";
+            box.style.width = pw + "px";
+            box.style.height = ph + "px";
+            box.style.display = "block";
+        }
+
+        async function moveSelectedEntity(newX, newY, force = false) {
+            if (!selectedEntity) return;
+            const mi = curMap();
+            if (mi) {
+                if (newX < 0 || newY < 0 || newX >= mi.w || newY >= mi.h) {
+                    showToast("移动失败", `坐标 (${newX}, ${newY}) 超出地图边界 [${mi.w}×${mi.h}]`);
+                    return;
+                }
+            }
+            const op = selectedEntity.kind === "guard" ? "guard_move" : "move";
+            const key = selectedEntity.kind === "guard" ? "guard" : "npc";
+            const stem = curName ? curName.replace(/\\.map$/i, "") : null;
+            const payload = {[key]: selectedEntity.index, x: newX, y: newY, map: stem};
+            if (force) payload.force = true;
+
+            try {
+                const res = await fetch("/npc/" + op, {
+                    method: "POST", headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(payload)
+                });
+                const d = await res.json();
+                if (d.ok) {
+                    selectedEntity.x = newX;
+                    selectedEntity.y = newY;
+                    // 更新缓存
+                    if (mi && entCache[mi.name]) {
+                        const it = entCache[mi.name].find(e =>
+                            (e.npc_index === selectedEntity.index || e.guard_index === selectedEntity.index) &&
+                            (e.kind || "npc") === selectedEntity.kind);
+                        if (it) { it.x = newX; it.y = newY; }
+                    }
+                    updateInspectorView();
+                    updateSelectionBox();
+                    drawEntities();
+                    renderDockEntities(mi);
+                    updateSyncDiff();
+                } else {
+                    const err = d.error || "未知错误";
+                    if (err.includes("阻挡格") && !force) {
+                        if (confirm(`目标坐标 (${newX}, ${newY}) 包含阻挡标记。\\n是否强制放置 (force=1)？`)) {
+                            return moveSelectedEntity(newX, newY, true);
+                        }
+                    } else {
+                        alert("移动失败: " + err);
+                    }
+                }
+            } catch (ex) {
+                alert("移动请求异常: " + ex);
+            }
+        }
+
+        async function updateSyncDiff() {
+            const diffEl = document.getElementById("sync-diff-text");
+            if (!diffEl) return;
+            try {
+                const r = await fetch("/npc/diff");
+                const d = await r.json();
+                const s = d.summary || {added: 0, modified: 0, deleted: 0};
+                const total = s.added + s.modified + s.deleted;
+                if (!total) {
+                    diffEl.innerHTML = '<span style="color:#38a169">● 工作区已同步</span>';
+                } else {
+                    diffEl.innerHTML = `<span style="color:#ecc94b">● 待同步: +${s.added} ~${s.modified} -${s.deleted}</span>`;
+                }
+            } catch (e) {
+                diffEl.textContent = "待同步: 状态未知";
+            }
+        }
+
+        function renderDockEntities(mi) {
+            initInspectorDock();
+            const listEl = document.getElementById("dock-ent-list");
+            if (!listEl) return;
+            if (!mi) { listEl.innerHTML = '<div style="color:#718096;padding:12px;text-align:center">未选择地图</div>'; return; }
+            let npcs = (entCache[mi.name] || []).filter(e => {
+                const k = e.kind || "npc";
+                return k === "npc" || k === "guard";
+            });
+            if (dockFilterKind === "npc") npcs = npcs.filter(e => (e.kind || "npc") === "npc");
+            else if (dockFilterKind === "guard") npcs = npcs.filter(e => e.kind === "guard");
+
+            if (dockSearchQuery) {
+                npcs = npcs.filter(e => {
+                    const str = `${e.name || ""} ${e.name_en || ""} ${e.x},${e.y} #${e.npc_index || e.guard_index || ""}`.toLowerCase();
+                    return str.includes(dockSearchQuery);
+                });
+            }
+
+            if (!npcs.length) {
+                listEl.innerHTML = '<div style="color:#718096;padding:16px;text-align:center">无匹配实体</div>';
+                return;
+            }
+
+            npcs.sort((a, b) => String(a.name).localeCompare(String(b.name), "zh"));
+            listEl.innerHTML = npcs.map(e => {
+                const isGuard = e.kind === "guard";
+                const icon = isGuard ? "🛡️" : "🏪";
+                const isSel = selectedEntity && selectedEntity.index === (e.npc_index || e.guard_index) &&
+                              selectedEntity.kind === (e.kind || "npc");
+                const nm = String(e.name || "").replace(/"/g, "&quot;");
+                const en = e.name_en && e.name_en !== e.name ? `<div class="ent-row-sub">${String(e.name_en).replace(/</g, "&lt;")}</div>` : "";
+                return `<div class="ent-row${isSel ? ' selected' : ''}" data-idx="${e.npc_index || e.guard_index}" data-kind="${e.kind || 'npc'}">
+                    <span class="ent-row-icon">${icon}</span>
+                    <div class="ent-row-info">
+                        <div class="ent-row-name">${nm}</div>
+                        ${en}
+                    </div>
+                    <span class="ent-row-xy">${e.x},${e.y}</span>
+                </div>`;
+            }).join("");
+
+            listEl.querySelectorAll(".ent-row").forEach(row => {
+                row.addEventListener("click", () => {
+                    const idx = Number(row.dataset.idx);
+                    const k = row.dataset.kind;
+                    const ent = (entCache[mi.name] || []).find(it =>
+                        (it.npc_index === idx || it.guard_index === idx) && (it.kind || "npc") === k);
+                    if (ent) selectEntity(ent, true);
+                });
+            });
+        }
+
+        function renderNpcPanel(mi) {
+            renderDockEntities(mi);
         }
 
         // ---- 怪物刷新面板：respCache 分组区域列表，点击跳转 + 热力高亮 ----
         function renderRespPanel(mi) {
             const panel = document.getElementById("resp-panel");
             if (!panel) return;
-            if (!mi || !chkResp || !chkResp.checked) { panel.style.display = "none"; return; }
+            if (!mi) { panel.innerHTML = '<div style="color:#718096;padding:12px;text-align:center">未选择地图</div>'; return; }
             const d = respCache[mi.name];
-            if (!d || !d.groups || !d.groups.length) { panel.style.display = "none"; return; }
+            if (!d || !d.groups || !d.groups.length) {
+                panel.innerHTML = '<div style="color:#718096;padding:14px;text-align:center">本图无怪物刷新分布数据</div>';
+                return;
+            }
             const cn = st => MAP_CN[st] || st;
             const stem = mi.name.replace(/\\.map$/i, "");
-            let html = `<h4>👾 ${cn(stem)} · 刷新区 (${d.groups.length})</h4>`;
+            let html = `<div style="font-size:11px;color:#a0aec0;margin-bottom:6px">👾 ${cn(stem)} · 刷新区 (${d.groups.length})</div>`;
             const groups = [...d.groups].sort((a, b) =>
                 b.entries.reduce((s, e) => s + (e.count || 0), 0) -
                 a.entries.reduce((s, e) => s + (e.count || 0), 0));
@@ -1549,12 +2265,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     `<span class="resp-xy">${g.x},${g.y}</span></div>`;
             }
             panel.innerHTML = html;
-            panel.style.display = "block";
             panel.querySelectorAll(".resp-row").forEach(row => {
                 row.addEventListener("click", () => {
                     jumpToCell(row.dataset.x, row.dataset.y, null);
                     window.__hlRegion = row.dataset.x + "," + row.dataset.y + "," + row.dataset.half;
                     window.__hlName = null;
+                    if (!chkResp.checked) {
+                        chkResp.checked = true;
+                    }
                     drawHeat();
                 });
             });
@@ -2134,7 +2852,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         let curView = "map";
         const ovView = document.getElementById("overview-view");
         const gvView = document.getElementById("graph-view");
-        const mapOnlyEls = () => ["#minimap", "#statusbar", "#cat-panel", "#conn-panel", "#npc-panel", "#resp-panel", "#quest-panel",
+        const mapOnlyEls = () => ["#minimap", "#statusbar", "#cat-panel", "#conn-panel", "#inspector-dock", "#quest-panel",
             "#pick-panel", "#port-tooltip", "#port-detail", "#ent-tooltip", "#heat-tooltip"].map(s => document.querySelector(s));
         function showView(v) {
             curView = v;
@@ -2147,6 +2865,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             } else {
                 document.getElementById("statusbar").style.display = "flex";
                 document.getElementById("minimap").style.display = "";
+                const dock = document.getElementById("inspector-dock");
+                if (dock) dock.style.display = "flex";
                 if (questData) questPanel.style.display = "block";
                 if (pickA) pickPanel.style.display = "block";
                 for (const id of ["cat-panel", "conn-panel", "npc-panel"]) {
@@ -3277,10 +3997,10 @@ EDIT_UI_JS = r"""
         }
         entLayer.addEventListener('mousedown', (e) => {
             const el = e.target.closest('.ent');
-            if (!editOn || !el || !entLayer.classList.contains('npc-edit')) return;
+            if (!el) return;
             const kind = el.dataset.kind;
             if (kind !== 'npc' && kind !== 'guard') return;
-            e.stopPropagation();          // 不触发 E1 的选格
+            e.stopPropagation();
             const idx = Number(kind === 'npc' ? el.dataset.npc : el.dataset.guard);
             if (!idx) return;
             const name = el.dataset.name || '';
@@ -3300,15 +4020,18 @@ EDIT_UI_JS = r"""
                 document.removeEventListener('mouseup', up);
                 ghost.remove();
                 el.style.visibility = '';
-                if (!moved) { npcShowDetail({kind, index: idx, name, region: el.dataset.region}); return; }
-                const cell = editScreenToCell(ev);
                 const mi = curMap();
+                const ent = (entCache[mi?.name] || []).find(it =>
+                    (it.npc_index === idx || it.guard_index === idx) && (it.kind || 'npc') === kind) ||
+                    {kind, index: idx, name, x: Number(el.dataset.x), y: Number(el.dataset.y), region: el.dataset.region};
+                if (!moved) {
+                    selectEntity(ent, false);
+                    return;
+                }
+                const cell = editScreenToCell(ev);
                 if (!mi || cell.x < 0 || cell.y < 0 || cell.x >= mi.w || cell.y >= mi.h) return;
-                const op = kind === 'npc' ? 'move' : 'guard_move';
-                const key = kind === 'npc' ? 'npc' : 'guard';
-                const d = await npcPost(op, {[key]: idx, x: cell.x, y: cell.y});
-                if (!d.ok) { alert('移动失败: ' + (d.error || '?')); return; }
-                await npcRefresh();
+                selectedEntity = ent;
+                await moveSelectedEntity(cell.x, cell.y);
             };
             document.addEventListener('mousemove', mv);
             document.addEventListener('mouseup', up);
@@ -3538,7 +4261,8 @@ EDIT_UI_JS = r"""
                     `<span class="unknown-meta">${unknownEsc(sub)} · ${unknownEsc(status)} · ${unknownEsc(r.confidence || "unknown")}</span>` +
                     `<span class="unknown-reason">${unknownEsc(reason).slice(0, 120)}</span>` +
                     `<span class="unknown-source">${unknownEsc(unknownSourceName(r.source_manifest))} · 已有 ${r.current_respawn_count || 0} 点</span></span>` +
-                    (placed ? `<button class="unknown-undo" data-placement="${unknownEsc((r.placement || {}).placement_id || "")}">撤销</button>` : "") +
+                    (placed ? `<button class="unknown-undo" data-placement="${unknownEsc((r.placement || {}).placement_id || "")}">撤销</button>` :
+                              `<button class="unknown-place-center" data-ukind="${kind}" data-uindex="${idx == null ? '' : idx}" style="background:#2b6cb0;color:#fff;border:none;border-radius:3px;padding:2px 6px;cursor:pointer;font-size:10px;white-space:nowrap;margin-left:4px" title="放置到当前屏幕视口正中心">放入中心</button>`) +
                     `</div>`;
             }
             p.innerHTML = h;
@@ -3562,6 +4286,51 @@ EDIT_UI_JS = r"""
                     showToast("已选择待定位候选", "现在点击地图格选择目标位置。", 3500);
                 });
             });
+            p.querySelectorAll(".unknown-place-center").forEach(btn => btn.addEventListener("click", async e => {
+                e.stopPropagation();
+                const k = btn.dataset.ukind;
+                const idx = Number(btn.dataset.uindex);
+                const item = (k === "npc" ? unknownDoc.unknown_npcs : unknownDoc.unknown_monsters)
+                    .find(x => (k === "npc" ? x.npc_index : x.monster_index) === idx);
+                if (!item) return;
+                const s = curScale();
+                const cx = Math.floor((vp.scrollLeft + vp.clientWidth / 2) * s / 48);
+                const cy = Math.floor((vp.scrollTop + vp.clientHeight / 2) * s / 32);
+                const stem = curName ? curName.replace(/\.map$/i, "") : "";
+                if (!stem) { alert("请先选择一张地图"); return; }
+                if (k === "npc") {
+                    const nm = item.name || item.website_name || item.internal_name || "未命名NPC";
+                    const r = await fetch("/npc/create", {
+                        method: "POST", headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({map: stem, x: cx, y: cy, name: nm, image: item.image || 0})
+                    });
+                    const d = await r.json();
+                    if (d.ok) {
+                        showToast("NPC放置成功", `已在中心 (${cx}, ${cy}) 放置 NPC: ${nm}`);
+                        const mi = curMap();
+                        if (mi) await loadEntities(mi);
+                        drawEntities();
+                        selectEntity({kind: "npc", index: d.result?.npc?.Index, name: nm, x: cx, y: cy}, true);
+                        await updateSyncDiff();
+                        await unknownReload();
+                    } else {
+                        alert("放置失败: " + (d.error || "?"));
+                    }
+                } else {
+                    const r = await fetch("/unknown/place", {
+                        method: "POST", headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({kind: k, index: idx, map: stem, x: cx, y: cy})
+                    });
+                    const d = await r.json();
+                    if (d.ok) {
+                        showToast("候选怪物放置成功", `已在中心 (${cx}, ${cy}) 放置候选怪物`);
+                        await unknownReload();
+                        await updateSyncDiff();
+                    } else {
+                        alert("放置失败: " + (d.error || "?"));
+                    }
+                }
+            }));
             p.querySelectorAll(".unknown-undo").forEach(btn => btn.addEventListener("click", async e => {
                 e.stopPropagation();
                 const d = await unknownPost("undo", {placement_id: btn.dataset.placement});

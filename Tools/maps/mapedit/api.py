@@ -299,6 +299,9 @@ class ViewerHandler(BaseHTTPRequestHandler):
         elif self.path.startswith("/unknown/"):
             self._handle_unknown()
 
+        elif self.path in ("/api/sync", "/npc/sync"):
+            self._handle_sync()
+
         elif self.path.startswith("/edit/"):
             self._handle_edit()
         else:
@@ -558,6 +561,58 @@ class ViewerHandler(BaseHTTPRequestHandler):
         ws_guards = load_workspace_guards(cls.db_workspace_path, cls.db_names)
         cls.entities = ws_guards + ws_ents + cls.base_entities
 
+    def _handle_sync(self):
+        """执行 dbeditor/sync.sh 同步工作区改动到 System.db。"""
+        import socket
+        import subprocess
+        from pathlib import Path
+
+        # 1. 检查服务端端口 7000
+        try:
+            with socket.create_connection(("127.0.0.1", 7000), timeout=0.4):
+                self._json_200(json.dumps({
+                    "ok": False,
+                    "error": "服务端正在运行（端口 7000 活跃中）。请先停止游戏服务端再执行同步！"
+                }, ensure_ascii=False).encode("utf-8"))
+                return
+        except OSError:
+            pass
+
+        sync_sh = Path(__file__).resolve().parent.parent / "dbeditor" / "sync.sh"
+        if not sync_sh.exists():
+            self._json_200(json.dumps({
+                "ok": False,
+                "error": f"同步脚本不存在: {sync_sh}"
+            }, ensure_ascii=False).encode("utf-8"))
+            return
+
+        repo_root = sync_sh.parent.parent.parent
+        try:
+            r = subprocess.run(["bash", str(sync_sh)], cwd=str(repo_root),
+                               capture_output=True, text=True, timeout=900)
+            report = ""
+            rp = sync_sh.parent / "workspace" / "sync_report.txt"
+            if rp.exists():
+                report = rp.read_text(encoding="utf-8")
+            if r.returncode == 0:
+                self.refresh_workspace_entities()
+                self._json_200(json.dumps({
+                    "ok": True,
+                    "report": report or r.stdout,
+                    "message": "同步成功！已安装更新到全部四处 System.db 数据库并重置基线。"
+                }, ensure_ascii=False).encode("utf-8"))
+            else:
+                err_msg = r.stderr or r.stdout or report
+                self._json_200(json.dumps({
+                    "ok": False,
+                    "error": f"同步失败 (退出码 {r.returncode}):\n{err_msg[:600]}"
+                }, ensure_ascii=False).encode("utf-8"))
+        except Exception as ex:
+            self._json_200(json.dumps({
+                "ok": False,
+                "error": f"执行同步异常: {str(ex)}"
+            }, ensure_ascii=False).encode("utf-8"))
+
 
     def do_GET(self):
         path = self.path.split("?")[0]
@@ -696,8 +751,10 @@ class ViewerHandler(BaseHTTPRequestHandler):
                 with urllib.request.urlopen(db_url, timeout=3) as r:
                     db = json.loads(r.read().decode("utf-8"))
                 for e in db.get("entities", []):
-                    if not any(x.get("x") == e.get("x") and x.get("y") == e.get("y")
-                               and x.get("kind") == e.get("kind") and x.get("name") == e.get("name")
+                    # 若已存在同格或同名实体（支持中英文别名匹配），不再重复添加
+                    e_name = e.get("name")
+                    if not any((x.get("x") == e.get("x") and x.get("y") == e.get("y") and x.get("kind") == e.get("kind"))
+                               or (x.get("name") == e_name or x.get("name_en") == e_name)
                                for x in ents):
                         ents.append(e)
             except Exception:

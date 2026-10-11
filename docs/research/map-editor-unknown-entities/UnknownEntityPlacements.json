@@ -1,0 +1,56 @@
+{
+  "placements": [
+    {
+      "announce": false,
+      "count": 3,
+      "delay": 30,
+      "drop_set": 0,
+      "history": [
+        {
+          "action": "undo",
+          "operator": "browser-acceptance",
+          "previous": {
+            "announce": false,
+            "count": 3,
+            "delay": 30,
+            "drop_set": 0,
+            "kind": "monster-placement",
+            "map": "02",
+            "monster_index": 196,
+            "operator": "mapedit",
+            "placement_id": "monster:196:02:244:192",
+            "range": 2,
+            "source": "website-alignment-manual-placement",
+            "source_note": "browser acceptance staging",
+            "status": "user-placed",
+            "updated_at": "2026-09-26T05:59:49.122440+00:00",
+            "validation": {
+              "in_bounds": true,
+              "walkable": true
+            },
+            "x": 244,
+            "y": 192
+          },
+          "timestamp": "2026-09-26T06:00:03.694151+00:00"
+        }
+      ],
+      "kind": "monster-placement",
+      "map": "02",
+      "monster_index": 196,
+      "operator": "mapedit",
+      "placement_id": "monster:196:02:244:192",
+      "range": 2,
+      "source": "website-alignment-manual-placement",
+      "source_note": "browser acceptance staging",
+      "status": "undone",
+      "updated_at": "2026-09-26T06:00:03.694174+00:00",
+      "validation": {
+        "in_bounds": true,
+        "walkable": true
+      },
+      "x": 244,
+      "y": 192
+    }
+  ],
+  "version": 1
+}
