@@ -403,7 +403,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         #ent-layer { position:absolute; pointer-events:none; z-index:5; overflow:visible; }
         #tile-layer { position:absolute; left:0; top:0; z-index:1; pointer-events:none; }
         #tile-layer img { position:absolute; image-rendering:pixelated; }
-        #ent-layer .ent { position:absolute; transform:translate(-50%,-100%); text-align:center; cursor:default; }
+        #ent-layer .ent { position:absolute; transform:translate(-50%,-100%); text-align:center;
+            cursor:pointer !important; pointer-events:auto !important; user-select:none; }
+        #ent-layer .ent:hover { z-index:30 !important; }
+        #ent-layer .ent:hover .ent-label { color:#ffd700; background:rgba(20,24,34,.95); box-shadow:0 0 8px rgba(255,215,0,.7); }
         #ent-layer .ent .ent-icon { display:block; width:28px; height:28px; margin:0 auto; image-rendering:pixelated; }
         #ent-layer .ent .ent-icon.hide { display:none; }
         #ent-layer .ent .ent-sprite { display:block; margin:0 auto; image-rendering:pixelated;
@@ -445,19 +448,22 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         #conn-panel .conn-file { color:#6a6a75; font-family:ui-monospace,monospace; font-size:11px; }
         #conn-panel .conn-empty { color:#6a6a75; }
         #conn-panel::-webkit-scrollbar { width:8px; } #conn-panel::-webkit-scrollbar-thumb { background:#3a3a44; border-radius:4px; }
-        /* ==================== 现代化专业实体工作台 (Inspector Dock) ==================== */
+        /* ==================== 现代化专业实体工作台 (Inspector Dock - 双栏布局) ==================== */
         #inspector-dock {
-            position: fixed; right: 10px; top: 220px; bottom: 44px; width: 340px;
+            position: fixed; right: 10px; top: 220px; bottom: 44px; width: 620px;
+            max-width: calc(100vw - 20px);
             background: rgba(14, 18, 26, 0.96); border: 1px solid #2d3748; border-radius: 8px;
             box-shadow: 0 12px 36px rgba(0,0,0,0.7); display: flex; flex-direction: column;
             z-index: 85; pointer-events: auto; font-size: 12px; color: #e2e8f0;
             backdrop-filter: blur(12px); overflow: hidden;
-            transition: height 0.25s ease, max-height 0.25s ease;
+            transition: width 0.25s ease, height 0.25s ease;
+        }
+        #inspector-dock.single-pane {
+            width: 340px;
         }
         #inspector-dock.collapsed {
             height: 38px !important; min-height: 38px !important; max-height: 38px !important;
         }
-        #inspector-dock.collapsed .dock-tabs,
         #inspector-dock.collapsed .dock-body,
         #inspector-dock.collapsed .dock-footer {
             display: none !important;
@@ -473,40 +479,60 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         #inspector-dock .dock-badge {
             background: #2b6cb0; color: #ebf8ff; font-size: 10px; padding: 1px 6px; border-radius: 10px;
         }
+        #inspector-dock .dock-actions {
+            display: flex; align-items: center; gap: 5px;
+        }
         #inspector-dock .dock-tool-btn {
-            background: transparent; border: none; color: #a0aec0; font-size: 14px; cursor: pointer;
-            padding: 2px 6px; border-radius: 4px; line-height: 1;
+            background: #242c3d; border: 1px solid #4a5568; color: #cbd5e0; font-size: 11px; cursor: pointer;
+            padding: 2px 7px; border-radius: 4px; line-height: 1.2;
         }
-        #inspector-dock .dock-tool-btn:hover { background: #2d3748; color: #fff; }
-        #inspector-dock .dock-tabs {
-            display: flex; background: #11141c; border-bottom: 1px solid #2d3748; flex-shrink: 0;
-        }
-        #inspector-dock .dock-tab {
-            flex: 1; padding: 7px 2px; background: transparent; border: none;
-            border-bottom: 2px solid transparent; color: #a0aec0; font-size: 11px;
-            cursor: pointer; text-align: center; transition: all 0.15s ease; white-space: nowrap;
-        }
-        #inspector-dock .dock-tab:hover { color: #edf2f7; background: rgba(255, 255, 255, 0.03); }
-        #inspector-dock .dock-tab.active {
-            color: #63b3ed; border-bottom-color: #63b3ed; background: rgba(99, 179, 237, 0.08); font-weight: 600;
-        }
+        #inspector-dock .dock-tool-btn:hover { background: #3182ce; color: #fff; border-color: #63b3ed; }
+
         #inspector-dock .dock-body {
-            flex: 1; overflow-y: auto; position: relative; padding: 10px; min-height: 0;
+            flex: 1; display: flex; padding: 10px; gap: 10px; min-height: 0; overflow: hidden;
         }
-        #inspector-dock .dock-tab-pane {
-            display: none; height: 100%; flex-direction: column;
+
+        /* 左栏：选项栏 (左边是选项) */
+        #dock-left-pane {
+            width: 250px; flex-shrink: 0; display: flex; flex-direction: column;
+            border-right: 1px solid #2d3748; padding-right: 10px; min-height: 0;
         }
-        #inspector-dock .dock-tab-pane.active {
+        #inspector-dock.single-pane #dock-left-pane {
+            display: none;
+        }
+        #dock-left-pane .dock-subtabs {
+            display: flex; background: #11141c; border-radius: 4px; padding: 2px; gap: 2px;
+            margin-bottom: 8px; flex-shrink: 0;
+        }
+        #dock-left-pane .dock-subtab {
+            flex: 1; padding: 4px 2px; background: transparent; border: none;
+            color: #a0aec0; font-size: 11px; cursor: pointer; border-radius: 3px;
+            text-align: center; transition: all 0.15s;
+        }
+        #dock-left-pane .dock-subtab:hover { color: #edf2f7; }
+        #dock-left-pane .dock-subtab.active {
+            background: #3182ce; color: #fff; font-weight: 600;
+        }
+        .dock-subpane {
+            display: none; flex: 1; flex-direction: column; min-height: 0; overflow-y: auto;
+        }
+        .dock-subpane.active {
             display: flex;
         }
-        #inspector-dock .dock-tab-pane::-webkit-scrollbar,
-        #inspector-dock .dock-body::-webkit-scrollbar,
-        #inspector-dock .dock-list::-webkit-scrollbar {
+
+        /* 右栏：操作栏 (右边是操作) */
+        #dock-right-pane {
+            flex: 1; min-width: 0; display: flex; flex-direction: column;
+            overflow-y: auto; min-height: 0; padding-right: 4px;
+        }
+        #dock-right-pane::-webkit-scrollbar,
+        #dock-left-pane .dock-list::-webkit-scrollbar,
+        .dock-subpane::-webkit-scrollbar {
             width: 6px;
         }
-        #inspector-dock .dock-tab-pane::-webkit-scrollbar-thumb,
-        #inspector-dock .dock-body::-webkit-scrollbar-thumb,
-        #inspector-dock .dock-list::-webkit-scrollbar-thumb {
+        #dock-right-pane::-webkit-scrollbar-thumb,
+        #dock-left-pane .dock-list::-webkit-scrollbar-thumb,
+        .dock-subpane::-webkit-scrollbar-thumb {
             background: #3a3a46; border-radius: 3px;
         }
         #inspector-dock .filter-bar {
@@ -626,19 +652,44 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         .dock-btn.text-btn { background: transparent; border: none; color: #a0aec0; text-decoration: underline; padding: 0; }
         #ent-sel-box {
             position: absolute; pointer-events: none; border: 2px solid #ffd700;
-            box-shadow: 0 0 12px rgba(255, 215, 0, 0.85), inset 0 0 8px rgba(255, 215, 0, 0.35);
-            border-radius: 2px; z-index: 15; box-sizing: border-box;
+            box-shadow: 0 0 16px rgba(255, 215, 0, 0.95), inset 0 0 10px rgba(255, 215, 0, 0.45);
+            border-radius: 3px; z-index: 25; box-sizing: border-box;
             transition: left 0.05s ease, top 0.05s ease;
+            animation: ent-sel-pulse 1.5s infinite ease-in-out;
+        }
+        #ent-sel-box::after {
+            content: '▼'; position: absolute; top: -18px; left: 50%;
+            transform: translateX(-50%); color: #ffd700; font-size: 13px; font-weight: bold;
+            text-shadow: 0 0 6px #000, 0 0 8px #ffd700;
+            animation: ent-arrow-bounce 0.8s infinite alternate ease-in-out;
+        }
+        @keyframes ent-sel-pulse {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(255, 215, 0, 0.8), inset 0 0 6px rgba(255, 215, 0, 0.35);
+                border-color: #ffd700;
+            }
+            50% {
+                box-shadow: 0 0 24px rgba(255, 235, 59, 1), inset 0 0 14px rgba(255, 235, 59, 0.6);
+                border-color: #fff;
+            }
+        }
+        @keyframes ent-arrow-bounce {
+            0% { transform: translate(-50%, 0); }
+            100% { transform: translate(-50%, -5px); }
         }
         #ent-layer .ent.selected {
-            z-index: 25 !important;
+            z-index: 45 !important;
         }
         #ent-layer .ent.selected .ent-sprite {
-            filter: drop-shadow(0 0 0 2px #ffd700) drop-shadow(0 0 10px #ffd700) !important;
+            filter: drop-shadow(0 0 0 3px #ffd700) drop-shadow(0 0 16px #ffeb3b) !important;
+        }
+        #ent-layer .ent.selected .ent-icon {
+            box-shadow: 0 0 0 3px #ffd700, 0 0 16px #ffeb3b !important;
         }
         #ent-layer .ent.selected .ent-label {
-            color: #ffd700 !important; background: rgba(30, 24, 0, 0.88) !important;
-            box-shadow: 0 0 6px #ffd700;
+            color: #111 !important; background: #ffd700 !important;
+            font-weight: bold; border-radius: 3px; padding: 1px 5px;
+            box-shadow: 0 0 12px #ffd700;
         }
         #npc-panel, #resp-panel, #unknown-npc-panel, #unknown-monster-panel {
             position: static; width: 100%; box-sizing: border-box; background: transparent;
@@ -1000,36 +1051,49 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 <span id="dock-target-badge" class="dock-badge" style="display:none"></span>
             </div>
             <div class="dock-actions">
+                <button id="btn-dock-mode" class="dock-tool-btn" title="切换双栏/单栏模式">⊞ 双栏</button>
                 <button id="btn-dock-collapse" class="dock-tool-btn" title="折叠/展开面板">−</button>
             </div>
         </div>
-        <div class="dock-tabs">
-            <button class="dock-tab active" data-tab="entities" type="button">📑 本图实体</button>
-            <button class="dock-tab" data-tab="inspector" type="button">🎯 属性微调</button>
-            <button class="dock-tab" data-tab="candidates" type="button">🧭 待定位候选</button>
-            <button class="dock-tab" data-tab="respawns" type="button">👾 刷怪分布</button>
-        </div>
         <div class="dock-body">
-            <!-- Tab 1: 本图实体 -->
-            <div id="tab-entities" class="dock-tab-pane active">
-                <div class="filter-bar">
-                    <input id="dock-ent-search" class="dock-input" placeholder="🔍 搜索 NPC / 卫士 / 坐标..." autocomplete="off">
-                    <div class="chip-group">
-                        <span class="filter-chip active" data-filter="all">全部</span>
-                        <span class="filter-chip" data-filter="npc">NPC</span>
-                        <span class="filter-chip" data-filter="guard">卫士</span>
-                    </div>
+            <!-- 左栏：选项栏 (左边是选项) -->
+            <div id="dock-left-pane">
+                <div class="dock-subtabs">
+                    <button class="dock-subtab active" data-subtab="entities" type="button">📑 本图实体</button>
+                    <button class="dock-subtab" data-subtab="candidates" type="button">🧭 待定候选</button>
+                    <button class="dock-subtab" data-subtab="respawns" type="button">👾 刷怪分布</button>
                 </div>
-                <div id="dock-ent-list" class="dock-list"></div>
-                <div id="npc-panel" style="display:none"></div>
+                <!-- 实体选项列表 -->
+                <div id="subtab-entities" class="dock-subpane active">
+                    <div class="filter-bar">
+                        <input id="dock-ent-search" class="dock-input" placeholder="🔍 搜索 NPC / 卫士 / 坐标..." autocomplete="off">
+                        <div class="chip-group">
+                            <span class="filter-chip active" data-filter="all">全部</span>
+                            <span class="filter-chip" data-filter="npc">NPC</span>
+                            <span class="filter-chip" data-filter="guard">卫士</span>
+                        </div>
+                    </div>
+                    <div id="dock-ent-list" class="dock-list"></div>
+                    <div id="npc-panel" style="display:none"></div>
+                </div>
+                <!-- 待定位候选列表 -->
+                <div id="subtab-candidates" class="dock-subpane">
+                    <div style="font-size:11px;color:#a0aec0;margin-bottom:6px">拖拽候选到地图，或点击放置到中心：</div>
+                    <div id="unknown-npc-panel"></div>
+                    <div id="unknown-monster-panel"></div>
+                </div>
+                <!-- 刷怪分布列表 -->
+                <div id="subtab-respawns" class="dock-subpane">
+                    <div id="resp-panel"></div>
+                </div>
             </div>
 
-            <!-- Tab 2: 属性与微调 (Inspector) -->
-            <div id="tab-inspector" class="dock-tab-pane">
+            <!-- 右栏：操作栏 (右边是操作) -->
+            <div id="dock-right-pane">
                 <div id="inspector-empty" class="inspector-hint">
                     <div style="font-size:28px;margin-bottom:8px">🎯</div>
                     <div style="font-size:13px;font-weight:600;color:#e2e8f0">未选中实体</div>
-                    <div style="font-size:11px;color:#718096;margin-top:4px">在地图上直接点击 NPC，或在【本图实体】列表中选择项进行微调</div>
+                    <div style="font-size:11px;color:#718096;margin-top:4px">在地图上点击 NPC，或在左侧列表选择项即可开始微调与操作</div>
                 </div>
                 <div id="inspector-content" style="display:none">
                     <!-- 实体卡片 -->
@@ -1125,18 +1189,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                         <button id="insp-btn-del" class="dock-btn danger" style="flex:1">🗑️ 删除该NPC</button>
                     </div>
                 </div>
-            </div>
-
-            <!-- Tab 3: 待定位候选 -->
-            <div id="tab-candidates" class="dock-tab-pane">
-                <div style="font-size:11px;color:#a0aec0;margin-bottom:8px">拖拽候选到地图，或点击后放置到当前视图中心：</div>
-                <div id="unknown-npc-panel"></div>
-                <div id="unknown-monster-panel"></div>
-            </div>
-
-            <!-- Tab 4: 刷怪分布 -->
-            <div id="tab-respawns" class="dock-tab-pane">
-                <div id="resp-panel"></div>
             </div>
         </div>
 
@@ -1835,17 +1887,30 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             if (dockInited) return;
             dockInited = true;
 
-            // Tab 切换
-            const tabs = document.querySelectorAll("#inspector-dock .dock-tab");
-            tabs.forEach(tab => {
+            // 左栏 Subtabs 选项切换 (entities / candidates / respawns)
+            const subtabs = document.querySelectorAll("#dock-left-pane .dock-subtab");
+            subtabs.forEach(tab => {
                 tab.addEventListener("click", () => {
-                    switchDockTab(tab.dataset.tab);
+                    const subtabId = tab.dataset.subtab;
+                    subtabs.forEach(t => t.classList.toggle("active", t.dataset.subtab === subtabId));
+                    const subpanes = document.querySelectorAll("#dock-left-pane .dock-subpane");
+                    subpanes.forEach(p => p.classList.toggle("active", p.id === "subtab-" + subtabId));
                 });
             });
 
+            // 双栏 / 单栏切换按钮
+            const btnMode = document.getElementById("btn-dock-mode");
+            const dock = document.getElementById("inspector-dock");
+            if (btnMode && dock) {
+                btnMode.addEventListener("click", () => {
+                    const isSingle = dock.classList.toggle("single-pane");
+                    btnMode.textContent = isSingle ? "⊞ 双栏" : "⊟ 单栏";
+                    btnMode.title = isSingle ? "切换为宽屏双栏模式 (左选项右操作)" : "切换为紧凑单栏模式";
+                });
+            }
+
             // 折叠/展开
             const btnCollapse = document.getElementById("btn-dock-collapse");
-            const dock = document.getElementById("inspector-dock");
             if (btnCollapse && dock) {
                 btnCollapse.addEventListener("click", () => {
                     const isCollapsed = dock.classList.toggle("collapsed");
@@ -1864,7 +1929,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             }
 
             // 分类 Chips
-            const chips = document.querySelectorAll("#tab-entities .filter-chip");
+            const chips = document.querySelectorAll("#dock-left-pane .filter-chip");
             chips.forEach(chip => {
                 chip.addEventListener("click", () => {
                     chips.forEach(c => c.classList.remove("active"));
@@ -2212,6 +2277,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             entLayer.addEventListener("click", (e) => {
                 const el = e.target.closest(".ent");
                 if (!el) return;
+                e.stopPropagation();
                 const kind = el.dataset.kind || "npc";
                 if (kind !== "npc" && kind !== "guard") return;
                 const name = el.dataset.name || "";
@@ -2231,10 +2297,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
         function switchDockTab(tabId) {
             dockActiveTab = tabId;
-            const tabs = document.querySelectorAll("#inspector-dock .dock-tab");
-            tabs.forEach(t => t.classList.toggle("active", t.dataset.tab === tabId));
-            const panes = document.querySelectorAll("#inspector-dock .dock-tab-pane");
-            panes.forEach(p => p.classList.toggle("active", p.id === "tab-" + tabId));
+            const subtabs = document.querySelectorAll("#dock-left-pane .dock-subtab");
+            subtabs.forEach(t => t.classList.toggle("active", t.dataset.subtab === tabId));
+            const subpanes = document.querySelectorAll("#dock-left-pane .dock-subpane");
+            subpanes.forEach(p => p.classList.toggle("active", p.id === "subtab-" + tabId));
             const dock = document.getElementById("inspector-dock");
             if (dock && dock.classList.contains("collapsed")) {
                 dock.classList.remove("collapsed");
@@ -2261,11 +2327,38 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 region: e.region,
                 img: e.img
             };
-            switchDockTab("inspector");
+            const dock = document.getElementById("inspector-dock");
+            if (dock && dock.classList.contains("collapsed")) {
+                dock.classList.remove("collapsed");
+                const btn = document.getElementById("btn-dock-collapse");
+                if (btn) btn.textContent = "−";
+            }
             updateInspectorView();
             updateSelectionBox();
             window.__hlName = selectedEntity.name;
             drawEntities();
+
+            // 左侧列表高亮并滚动到可见区域
+            const listEl = document.getElementById("dock-ent-list");
+            if (listEl) {
+                listEl.querySelectorAll(".ent-row").forEach(row => {
+                    const idx = Number(row.dataset.idx);
+                    const k = row.dataset.kind;
+                    const match = (idx === selectedEntity.index && k === selectedEntity.kind);
+                    row.classList.toggle("selected", match);
+                    if (match) {
+                        row.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                    }
+                });
+            }
+
+            // 隐藏坐标拾取器，防止左下角误弹出 A 干扰
+            const pickPanel = document.getElementById("pick-panel");
+            if (pickPanel) pickPanel.style.display = "none";
+            const pickSvg = document.getElementById("pick-svg");
+            if (pickSvg) pickSvg.innerHTML = "";
+            pickA = null; pickB = null;
+
             if (shouldRecenter) {
                 jumpToCell(selectedEntity.x, selectedEntity.y, selectedEntity.name);
             }
@@ -3433,6 +3526,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         let pickA = null, pickB = null, pickDown = null;
         vp.addEventListener("mousedown", (e) => { pickDown = [e.clientX, e.clientY]; });
         vp.addEventListener("click", (e) => {
+            if (e.target.closest("#ent-layer") || e.target.closest(".ent") || e.target.closest("#ent-sel-box")) return;
             if (pickDown && (Math.abs(e.clientX - pickDown[0]) + Math.abs(e.clientY - pickDown[1])) > 5) return;  // 拖拽后的 click
             const mi = curMap();
             if (!mi) return;
