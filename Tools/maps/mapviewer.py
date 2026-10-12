@@ -4,6 +4,10 @@
 E1 拆模块（2026-08-15）：本文件从 5612 行实现退化为 re-export 垫片，
 历史 API（十个兄弟工具 `import mapviewer` 依赖）全部保留、名字不变。
 服务入口行为不变：`python3 mapviewer.py <Map目录> --port 8899`。
+内存：每 worker 各自持一份地图/帧缓存（实测 ~0.6 GiB），进程池规模默认内存感知
+（<24 GiB 物理内存时 2 档，见 mapedit.render._POOL_WORKERS）。可用环境变量
+`MAPVIEW_POOL_WORKERS=1..8` 覆盖；这台 16 GiB 主机建议 `MAPVIEW_POOL_WORKERS=2`
+（即最多 2 池 × 2 worker ≈ 2.4 GiB），不要在内存紧张时按 4 档起。
 """
 import os
 import sys

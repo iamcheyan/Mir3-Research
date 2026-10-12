@@ -35,7 +35,33 @@ from mapedit.mapio import MapCache
 #   2) 服务启动期、一切后台线程起来之前 prewarm_pools() 把两个池的全部
 #      worker 预 fork 出来——此后请求线程 submit 不再触发 os.fork；
 #   3) 交互瓦片 submit 加超时，超时 503，绝无限等待。
-_POOL_WORKERS = min(4, os.cpu_count() or 2)   # 快/慢池统一规模（2-4 档）
+
+
+def _default_pool_workers() -> int:
+    """快/慢池统一规模（worker 数）。
+
+    每个 worker 都会各自持有一份地图库与帧缓存——实测 4 核 + 16 GiB 的这台机器上
+    一个 mapviewer 进程树（2 个池 × 4 worker）常驻 3-6 GiB，在内存压力下会把整机
+    推进 OOM。默认按 CPU 与物理内存取小：物理内存 < 24 GiB 时只开 2 档。
+    显式覆盖：环境变量 MAPVIEW_POOL_WORKERS（1-8）。
+    """
+    override = os.environ.get("MAPVIEW_POOL_WORKERS", "").strip()
+    if override:
+        try:
+            return max(1, min(8, int(override)))
+        except ValueError:
+            pass
+    cpus = os.cpu_count() or 2
+    try:
+        mem_gib = os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES") / float(1024 ** 3)
+    except (ValueError, OSError, AttributeError):
+        mem_gib = 0.0
+    if mem_gib and mem_gib < 24:
+        return max(1, min(2, cpus))
+    return max(1, min(4, cpus))
+
+
+_POOL_WORKERS = _default_pool_workers()          # 快/慢池统一规模（内存感知，1-8 档）
 _TILE_SUBMIT_TIMEOUT = 20.0                    # 单瓦片交互渲染预算（秒）
 
 _POOL: dict[str, ProcessPoolExecutor] = {}        # 慢池: 后台预渲染 (worker nice 5)
