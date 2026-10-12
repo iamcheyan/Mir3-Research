@@ -389,11 +389,123 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <link rel="stylesheet" href="/_webui/mobile-shell.css">
     <style>
         body { margin:0; padding:0; background:#111; color:#eee; font-family:sans-serif; overflow:hidden; user-select:none; }
+        
+        /* ==================== 统一现代暗黑质感控件库 (Custom Dark Gaming UI) ==================== */
+        /* 1. 自定义复选框 (Custom Checkbox) */
+        input[type="checkbox"] {
+            -webkit-appearance: none; appearance: none;
+            width: 15px; height: 15px; border: 1px solid #4a5568; border-radius: 3px;
+            background: #141822; outline: none; cursor: pointer; position: relative;
+            vertical-align: middle; transition: all 0.15s ease-in-out; margin: 0 4px 0 0;
+            flex-shrink: 0;
+        }
+        input[type="checkbox"]:hover {
+            border-color: #63b3ed; box-shadow: 0 0 6px rgba(99, 179, 237, 0.4);
+        }
+        input[type="checkbox"]:checked {
+            background: #3182ce; border-color: #63b3ed; box-shadow: 0 0 8px rgba(99, 179, 237, 0.5);
+        }
+        input[type="checkbox"]:checked::after {
+            content: ''; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px;
+            border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+        }
+
+        /* 2. 自定义下拉选择框 (Custom Select) */
+        select {
+            -webkit-appearance: none; appearance: none;
+            background: #141822 url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2210%22%20height%3D%226%22%20viewBox%3D%220%200%2010%206%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M1%201L5%205L9%201%22%20stroke%3D%22%23A0AEC0%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center !important;
+            background-size: 10px 6px !important; border: 1px solid #374151; border-radius: 4px;
+            color: #e2e8f0; padding: 4px 26px 4px 8px; font-size: 12px; outline: none;
+            cursor: pointer; transition: all 0.15s;
+        }
+        select:hover, select:focus {
+            border-color: #63b3ed; box-shadow: 0 0 6px rgba(99, 179, 237, 0.4);
+        }
+        select option { background: #11141c; color: #e2e8f0; padding: 5px; }
+
+        /* 3. 自定义输入框 (Custom Inputs) */
+        input[type="text"], input[type="number"], input[type="search"] {
+            background: #141822; border: 1px solid #374151; border-radius: 4px;
+            color: #f7fafc; padding: 5px 8px; font-size: 12px; outline: none;
+            transition: all 0.15s ease;
+        }
+        input[type="text"]:focus, input[type="number"]:focus, input[type="search"]:focus {
+            border-color: #63b3ed; background: #1a202c; box-shadow: 0 0 8px rgba(99, 179, 237, 0.35);
+        }
+        input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none; margin: 0;
+        }
+
+        /* 4. 自定义按钮微调 (Custom Buttons) */
+        #toolbar button, .dock-btn, .modal-btn, .pick-copy, #statusbar button {
+            font-family: inherit; cursor: pointer; user-select: none;
+            transition: all 0.12s ease; border-radius: 4px; border: 1px solid #374151;
+            background: #1f2937; color: #e2e8f0; font-size: 12px;
+        }
+        #toolbar button:hover, .dock-btn:hover, .modal-btn:hover, .pick-copy:hover {
+            background: #374151; border-color: #4b5563; color: #fff;
+        }
+        #toolbar button:active, .dock-btn:active, .modal-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* 5. 自定义模态对话框 (代替丑陋的原生 alert / confirm) */
+        #custom-modal-overlay {
+            position: fixed; left: 0; top: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 99999; animation: modal-fade-in 0.15s ease-out;
+        }
+        #custom-modal-box {
+            width: 380px; max-width: 90vw; background: #111622;
+            border: 1px solid #3b4758; border-radius: 8px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            display: flex; flex-direction: column; overflow: hidden;
+            animation: modal-scale-in 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes modal-fade-in { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes modal-scale-in { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-header {
+            display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+            background: #182030; border-bottom: 1px solid #2d3748; user-select: none;
+        }
+        #modal-icon { font-size: 16px; }
+        #modal-title { font-weight: 600; font-size: 13px; color: #f7fafc; flex: 1; }
+        .modal-x {
+            background: transparent !important; border: none !important; color: #a0aec0 !important;
+            font-size: 14px !important; cursor: pointer; padding: 2px 6px !important; border-radius: 4px;
+        }
+        .modal-x:hover { background: #2d3748 !important; color: #fff !important; }
+        .modal-body {
+            padding: 16px 14px; color: #cbd5e0; font-size: 13px; line-height: 1.6;
+            word-break: break-word; white-space: pre-wrap; max-height: 50vh; overflow-y: auto;
+        }
+        .modal-footer {
+            display: flex; justify-content: flex-end; gap: 8px; padding: 10px 14px;
+            background: #141b29; border-top: 1px solid #242e3e;
+        }
+        .modal-btn {
+            padding: 6px 14px; border-radius: 4px; font-size: 12px; font-weight: 500;
+        }
+        .modal-btn.primary {
+            background: #2b6cb0 !important; border-color: #4299e1 !important; color: #fff !important;
+            box-shadow: 0 2px 6px rgba(43, 108, 176, 0.4);
+        }
+        .modal-btn.primary:hover {
+            background: #3182ce !important; border-color: #63b3ed !important;
+        }
+        .modal-btn.danger {
+            background: #742a2a !important; border-color: #e53e3e !important; color: #fff !important;
+        }
+        .modal-btn.danger:hover {
+            background: #9b2c2c !important;
+        }
+
         #toolbar { height:40px; background:#222; display:flex; align-items:center; padding:0 10px; gap:10px; border-bottom:1px solid #333; }
         #toolbar button { font-size:13px; padding:4px 8px; }
         .tb-ico { min-width:30px !important; width:30px; height:28px; padding:0 !important;
             display:inline-flex; align-items:center; justify-content:center; border-radius:4px; }
-        #toolbar label { font-size:12px; gap:3px; display:inline-flex; align-items:center; }
+        #toolbar label { font-size:12px; gap:3px; display:inline-flex; align-items:center; cursor:pointer; }
         #map-sel-btn { max-width:220px; }
         #viewport { position:absolute; top:40px; left:0; right:0; bottom:0; overflow:auto; background:#0b0b0f; cursor:grab; }
         #viewport.dragging { cursor:grabbing; }
@@ -1204,6 +1316,21 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             </button>
         </div>
     </div>
+    <!-- 全局现代自定义模态对话框 (代替系统原生 alert / confirm) -->
+    <div id="custom-modal-overlay" style="display:none">
+        <div id="custom-modal-box">
+            <div class="modal-header">
+                <span id="modal-icon">⚠️</span>
+                <span id="modal-title">操作提示</span>
+                <button id="modal-close-btn" class="modal-x" type="button" title="关闭 (Esc)">✕</button>
+            </div>
+            <div id="modal-body" class="modal-body"></div>
+            <div class="modal-footer">
+                <button id="modal-cancel-btn" class="modal-btn" type="button" style="display:none">取消</button>
+                <button id="modal-confirm-btn" class="modal-btn primary" type="button">确定</button>
+            </div>
+        </div>
+    </div>
     <div id="unknown-place-panel"></div>
     <div id="minimap">
         <div class="mm-title">全图</div>
@@ -1875,6 +2002,77 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             drawRoutes(); drawEntities(); drawGrid(); drawMini();
             updateUrlHash();
         }
+
+        // ============================ 全局暗黑模态弹窗系统 (彻底告别丑陋系统原生 alert/confirm) ============================
+        let modalResolve = null;
+        function showCustomModal({ title = "系统提示", message = "", icon = "ℹ️", isConfirm = false, confirmText = "确定", cancelText = "取消" }) {
+            return new Promise((resolve) => {
+                modalResolve = resolve;
+                const overlay = document.getElementById("custom-modal-overlay");
+                const iconEl = document.getElementById("modal-icon");
+                const titleEl = document.getElementById("modal-title");
+                const bodyEl = document.getElementById("modal-body");
+                const cancelBtn = document.getElementById("modal-cancel-btn");
+                const confirmBtn = document.getElementById("modal-confirm-btn");
+                if (!overlay) {
+                    resolve(isConfirm ? true : undefined);
+                    return;
+                }
+                if (iconEl) iconEl.textContent = icon;
+                if (titleEl) titleEl.textContent = title;
+                if (bodyEl) bodyEl.textContent = message;
+                if (confirmBtn) confirmBtn.textContent = confirmText;
+                if (cancelBtn) {
+                    cancelBtn.textContent = cancelText;
+                    cancelBtn.style.display = isConfirm ? "inline-block" : "none";
+                }
+                overlay.style.display = "flex";
+                if (confirmBtn) confirmBtn.focus();
+            });
+        }
+        function closeCustomModal(result) {
+            const overlay = document.getElementById("custom-modal-overlay");
+            if (overlay) overlay.style.display = "none";
+            if (modalResolve) {
+                const res = modalResolve;
+                modalResolve = null;
+                res(result);
+            }
+        }
+        // 接管原生 alert
+        window.alert = function(msg) {
+            const str = String(msg || "");
+            const icon = (str.includes("失败") || str.includes("错误") || str.includes("拒绝")) ? "❌" :
+                         (str.includes("成功") || str.includes("已")) ? "✅" : "⚠️";
+            const title = (str.includes("失败") || str.includes("错误")) ? "操作失败" :
+                          (str.includes("成功") || str.includes("已")) ? "操作成功" : "提示";
+            showCustomModal({ title, message: str, icon, isConfirm: false });
+        };
+        // 自定义异步确认框 (代替原生 confirm)
+        window.customConfirm = function(msg, title = "操作确认", icon = "❓") {
+            return showCustomModal({ title, message: String(msg || ""), icon, isConfirm: true });
+        };
+
+        // 绑定弹窗事件 (确定、取消、ESC、Enter、外部点击)
+        function initModalEvents() {
+            const mConfirm = document.getElementById("modal-confirm-btn");
+            const mCancel = document.getElementById("modal-cancel-btn");
+            const mClose = document.getElementById("modal-close-btn");
+            const mOverlay = document.getElementById("custom-modal-overlay");
+            if (mConfirm) mConfirm.onclick = () => closeCustomModal(true);
+            if (mCancel) mCancel.onclick = () => closeCustomModal(false);
+            if (mClose) mClose.onclick = () => closeCustomModal(false);
+            if (mOverlay) mOverlay.onclick = (e) => { if (e.target === mOverlay) closeCustomModal(false); };
+            window.addEventListener("keydown", (e) => {
+                const overlay = document.getElementById("custom-modal-overlay");
+                if (overlay && overlay.style.display === "flex") {
+                    if (e.key === "Escape") { e.preventDefault(); closeCustomModal(false); }
+                    else if (e.key === "Enter") { e.preventDefault(); closeCustomModal(true); }
+                }
+            });
+        }
+        setTimeout(initModalEvents, 20);
+
         // ============================ 现代化专业实体工作台交互 (Dock & Inspector) ============================
         let dockActiveTab = "entities";
         let dockFilterKind = "all"; // all | npc | guard
@@ -1998,14 +2196,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             if (btnDel) {
                 btnDel.addEventListener("click", async () => {
                     if (!selectedEntity) return;
-                    if (!confirm(`确定要删除 ${selectedEntity.name} (#${selectedEntity.index}) 吗？`)) return;
+                    const idx = Number(selectedEntity.index != null ? selectedEntity.index : (selectedEntity.npc_index != null ? selectedEntity.npc_index : selectedEntity.guard_index));
+                    if (!idx || isNaN(idx)) return;
+                    const ok = await customConfirm(`确定要删除 ${selectedEntity.name} (#${idx}) 吗？`, "删除确认", "🗑️");
+                    if (!ok) return;
                     const r = await fetch("/npc/delete", {
                         method: "POST", headers: {"Content-Type": "application/json"},
-                        body: JSON.stringify({npc: selectedEntity.index})
+                        body: JSON.stringify({npc: idx})
                     });
                     const d = await r.json();
                     if (d.ok) {
-                        showToast("已删除", `NPC #${selectedEntity.index} ${selectedEntity.name} 已从工作区删除`);
+                        showToast("已删除", `NPC #${idx} ${selectedEntity.name} 已从工作区删除`);
                         selectedEntity = null;
                         updateInspectorView();
                         const mi = curMap();
@@ -2084,15 +2285,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     if (!selectedEntity || selectedEntity.kind !== "npc") return;
                     const mi = curMap();
                     const stem = curName ? curName.replace(/\\.map$/i, "") : null;
+                    const idx = Number(selectedEntity.index != null ? selectedEntity.index : (selectedEntity.npc_index != null ? selectedEntity.npc_index : selectedEntity.guard_index));
+                    if (!idx || isNaN(idx)) return;
                     if (selectedEntity.disabled) {
                         // 启用
                         const r = await fetch("/npc/enable", {
                             method: "POST", headers: {"Content-Type": "application/json"},
-                            body: JSON.stringify({npc: selectedEntity.index, map: stem, x: selectedEntity.x || 100, y: selectedEntity.y || 100})
+                            body: JSON.stringify({npc: idx, map: stem, x: selectedEntity.x || 100, y: selectedEntity.y || 100})
                         });
                         const d = await r.json();
                         if (d.ok) {
-                            showToast("已启用 NPC", `NPC #${selectedEntity.index} 已恢复到地图`);
+                            showToast("已启用 NPC", `NPC #${idx} 已恢复到地图`);
                             selectedEntity.disabled = false;
                             await loadEntities(mi);
                             updateSyncDiff();
@@ -2100,14 +2303,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                         } else { alert("启用失败: " + (d.error || "?")); }
                     } else {
                         // 禁用
-                        if (!confirm(`确定要临时禁用 ${selectedEntity.name} (#${selectedEntity.index}) 吗？\n禁用后将保留在工作区候选列表中，游戏启动时不会生成到地图。`)) return;
+                        const ok = await customConfirm(`确定要临时禁用 ${selectedEntity.name} (#${idx}) 吗？\n禁用后将保留在工作区候选列表中，游戏启动时不会生成到地图。`, "禁用确认", "👁️");
+                        if (!ok) return;
                         const r = await fetch("/npc/disable", {
                             method: "POST", headers: {"Content-Type": "application/json"},
-                            body: JSON.stringify({npc: selectedEntity.index})
+                            body: JSON.stringify({npc: idx})
                         });
                         const d = await r.json();
                         if (d.ok) {
-                            showToast("已禁用 NPC", `NPC #${selectedEntity.index} 已禁用并移入待定位列表`);
+                            showToast("已禁用 NPC", `NPC #${idx} 已禁用并移入待定位列表`);
                             selectedEntity = null;
                             updateInspectorView();
                             updateSelectionBox();
@@ -2248,7 +2452,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             const btnRollback = document.getElementById("btn-sync-rollback");
             if (btnRollback) {
                 btnRollback.addEventListener("click", async () => {
-                    if (!confirm("确定要放弃所有未同步的工作区改动并回滚至基线吗？")) return;
+                    const ok = await customConfirm("确定要放弃所有未同步的工作区改动并回滚至基线吗？", "确认回滚", "⚠️");
+                    if (!ok) return;
                     try {
                         const r = await fetch("/npc/rollback", {
                             method: "POST", headers: {"Content-Type": "application/json"},
@@ -2317,9 +2522,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 drawEntities();
                 return;
             }
+            const rawIdx = (e.index != null ? e.index : (e.npc_index != null ? e.npc_index : e.guard_index));
             selectedEntity = {
                 kind: e.kind || "npc",
-                index: e.npc_index || e.guard_index || e.index,
+                index: Number(rawIdx),
                 name: e.name || "",
                 name_en: e.name_en || "",
                 x: Number(e.x),
@@ -2516,10 +2722,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     return;
                 }
             }
+            const rawIdx = (selectedEntity.index != null ? selectedEntity.index : (selectedEntity.npc_index != null ? selectedEntity.npc_index : selectedEntity.guard_index));
+            const idx = Number(rawIdx);
+            if (!idx || isNaN(idx)) {
+                alert("移动失败: 未能识别实体编号 (index)");
+                return;
+            }
+            selectedEntity.index = idx;
             const op = selectedEntity.kind === "guard" ? "guard_move" : "move";
             const key = selectedEntity.kind === "guard" ? "guard" : "npc";
             const stem = curName ? curName.replace(/\\.map$/i, "") : null;
-            const payload = {[key]: selectedEntity.index, x: newX, y: newY, map: stem};
+            const payload = {[key]: idx, x: newX, y: newY, map: stem};
             if (force) payload.force = true;
 
             try {
@@ -2534,7 +2747,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     // 更新缓存
                     if (mi && entCache[mi.name]) {
                         const it = entCache[mi.name].find(e =>
-                            (e.npc_index === selectedEntity.index || e.guard_index === selectedEntity.index) &&
+                            (e.npc_index === idx || e.guard_index === idx) &&
                             (e.kind || "npc") === selectedEntity.kind);
                         if (it) { it.x = newX; it.y = newY; }
                     }
@@ -2546,7 +2759,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 } else {
                     const err = d.error || "未知错误";
                     if (err.includes("阻挡格") && !force) {
-                        if (confirm(`目标坐标 (${newX}, ${newY}) 包含阻挡标记。\\n是否强制放置 (force=1)？`)) {
+                        const ok = await customConfirm(`目标坐标 (${newX}, ${newY}) 包含阻挡标记。\n是否强制放置 (force=1)？`, "阻挡警告", "⚠️");
+                        if (ok) {
                             return moveSelectedEntity(newX, newY, true);
                         }
                     } else {
@@ -4422,13 +4636,12 @@ EDIT_UI_JS = r"""
                 const ent = (entCache[mi?.name] || []).find(it =>
                     (it.npc_index === idx || it.guard_index === idx) && (it.kind || 'npc') === kind) ||
                     {kind, index: idx, name, x: Number(el.dataset.x), y: Number(el.dataset.y), region: el.dataset.region};
+                selectEntity(ent, false);
                 if (!moved) {
-                    selectEntity(ent, false);
                     return;
                 }
                 const cell = editScreenToCell(ev);
                 if (!mi || cell.x < 0 || cell.y < 0 || cell.x >= mi.w || cell.y >= mi.h) return;
-                selectedEntity = ent;
                 await moveSelectedEntity(cell.x, cell.y);
             };
             document.addEventListener('mousemove', mv);
