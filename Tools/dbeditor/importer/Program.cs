@@ -40,15 +40,20 @@ var log = new StringBuilder();
 void Log(string s) { log.AppendLine(s); Console.WriteLine(s); }
 
 // ---------- 1) 服务端运行检测 ----------
+// 仅作提示：7000 在 macOS 上常被 AirPlay 接收器占用，因此这里只报"端口有监听"，
+// 不判断是不是服务端；确认不是服务端时可加 --no-port-check 静音。
 if (!noPortCheck)
 {
-    try
+    foreach (var probePort in new[] { 7000, 7001 })
     {
-        using var tcp = new TcpClient();
-        tcp.Connect("127.0.0.1", 7000);
-        Log("[!] 提示：端口 7000 有监听（服务端运行中）。修改将在下一次重启服务端后生效。");
+        try
+        {
+            using var tcp = new TcpClient();
+            tcp.Connect("127.0.0.1", probePort);
+            Log($"[!] 提示：端口 {probePort} 有监听（若那是游戏服务端，修改将在下一次重启后生效；否则可忽略，或加 --no-port-check）。");
+        }
+        catch (SocketException) { /* 未监听，继续 */ }
     }
-    catch (SocketException) { /* 未监听，继续 */ }
 }
 
 // ---------- 2) 载入工作区 / 基线 / meta ----------

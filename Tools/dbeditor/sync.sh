@@ -31,16 +31,30 @@ SERVER_DB="$ZIRCON/Debug/ServerCore/Database/System.db"
 CLIENT_DB="$ZIRCON/Debug/Client/Data/System.db"
 BACKUP_DIR="$ZIRCON/Debug/ServerCore/Database/Backup/System"
 REPORT="$WS/sync_report.txt"
-# 解析真实物理路径：macOS 上 Debug/ServerCore/Database 与 Debug/Client 是指向
-# ~/mir2ei/{Database,Data} 的软链，install 若直接写软链路径会把软链替换成实体文件。
-# 只写解析后的物理路径，软链保持完好。
-if command -v python3 >/dev/null 2>&1; then
-  SERVER_DB_REAL="$(python3 -c 'import os,sys;print(os.path.realpath(sys.argv[1]))' "$SERVER_DB")"
-  CLIENT_DB_REAL="$(python3 -c 'import os,sys;print(os.path.realpath(sys.argv[1]))' "$CLIENT_DB")"
-else
-  SERVER_DB_REAL="$SERVER_DB"; CLIENT_DB_REAL="$CLIENT_DB"
-fi
-echo "[0/7] 安装目标（物理路径）：$SERVER_DB_REAL | $CLIENT_DB_REAL"
+# 解析真实物理路径，并收集"实际存在的库副本"：
+#  - macOS：Debug/ServerCore/Database、Debug/Client 都是指向 ~/mir2ei/{Database,Data} 的
+#    软链 → 4 条逻辑路径只对应 2 个实体文件；
+#  - Linux(debian)：Debug/ServerCore/Database 是实体目录，另有 <repo>/System.db 与
+#    ~/mir2ei/Database/System.db → 4 个实体文件（AGENTS.md 的"4 处一致"）。
+# 一律 realpath 去重后逐个写入：既保证每一份都更新，又不会把软链替换成实体文件。
+realpath_of() { python3 -c 'import os,sys;print(os.path.realpath(sys.argv[1]))' "$1" 2>/dev/null || printf '%s' "$1"; }
+DB_COPIES=()
+add_db_copy() {
+  local p="$1" rp existing
+  [ -f "$p" ] || return 0
+  rp="$(realpath_of "$p")"
+  for existing in ${DB_COPIES[@]+"${DB_COPIES[@]}"}; do
+    [ "$existing" = "$rp" ] && return 0
+  done
+  DB_COPIES+=("$rp")
+}
+add_db_copy "$SERVER_DB"
+add_db_copy "$CLIENT_DB"
+add_db_copy "$HOME/mir2ei/Database/System.db"
+add_db_copy "$ZIRCON/System.db"
+[ "${#DB_COPIES[@]}" -gt 0 ] || { echo "[X] 没找到任何 System.db 副本（SERVER_DB=$SERVER_DB）"; exit 1; }
+echo "[0/7] 库副本 ${#DB_COPIES[@]} 份（realpath 去重后将被一并写入）："
+for p in "${DB_COPIES[@]}"; do echo "      - $p"; done
 
 main() {
 echo "==================== 同步 $(date '+%F %T') ===================="
@@ -57,30 +71,41 @@ build_retry() {
 }
 
 # ---------- 1) 端口检测 ----------
-SERVER_RUNNING=0
-if python3 -c "
+# 只看"是否真的服务端在监听"：macOS 上 7000 常被 AirPlay 接收器(ControlCenter)占用，
+# 仅凭"端口可连"会误报。用 lsof 取监听进程名，非 dotnet/ServerCore 一律不算运行中。
+probe_port() {
+python3 - "$1" <<'PY'
 import socket, sys
-for port in (7000, 7001):
-    try:
-        socket.create_connection(('127.0.0.1', port), timeout=0.5)
-        print(port)
-        sys.exit(0)
-    except OSError:
-        pass
-sys.exit(1)
-" >/tmp/dbeditor_port_probe.$ 2>/dev/null; then
-  SERVER_RUNNING=1
-  echo "[!] 提示：服务端正在运行（端口 $(cat /tmp/dbeditor_port_probe.$) 活跃）。将同步磁盘数据库，新数据在下一次重启服务端后生效。"
-else
-  echo "[1/7] 端口检测通过（服务端未运行）"
-fi
-rm -f /tmp/dbeditor_port_probe.$
+try:
+    socket.create_connection(('127.0.0.1', int(sys.argv[1])), timeout=0.5)
+except OSError:
+    sys.exit(1)
+PY
+}
+port_listener() { lsof -nP -iTCP:"$1" -sTCP:LISTEN -Fc 2>/dev/null | sed -n 's/^c//p' | head -1; }
+SERVER_RUNNING=0
+for probe in 7000 7001; do
+  if probe_port "$probe"; then
+    lname="$(port_listener "$probe" || true)"
+    case "$lname" in
+      *dotnet*|*Dotnet*|*ServerCore*|*servercore*)
+        SERVER_RUNNING=1
+        echo "[!] 提示：服务端正在运行（端口 $probe，进程 ${lname}）。将同步磁盘数据库，新数据在下一次重启服务端后生效。"
+        break ;;
+      *)
+        echo "[1/7] 端口 $probe 被 ${lname:-其它进程} 占用（非服务端，忽略）" ;;
+    esac
+  fi
+done
+[ "$SERVER_RUNNING" = 1 ] || echo "[1/7] 端口检测通过（未发现服务端监听）"
 
 # ---------- 2) 导入器：校验 + 写临时副本 ----------
 build_retry "$DBEDITOR/importer/DBImporter.csproj"
 rm -f "$REPORT.importer"
+IMPORTER_EXTRA=()
+if [ "$SERVER_RUNNING" = 1 ]; then :; else IMPORTER_EXTRA+=(--no-port-check); fi
 dotnet run --project "$DBEDITOR/importer" --no-build -- \
-  --workspace "$WS" --src "$SERVER_DB" --report "$REPORT.importer"
+  --workspace "$WS" --src "$SERVER_DB" --report "$REPORT.importer" ${IMPORTER_EXTRA[@]+"${IMPORTER_EXTRA[@]}"}
 echo "[2/7] 导入器执行完成"
 if grep -q "NO_CHANGES=1" "$REPORT.importer"; then
   echo "[=] 工作区无改动，什么都不做。"
@@ -103,20 +128,22 @@ echo "[3/7] round-trip 导出完成"
 python3 "$DBEDITOR/compare_sync.py" "$WS" "$RT_DIR/out" "$REPORT.importer"
 echo "[4/7] round-trip 语义对比通过"
 
-# ---------- 5) 备份双库 ----------
+# ---------- 5) 备份全部副本 ----------
 STAMP="$(date '+%Y-%m-%d %H-%M')"
 mkdir -p "$BACKUP_DIR"
-gzip -c "$SERVER_DB" > "$BACKUP_DIR/System $STAMP.db.gz"
-gzip -c "$CLIENT_DB" > "$BACKUP_DIR/System-client $STAMP.db.gz"
-echo "[5/7] 已备份：Backup/System/System $STAMP.db.gz（含客户端副本）"
+bi=0
+for p in "${DB_COPIES[@]}"; do
+  bi=$((bi+1))
+  gzip -c "$p" > "$BACKUP_DIR/System-copy${bi} $STAMP.db.gz"
+done
+echo "[5/7] 已备份 ${#DB_COPIES[@]} 份副本 → $BACKUP_DIR/System-copy* $STAMP.db.gz"
 
-# ---------- 6) 安装双库（只写物理路径，软链保持完好） ----------
-OLD_MD5="$(md5of "$SERVER_DB")"
-install -m 0644 "$DB_OUT" "$SERVER_DB_REAL"
-install -m 0644 "$DB_OUT" "$CLIENT_DB_REAL"
-NEW_MD5="$(md5of "$SERVER_DB")"
-echo "[6/7] 已安装双库（物理文件）：server=$NEW_MD5 client=$(md5of "$CLIENT_DB")"
-echo "[6/7] 逻辑路径一致性：$SERVER_DB -> $(md5of "$SERVER_DB") ; $CLIENT_DB -> $(md5of "$CLIENT_DB")"
+# ---------- 6) 安装：写入全部实体副本（软链保持完好） ----------
+OLD_MD5="$(md5of "${DB_COPIES[0]}")"
+for p in "${DB_COPIES[@]}"; do install -m 0644 "$DB_OUT" "$p"; done
+NEW_MD5="$(md5of "${DB_COPIES[0]}")"
+echo "[6/7] 已安装 ${#DB_COPIES[@]} 份库：$OLD_MD5 → $NEW_MD5"
+for p in "${DB_COPIES[@]}"; do echo "[6/7]   $(md5of "$p")  $p"; done
 
 # ---------- 7) 重置基线（工作区 = 新库状态） ----------
 for f in "$WS"/*.json; do
