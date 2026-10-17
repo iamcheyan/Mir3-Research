@@ -8,11 +8,39 @@ set -euo pipefail
 DBEDITOR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO="$(cd "$DBEDITOR/../.." && pwd)"
 WS="$DBEDITOR/workspace"
-ZIRCON="/home/tetsuya/development/zircon"
+# ---- 平台适配（Linux 与 macOS 通用）----
+# md5sum 是 GNU 工具，macOS 只有 md5 -q；封装一层保证两条路径都能用。
+if command -v md5sum >/dev/null 2>&1; then
+  md5of() { md5sum "$1" | cut -d' ' -f1; }
+else
+  md5of() { md5 -q "$1"; }
+fi
+# 仓库根：优先显式 $ZIRCON，其次 MIR3_ZIRCON_ROOT（AGENTS.md 约定），再试本机常见位置。
+if [ -z "${ZIRCON:-}" ]; then
+  for cand in "${MIR3_ZIRCON_ROOT:-}" "$HOME/development/zircon" \
+              "$HOME/development/Zircon" "$HOME/Development/Zircon"; do
+    [ -n "$cand" ] && [ -f "$cand/ServerCore/ServerCore.csproj" -o -f "$cand/ServerLibrary/ServerLibrary.csproj" ] && { ZIRCON="$cand"; break; }
+  done
+fi
+[ -n "${ZIRCON:-}" ] || { echo "[X] 找不到 Zircon 仓库根：请 export ZIRCON=<仓库根> 或 MIR3_ZIRCON_ROOT=<仓库根>"; exit 1; }
+echo "[0/7] Zircon 仓库根：$ZIRCON"
+# 导入器/探针的 csproj 通过 MIR3_ZIRCON_ROOT 找 Zircon 源码（见 AGENTS.md），
+# 未设置时会把 ZirconRoot 回落到错误路径，编译报 CS0246: 未找到 Library。
+export MIR3_ZIRCON_ROOT="$ZIRCON"
 SERVER_DB="$ZIRCON/Debug/ServerCore/Database/System.db"
 CLIENT_DB="$ZIRCON/Debug/Client/Data/System.db"
 BACKUP_DIR="$ZIRCON/Debug/ServerCore/Database/Backup/System"
 REPORT="$WS/sync_report.txt"
+# 解析真实物理路径：macOS 上 Debug/ServerCore/Database 与 Debug/Client 是指向
+# ~/mir2ei/{Database,Data} 的软链，install 若直接写软链路径会把软链替换成实体文件。
+# 只写解析后的物理路径，软链保持完好。
+if command -v python3 >/dev/null 2>&1; then
+  SERVER_DB_REAL="$(python3 -c 'import os,sys;print(os.path.realpath(sys.argv[1]))' "$SERVER_DB")"
+  CLIENT_DB_REAL="$(python3 -c 'import os,sys;print(os.path.realpath(sys.argv[1]))' "$CLIENT_DB")"
+else
+  SERVER_DB_REAL="$SERVER_DB"; CLIENT_DB_REAL="$CLIENT_DB"
+fi
+echo "[0/7] 安装目标（物理路径）：$SERVER_DB_REAL | $CLIENT_DB_REAL"
 
 main() {
 echo "==================== 同步 $(date '+%F %T') ===================="
@@ -32,17 +60,21 @@ build_retry() {
 SERVER_RUNNING=0
 if python3 -c "
 import socket, sys
-try:
-    socket.create_connection(('127.0.0.1', 7000), timeout=0.5)
-    sys.exit(0)
-except OSError:
-    sys.exit(1)
-"; then
+for port in (7000, 7001):
+    try:
+        socket.create_connection(('127.0.0.1', port), timeout=0.5)
+        print(port)
+        sys.exit(0)
+    except OSError:
+        pass
+sys.exit(1)
+" >/tmp/dbeditor_port_probe.$ 2>/dev/null; then
   SERVER_RUNNING=1
-  echo "[!] 提示：服务端正在运行（端口 7000 活跃）。将同步磁盘数据库，新数据在下一次重启服务端后生效。"
+  echo "[!] 提示：服务端正在运行（端口 $(cat /tmp/dbeditor_port_probe.$) 活跃）。将同步磁盘数据库，新数据在下一次重启服务端后生效。"
 else
   echo "[1/7] 端口检测通过（服务端未运行）"
 fi
+rm -f /tmp/dbeditor_port_probe.$
 
 # ---------- 2) 导入器：校验 + 写临时副本 ----------
 build_retry "$DBEDITOR/importer/DBImporter.csproj"
@@ -55,7 +87,7 @@ if grep -q "NO_CHANGES=1" "$REPORT.importer"; then
   rm -f "$REPORT.importer"
   exit 0
 fi
-DB_OUT="$(grep -oP '(?<=^DB_OUT=).*' "$REPORT.importer" | tail -1)"
+DB_OUT="$(sed -n 's/^DB_OUT=//p' "$REPORT.importer" | tail -1)"
 [ -n "$DB_OUT" ] || { echo "[X] 导入器未产出数据库"; exit 11; }
 
 # ---------- 3) probe 重导出写出的库 ----------
@@ -78,21 +110,20 @@ gzip -c "$SERVER_DB" > "$BACKUP_DIR/System $STAMP.db.gz"
 gzip -c "$CLIENT_DB" > "$BACKUP_DIR/System-client $STAMP.db.gz"
 echo "[5/7] 已备份：Backup/System/System $STAMP.db.gz（含客户端副本）"
 
-# ---------- 6) 安装双库 ----------
-OLD_MD5="$(md5sum "$SERVER_DB" | cut -d' ' -f1)"
-install -m 0644 "$DB_OUT" "$SERVER_DB"
-install -m 0644 "$DB_OUT" "$CLIENT_DB"
-install -m 0644 "$DB_OUT" "/home/tetsuya/mir2ei/Database/System.db"
-install -m 0644 "$DB_OUT" "$ZIRCON/System.db"
-NEW_MD5="$(md5sum "$SERVER_DB" | cut -d' ' -f1)"
-echo "[6/7] 已安装全部四处库：server=$NEW_MD5 client=$(md5sum "$CLIENT_DB" | cut -d' ' -f1)"
+# ---------- 6) 安装双库（只写物理路径，软链保持完好） ----------
+OLD_MD5="$(md5of "$SERVER_DB")"
+install -m 0644 "$DB_OUT" "$SERVER_DB_REAL"
+install -m 0644 "$DB_OUT" "$CLIENT_DB_REAL"
+NEW_MD5="$(md5of "$SERVER_DB")"
+echo "[6/7] 已安装双库（物理文件）：server=$NEW_MD5 client=$(md5of "$CLIENT_DB")"
+echo "[6/7] 逻辑路径一致性：$SERVER_DB -> $(md5of "$SERVER_DB") ; $CLIENT_DB -> $(md5of "$CLIENT_DB")"
 
 # ---------- 7) 重置基线（工作区 = 新库状态） ----------
 for f in "$WS"/*.json; do
   case "$(basename "$f")" in baseline.json|meta.json|state.json) continue;; esac
   cp "$f" "$WS/_baseline/$(basename "$f")"
 done
-NEWVER="$(grep -oP '(?<=^\[\*\] 新版本: ).*' "$REPORT.importer" | tail -1)"
+NEWVER="$(sed -n 's/^\[\*\] 新版本: //p' "$REPORT.importer" | tail -1)"
 python3 -c "
 import hashlib, json, time
 from pathlib import Path
