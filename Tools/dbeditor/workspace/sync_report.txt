@@ -1,13 +1,612 @@
-==================== 同步 2026-10-17 14:19:19 ====================
-[!] 提示：服务端正在运行（端口 7000 活跃）。将同步磁盘数据库，新数据在下一次重启服务端后生效。
+==================== 同步 2026-10-18 15:11:55 ====================
+[1/7] 端口检测通过（未发现服务端监听）
 
-ビルドに成功しました。
-    0 個の警告
-    0 エラー
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
 
-経過時間 00:00:03.27
-[!] 提示：端口 7000 有监听（服务端运行中）。修改将在下一次重启服务端后生效。
-[=] 无改动。
-NO_CHANGES=1
+Time Elapsed 00:00:01.39
+[*] 变更 580 处：ItemInfo×147, MapRegion×6, MonsterInfo×12, DropInfo×382, MagicInfo×6, ItemInfoStat×27
+[*] 引用完整性校验通过。
+[~] ItemInfo#1
+[~] MonsterInfo#10
+[~] MagicInfo#18
+[~] MonsterInfo#25
+[~] MonsterInfo#33
+[~] MonsterInfo#34
+[~] MonsterInfo#35
+[~] MonsterInfo#36
+[~] MonsterInfo#71
+[~] MonsterInfo#89
+[~] MonsterInfo#106
+[~] MonsterInfo#119
+[~] MonsterInfo#120
+[~] ItemInfo#171
+[~] ItemInfo#172
+[~] ItemInfo#173
+[~] ItemInfo#184
+[~] ItemInfo#186
+[~] ItemInfo#187
+[~] MagicInfo#193
+[~] MagicInfo#194
+[~] MagicInfo#195
+[~] MagicInfo#196
+[~] MagicInfo#197
+[~] ItemInfo#201
+[~] ItemInfo#202
+[~] ItemInfo#204
+[~] ItemInfo#205
+[~] ItemInfo#206
+[~] ItemInfo#207
+[~] ItemInfo#208
+[~] ItemInfo#209
+[~] ItemInfo#211
+[~] MonsterInfo#220
+[~] ItemInfo#234
+[~] ItemInfo#236
+[~] ItemInfo#258
+[~] ItemInfo#293
+[~] ItemInfo#295
+[~] ItemInfo#296
+[~] ItemInfo#304
+[~] ItemInfo#306
+[~] ItemInfo#307
+[~] ItemInfo#308
+[~] ItemInfo#309
+[~] ItemInfo#310
+[~] ItemInfo#311
+[~] ItemInfo#317
+[~] ItemInfo#327
+[~] ItemInfo#363
+[~] ItemInfo#364
+[~] ItemInfo#365
+[~] ItemInfo#366
+[~] ItemInfo#368
+[~] ItemInfo#369
+[~] ItemInfo#452
+[~] ItemInfo#453
+[~] ItemInfo#468
+[~] ItemInfo#469
+[~] ItemInfo#470
+[~] ItemInfo#477
+[~] ItemInfo#487
+[~] ItemInfo#489
+[~] ItemInfo#490
+[~] ItemInfo#491
+[~] ItemInfo#492
+[~] ItemInfo#493
+[~] ItemInfo#494
+[~] ItemInfo#495
+[~] ItemInfo#497
+[~] ItemInfo#507
+[~] ItemInfo#519
+[~] ItemInfo#520
+[~] ItemInfo#521
+[~] ItemInfo#523
+[~] ItemInfo#524
+[~] ItemInfo#525
+[~] ItemInfo#526
+[~] ItemInfo#527
+[~] ItemInfo#528
+[~] ItemInfo#537
+[~] ItemInfo#538
+[~] ItemInfo#539
+[~] ItemInfo#540
+[~] ItemInfo#541
+[~] ItemInfo#542
+[~] ItemInfo#543
+[~] ItemInfo#544
+[~] ItemInfo#545
+[~] ItemInfo#581
+[~] ItemInfo#1176
+[~] ItemInfo#1177
+[~] ItemInfo#1178
+[~] ItemInfo#1179
+[~] ItemInfo#1180
+[~] ItemInfo#1181
+[~] ItemInfo#1272
+[~] ItemInfo#1273
+[~] ItemInfo#1274
+[~] ItemInfo#1275
+[~] ItemInfo#1280
+[~] ItemInfo#1281
+[~] ItemInfo#1282
+[~] ItemInfo#1283
+[~] ItemInfo#1284
+[~] ItemInfo#1286
+[~] ItemInfo#1287
+[~] ItemInfo#1288
+[~] ItemInfo#1289
+[~] ItemInfo#1290
+[~] ItemInfo#1291
+[~] ItemInfo#1292
+[~] ItemInfo#1293
+[~] ItemInfo#1294
+[~] ItemInfo#1295
+[~] ItemInfo#1296
+[~] ItemInfo#1297
+[~] ItemInfo#1298
+[~] ItemInfo#1299
+[~] ItemInfo#1307
+[~] ItemInfo#1308
+[~] ItemInfo#1309
+[~] ItemInfo#1310
+[~] ItemInfo#1311
+[~] ItemInfo#1312
+[~] ItemInfo#1313
+[~] ItemInfo#1314
+[~] ItemInfo#1315
+[~] ItemInfo#1316
+[~] ItemInfo#1317
+[~] ItemInfo#1323
+[~] ItemInfo#1324
+[~] ItemInfo#1325
+[~] ItemInfo#1326
+[~] ItemInfo#1327
+[~] ItemInfo#1328
+[~] ItemInfo#1329
+[~] ItemInfo#1330
+[~] ItemInfo#1331
+[~] ItemInfo#1332
+[~] ItemInfo#1333
+[~] ItemInfo#1334
+[~] ItemInfo#1335
+[~] ItemInfo#1336
+[~] ItemInfo#1337
+[~] ItemInfo#1338
+[~] ItemInfo#1339
+[~] ItemInfo#1340
+[~] ItemInfo#1341
+[~] ItemInfo#1346
+[~] ItemInfo#1350
+[~] ItemInfo#1351
+[~] ItemInfo#1352
+[~] ItemInfo#1353
+[~] ItemInfo#1354
+[~] ItemInfo#1355
+[~] ItemInfo#1356
+[~] ItemInfo#1359
+[~] ItemInfo#1361
+[~] ItemInfo#1362
+[~] ItemInfo#1363
+[~] ItemInfo#1364
+[~] ItemInfo#1366
+[~] ItemInfo#1369
+[~] ItemInfo#1371
+[~] MapRegion#8132
+[~] MapRegion#8156
+[~] MapRegion#9606
+[~] MapRegion#11004
+[~] MapRegion#11353
+[~] MapRegion#11355
+[+] ItemInfoStat#4368（Index 自洽）
+[+] ItemInfoStat#4369（Index 自洽）
+[+] ItemInfoStat#4370（Index 自洽）
+[+] ItemInfoStat#4371（Index 自洽）
+[+] ItemInfoStat#4372（Index 自洽）
+[+] ItemInfoStat#4373（Index 自洽）
+[+] ItemInfoStat#4374（Index 自洽）
+[+] ItemInfoStat#4375（Index 自洽）
+[+] ItemInfoStat#4376（Index 自洽）
+[+] ItemInfoStat#4377（Index 自洽）
+[+] ItemInfoStat#4378（Index 自洽）
+[+] ItemInfoStat#4379（Index 自洽）
+[+] ItemInfoStat#4380（Index 自洽）
+[+] ItemInfoStat#4381（Index 自洽）
+[+] ItemInfoStat#4382（Index 自洽）
+[+] ItemInfoStat#4383（Index 自洽）
+[+] ItemInfoStat#4384（Index 自洽）
+[+] ItemInfoStat#4385（Index 自洽）
+[+] ItemInfoStat#4386（Index 自洽）
+[+] ItemInfoStat#4387（Index 自洽）
+[+] ItemInfoStat#4388（Index 自洽）
+[+] ItemInfoStat#4389（Index 自洽）
+[+] ItemInfoStat#4390（Index 自洽）
+[+] ItemInfoStat#4391（Index 自洽）
+[+] ItemInfoStat#4392（Index 自洽）
+[+] ItemInfoStat#4393（Index 自洽）
+[+] ItemInfoStat#4394（Index 自洽）
+[+] DropInfo#21517（Index 自洽）
+[+] DropInfo#21518（Index 自洽）
+[+] DropInfo#21519（Index 自洽）
+[+] DropInfo#21520（Index 自洽）
+[+] DropInfo#21521（Index 自洽）
+[+] DropInfo#21522（Index 自洽）
+[+] DropInfo#21523（Index 自洽）
+[+] DropInfo#21524（Index 自洽）
+[+] DropInfo#21525（Index 自洽）
+[+] DropInfo#21526（Index 自洽）
+[+] DropInfo#21527（Index 自洽）
+[+] DropInfo#21528（Index 自洽）
+[+] DropInfo#21529（Index 自洽）
+[+] DropInfo#21530（Index 自洽）
+[+] DropInfo#21531（Index 自洽）
+[+] DropInfo#21532（Index 自洽）
+[+] DropInfo#21533（Index 自洽）
+[+] DropInfo#21534（Index 自洽）
+[+] DropInfo#21535（Index 自洽）
+[+] DropInfo#21536（Index 自洽）
+[+] DropInfo#21537（Index 自洽）
+[+] DropInfo#21538（Index 自洽）
+[+] DropInfo#21539（Index 自洽）
+[+] DropInfo#21540（Index 自洽）
+[+] DropInfo#21541（Index 自洽）
+[+] DropInfo#21542（Index 自洽）
+[+] DropInfo#21543（Index 自洽）
+[+] DropInfo#21544（Index 自洽）
+[+] DropInfo#21545（Index 自洽）
+[+] DropInfo#21546（Index 自洽）
+[+] DropInfo#21547（Index 自洽）
+[+] DropInfo#21548（Index 自洽）
+[+] DropInfo#21549（Index 自洽）
+[+] DropInfo#21550（Index 自洽）
+[+] DropInfo#21551（Index 自洽）
+[+] DropInfo#21552（Index 自洽）
+[+] DropInfo#21553（Index 自洽）
+[+] DropInfo#21554（Index 自洽）
+[+] DropInfo#21555（Index 自洽）
+[+] DropInfo#21556（Index 自洽）
+[+] DropInfo#21557（Index 自洽）
+[+] DropInfo#21558（Index 自洽）
+[+] DropInfo#21559（Index 自洽）
+[+] DropInfo#21560（Index 自洽）
+[+] DropInfo#21561（Index 自洽）
+[+] DropInfo#21562（Index 自洽）
+[+] DropInfo#21563（Index 自洽）
+[+] DropInfo#21564（Index 自洽）
+[+] DropInfo#21565（Index 自洽）
+[+] DropInfo#21566（Index 自洽）
+[+] DropInfo#21567（Index 自洽）
+[+] DropInfo#21568（Index 自洽）
+[+] DropInfo#21569（Index 自洽）
+[+] DropInfo#21570（Index 自洽）
+[+] DropInfo#21571（Index 自洽）
+[+] DropInfo#21572（Index 自洽）
+[+] DropInfo#21573（Index 自洽）
+[+] DropInfo#21574（Index 自洽）
+[+] DropInfo#21575（Index 自洽）
+[+] DropInfo#21576（Index 自洽）
+[+] DropInfo#21577（Index 自洽）
+[+] DropInfo#21578（Index 自洽）
+[+] DropInfo#21579（Index 自洽）
+[+] DropInfo#21580（Index 自洽）
+[+] DropInfo#21581（Index 自洽）
+[+] DropInfo#21582（Index 自洽）
+[+] DropInfo#21583（Index 自洽）
+[+] DropInfo#21584（Index 自洽）
+[+] DropInfo#21585（Index 自洽）
+[+] DropInfo#21586（Index 自洽）
+[+] DropInfo#21587（Index 自洽）
+[+] DropInfo#21588（Index 自洽）
+[+] DropInfo#21589（Index 自洽）
+[+] DropInfo#21590（Index 自洽）
+[+] DropInfo#21591（Index 自洽）
+[+] DropInfo#21592（Index 自洽）
+[+] DropInfo#21593（Index 自洽）
+[+] DropInfo#21594（Index 自洽）
+[+] DropInfo#21595（Index 自洽）
+[+] DropInfo#21596（Index 自洽）
+[+] DropInfo#21597（Index 自洽）
+[+] DropInfo#21598（Index 自洽）
+[+] DropInfo#21599（Index 自洽）
+[+] DropInfo#21600（Index 自洽）
+[+] DropInfo#21601（Index 自洽）
+[+] DropInfo#21602（Index 自洽）
+[+] DropInfo#21603（Index 自洽）
+[+] DropInfo#21604（Index 自洽）
+[+] DropInfo#21605（Index 自洽）
+[+] DropInfo#21606（Index 自洽）
+[+] DropInfo#21607（Index 自洽）
+[+] DropInfo#21608（Index 自洽）
+[+] DropInfo#21609（Index 自洽）
+[+] DropInfo#21610（Index 自洽）
+[+] DropInfo#21611（Index 自洽）
+[+] DropInfo#21612（Index 自洽）
+[+] DropInfo#21613（Index 自洽）
+[+] DropInfo#21614（Index 自洽）
+[+] DropInfo#21615（Index 自洽）
+[+] DropInfo#21616（Index 自洽）
+[+] DropInfo#21617（Index 自洽）
+[+] DropInfo#21618（Index 自洽）
+[+] DropInfo#21619（Index 自洽）
+[+] DropInfo#21620（Index 自洽）
+[+] DropInfo#21621（Index 自洽）
+[+] DropInfo#21622（Index 自洽）
+[+] DropInfo#21623（Index 自洽）
+[+] DropInfo#21624（Index 自洽）
+[+] DropInfo#21625（Index 自洽）
+[+] DropInfo#21626（Index 自洽）
+[+] DropInfo#21627（Index 自洽）
+[+] DropInfo#21628（Index 自洽）
+[+] DropInfo#21629（Index 自洽）
+[+] DropInfo#21630（Index 自洽）
+[+] DropInfo#21631（Index 自洽）
+[+] DropInfo#21632（Index 自洽）
+[+] DropInfo#21633（Index 自洽）
+[+] DropInfo#21634（Index 自洽）
+[+] DropInfo#21635（Index 自洽）
+[+] DropInfo#21636（Index 自洽）
+[+] DropInfo#21637（Index 自洽）
+[+] DropInfo#21638（Index 自洽）
+[+] DropInfo#21639（Index 自洽）
+[+] DropInfo#21640（Index 自洽）
+[+] DropInfo#21641（Index 自洽）
+[+] DropInfo#21642（Index 自洽）
+[+] DropInfo#21643（Index 自洽）
+[+] DropInfo#21644（Index 自洽）
+[+] DropInfo#21645（Index 自洽）
+[+] DropInfo#21646（Index 自洽）
+[+] DropInfo#21647（Index 自洽）
+[+] DropInfo#21648（Index 自洽）
+[+] DropInfo#21649（Index 自洽）
+[+] DropInfo#21650（Index 自洽）
+[+] DropInfo#21651（Index 自洽）
+[+] DropInfo#21652（Index 自洽）
+[+] DropInfo#21653（Index 自洽）
+[+] DropInfo#21654（Index 自洽）
+[+] DropInfo#21655（Index 自洽）
+[+] DropInfo#21656（Index 自洽）
+[+] DropInfo#21657（Index 自洽）
+[+] DropInfo#21658（Index 自洽）
+[+] DropInfo#21659（Index 自洽）
+[+] DropInfo#21660（Index 自洽）
+[+] DropInfo#21661（Index 自洽）
+[+] DropInfo#21662（Index 自洽）
+[+] DropInfo#21663（Index 自洽）
+[+] DropInfo#21664（Index 自洽）
+[+] DropInfo#21665（Index 自洽）
+[+] DropInfo#21666（Index 自洽）
+[+] DropInfo#21667（Index 自洽）
+[+] DropInfo#21668（Index 自洽）
+[+] DropInfo#21669（Index 自洽）
+[+] DropInfo#21670（Index 自洽）
+[+] DropInfo#21671（Index 自洽）
+[+] DropInfo#21672（Index 自洽）
+[+] DropInfo#21673（Index 自洽）
+[+] DropInfo#21674（Index 自洽）
+[+] DropInfo#21675（Index 自洽）
+[+] DropInfo#21676（Index 自洽）
+[+] DropInfo#21677（Index 自洽）
+[+] DropInfo#21678（Index 自洽）
+[+] DropInfo#21679（Index 自洽）
+[+] DropInfo#21680（Index 自洽）
+[+] DropInfo#21681（Index 自洽）
+[+] DropInfo#21682（Index 自洽）
+[+] DropInfo#21683（Index 自洽）
+[+] DropInfo#21684（Index 自洽）
+[+] DropInfo#21685（Index 自洽）
+[+] DropInfo#21686（Index 自洽）
+[+] DropInfo#21687（Index 自洽）
+[+] DropInfo#21688（Index 自洽）
+[+] DropInfo#21689（Index 自洽）
+[+] DropInfo#21690（Index 自洽）
+[+] DropInfo#21691（Index 自洽）
+[+] DropInfo#21692（Index 自洽）
+[+] DropInfo#21693（Index 自洽）
+[+] DropInfo#21694（Index 自洽）
+[+] DropInfo#21695（Index 自洽）
+[+] DropInfo#21696（Index 自洽）
+[+] DropInfo#21697（Index 自洽）
+[+] DropInfo#21698（Index 自洽）
+[+] DropInfo#21699（Index 自洽）
+[+] DropInfo#21700（Index 自洽）
+[+] DropInfo#21701（Index 自洽）
+[+] DropInfo#21702（Index 自洽）
+[+] DropInfo#21703（Index 自洽）
+[+] DropInfo#21704（Index 自洽）
+[+] DropInfo#21705（Index 自洽）
+[+] DropInfo#21706（Index 自洽）
+[+] DropInfo#21707（Index 自洽）
+[+] DropInfo#21708（Index 自洽）
+[+] DropInfo#21709（Index 自洽）
+[+] DropInfo#21710（Index 自洽）
+[+] DropInfo#21711（Index 自洽）
+[+] DropInfo#21712（Index 自洽）
+[+] DropInfo#21713（Index 自洽）
+[+] DropInfo#21714（Index 自洽）
+[+] DropInfo#21715（Index 自洽）
+[+] DropInfo#21716（Index 自洽）
+[+] DropInfo#21717（Index 自洽）
+[+] DropInfo#21718（Index 自洽）
+[+] DropInfo#21719（Index 自洽）
+[+] DropInfo#21720（Index 自洽）
+[+] DropInfo#21721（Index 自洽）
+[+] DropInfo#21722（Index 自洽）
+[+] DropInfo#21723（Index 自洽）
+[+] DropInfo#21724（Index 自洽）
+[+] DropInfo#21725（Index 自洽）
+[+] DropInfo#21726（Index 自洽）
+[+] DropInfo#21727（Index 自洽）
+[+] DropInfo#21728（Index 自洽）
+[+] DropInfo#21729（Index 自洽）
+[+] DropInfo#21730（Index 自洽）
+[+] DropInfo#21731（Index 自洽）
+[+] DropInfo#21732（Index 自洽）
+[+] DropInfo#21733（Index 自洽）
+[+] DropInfo#21734（Index 自洽）
+[+] DropInfo#21735（Index 自洽）
+[+] DropInfo#21736（Index 自洽）
+[+] DropInfo#21737（Index 自洽）
+[+] DropInfo#21738（Index 自洽）
+[+] DropInfo#21739（Index 自洽）
+[+] DropInfo#21740（Index 自洽）
+[+] DropInfo#21741（Index 自洽）
+[+] DropInfo#21742（Index 自洽）
+[+] DropInfo#21743（Index 自洽）
+[+] DropInfo#21744（Index 自洽）
+[+] DropInfo#21745（Index 自洽）
+[+] DropInfo#21746（Index 自洽）
+[+] DropInfo#21747（Index 自洽）
+[+] DropInfo#21748（Index 自洽）
+[+] DropInfo#21749（Index 自洽）
+[+] DropInfo#21750（Index 自洽）
+[+] DropInfo#21751（Index 自洽）
+[+] DropInfo#21752（Index 自洽）
+[+] DropInfo#21753（Index 自洽）
+[+] DropInfo#21754（Index 自洽）
+[+] DropInfo#21755（Index 自洽）
+[+] DropInfo#21756（Index 自洽）
+[+] DropInfo#21757（Index 自洽）
+[+] DropInfo#21758（Index 自洽）
+[+] DropInfo#21759（Index 自洽）
+[+] DropInfo#21760（Index 自洽）
+[+] DropInfo#21761（Index 自洽）
+[+] DropInfo#21762（Index 自洽）
+[+] DropInfo#21763（Index 自洽）
+[+] DropInfo#21764（Index 自洽）
+[+] DropInfo#21765（Index 自洽）
+[+] DropInfo#21766（Index 自洽）
+[+] DropInfo#21767（Index 自洽）
+[+] DropInfo#21768（Index 自洽）
+[+] DropInfo#21769（Index 自洽）
+[+] DropInfo#21770（Index 自洽）
+[+] DropInfo#21771（Index 自洽）
+[+] DropInfo#21772（Index 自洽）
+[+] DropInfo#21773（Index 自洽）
+[+] DropInfo#21774（Index 自洽）
+[+] DropInfo#21775（Index 自洽）
+[+] DropInfo#21776（Index 自洽）
+[+] DropInfo#21777（Index 自洽）
+[+] DropInfo#21778（Index 自洽）
+[+] DropInfo#21779（Index 自洽）
+[+] DropInfo#21780（Index 自洽）
+[+] DropInfo#21781（Index 自洽）
+[+] DropInfo#21782（Index 自洽）
+[+] DropInfo#21783（Index 自洽）
+[+] DropInfo#21784（Index 自洽）
+[+] DropInfo#21785（Index 自洽）
+[+] DropInfo#21786（Index 自洽）
+[+] DropInfo#21787（Index 自洽）
+[+] DropInfo#21788（Index 自洽）
+[+] DropInfo#21789（Index 自洽）
+[+] DropInfo#21790（Index 自洽）
+[+] DropInfo#21791（Index 自洽）
+[+] DropInfo#21792（Index 自洽）
+[+] DropInfo#21793（Index 自洽）
+[+] DropInfo#21794（Index 自洽）
+[+] DropInfo#21795（Index 自洽）
+[+] DropInfo#21796（Index 自洽）
+[+] DropInfo#21797（Index 自洽）
+[+] DropInfo#21798（Index 自洽）
+[+] DropInfo#21799（Index 自洽）
+[+] DropInfo#21800（Index 自洽）
+[+] DropInfo#21801（Index 自洽）
+[+] DropInfo#21802（Index 自洽）
+[+] DropInfo#21803（Index 自洽）
+[+] DropInfo#21804（Index 自洽）
+[+] DropInfo#21805（Index 自洽）
+[+] DropInfo#21806（Index 自洽）
+[+] DropInfo#21807（Index 自洽）
+[+] DropInfo#21808（Index 自洽）
+[+] DropInfo#21809（Index 自洽）
+[+] DropInfo#21810（Index 自洽）
+[+] DropInfo#21811（Index 自洽）
+[+] DropInfo#21812（Index 自洽）
+[+] DropInfo#21813（Index 自洽）
+[+] DropInfo#21814（Index 自洽）
+[+] DropInfo#21815（Index 自洽）
+[+] DropInfo#21816（Index 自洽）
+[+] DropInfo#21817（Index 自洽）
+[+] DropInfo#21818（Index 自洽）
+[+] DropInfo#21819（Index 自洽）
+[+] DropInfo#21820（Index 自洽）
+[+] DropInfo#21821（Index 自洽）
+[+] DropInfo#21822（Index 自洽）
+[+] DropInfo#21823（Index 自洽）
+[+] DropInfo#21824（Index 自洽）
+[+] DropInfo#21825（Index 自洽）
+[+] DropInfo#21826（Index 自洽）
+[+] DropInfo#21827（Index 自洽）
+[+] DropInfo#21828（Index 自洽）
+[+] DropInfo#21829（Index 自洽）
+[+] DropInfo#21830（Index 自洽）
+[+] DropInfo#21831（Index 自洽）
+[+] DropInfo#21832（Index 自洽）
+[+] DropInfo#21833（Index 自洽）
+[+] DropInfo#21834（Index 自洽）
+[+] DropInfo#21835（Index 自洽）
+[+] DropInfo#21836（Index 自洽）
+[+] DropInfo#21837（Index 自洽）
+[+] DropInfo#21838（Index 自洽）
+[+] DropInfo#21839（Index 自洽）
+[+] DropInfo#21840（Index 自洽）
+[+] DropInfo#21841（Index 自洽）
+[+] DropInfo#21842（Index 自洽）
+[+] DropInfo#21843（Index 自洽）
+[+] DropInfo#21844（Index 自洽）
+[+] DropInfo#21845（Index 自洽）
+[+] DropInfo#21846（Index 自洽）
+[+] DropInfo#21847（Index 自洽）
+[+] DropInfo#21848（Index 自洽）
+[+] DropInfo#21849（Index 自洽）
+[+] DropInfo#21850（Index 自洽）
+[+] DropInfo#21851（Index 自洽）
+[+] DropInfo#21852（Index 自洽）
+[+] DropInfo#21853（Index 自洽）
+[+] DropInfo#21854（Index 自洽）
+[+] DropInfo#21855（Index 自洽）
+[+] DropInfo#21856（Index 自洽）
+[+] DropInfo#21857（Index 自洽）
+[+] DropInfo#21858（Index 自洽）
+[+] DropInfo#21859（Index 自洽）
+[+] DropInfo#21860（Index 自洽）
+[+] DropInfo#21861（Index 自洽）
+[+] DropInfo#21862（Index 自洽）
+[+] DropInfo#21863（Index 自洽）
+[+] DropInfo#21864（Index 自洽）
+[+] DropInfo#21865（Index 自洽）
+[+] DropInfo#21866（Index 自洽）
+[+] DropInfo#21867（Index 自洽）
+[+] DropInfo#21868（Index 自洽）
+[+] DropInfo#21869（Index 自洽）
+[+] DropInfo#21870（Index 自洽）
+[+] DropInfo#21871（Index 自洽）
+[+] DropInfo#21872（Index 自洽）
+[+] DropInfo#21873（Index 自洽）
+[+] DropInfo#21874（Index 自洽）
+[+] DropInfo#21875（Index 自洽）
+[+] DropInfo#21876（Index 自洽）
+[+] DropInfo#21877（Index 自洽）
+[+] DropInfo#21878（Index 自洽）
+[+] DropInfo#21879（Index 自洽）
+[+] DropInfo#21880（Index 自洽）
+[+] DropInfo#21881（Index 自洽）
+[+] DropInfo#21882（Index 自洽）
+[+] DropInfo#21883（Index 自洽）
+[+] DropInfo#21884（Index 自洽）
+[+] DropInfo#21885（Index 自洽）
+[+] DropInfo#21886（Index 自洽）
+[+] DropInfo#21887（Index 自洽）
+[+] DropInfo#21888（Index 自洽）
+[+] DropInfo#21889（Index 自洽）
+[+] DropInfo#21890（Index 自洽）
+[+] DropInfo#21891（Index 自洽）
+[+] DropInfo#21892（Index 自洽）
+[+] DropInfo#21893（Index 自洽）
+[+] DropInfo#21894（Index 自洽）
+[+] DropInfo#21895（Index 自洽）
+[+] DropInfo#21896（Index 自洽）
+[+] DropInfo#21897（Index 自洽）
+[+] DropInfo#21898（Index 自洽）
+[*] 新版本: 2026.10.18.2
+[*] 已保存: /tmp/dbeditor_import_ef329744741f47278d9a34d4fe067e01/System.db
+[*] 应用 580/580 处变更。
+DB_OUT=/tmp/dbeditor_import_ef329744741f47278d9a34d4fe067e01/System.db
 [2/7] 导入器执行完成
-[=] 工作区无改动，什么都不做。
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.18
+[3/7] round-trip 导出完成
+[OK] round-trip 语义一致
+[4/7] round-trip 语义对比通过
+[5/7] 已备份 4 份副本 → /home/tetsuya/development/Zircon/Debug/ServerCore/Database/Backup/System/System-copy* 2026-10-18 15-12.db.gz
+[6/7] 已安装 4 份库：1a5e0e4829abc98d7c6021650fd8c956 → f7b9d784f1af37fabf9ec0b98c504c2d
+[6/7]   f7b9d784f1af37fabf9ec0b98c504c2d  /home/tetsuya/development/zircon/Debug/ServerCore/Database/System.db
+[6/7]   f7b9d784f1af37fabf9ec0b98c504c2d  /home/tetsuya/mir2ei/Data/System.db
+[6/7]   f7b9d784f1af37fabf9ec0b98c504c2d  /home/tetsuya/mir2ei/Database/System.db
+[6/7]   f7b9d784f1af37fabf9ec0b98c504c2d  /home/tetsuya/development/zircon/System.db
+[7/7] 基线已重置（版本 2026.10.18.2，下次 diff 从新库算起）
+同步成功：1a5e0e4829abc98d7c6021650fd8c956 → f7b9d784f1af37fabf9ec0b98c504c2d
