@@ -107,7 +107,10 @@ if (orphanOut != null)
     IList Binding(string typeName)
     {
         var t = typeof(Server.DBModels.AccountInfo).Assembly.GetType(typeName);
-        var mi = typeof(Session).GetMethod("GetCollection")!.MakeGenericMethod(t!);
+        var mi = typeof(Session).GetMethods()
+            .First(m => m.Name == "GetCollection" && m.IsGenericMethodDefinition
+                        && m.GetParameters().Length == 0)
+            .MakeGenericMethod(t!);
         var col = mi.Invoke(session, null)!;
         return (IList)col.GetType().GetField("Binding")!.GetValue(col)!;
     }
