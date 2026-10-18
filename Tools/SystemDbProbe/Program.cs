@@ -23,6 +23,7 @@ string storesOut = null;
 string allOut = null;
 string jsonOut = null;
 string minimapOut = null;
+string orphanOut = null;
 string bc7Lib = null, bc7Frame = null, bc7Out = null;
 
 for (int i = 0; i < args.Length; i++)
@@ -52,6 +53,16 @@ for (int i = 0; i < args.Length; i++)
     if (args[i] == "--minimap")
     {
         minimapOut = args[++i];
+        continue;
+    }
+    if (args[i] == "--orphan-guilds")
+    {
+        // 检查用户库（Users.db）里的"孤立行会成员行"：GuildInfo.Members 里
+        // Account 引用为空的成员，以及 Character.Account 为空的角色。
+        // 动机：跨天/攻城/公会广播等处的 member.Account 空引用曾让服务端整机停摆
+        // （见 Zircon docs/AUDIT/WORKLOG.md 第 3、6 段），但此前的探针只读 System.db，
+        // 无法查证这个前置条件是否存在。输出 JSON + 摘要。
+        orphanOut = args[++i];
         continue;
     }
     if (args[i] == "--stores")
@@ -90,6 +101,84 @@ session.Initialize(
 
 Console.WriteLine($"数据库: {session.SystemPath}");
 Console.WriteLine($"版本:   {session.SystemDatabaseVersion}");
+
+if (orphanOut != null)
+{
+    IList Binding(string typeName)
+    {
+        var t = typeof(Server.DBModels.AccountInfo).Assembly.GetType(typeName);
+        var mi = typeof(Session).GetMethod("GetCollection")!.MakeGenericMethod(t!);
+        var col = mi.Invoke(session, null)!;
+        return (IList)col.GetType().GetField("Binding")!.GetValue(col)!;
+    }
+
+    IList guilds;
+    IList members;
+    IList accounts;
+    IList characters;
+    try { guilds = Binding("Server.DBModels.GuildInfo"); }
+    catch (Exception ex) { Console.WriteLine($"[X] 打不开 GuildInfo：{ex.GetType().Name}: {ex.Message}"); return; }
+    members = Binding("Server.DBModels.GuildMemberInfo");
+    accounts = Binding("Server.DBModels.AccountInfo");
+    characters = Binding("Server.DBModels.CharacterInfo");
+
+    var accountRefs = new HashSet<object>(accounts.Cast<object>().Where(a => a != null));
+    var guildRefs = new HashSet<object>(guilds.Cast<object>().Where(g => g != null));
+
+    var orphanMembers = new List<Dictionary<string, object>>();
+    int memberCount = 0, nullMemberRows = 0;
+    foreach (var g in guilds)
+    {
+        if (g == null) continue;
+        var gMembers = (IList?)g.GetType().GetProperty("Members")?.GetValue(g)
+                    ?? (IList?)g.GetType().GetField("Members")?.GetValue(g);
+        if (gMembers == null) continue;
+        foreach (var m in gMembers)
+        {
+            memberCount++;
+            if (m == null) { nullMemberRows++; continue; }
+            var acc = m.GetType().GetProperty("Account")?.GetValue(m)
+                   ?? m.GetType().GetField("Account")?.GetValue(m);
+            if (acc == null || !accountRefs.Contains(acc))
+            {
+                orphanMembers.Add(new Dictionary<string, object>
+                {
+                    ["Guild"] = g.GetType().GetProperty("GuildName")?.GetValue(g)?.ToString() ?? "?",
+                    ["MemberIndex"] = m.GetType().GetProperty("Index")?.GetValue(m)?.ToString() ?? "?",
+                    ["Reason"] = acc == null ? "Account 为 null" : "Account 引用不在账号集合里",
+                });
+            }
+        }
+    }
+
+    var orphanChars = characters.Cast<object>().Where(c =>
+    {
+        if (c == null) return false;
+        var acc = c.GetType().GetProperty("Account")?.GetValue(c)
+               ?? c.GetType().GetField("Account")?.GetValue(c);
+        return acc == null || !accountRefs.Contains(acc);
+    }).Count();
+
+    var result = new
+    {
+        database = session.SystemPath,
+        version = session.SystemDatabaseVersion,
+        guilds = guilds.Count,
+        guildsResolved = guildRefs.Count,
+        members = memberCount,
+        nullMemberRows,
+        orphanMembers,
+        characters = characters.Count,
+        orphanCharacters = orphanChars,
+    };
+    File.WriteAllText(orphanOut, System.Text.Json.JsonSerializer.Serialize(result,
+        new System.Text.Json.JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping }));
+    Console.WriteLine($"[孤立行会成员] 行会 {guilds.Count}、成员 {memberCount}、Account 为空的成员 {orphanMembers.Count}、null 成员行 {nullMemberRows}、Account 为空的角色 {orphanChars}");
+    foreach (var o in orphanMembers.Take(10))
+        Console.WriteLine($"   - 行会 {o["Guild"]} 成员 #{o["MemberIndex"]}：{o["Reason"]}");
+    Console.WriteLine($"JSON -> {orphanOut}");
+    return;
+}
 
 if (minimapOut != null)
 {
