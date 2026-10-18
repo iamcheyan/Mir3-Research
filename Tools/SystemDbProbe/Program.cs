@@ -129,6 +129,7 @@ if (orphanOut != null)
     var guildRefs = new HashSet<object>(guilds.Cast<object>().Where(g => g != null));
 
     var orphanMembers = new List<Dictionary<string, object>>();
+    var guildRoster = new List<Dictionary<string, object>>();
     int memberCount = 0, nullMemberRows = 0;
     foreach (var g in guilds)
     {
@@ -142,12 +143,26 @@ if (orphanOut != null)
             if (m == null) { nullMemberRows++; continue; }
             var acc = m.GetType().GetProperty("Account")?.GetValue(m)
                    ?? m.GetType().GetField("Account")?.GetValue(m);
+            var charRef = m.GetType().GetProperty("Character")?.GetValue(m)
+                       ?? m.GetType().GetField("Character")?.GetValue(m);
+            string charName = charRef?.GetType().GetProperty("CharacterName")?.GetValue(charRef)?.ToString()
+                           ?? charRef?.GetType().GetProperty("Name")?.GetValue(charRef)?.ToString() ?? "(无角色)";
+            string guildName = g.GetType().GetProperty("GuildName")?.GetValue(g)?.ToString() ?? "?";
+            // 名单全量输出（不只孤立行）：用于判断某个测试角色在哪个行会、该行会有没有孤立成员
+            guildRoster.Add(new Dictionary<string, object>
+            {
+                ["Guild"] = guildName,
+                ["MemberIndex"] = m.GetType().GetProperty("Index")?.GetValue(m)?.ToString() ?? "?",
+                ["Character"] = charName,
+                ["AccountNull"] = acc == null,
+            });
             if (acc == null || !accountRefs.Contains(acc))
             {
                 orphanMembers.Add(new Dictionary<string, object>
                 {
-                    ["Guild"] = g.GetType().GetProperty("GuildName")?.GetValue(g)?.ToString() ?? "?",
+                    ["Guild"] = guildName,
                     ["MemberIndex"] = m.GetType().GetProperty("Index")?.GetValue(m)?.ToString() ?? "?",
+                    ["Character"] = charName,
                     ["Reason"] = acc == null ? "Account 为 null" : "Account 引用不在账号集合里",
                 });
             }
@@ -171,6 +186,7 @@ if (orphanOut != null)
         members = memberCount,
         nullMemberRows,
         orphanMembers,
+        guildRoster,
         characters = characters.Count,
         orphanCharacters = orphanChars,
     };
@@ -178,7 +194,14 @@ if (orphanOut != null)
         new System.Text.Json.JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping }));
     Console.WriteLine($"[孤立行会成员] 行会 {guilds.Count}、成员 {memberCount}、Account 为空的成员 {orphanMembers.Count}、null 成员行 {nullMemberRows}、Account 为空的角色 {orphanChars}");
     foreach (var o in orphanMembers.Take(10))
-        Console.WriteLine($"   - 行会 {o["Guild"]} 成员 #{o["MemberIndex"]}：{o["Reason"]}");
+        Console.WriteLine($"   - 行会 {o["Guild"]} 成员 #{o["MemberIndex"]} 角色 {o["Character"]}：{o["Reason"]}");
+    foreach (var gname in guildRoster.Select(r => r["Guild"]).Distinct())
+    {
+        var roster = guildRoster.Where(r => r["Guild"].Equals(gname)).ToList();
+        Console.WriteLine($"   [行会 {gname}] {roster.Count} 名成员，其中 Account 为空 {roster.Count(r => (bool)r["AccountNull"])} 名");
+        foreach (var r in roster.Take(12))
+            Console.WriteLine($"      {r["Character"]}{((bool)r["AccountNull"] ? "（账号为空）" : "")}");
+    }
     Console.WriteLine($"JSON -> {orphanOut}");
     return;
 }
