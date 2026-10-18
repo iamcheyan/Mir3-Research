@@ -1,5 +1,5 @@
 {
-  "count": 752,
+  "count": 758,
   "rows": [
     {
       "Index": 6184,
@@ -10615,6 +10615,97 @@
         "Index": 8,
         "Name": "4"
       },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 86,
+      "Page": {
+        "Index": 172,
+        "Name": "Item Fragment - Upgrade Fragment"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 20000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 87,
+      "Page": {
+        "Index": 172,
+        "Name": "Item Fragment - Upgrade Fragment"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 829,
+        "Name": "Fragment"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 88,
+      "Page": {
+        "Index": 172,
+        "Name": "Item Fragment - Upgrade Fragment"
+      },
+      "ActionType": "GiveItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 830,
+        "Name": "Fragment (II)"
+      },
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 89,
+      "Page": {
+        "Index": 173,
+        "Name": "Item Fragment - Upgrade Fragment (II)"
+      },
+      "ActionType": "GiveItem",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "MapParameter1": null,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 90,
+      "Page": {
+        "Index": 173,
+        "Name": "Item Fragment - Upgrade Fragment (II)"
+      },
+      "ActionType": "TakeGold",
+      "StringParameter1": "",
+      "IntParameter1": 50000,
+      "IntParameter2": 0,
+      "MapParameter1": null,
+      "StatParameter1": "BaseHealth"
+    },
+    {
+      "Index": 91,
+      "Page": {
+        "Index": 173,
+        "Name": "Item Fragment - Upgrade Fragment (II)"
+      },
+      "ActionType": "TakeItem",
+      "StringParameter1": "",
+      "IntParameter1": 25,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 830,
+        "Name": "Fragment (II)"
+      },
+      "MapParameter1": null,
       "StatParameter1": "BaseHealth"
     }
   ]

@@ -106,6 +106,19 @@ def eq_field(wv, rv) -> bool:
     return wv == rv
 
 
+def _is_ref(v) -> bool:
+    """值是否是「指向别的行的引用」（dict 含 Index，或这类 dict 的列表）。"""
+    if isinstance(v, dict):
+        return "Index" in v
+    return isinstance(v, list) and bool(v) and all(isinstance(x, dict) and "Index" in x for x in v)
+
+
+def _ref_count(v) -> int:
+    if v is None:
+        return 0
+    return len(v) if isinstance(v, list) else 1
+
+
 def main() -> int:
     meta = json.loads((workspace / "meta.json").read_text(encoding="utf-8"))
     remap = load_remap()
@@ -117,12 +130,41 @@ def main() -> int:
             print(f"[X] {t}: round-trip 导出缺失")
             bad += 1
             continue
+        _remap_lenient: set[int] = set()
         if remap:
             _ws = {}
             for r in ws.values():
                 rr = apply_remap_row(meta, t, r, remap)
                 _ws[rr["Index"]] = rr
             ws = _ws
+        else:
+            # 索引重映射容忍：导入器遇到索引占用会把新行重映射到高位（工作区仍保留旧索引），
+            # 而 create/add 那次报告里的 REMAP 只出现在「创建行」的那一次导入。此后任何
+            # 对**同一张表**的改动都不会再带 REMAP，于是整表按索引比对会误报
+            # 「#旧: round-trip 缺行」+「#新: 多出旧行」成对差异。
+            # 这里按 _Identity 唯一匹配把「旧索引 -> 新索引」认成同一行；这类行的回链列表
+            # 目标索引已被导入器重写过，因此只比长度（不静默跳过：会打印一行 NOTE）。
+            by_ident: dict[str, list[int]] = {}
+            for i2, r2 in rt.items():
+                id2 = r2.get("_Identity")
+                if id2:
+                    by_ident.setdefault(id2, []).append(i2)
+            pair: dict[int, int] = {}
+            for idx, wrow in ws.items():
+                if idx in rt:
+                    continue
+                cands = by_ident.get(wrow.get("_Identity"), [])
+                if len(cands) == 1:
+                    pair[idx] = cands[0]
+            if pair:
+                print(f"[i] {t}: 检测到索引重映射 {len(pair)} 行，按 _Identity 认成同一行")
+                for old, new in sorted(pair.items())[:8]:
+                    print(f"    {t}#{old} ≡ #{new}")
+                ws = {pair.get(i, i): r for i, r in ws.items()}
+                remapped_pairs = set(pair)
+                _remap_lenient = {pair[k] for k in remapped_pairs}
+            else:
+                _remap_lenient = set()
         for idx, wrow in ws.items():
             if idx not in rt:
                 print(f"[X] {t}#{idx}: round-trip 缺行")
@@ -131,7 +173,25 @@ def main() -> int:
             rrow = rt[idx]
             for k, wv in wrow.items():
                 rv = rrow.get(k)
+                if idx in _remap_lenient:
+                    # 重映射行：自身 Index 与被导入器重写过的引用字段（dict/list）不比数值，
+                    # 只比引用个数；其余字段照旧严格比对（不静默放过）。
+                    if k == "Index":
+                        continue
+                    if _is_ref(wv) or _is_ref(rv):
+                        if _ref_count(wv) != _ref_count(rv):
+                            print(f"[X] {t}#{idx}.{k}: 重映射行引用个数不一致 "
+                                  f"{_ref_count(wv)} != {_ref_count(rv)}")
+                            bad += 1
+                        continue
                 if reflist_derived(meta, t, k) and isinstance(wv, list):
+                    if idx in _remap_lenient:
+                        # 重映射行：目标索引已被导入器改写，只比长度
+                        if len(wv) != len(rv or []):
+                            print(f"[X] {t}#{idx}.{k}: 重映射行回链长度不一致 "
+                                  f"{len(wv)} != {len(rv or [])}")
+                            bad += 1
+                        continue
                     if not eq_field(wv, rv or []):
                         wi = sorted(x.get("Index") for x in wv if isinstance(x, dict))
                         ri = sorted(x.get("Index") for x in (rv or []) if isinstance(x, dict))

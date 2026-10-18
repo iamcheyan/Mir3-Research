@@ -1,5 +1,5 @@
 {
-  "count": 857,
+  "count": 863,
   "rows": [
     {
       "Index": 28,
@@ -15736,6 +15736,124 @@
       "FailPage": {
         "Index": 38142,
         "Name": "IR382|func:nogold"
+      }
+    },
+    {
+      "Index": 156,
+      "Page": {
+        "Index": 172,
+        "Name": "Item Fragment - Upgrade Fragment"
+      },
+      "CheckType": "Gold",
+      "Operator": "GreaterThanOrEqual",
+      "StringParameter1": "",
+      "IntParameter1": 20000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth",
+      "FailPage": {
+        "Index": 174,
+        "Name": "Item Fragment - Fail - Gold"
+      }
+    },
+    {
+      "Index": 157,
+      "Page": {
+        "Index": 172,
+        "Name": "Item Fragment - Upgrade Fragment"
+      },
+      "CheckType": "HasItem",
+      "Operator": "GreaterThanOrEqual",
+      "StringParameter1": "",
+      "IntParameter1": 100,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 829,
+        "Name": "Fragment"
+      },
+      "StatParameter1": "BaseHealth",
+      "FailPage": {
+        "Index": 175,
+        "Name": "Item Fragment - Fail - Not enough Fragments"
+      }
+    },
+    {
+      "Index": 158,
+      "Page": {
+        "Index": 172,
+        "Name": "Item Fragment - Upgrade Fragment"
+      },
+      "CheckType": "CanGainItem",
+      "Operator": "Equal",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 830,
+        "Name": "Fragment (II)"
+      },
+      "StatParameter1": "BaseHealth",
+      "FailPage": {
+        "Index": 177,
+        "Name": "Item Fragment - Fail - Not enough Inventory Room"
+      }
+    },
+    {
+      "Index": 159,
+      "Page": {
+        "Index": 173,
+        "Name": "Item Fragment - Upgrade Fragment (II)"
+      },
+      "CheckType": "Gold",
+      "Operator": "GreaterThanOrEqual",
+      "StringParameter1": "",
+      "IntParameter1": 50000,
+      "IntParameter2": 0,
+      "StatParameter1": "BaseHealth",
+      "FailPage": {
+        "Index": 174,
+        "Name": "Item Fragment - Fail - Gold"
+      }
+    },
+    {
+      "Index": 160,
+      "Page": {
+        "Index": 173,
+        "Name": "Item Fragment - Upgrade Fragment (II)"
+      },
+      "CheckType": "HasItem",
+      "Operator": "GreaterThanOrEqual",
+      "StringParameter1": "",
+      "IntParameter1": 25,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 830,
+        "Name": "Fragment (II)"
+      },
+      "StatParameter1": "BaseHealth",
+      "FailPage": {
+        "Index": 175,
+        "Name": "Item Fragment - Fail - Not enough Fragments"
+      }
+    },
+    {
+      "Index": 161,
+      "Page": {
+        "Index": 173,
+        "Name": "Item Fragment - Upgrade Fragment (II)"
+      },
+      "CheckType": "CanGainItem",
+      "Operator": "Equal",
+      "StringParameter1": "",
+      "IntParameter1": 1,
+      "IntParameter2": 0,
+      "ItemParameter1": {
+        "Index": 831,
+        "Name": "Fragment (III)"
+      },
+      "StatParameter1": "BaseHealth",
+      "FailPage": {
+        "Index": 177,
+        "Name": "Item Fragment - Fail - Not enough Inventory Room"
       }
     }
   ]

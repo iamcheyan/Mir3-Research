@@ -1,33 +1,88 @@
-==================== 同步 2026-10-18 17:40:56 ====================
+==================== 同步 2026-10-18 20:41:06 ====================
 [1/7] 端口检测通过（未发现服务端监听）
 
 Build succeeded.
     0 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:01.07
-[*] 变更 1 处：MonsterInfo×1
+Time Elapsed 00:00:01.40
+[*] 变更 41 处：NPCPage×41
 [*] 引用完整性校验通过。
-[~] MonsterInfo#196
-[*] 新版本: 2026.10.18.6
-[*] 已保存: /tmp/dbeditor_import_15ac8732cf9b4da2bb6df7bc39062d4e/System.db
-[*] 应用 1/1 处变更。
-DB_OUT=/tmp/dbeditor_import_15ac8732cf9b4da2bb6df7bc39062d4e/System.db
+[~] NPCPage#33912
+[~] NPCPage#33942
+[~] NPCPage#33991
+[~] NPCPage#34117
+[~] NPCPage#34182
+[~] NPCPage#34209
+[~] NPCPage#34218
+[~] NPCPage#34287
+[~] NPCPage#34302
+[~] NPCPage#34616
+[~] NPCPage#34630
+[~] NPCPage#34645
+[~] NPCPage#34652
+[~] NPCPage#34863
+[~] NPCPage#35280
+[~] NPCPage#35299
+[~] NPCPage#35304
+[~] NPCPage#36327
+[~] NPCPage#36502
+[~] NPCPage#36517
+[~] NPCPage#36545
+[~] NPCPage#36801
+[~] NPCPage#36842
+[~] NPCPage#36862
+[~] NPCPage#36895
+[~] NPCPage#37153
+[~] NPCPage#37167
+[~] NPCPage#37186
+[~] NPCPage#37257
+[~] NPCPage#37310
+[~] NPCPage#37317
+[~] NPCPage#37333
+[~] NPCPage#37375
+[~] NPCPage#37407
+[~] NPCPage#37429
+[~] NPCPage#37840
+[~] NPCPage#37928
+[~] NPCPage#37934
+[~] NPCPage#37968
+[~] NPCPage#37986
+[~] NPCPage#38002
+[*] 新版本: 2026.10.18.8
+[*] 已保存: /tmp/dbeditor_import_0404ac6c91e7488a91d1cddba89fcb64/System.db
+[*] 应用 41/41 处变更。
+DB_OUT=/tmp/dbeditor_import_0404ac6c91e7488a91d1cddba89fcb64/System.db
 [2/7] 导入器执行完成
+/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/Program.cs(137,30): warning CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context. [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
+/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/Program.cs(138,30): warning CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context. [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
+/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/Program.cs(903,19): warning CS8321: The local function 'ItemCategory' is declared but never used [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
 
 Build succeeded.
-    0 Warning(s)
+
+/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/Program.cs(137,30): warning CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context. [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
+/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/Program.cs(138,30): warning CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context. [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
+/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/Program.cs(903,19): warning CS8321: The local function 'ItemCategory' is declared but never used [/home/tetsuya/development/Mir3-Research/Tools/SystemDbProbe/SystemDbProbe.csproj]
+    3 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:01.13
+Time Elapsed 00:00:03.11
 [3/7] round-trip 导出完成
+[i] NPCPage: 检测到索引重映射 7 行，按 _Identity 认成同一行
+    NPCPage#170 ≡ #38147
+    NPCPage#171 ≡ #38148
+    NPCPage#172 ≡ #38149
+    NPCPage#173 ≡ #38150
+    NPCPage#174 ≡ #38151
+    NPCPage#175 ≡ #38152
+    NPCPage#177 ≡ #38153
 [OK] round-trip 语义一致
 [4/7] round-trip 语义对比通过
-[5/7] 已备份 4 份副本 → /home/tetsuya/development/Zircon/Debug/ServerCore/Database/Backup/System/System-copy* 2026-10-18 17-41.db.gz
-[6/7] 已安装 4 份库：1ab3113a6ecd9dda6fea8d01be9c2ec1 → fac891e4ccd3e15db2849444053d68af
-[6/7]   fac891e4ccd3e15db2849444053d68af  /home/tetsuya/development/zircon/Debug/ServerCore/Database/System.db
-[6/7]   fac891e4ccd3e15db2849444053d68af  /home/tetsuya/mir2ei/Data/System.db
-[6/7]   fac891e4ccd3e15db2849444053d68af  /home/tetsuya/mir2ei/Database/System.db
-[6/7]   fac891e4ccd3e15db2849444053d68af  /home/tetsuya/development/zircon/System.db
-[7/7] 基线已重置（版本 2026.10.18.6，下次 diff 从新库算起）
-同步成功：1ab3113a6ecd9dda6fea8d01be9c2ec1 → fac891e4ccd3e15db2849444053d68af
+[5/7] 已备份 4 份副本 → /home/tetsuya/development/zircon/Debug/ServerCore/Database/Backup/System/System-copy* 2026-10-18 20-41.db.gz
+[6/7] 已安装 4 份库：a85e598b8623bd2d8ba11a54acaadb52 → bbe66cbb22c8af1802265acb1a564841
+[6/7]   bbe66cbb22c8af1802265acb1a564841  /home/tetsuya/development/zircon/Debug/ServerCore/Database/System.db
+[6/7]   bbe66cbb22c8af1802265acb1a564841  /home/tetsuya/mir2ei/Data/System.db
+[6/7]   bbe66cbb22c8af1802265acb1a564841  /home/tetsuya/mir2ei/Database/System.db
+[6/7]   bbe66cbb22c8af1802265acb1a564841  /home/tetsuya/development/zircon/System.db
+[7/7] 基线已重置（版本 2026.10.18.8，下次 diff 从新库算起）
+同步成功：a85e598b8623bd2d8ba11a54acaadb52 → bbe66cbb22c8af1802265acb1a564841
